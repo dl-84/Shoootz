@@ -183,8 +183,9 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
         run: |
+          VERSION="${GITHUB_REF_NAME#sektionsliga-}"
           gh release create ${{ github.ref_name }} \
-            --title "Sektionsliga ${{ github.ref_name }}" \
+            --title "Sektionsliga $VERSION" \
             --generate-notes \
             "./Sektionsliga-windows.zip" \
             "./Sektionsliga-macos-x64.zip" \
