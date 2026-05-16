@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <None Include="..\README.md" />
+    <None Include="..\.csharpierrc.json" />
   </ItemGroup>
 
   <Target Name="FormatCode" AfterTargets="Build" Condition="'$(Configuration)' == 'Debug'">
