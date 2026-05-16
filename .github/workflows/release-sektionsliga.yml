@@ -1,9 +1,9 @@
-name: Release
+name: Release Sektionsliga
 
 on:
   push:
     tags:
-      - 'v*'
+      - 'sektionsliga-v*'
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -90,6 +90,8 @@ jobs:
           </dict>
           </plist>
           PLIST
+
+          codesign --deep --force --sign - "$BUNDLE"
 
           hdiutil create -volname "Sektionsliga" \
             -srcfolder "$BUNDLE" -ov -format UDZO \
