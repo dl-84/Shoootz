@@ -12,9 +12,9 @@ jobs:
   Build_Windows:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - uses: actions/setup-dotnet@v4
+      - uses: actions/setup-dotnet@v5
         with:
           dotnet-version: '10.0.x'
 
@@ -25,7 +25,7 @@ jobs:
             -r win-x64 -c Release --self-contained true -o ./out
           Get-ChildItem ./out -Filter "*.pdb" | Remove-Item -Force
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: windows
           path: ./out/Sektionsliga.exe
@@ -46,9 +46,9 @@ jobs:
           brew cleanup --prune=all 2>/dev/null || true
           df -h /
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - uses: actions/setup-dotnet@v4
+      - uses: actions/setup-dotnet@v5
         with:
           dotnet-version: '10.0.x'
 
@@ -103,7 +103,7 @@ jobs:
             -srcfolder "$BUNDLE" -ov -format UDZO \
             "./out/Sektionsliga-${{ matrix.suffix }}.dmg"
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: ${{ matrix.suffix }}
           path: ./out/Sektionsliga-${{ matrix.suffix }}.dmg
@@ -111,9 +111,9 @@ jobs:
   Build_Linux:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - uses: actions/setup-dotnet@v4
+      - uses: actions/setup-dotnet@v5
         with:
           dotnet-version: '10.0.x'
 
@@ -156,7 +156,7 @@ jobs:
           ARCH=x86_64 ./appimagetool --appimage-extract-and-run \
             "$APPDIR" ./out/Sektionsliga.AppImage
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: linux
           path: ./out/Sektionsliga.AppImage
@@ -167,7 +167,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           path: ./artifacts
 
