@@ -18,8 +18,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Library\Avalonia\Themes\Disag\Disag.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="..\README.md" />
   </ItemGroup>
+
+  <Target Name="FormatCode" AfterTargets="Build" Condition="'$(Configuration)' == 'Debug'">
+    <Exec Command="dotnet csharpier ." WorkingDirectory="$(SolutionDir)" />
+  </Target>
 
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="12.0.3" />
