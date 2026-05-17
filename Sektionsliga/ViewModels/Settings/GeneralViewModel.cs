@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Sektionsliga.Models;
+using Sektionsliga.Services.Flag;
 using Sektionsliga.Services.Settings;
 using Sektionsliga.ViewModels.Settings.Dtos;
 
@@ -9,7 +10,7 @@ namespace Sektionsliga.ViewModels.Settings;
 
 public partial class GeneralViewModel : ViewModelBase
 {
-    public static List<LanguageOptionDto> LanguageOptions => [new LanguageOptionDto("de"), new LanguageOptionDto("en")];
+    public List<LanguageOptionDto> LanguageOptions { get; }
 
     [ObservableProperty]
     public partial LanguageOptionDto SelectedLanguageOption { get; set; }
@@ -17,9 +18,15 @@ public partial class GeneralViewModel : ViewModelBase
     private readonly ISettingsService _settingsService;
     private bool _initialized;
 
-    public GeneralViewModel(ISettingsService settingsService)
+    public GeneralViewModel(ISettingsService settingsService, IFlagService flagService)
     {
         _settingsService = settingsService;
+        LanguageOptions =
+        [
+            new LanguageOptionDto("de", flagService.GetFlag("de")),
+            new LanguageOptionDto("en", flagService.GetFlag("en")),
+        ];
+
         AppSettingsDto settings = _settingsService.Load();
         SelectedLanguageOption =
             LanguageOptions.FirstOrDefault(o => o.CultureInfo.TwoLetterISOLanguageName == settings.LanguageCultureCode)

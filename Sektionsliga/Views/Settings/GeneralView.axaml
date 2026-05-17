@@ -17,7 +17,7 @@
                 <StackPanel Spacing="12">
                     <TextBlock Classes="h4"
                                Text="Anzeigesprache" />
-                    <ComboBox ItemsSource="{x:Static vm:GeneralViewModel.LanguageOptions}"
+                    <ComboBox ItemsSource="{Binding LanguageOptions}"
                               SelectedItem="{Binding SelectedLanguageOption}"
                               Width="240">
                         <ComboBox.ItemTemplate>

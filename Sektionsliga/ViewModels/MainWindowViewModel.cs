@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Sektionsliga.Services.Flag;
 using Sektionsliga.Services.Settings;
 using Sektionsliga.ViewModels.Competition;
 using Sektionsliga.ViewModels.Info;
@@ -30,12 +31,12 @@ public partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty]
     public partial NavItem? SelectedInfoItem { get; set; }
 
-    public MainWindowViewModel(ISettingsService settingsService)
+    public MainWindowViewModel(ISettingsService settingsService, IFlagService flagService)
     {
         CompetitionItems = [new NavItem("Auswerten", () => new EvaluationViewModel())];
         SettingsItems =
         [
-            new NavItem("Allgemein", () => new GeneralViewModel(settingsService)),
+            new NavItem("Allgemein", () => new GeneralViewModel(settingsService, flagService)),
             new NavItem("Datenbank", () => new DatabaseViewModel()),
             new NavItem("Gruppen", () => new GroupsViewModel()),
         ];

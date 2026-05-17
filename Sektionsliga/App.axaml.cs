@@ -3,6 +3,7 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Microsoft.Extensions.DependencyInjection;
+using Sektionsliga.Services.Flag;
 using Sektionsliga.Services.Settings;
 using Sektionsliga.ViewModels;
 using Sektionsliga.Views;
@@ -42,6 +43,7 @@ public partial class App : Application
 
     private static ServiceCollection InitSingletons(ServiceCollection services)
     {
+        services.AddSingleton<IFlagService, FlagService>();
         services.AddSingleton<ISettingsService, SettingsService>();
         services.AddSingleton<MainWindowViewModel>();
 

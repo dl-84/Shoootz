@@ -33,9 +33,9 @@ public class SettingsService : ISettingsService
         }
     }
 
-    public void Save(AppSettingsDto settings)
+    public void Save(AppSettingsDto appSettings)
     {
         Directory.CreateDirectory(Path.GetDirectoryName(FilePath)!);
-        File.WriteAllText(FilePath, JsonSerializer.Serialize(settings, JsonOptions));
+        File.WriteAllText(FilePath, JsonSerializer.Serialize(appSettings, JsonOptions));
     }
 }
