@@ -16,93 +16,137 @@
         d:DesignWidth="1200"
         mc:Ignorable="d">
 
-    <Window.Resources>
-        <ControlTheme x:Key="NavItemTheme"
-                      TargetType="ListBoxItem">
-            <Setter Property="Padding" Value="28,12,20,12" />
-            <Setter Property="BorderThickness" Value="3,0,0,0" />
-            <Setter Property="BorderBrush" Value="Transparent" />
-            <Setter Property="Background" Value="{DynamicResource PrimaryBrush}" />
-            <Setter Property="Opacity" Value="0.7" />
-            <Setter Property="CornerRadius" Value="0" />
-            <Setter Property="Cursor" Value="Hand" />
-            <Setter Property="Template">
-                <ControlTemplate>
-                    <Border Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="0"
-                            Padding="28,12,20,12">
-                        <TextBlock x:CompileBindings="False"
-                                   FontSize="14"
-                                   Foreground="{DynamicResource TextOnDarkBrush}"
-                                   Text="{Binding Label}" />
-                    </Border>
-                </ControlTemplate>
-            </Setter>
-
-            <Style Selector="^:pointerover">
-                <Setter Property="Background" Value="#1AFFFFFF" />
-                <Setter Property="Opacity" Value="0.9" />
-            </Style>
-            <Style Selector="^:selected">
-                <Setter Property="BorderBrush" Value="{DynamicResource AccentBrush}" />
-                <Setter Property="Background" Value="#2E019DC6" />
-                <Setter Property="Opacity" Value="1" />
-            </Style>
-        </ControlTheme>
-    </Window.Resources>
-
     <Grid ColumnDefinitions="220,*">
 
         <!--  Sidebar  -->
         <Border Grid.Column="0"
                 Background="{DynamicResource PrimaryBrush}">
-            <StackPanel Margin="0,16,0,0">
+            <ListBox Background="Transparent"
+                     BorderThickness="0"
+                     Margin="0,16,0,0"
+                     Padding="0"
+                     SelectedIndex="{Binding ActiveIndex}">
+
+                <ListBox.Styles>
+                    <Style Selector="ListBoxItem:selected ContentPresenter">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="CornerRadius" Value="0" />
+                    </Style>
+                    <Style Selector="ListBoxItem:pointerover ContentPresenter">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="CornerRadius" Value="0" />
+                    </Style>
+                    <Style Selector="ListBoxItem:selected:pointerover ContentPresenter">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="CornerRadius" Value="0" />
+                    </Style>
+                </ListBox.Styles>
+
+                <ListBox.Resources>
+                    <ControlTheme x:Key="{x:Type ListBoxItem}"
+                                  TargetType="ListBoxItem">
+                        <Setter Property="Cursor" Value="Hand" />
+                        <Setter Property="FocusAdorner" Value="{x:Null}" />
+                        <Setter Property="HorizontalAlignment" Value="Stretch" />
+                        <Setter Property="Template">
+                            <ControlTemplate>
+                                <Border x:Name="Root"
+                                        Background="{DynamicResource PrimaryBrush}"
+                                        BorderBrush="Transparent"
+                                        BorderThickness="3,0,0,0"
+                                        Opacity="0.7"
+                                        Padding="28,12,20,12">
+                                    <ContentPresenter Background="Transparent"
+                                                      Content="{TemplateBinding Content}"
+                                                      HorizontalAlignment="Left"
+                                                      VerticalAlignment="Center" />
+                                </Border>
+                            </ControlTemplate>
+                        </Setter>
+                        <Style Selector="^:pointerover /template/ Border#Root">
+                            <Setter Property="Background" Value="#1AFFFFFF" />
+                            <Setter Property="Opacity" Value="0.9" />
+                        </Style>
+                        <Style Selector="^:selected /template/ Border#Root">
+                            <Setter Property="Background" Value="#2E019DC6" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource AccentBrush}" />
+                            <Setter Property="Opacity" Value="1" />
+                        </Style>
+                        <Style Selector="^:selected:pointerover /template/ Border#Root">
+                            <Setter Property="Background" Value="#2E019DC6" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource AccentBrush}" />
+                            <Setter Property="Opacity" Value="1" />
+                        </Style>
+                        <Style Selector="^.nav-header">
+                            <Setter Property="Cursor" Value="Arrow" />
+                            <Setter Property="Template">
+                                <ControlTemplate>
+                                    <ContentPresenter Content="{TemplateBinding Content}" />
+                                </ControlTemplate>
+                            </Setter>
+                        </Style>
+                    </ControlTheme>
+                </ListBox.Resources>
 
                 <!--  Competition  -->
-                <TextBlock Classes="label"
-                           Foreground="{DynamicResource TextOnDarkBrush}"
-                           Margin="20,16,20,4"
-                           Opacity="0.4"
-                           Text="{loc:Localization Competition}" />
-                <ListBox Background="Transparent"
-                         BorderThickness="0"
-                         CornerRadius="0"
-                         ItemContainerTheme="{StaticResource NavItemTheme}"
-                         ItemsSource="{Binding CompetitionItems}"
-                         Padding="0"
-                         SelectedItem="{Binding SelectedCompetitionItem}" />
+                <ListBoxItem Classes="nav-header"
+                             IsEnabled="False">
+                    <TextBlock Classes="label"
+                               FontSize="13"
+                               Foreground="{DynamicResource TextOnDarkBrush}"
+                               Margin="20,16,20,4"
+                               Opacity="0.4"
+                               Text="{loc:Localization Competition}" />
+                </ListBoxItem>
+                <ListBoxItem>
+                    <TextBlock FontSize="16"
+                               Foreground="{DynamicResource TextOnDarkBrush}"
+                               Text="{loc:Localization Evaluate}" />
+                </ListBoxItem>
 
                 <!--  Settings  -->
-                <TextBlock Classes="label"
-                           Foreground="{DynamicResource TextOnDarkBrush}"
-                           Margin="20,28,20,4"
-                           Opacity="0.4"
-                           Text="{loc:Localization Settings}" />
-                <ListBox Background="Transparent"
-                         BorderThickness="0"
-                         CornerRadius="0"
-                         ItemContainerTheme="{StaticResource NavItemTheme}"
-                         ItemsSource="{Binding SettingsItems}"
-                         Padding="0"
-                         SelectedItem="{Binding SelectedSettingsItem}" />
+                <ListBoxItem Classes="nav-header"
+                             IsEnabled="False">
+                    <TextBlock Classes="label"
+                               FontSize="13"
+                               Foreground="{DynamicResource TextOnDarkBrush}"
+                               Margin="20,28,20,4"
+                               Opacity="0.4"
+                               Text="{loc:Localization Settings}" />
+                </ListBoxItem>
+                <ListBoxItem>
+                    <TextBlock FontSize="16"
+                               Foreground="{DynamicResource TextOnDarkBrush}"
+                               Text="{loc:Localization General}" />
+                </ListBoxItem>
+                <ListBoxItem>
+                    <TextBlock FontSize="16"
+                               Foreground="{DynamicResource TextOnDarkBrush}"
+                               Text="{loc:Localization Database}" />
+                </ListBoxItem>
+                <ListBoxItem>
+                    <TextBlock FontSize="16"
+                               Foreground="{DynamicResource TextOnDarkBrush}"
+                               Text="{loc:Localization Groups}" />
+                </ListBoxItem>
 
                 <!--  Info  -->
-                <TextBlock Classes="label"
-                           Foreground="{DynamicResource TextOnDarkBrush}"
-                           Margin="20,28,20,4"
-                           Opacity="0.4"
-                           Text="{loc:Localization Info}" />
-                <ListBox Background="Transparent"
-                         BorderThickness="0"
-                         CornerRadius="0"
-                         ItemContainerTheme="{StaticResource NavItemTheme}"
-                         ItemsSource="{Binding InfoItems}"
-                         Padding="0"
-                         SelectedItem="{Binding SelectedInfoItem}" />
+                <ListBoxItem Classes="nav-header"
+                             IsEnabled="False">
+                    <TextBlock Classes="label"
+                               FontSize="13"
+                               Foreground="{DynamicResource TextOnDarkBrush}"
+                               Margin="20,28,20,4"
+                               Opacity="0.4"
+                               Text="{loc:Localization Info}" />
+                </ListBoxItem>
+                <ListBoxItem>
+                    <TextBlock FontSize="16"
+                               Foreground="{DynamicResource TextOnDarkBrush}"
+                               Text="{loc:Localization Versions}" />
+                </ListBoxItem>
 
-            </StackPanel>
+            </ListBox>
         </Border>
 
         <!--  Content Area  -->

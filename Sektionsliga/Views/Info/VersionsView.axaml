@@ -1,0 +1,74 @@
+<UserControl x:Class="Sektionsliga.Views.Info.VersionsView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:loc="using:Sektionsliga.Extensions"
+             xmlns:models="using:Sektionsliga.Models"
+             xmlns:vm="using:Sektionsliga.ViewModels.Info"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:DataType="vm:VersionsViewModel">
+
+    <ScrollViewer>
+        <StackPanel Margin="16,32,16,32"
+                    Spacing="16">
+
+            <TextBlock Classes="h3"
+                       Text="{loc:Localization Versions}" />
+
+            <Border Classes="card"
+                    CornerRadius="0">
+                <Grid ColumnDefinitions="*,Auto">
+                    <TextBlock Classes="h4"
+                               Text="Sektionsliga"
+                               VerticalAlignment="Center" />
+                    <TextBlock Grid.Column="1"
+                               Classes="secondary"
+                               Text="{Binding AppVersion}"
+                               VerticalAlignment="Center" />
+                </Grid>
+            </Border>
+
+            <TextBlock Classes="h4"
+                       Text="{loc:Localization ThirdPartyPackages}" />
+
+            <Border Classes="card"
+                    CornerRadius="0">
+                <StackPanel Spacing="0">
+
+                    <Grid ColumnDefinitions="*,120,80"
+                          Margin="0,0,0,12">
+                        <TextBlock Classes="label"
+                                   Text="Name" />
+                        <TextBlock Grid.Column="1"
+                                   Classes="label"
+                                   Text="{loc:Localization Version}" />
+                        <TextBlock Grid.Column="2"
+                                   Classes="label"
+                                   Text="{loc:Localization License}" />
+                    </Grid>
+
+                    <ItemsControl ItemsSource="{Binding Packages}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="models:ThirdPartyPackageModel">
+                                <Grid ColumnDefinitions="*,120,80"
+                                      Margin="0,6,0,0">
+                                    <TextBlock Text="{Binding Name}"
+                                               VerticalAlignment="Center" />
+                                    <TextBlock Grid.Column="1"
+                                               Classes="secondary"
+                                               Text="{Binding Version}"
+                                               VerticalAlignment="Center" />
+                                    <TextBlock Grid.Column="2"
+                                               Classes="secondary"
+                                               Text="{Binding License}"
+                                               VerticalAlignment="Center" />
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                </StackPanel>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+
+</UserControl>

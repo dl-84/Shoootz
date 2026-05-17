@@ -2,9 +2,9 @@ using Avalonia.Controls;
 
 namespace Sektionsliga.Views.Info;
 
-public partial class VersionView : UserControl
+public partial class VersionsView : UserControl
 {
-    public VersionView()
+    public VersionsView()
     {
         InitializeComponent();
     }

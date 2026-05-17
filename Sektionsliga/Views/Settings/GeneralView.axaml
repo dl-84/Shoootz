@@ -17,7 +17,7 @@
                     CornerRadius="0">
                 <StackPanel Spacing="12">
                     <TextBlock Classes="h4"
-                               Text="{loc:Localization DisplayLanguageLabel}" />
+                               Text="{loc:Localization Language}" />
                     <ComboBox ItemsSource="{Binding LanguageOptions}"
                               SelectedItem="{Binding SelectedLanguageOption}"
                               Width="240">

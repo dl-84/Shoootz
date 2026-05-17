@@ -40,8 +40,19 @@
   </data>
 
   <!-- General Settings -->
-  <data name="DisplayLanguageLabel" xml:space="preserve">
-    <value>Anzeigesprache</value>
+  <data name="Language" xml:space="preserve">
+    <value>Sprache</value>
+  </data>
+
+  <!-- Version -->
+  <data name="Versions" xml:space="preserve">
+    <value>Versionen</value>
+  </data>
+  <data name="ThirdPartyPackages" xml:space="preserve">
+    <value>Drittanbieter-Pakete</value>
+  </data>
+  <data name="License" xml:space="preserve">
+    <value>Lizenz</value>
   </data>
 
 </root>

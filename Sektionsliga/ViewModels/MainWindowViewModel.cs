@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Sektionsliga.Services.Language;
 using Sektionsliga.Services.Localization;
@@ -11,45 +8,19 @@ using Sektionsliga.ViewModels.Settings;
 
 namespace Sektionsliga.ViewModels;
 
-public class NavItem : INotifyPropertyChanged
-{
-    private readonly ILocalizationService _localizationService;
-    private readonly string _labelKey;
-
-    public event PropertyChangedEventHandler? PropertyChanged;
-
-    public string Label => _localizationService[_labelKey];
-    public Func<ViewModelBase> CreatePage { get; }
-
-    public NavItem(string labelKey, Func<ViewModelBase> createPage, ILocalizationService localizationService)
-    {
-        _labelKey = labelKey;
-        CreatePage = createPage;
-        _localizationService = localizationService;
-        _localizationService.LanguageChanged += (_, _) =>
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Label)));
-    }
-}
-
 public partial class MainWindowViewModel : ViewModelBase
 {
-    public List<NavItem> CompetitionItems { get; }
+    private readonly ISettingsService settingsService;
 
-    public List<NavItem> SettingsItems { get; }
+    private readonly ILanguageService languageService;
 
-    public List<NavItem> InfoItems { get; }
+    private readonly ILocalizationService localizationService;
 
     [ObservableProperty]
     public partial ViewModelBase CurrentPage { get; set; }
 
     [ObservableProperty]
-    public partial NavItem? SelectedCompetitionItem { get; set; }
-
-    [ObservableProperty]
-    public partial NavItem? SelectedSettingsItem { get; set; }
-
-    [ObservableProperty]
-    public partial NavItem? SelectedInfoItem { get; set; }
+    public partial int ActiveIndex { get; set; } = 1;
 
     public MainWindowViewModel(
         ISettingsService settingsService,
@@ -57,61 +28,23 @@ public partial class MainWindowViewModel : ViewModelBase
         ILocalizationService localizationService
     )
     {
-        CompetitionItems = [new NavItem("Evaluate", () => new EvaluationViewModel(), localizationService)];
-        SettingsItems =
-        [
-            new NavItem(
-                "General",
-                () => new GeneralViewModel(languageService, localizationService, settingsService),
-                localizationService
-            ),
-            new NavItem("Database", () => new DatabaseViewModel(), localizationService),
-            new NavItem("Groups", () => new GroupsViewModel(), localizationService),
-        ];
-        InfoItems = [new NavItem("Version", () => new VersionViewModel(), localizationService)];
+        this.settingsService = settingsService;
+        this.languageService = languageService;
+        this.localizationService = localizationService;
 
         CurrentPage = new EvaluationViewModel();
-        SelectedCompetitionItem = CompetitionItems[0];
     }
 
-    partial void OnSelectedCompetitionItemChanged(NavItem? value) =>
-        NavigateTo(
-            value,
-            () =>
-            {
-                SelectedSettingsItem = null;
-                SelectedInfoItem = null;
-            }
-        );
-
-    partial void OnSelectedSettingsItemChanged(NavItem? value) =>
-        NavigateTo(
-            value,
-            () =>
-            {
-                SelectedCompetitionItem = null;
-                SelectedInfoItem = null;
-            }
-        );
-
-    partial void OnSelectedInfoItemChanged(NavItem? value) =>
-        NavigateTo(
-            value,
-            () =>
-            {
-                SelectedCompetitionItem = null;
-                SelectedSettingsItem = null;
-            }
-        );
-
-    private void NavigateTo(NavItem? value, Action clearSiblings)
+    partial void OnActiveIndexChanged(int value)
     {
-        if (value is null)
+        CurrentPage = value switch
         {
-            return;
-        }
-
-        clearSiblings();
-        CurrentPage = value.CreatePage();
+            1 => new EvaluationViewModel(),
+            3 => new GeneralViewModel(languageService, localizationService, settingsService),
+            4 => new DatabaseViewModel(),
+            5 => new GroupsViewModel(),
+            7 => new VersionsViewModel(),
+            _ => CurrentPage,
+        };
     }
 }
