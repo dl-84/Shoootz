@@ -7,7 +7,7 @@ namespace Sektionsliga.Services.Localization;
 public class LocalizationService : ILocalizationService
 {
     private static readonly ResourceManager ResourceManager = new ResourceManager(
-        "Sektionsliga.Resources.Strings",
+        "Sektionsliga.Resources.Messages",
         typeof(LocalizationService).Assembly
     );
 
