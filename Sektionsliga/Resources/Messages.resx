@@ -14,28 +14,28 @@
   </resheader>
 
   <!-- Navigation -->
-  <data name="NavCompetition" xml:space="preserve">
+  <data name="Competition" xml:space="preserve">
     <value>WETTKAMPF</value>
   </data>
-  <data name="NavSettings" xml:space="preserve">
+  <data name="Settings" xml:space="preserve">
     <value>EINSTELLUNGEN</value>
   </data>
-  <data name="NavInfo" xml:space="preserve">
+  <data name="Info" xml:space="preserve">
     <value>INFO</value>
   </data>
-  <data name="NavEvaluate" xml:space="preserve">
+  <data name="Evaluate" xml:space="preserve">
     <value>Auswerten</value>
   </data>
-  <data name="NavGeneral" xml:space="preserve">
+  <data name="General" xml:space="preserve">
     <value>Allgemein</value>
   </data>
-  <data name="NavDatabase" xml:space="preserve">
+  <data name="Database" xml:space="preserve">
     <value>Datenbank</value>
   </data>
-  <data name="NavGroups" xml:space="preserve">
+  <data name="Groups" xml:space="preserve">
     <value>Gruppen</value>
   </data>
-  <data name="NavVersion" xml:space="preserve">
+  <data name="Version" xml:space="preserve">
     <value>Version</value>
   </data>
 

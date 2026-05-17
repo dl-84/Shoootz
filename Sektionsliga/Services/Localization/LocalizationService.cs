@@ -11,15 +11,15 @@ public class LocalizationService : ILocalizationService
         typeof(LocalizationService).Assembly
     );
 
-    private CultureInfo _currentCulture = CultureInfo.CurrentUICulture;
+    private CultureInfo currentCulture = CultureInfo.CurrentUICulture;
 
     public event EventHandler? LanguageChanged;
 
-    public string this[string key] => ResourceManager.GetString(key, _currentCulture) ?? key;
+    public string this[string key] => ResourceManager.GetString(key, currentCulture) ?? key;
 
     public void SetLanguage(string cultureCode)
     {
-        _currentCulture = new CultureInfo(cultureCode);
+        currentCulture = new CultureInfo(cultureCode);
         LanguageChanged?.Invoke(this, EventArgs.Empty);
     }
 }

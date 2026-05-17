@@ -51,6 +51,7 @@ public partial class App : Application
         services.AddSingleton<ILocalizationService, LocalizationService>();
         services.AddSingleton<ISettingsService, SettingsService>();
         services.AddSingleton<MainWindowViewModel>();
+
         return services;
     }
 }
