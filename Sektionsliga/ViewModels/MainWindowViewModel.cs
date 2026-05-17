@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Sektionsliga.ViewModels.Competition;
@@ -22,47 +23,61 @@ public partial class MainWindowViewModel : ViewModelBase
     public List<NavItem> InfoItems { get; } = [new("Version", () => new VersionViewModel())];
 
     [ObservableProperty]
-    private ViewModelBase _currentPage;
+    public partial ViewModelBase CurrentPage { get; set; }
 
     [ObservableProperty]
-    private NavItem? _selectedCompetitionItem;
+    public partial NavItem? SelectedCompetitionItem { get; set; }
 
     [ObservableProperty]
-    private NavItem? _selectedSettingsItem;
+    public partial NavItem? SelectedSettingsItem { get; set; }
 
     [ObservableProperty]
-    private NavItem? _selectedInfoItem;
+    public partial NavItem? SelectedInfoItem { get; set; }
 
     public MainWindowViewModel()
     {
-        _currentPage = new EvaluationViewModel();
-        _selectedCompetitionItem = CompetitionItems[0];
+        CurrentPage = new EvaluationViewModel();
+        SelectedCompetitionItem = CompetitionItems[0];
     }
 
-    partial void OnSelectedCompetitionItemChanged(NavItem? value)
-    {
-        if (value is null)
-            return;
-        SelectedSettingsItem = null;
-        SelectedInfoItem = null;
-        CurrentPage = value.CreatePage();
-    }
+    partial void OnSelectedCompetitionItemChanged(NavItem? value) =>
+        NavigateTo(
+            value,
+            () =>
+            {
+                SelectedSettingsItem = null;
+                SelectedInfoItem = null;
+            }
+        );
 
-    partial void OnSelectedSettingsItemChanged(NavItem? value)
-    {
-        if (value is null)
-            return;
-        SelectedCompetitionItem = null;
-        SelectedInfoItem = null;
-        CurrentPage = value.CreatePage();
-    }
+    partial void OnSelectedSettingsItemChanged(NavItem? value) =>
+        NavigateTo(
+            value,
+            () =>
+            {
+                SelectedCompetitionItem = null;
+                SelectedInfoItem = null;
+            }
+        );
 
-    partial void OnSelectedInfoItemChanged(NavItem? value)
+    partial void OnSelectedInfoItemChanged(NavItem? value) =>
+        NavigateTo(
+            value,
+            () =>
+            {
+                SelectedCompetitionItem = null;
+                SelectedSettingsItem = null;
+            }
+        );
+
+    private void NavigateTo(NavItem? value, Action clearSiblings)
     {
         if (value is null)
+        {
             return;
-        SelectedCompetitionItem = null;
-        SelectedSettingsItem = null;
+        }
+
+        clearSiblings();
         CurrentPage = value.CreatePage();
     }
 }
