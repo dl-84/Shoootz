@@ -22,12 +22,12 @@ public partial class GeneralViewModel : ViewModelBase
         LanguageOptions = languageService.GetAvailableLanguages();
 
         AppSettingsModel settings = this.settingsService.Load();
-        SelectedLanguageOption = GetLanguage(settings.LanguageCultureCode);
+        SelectedLanguageOption = GetLanguage(settings.CurrentLanguageCode);
     }
 
     partial void OnSelectedLanguageOptionChanged(LanguageOptionModel value)
     {
-        settingsService.Save(new AppSettingsModel { LanguageCultureCode = value.CultureInfo.TwoLetterISOLanguageName });
+        settingsService.Save(new AppSettingsModel { CurrentLanguageCode = value.CultureInfo.TwoLetterISOLanguageName });
     }
 
     private LanguageOptionModel GetLanguage(string cultureCode)

@@ -4,5 +4,5 @@ namespace Sektionsliga.Models;
 
 public class AppSettingsModel
 {
-    public string LanguageCultureCode { get; init; } = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+    public string CurrentLanguageCode { get; init; } = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
 }
