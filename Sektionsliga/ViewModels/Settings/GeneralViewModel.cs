@@ -1,23 +1,15 @@
 using System.Collections.Generic;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Sektionsliga.ViewModels.Settings.Dtos;
 
 namespace Sektionsliga.ViewModels.Settings;
 
-public enum DisplayLanguage
-{
-    German,
-    English,
-}
-
-public record LanguageOption(DisplayLanguage Value, string DisplayName);
-
 public partial class GeneralViewModel : ViewModelBase
 {
-    public List<LanguageOption> LanguageOptions { get; } =
-    [new(DisplayLanguage.German, "Deutsch"), new(DisplayLanguage.English, "English")];
+    public static List<LanguageOptionDto> LanguageOptions => [new LanguageOptionDto("de"), new LanguageOptionDto("en")];
 
     [ObservableProperty]
-    public partial LanguageOption SelectedLanguageOption { get; set; }
+    public partial LanguageOptionDto SelectedLanguageOption { get; set; }
 
     public GeneralViewModel()
     {

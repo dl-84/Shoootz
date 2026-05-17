@@ -1,6 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:Sektionsliga.ViewModels.Settings"
+             xmlns:dtos="using:Sektionsliga.ViewModels.Settings.Dtos"
              x:Class="Sektionsliga.Views.Settings.GeneralView"
              x:DataType="vm:GeneralViewModel">
 
@@ -12,19 +13,20 @@
             <Border Classes="card" CornerRadius="0">
                 <StackPanel Spacing="12">
                     <TextBlock Classes="h4" Text="Anzeigesprache" />
-                    <ComboBox ItemsSource="{Binding LanguageOptions}"
+                    <ComboBox ItemsSource="{x:Static vm:GeneralViewModel.LanguageOptions}"
                               SelectedItem="{Binding SelectedLanguageOption}"
                               Width="240">
                         <ComboBox.ItemTemplate>
-                            <DataTemplate x:DataType="vm:LanguageOption">
-                                <TextBlock Text="{Binding DisplayName}" />
+                            <DataTemplate x:DataType="dtos:LanguageOptionDto">
+                                <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                                    <Image Source="{Binding Flag}" Width="40" Height="24" VerticalAlignment="Center" />
+                                    <TextBlock Text="{Binding CultureInfo.NativeName}" VerticalAlignment="Center" />
+                                </StackPanel>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-                </StackPanel>
+                </StackPanel>   
             </Border>
-
         </StackPanel>
     </ScrollViewer>
-
 </UserControl>

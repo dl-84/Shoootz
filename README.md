@@ -20,3 +20,17 @@ Der Workflow baut alle Plattformen parallel auf nativen Runnern und erstellt aut
 
 Die Version wird aus dem Git-Tag ausgelesen (`v1.0.0` → `1.0.0`).  
 Zum Ändern der Version: `<Version>` in `Sektionsliga/Sektionsliga.csproj` anpassen.
+
+## Assets
+
+### Länderflaggen
+
+PNG-Flaggenbilder stammen von **flagcdn.com**:
+
+```
+https://flagcdn.com/w40/{code}.png
+```
+
+Beispiele: `de` → Deutschland, `gb` → Großbritannien, `at` → Österreich, `fr` → Frankreich  
+Verfügbare Ländercodes folgen dem ISO 3166-1 alpha-2 Standard.  
+Vollständige Liste: https://flagcdn.com
