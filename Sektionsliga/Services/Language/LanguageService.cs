@@ -6,9 +6,17 @@ namespace Sektionsliga.Services.Language;
 
 public class LanguageService(IFlagService flagService) : ILanguageService
 {
-    public List<LanguageOptionModel> GetAvailableLanguages() =>
-        [
-            new LanguageOptionModel("de", flagService.GetFlag("de")),
-            new LanguageOptionModel("en", flagService.GetFlag("en")),
-        ];
+    private readonly List<string> AvailableLanguages = ["de", "en"];
+    
+    public List<LanguageOptionModel> GetAvailableLanguages()
+    {
+        List<LanguageOptionModel> result = [];
+
+        foreach (string language in AvailableLanguages)
+        {
+            result.Add(new LanguageOptionModel(language, flagService.GetFlag(language)));
+        }
+        
+        return result;
+    }
 }
