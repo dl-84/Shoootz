@@ -4,6 +4,6 @@
              x:Class="Sektionsliga.Views.Competition.EvaluationView"
              x:DataType="vm:EvaluationViewModel">
     <Border Padding="32">
-        <TextBlock Classes="h2" Text="Auswerten" />
+        <TextBlock Classes="h3" Text="Auswerten" />
     </Border>
 </UserControl>
