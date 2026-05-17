@@ -15,25 +15,25 @@ public class SettingsService : ISettingsService
 
     private static readonly JsonSerializerOptions JsonOptions = new JsonSerializerOptions { WriteIndented = true };
 
-    public AppSettingsDto Load()
+    public AppSettingsModel Load()
     {
         if (!File.Exists(FilePath))
         {
-            return new AppSettingsDto();
+            return new AppSettingsModel();
         }
 
         try
         {
             string content = File.ReadAllText(FilePath);
-            return JsonSerializer.Deserialize<AppSettingsDto>(content) ?? new AppSettingsDto();
+            return JsonSerializer.Deserialize<AppSettingsModel>(content) ?? new AppSettingsModel();
         }
         catch
         {
-            return new AppSettingsDto();
+            return new AppSettingsModel();
         }
     }
 
-    public void Save(AppSettingsDto appSettings)
+    public void Save(AppSettingsModel appSettings)
     {
         Directory.CreateDirectory(Path.GetDirectoryName(FilePath)!);
         File.WriteAllText(FilePath, JsonSerializer.Serialize(appSettings, JsonOptions));

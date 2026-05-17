@@ -7,6 +7,7 @@ namespace Sektionsliga.Services.Flag;
 public class FlagService : IFlagService
 {
     private const string BasePath = "avares://Sektionsliga/Assets/Flags/";
+
     private const string FileExtension = ".png";
 
     public Bitmap GetFlag(string twoLetterIsoLanguageName)

@@ -4,7 +4,7 @@ namespace Sektionsliga.Services.Settings;
 
 public interface ISettingsService
 {
-    AppSettingsDto Load();
+    AppSettingsModel Load();
 
-    void Save(AppSettingsDto appSettings);
+    void Save(AppSettingsModel appSettings);
 }

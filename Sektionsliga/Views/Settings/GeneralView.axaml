@@ -1,6 +1,6 @@
 ﻿<UserControl x:Class="Sektionsliga.Views.Settings.GeneralView"
              xmlns="https://github.com/avaloniaui"
-             xmlns:dtos="using:Sektionsliga.ViewModels.Settings.Dtos"
+             xmlns:models="using:Sektionsliga.Models"
              xmlns:vm="using:Sektionsliga.ViewModels.Settings"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:DataType="vm:GeneralViewModel">
@@ -21,7 +21,7 @@
                               SelectedItem="{Binding SelectedLanguageOption}"
                               Width="240">
                         <ComboBox.ItemTemplate>
-                            <DataTemplate x:DataType="dtos:LanguageOptionDto">
+                            <DataTemplate x:DataType="models:LanguageOptionModel">
                                 <StackPanel Orientation="Horizontal"
                                             Spacing="8"
                                             VerticalAlignment="Center">

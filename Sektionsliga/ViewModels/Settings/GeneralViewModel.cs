@@ -4,43 +4,36 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using Sektionsliga.Models;
 using Sektionsliga.Services.Flag;
 using Sektionsliga.Services.Settings;
-using Sektionsliga.ViewModels.Settings.Dtos;
 
 namespace Sektionsliga.ViewModels.Settings;
 
 public partial class GeneralViewModel : ViewModelBase
 {
-    public List<LanguageOptionDto> LanguageOptions { get; }
+    private readonly ISettingsService settingsService;
+
+    public List<LanguageOptionModel> LanguageOptions { get; }
 
     [ObservableProperty]
-    public partial LanguageOptionDto SelectedLanguageOption { get; set; }
-
-    private readonly ISettingsService _settingsService;
-    private bool _initialized;
+    public partial LanguageOptionModel SelectedLanguageOption { get; set; }
 
     public GeneralViewModel(ISettingsService settingsService, IFlagService flagService)
     {
-        _settingsService = settingsService;
+        this.settingsService = settingsService;
         LanguageOptions =
         [
-            new LanguageOptionDto("de", flagService.GetFlag("de")),
-            new LanguageOptionDto("en", flagService.GetFlag("en")),
+            new LanguageOptionModel("de", flagService.GetFlag("de")),
+            new LanguageOptionModel("en", flagService.GetFlag("en")),
         ];
 
-        AppSettingsDto settings = _settingsService.Load();
+        AppSettingsModel settings = this.settingsService.Load();
+
         SelectedLanguageOption =
             LanguageOptions.FirstOrDefault(o => o.CultureInfo.TwoLetterISOLanguageName == settings.LanguageCultureCode)
             ?? LanguageOptions[0];
-        _initialized = true;
     }
 
-    partial void OnSelectedLanguageOptionChanged(LanguageOptionDto value)
+    partial void OnSelectedLanguageOptionChanged(LanguageOptionModel value)
     {
-        if (!_initialized)
-        {
-            return;
-        }
-
-        _settingsService.Save(new AppSettingsDto { LanguageCultureCode = value.CultureInfo.TwoLetterISOLanguageName });
+        settingsService.Save(new AppSettingsModel { LanguageCultureCode = value.CultureInfo.TwoLetterISOLanguageName });
     }
 }
