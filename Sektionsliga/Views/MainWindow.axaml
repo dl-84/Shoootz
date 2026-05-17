@@ -38,6 +38,7 @@
                     <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="0"
                             Padding="{TemplateBinding Padding}">
                         <ContentPresenter Content="{TemplateBinding Content}"
                                           ContentTemplate="{TemplateBinding ContentTemplate}"
@@ -89,7 +90,7 @@
                          SelectedItem="{Binding SelectedCompetitionItem}">
                     <ListBox.ItemTemplate>
                         <DataTemplate x:DataType="vm:NavItem">
-                            <TextBlock Text="{Binding Label}" />
+                            <TextBlock Text="{Binding Label}" Foreground="{DynamicResource TextOnDarkBrush}" />
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
@@ -105,7 +106,7 @@
                          SelectedItem="{Binding SelectedSettingsItem}">
                     <ListBox.ItemTemplate>
                         <DataTemplate x:DataType="vm:NavItem">
-                            <TextBlock Text="{Binding Label}" />
+                            <TextBlock Text="{Binding Label}" Foreground="{DynamicResource TextOnDarkBrush}" />
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
