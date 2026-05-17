@@ -3,18 +3,118 @@
         xmlns:vm="using:Sektionsliga.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d"
+        d:DesignWidth="1200"
+        d:DesignHeight="750"
         x:Class="Sektionsliga.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/Disag/Logo.png"
-        Title="Sektionsliga">
+        Title="Sektionsliga"
+        Width="1200"
+        Height="750"
+        MinWidth="900"
+        MinHeight="600">
 
     <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:MainWindowViewModel/>
+        <vm:MainWindowViewModel />
     </Design.DataContext>
 
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+    <Window.Styles>
+        <Style Selector="ListBox.nav">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Padding" Value="0" />
+        </Style>
+        <Style Selector="ListBox.nav ListBoxItem">
+            <Setter Property="Padding" Value="17,10,20,10" />
+            <Setter Property="BorderThickness" Value="3,0,0,0" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{DynamicResource TextOnDarkBrush}" />
+            <Setter Property="Opacity" Value="0.7" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter Content="{TemplateBinding Content}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+        </Style>
+        <Style Selector="ListBox.nav ListBoxItem:pointerover /template/ Border">
+            <Setter Property="Background" Value="#12FFFFFF" />
+        </Style>
+        <Style Selector="ListBox.nav ListBoxItem:pointerover">
+            <Setter Property="Opacity" Value="0.9" />
+        </Style>
+        <Style Selector="ListBox.nav ListBoxItem:selected">
+            <Setter Property="BorderBrush" Value="{DynamicResource AccentCyanBrush}" />
+            <Setter Property="Background" Value="#1E019DC6" />
+            <Setter Property="Opacity" Value="1" />
+        </Style>
+    </Window.Styles>
 
+    <Grid ColumnDefinitions="220,*">
+
+        <!-- Sidebar -->
+        <Border Grid.Column="0" Background="{DynamicResource NavigationBackgroundBrush}">
+            <DockPanel>
+
+                <!-- Logo -->
+                <Border DockPanel.Dock="Top" Padding="20,20,20,24">
+                    <TextBlock Text="Sektionsliga"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               Foreground="{DynamicResource TextOnDarkBrush}"
+                               LetterSpacing="1.5" />
+                </Border>
+
+                <!-- Navigation -->
+                <StackPanel>
+
+                    <!-- Competition -->
+                    <TextBlock Classes="label"
+                               Text="WETTKAMPF"
+                               Margin="20,16,20,4"
+                               Foreground="{DynamicResource TextOnDarkBrush}"
+                               Opacity="0.4" />
+                    <ListBox Classes="nav"
+                             ItemsSource="{Binding CompetitionItems}"
+                             SelectedItem="{Binding SelectedCompetitionItem}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate x:DataType="vm:NavItem">
+                                <TextBlock Text="{Binding Label}" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                    <!-- Settings -->
+                    <TextBlock Classes="label"
+                               Text="EINSTELLUNGEN"
+                               Margin="20,16,20,4"
+                               Foreground="{DynamicResource TextOnDarkBrush}"
+                               Opacity="0.4" />
+                    <ListBox Classes="nav"
+                             ItemsSource="{Binding SettingsItems}"
+                             SelectedItem="{Binding SelectedSettingsItem}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate x:DataType="vm:NavItem">
+                                <TextBlock Text="{Binding Label}" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <!-- Content Area -->
+        <ContentControl Grid.Column="1"
+                        Content="{Binding CurrentPage}"
+                        Background="{DynamicResource AppBackgroundAltBrush}" />
+
+    </Grid>
 </Window>
