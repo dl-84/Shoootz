@@ -40,19 +40,33 @@
                             BorderThickness="{TemplateBinding BorderThickness}"
                             Padding="{TemplateBinding Padding}">
                         <ContentPresenter Content="{TemplateBinding Content}"
-                                          ContentTemplate="{TemplateBinding ContentTemplate}" />
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          Background="Transparent" />
                     </Border>
                 </ControlTemplate>
             </Setter>
         </Style>
+
+        <!-- Reset DisagTheme's global ContentPresenter overrides for nav items -->
+        <Style Selector="ListBox.nav ListBoxItem:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+        <Style Selector="ListBox.nav ListBoxItem:selected /template/ ContentPresenter">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="TextElement.Foreground" Value="{DynamicResource TextOnDarkBrush}" />
+        </Style>
+        <Style Selector="ListBox.nav ListBoxItem:selected:focus /template/ ContentPresenter">
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+
         <Style Selector="ListBox.nav ListBoxItem:pointerover">
-            <Setter Property="Background" Value="#1AFFFFFF" />
+            <Setter Property="Background" Value="#12FFFFFF" />
             <Setter Property="BorderBrush" Value="Transparent" />
             <Setter Property="Opacity" Value="0.9" />
         </Style>
         <Style Selector="ListBox.nav ListBoxItem:selected">
             <Setter Property="BorderBrush" Value="{DynamicResource AccentCyanBrush}" />
-            <Setter Property="Background" Value="#1E019DC6" />
+            <Setter Property="Background" Value="#2E019DC6" />
             <Setter Property="Foreground" Value="{DynamicResource TextOnDarkBrush}" />
             <Setter Property="Opacity" Value="1" />
         </Style>
@@ -62,54 +76,41 @@
 
         <!-- Sidebar -->
         <Border Grid.Column="0" Background="{DynamicResource PrimaryBrush}">
-            <DockPanel>
+            <StackPanel Margin="0,16,0,0">
 
-                <!-- Logo -->
-                <Border DockPanel.Dock="Top" Padding="20,20,20,24">
-                    <TextBlock Text="Sektionsliga"
-                               FontSize="18"
-                               FontWeight="Bold"
-                               Foreground="{DynamicResource TextOnDarkBrush}"
-                               LetterSpacing="1.5" />
-                </Border>
+                <!-- Competition -->
+                <TextBlock Classes="label"
+                           Text="WETTKAMPF"
+                           Margin="20,16,20,4"
+                           Foreground="{DynamicResource TextOnDarkBrush}"
+                           Opacity="0.4" />
+                <ListBox Classes="nav"
+                         ItemsSource="{Binding CompetitionItems}"
+                         SelectedItem="{Binding SelectedCompetitionItem}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate x:DataType="vm:NavItem">
+                            <TextBlock Text="{Binding Label}" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
 
-                <!-- Navigation -->
-                <StackPanel>
+                <!-- Settings -->
+                <TextBlock Classes="label"
+                           Text="EINSTELLUNGEN"
+                           Margin="20,16,20,4"
+                           Foreground="{DynamicResource TextOnDarkBrush}"
+                           Opacity="0.4" />
+                <ListBox Classes="nav"
+                         ItemsSource="{Binding SettingsItems}"
+                         SelectedItem="{Binding SelectedSettingsItem}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate x:DataType="vm:NavItem">
+                            <TextBlock Text="{Binding Label}" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
 
-                    <!-- Competition -->
-                    <TextBlock Classes="label"
-                               Text="WETTKAMPF"
-                               Margin="20,16,20,4"
-                               Foreground="{DynamicResource TextOnDarkBrush}"
-                               Opacity="0.4" />
-                    <ListBox Classes="nav"
-                             ItemsSource="{Binding CompetitionItems}"
-                             SelectedItem="{Binding SelectedCompetitionItem}">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate x:DataType="vm:NavItem">
-                                <TextBlock Text="{Binding Label}" />
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-
-                    <!-- Settings -->
-                    <TextBlock Classes="label"
-                               Text="EINSTELLUNGEN"
-                               Margin="20,16,20,4"
-                               Foreground="{DynamicResource TextOnDarkBrush}"
-                               Opacity="0.4" />
-                    <ListBox Classes="nav"
-                             ItemsSource="{Binding SettingsItems}"
-                             SelectedItem="{Binding SelectedSettingsItem}">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate x:DataType="vm:NavItem">
-                                <TextBlock Text="{Binding Label}" />
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-
-                </StackPanel>
-            </DockPanel>
+            </StackPanel>
         </Border>
 
         <!-- Content Area -->
