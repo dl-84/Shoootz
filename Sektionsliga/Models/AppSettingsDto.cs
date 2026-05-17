@@ -1,6 +1,6 @@
 namespace Sektionsliga.Models;
 
-public class AppSettings
+public class AppSettingsDto()
 {
-    public string LanguageCultureCode { get; set; } = "de";
+    public string LanguageCultureCode { get; init; } = "de";
 }

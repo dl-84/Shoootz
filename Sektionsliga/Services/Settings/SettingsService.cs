@@ -10,7 +10,7 @@ public class SettingsService : ISettingsService
     private static readonly string FilePath = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
         AppDomain.CurrentDomain.FriendlyName,
-        "settings.json"
+        "appsettings.json"
     );
 
     private static readonly JsonSerializerOptions JsonOptions = new JsonSerializerOptions { WriteIndented = true };

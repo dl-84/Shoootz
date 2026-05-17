@@ -6,5 +6,5 @@ public interface ISettingsService
 {
     AppSettingsDto Load();
 
-    void Save(AppSettingsDto settings);
+    void Save(AppSettingsDto appSettings);
 }

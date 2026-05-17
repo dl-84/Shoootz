@@ -1,12 +1,12 @@
-<Application xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+﻿<Application x:Class="Sektionsliga.App"
+             xmlns="https://github.com/avaloniaui"
              xmlns:local="using:Sektionsliga"
              xmlns:themes="clr-namespace:Themes.Disag;assembly=Disag"
-             x:Class="Sektionsliga.App"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              RequestedThemeVariant="Light">
 
     <Application.DataTemplates>
-        <local:ViewLocator/>
+        <local:ViewLocator />
     </Application.DataTemplates>
 
     <Application.Styles>
