@@ -1,0 +1,9 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Sektionsliga.ViewModels.Settings"
+             x:Class="Sektionsliga.Views.Settings.GeneralView"
+             x:DataType="vm:GeneralViewModel">
+    <Border Padding="32">
+        <TextBlock Classes="h2" Text="Allgemein" />
+    </Border>
+</UserControl>

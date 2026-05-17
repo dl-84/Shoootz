@@ -1,0 +1,9 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Sektionsliga.ViewModels.Info"
+             x:Class="Sektionsliga.Views.Info.VersionView"
+             x:DataType="vm:VersionViewModel">
+    <Border Padding="32">
+        <TextBlock Classes="h2" Text="Version" />
+    </Border>
+</UserControl>

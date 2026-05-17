@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace Sektionsliga.Views;
+namespace Sektionsliga.Views.Settings;
 
 public partial class DatabaseView : UserControl
 {

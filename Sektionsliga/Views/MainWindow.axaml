@@ -19,19 +19,14 @@
         <vm:MainWindowViewModel />
     </Design.DataContext>
 
-    <Window.Styles>
-        <Style Selector="ListBox.nav">
-            <Setter Property="Background" Value="{DynamicResource PrimaryBrush}" />
-            <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="Padding" Value="0" />
-        </Style>
-        <Style Selector="ListBox.nav ListBoxItem">
-            <Setter Property="Padding" Value="17,10,20,10" />
+    <Window.Resources>
+        <ControlTheme x:Key="NavItemTheme" TargetType="ListBoxItem">
+            <Setter Property="Padding" Value="28,12,20,12" />
             <Setter Property="BorderThickness" Value="3,0,0,0" />
             <Setter Property="BorderBrush" Value="Transparent" />
             <Setter Property="Background" Value="{DynamicResource PrimaryBrush}" />
-            <Setter Property="Foreground" Value="{DynamicResource TextOnDarkBrush}" />
             <Setter Property="Opacity" Value="0.7" />
+            <Setter Property="CornerRadius" Value="0" />
             <Setter Property="Cursor" Value="Hand" />
             <Setter Property="Template">
                 <ControlTemplate>
@@ -39,39 +34,26 @@
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             CornerRadius="0"
-                            Padding="{TemplateBinding Padding}">
-                        <ContentPresenter Content="{TemplateBinding Content}"
-                                          ContentTemplate="{TemplateBinding ContentTemplate}"
-                                          Background="Transparent" />
+                            Padding="28,12,20,12">
+                        <TextBlock x:CompileBindings="False"
+                                   Text="{Binding Label}"
+                                   FontSize="14"
+                                   Foreground="{DynamicResource TextOnDarkBrush}" />
                     </Border>
                 </ControlTemplate>
             </Setter>
-        </Style>
 
-        <!-- Reset DisagTheme's global ContentPresenter overrides for nav items -->
-        <Style Selector="ListBox.nav ListBoxItem:pointerover /template/ ContentPresenter">
-            <Setter Property="Background" Value="Transparent" />
-        </Style>
-        <Style Selector="ListBox.nav ListBoxItem:selected /template/ ContentPresenter">
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="TextElement.Foreground" Value="{DynamicResource TextOnDarkBrush}" />
-        </Style>
-        <Style Selector="ListBox.nav ListBoxItem:selected:focus /template/ ContentPresenter">
-            <Setter Property="Background" Value="Transparent" />
-        </Style>
-
-        <Style Selector="ListBox.nav ListBoxItem:pointerover">
-            <Setter Property="Background" Value="#12FFFFFF" />
-            <Setter Property="BorderBrush" Value="Transparent" />
-            <Setter Property="Opacity" Value="0.9" />
-        </Style>
-        <Style Selector="ListBox.nav ListBoxItem:selected">
-            <Setter Property="BorderBrush" Value="{DynamicResource AccentCyanBrush}" />
-            <Setter Property="Background" Value="#2E019DC6" />
-            <Setter Property="Foreground" Value="{DynamicResource TextOnDarkBrush}" />
-            <Setter Property="Opacity" Value="1" />
-        </Style>
-    </Window.Styles>
+            <Style Selector="^:pointerover">
+                <Setter Property="Background" Value="#1AFFFFFF" />
+                <Setter Property="Opacity" Value="0.9" />
+            </Style>
+            <Style Selector="^:selected">
+                <Setter Property="BorderBrush" Value="{DynamicResource AccentBrush}" />
+                <Setter Property="Background" Value="#2E019DC6" />
+                <Setter Property="Opacity" Value="1" />
+            </Style>
+        </ControlTheme>
+    </Window.Resources>
 
     <Grid ColumnDefinitions="220,*">
 
@@ -85,31 +67,41 @@
                            Margin="20,16,20,4"
                            Foreground="{DynamicResource TextOnDarkBrush}"
                            Opacity="0.4" />
-                <ListBox Classes="nav"
+                <ListBox Background="Transparent"
+                         BorderThickness="0"
+                         CornerRadius="0"
+                         Padding="0"
                          ItemsSource="{Binding CompetitionItems}"
-                         SelectedItem="{Binding SelectedCompetitionItem}">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate x:DataType="vm:NavItem">
-                            <TextBlock Text="{Binding Label}" Foreground="{DynamicResource TextOnDarkBrush}" />
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+                         SelectedItem="{Binding SelectedCompetitionItem}"
+                         ItemContainerTheme="{StaticResource NavItemTheme}" />
 
                 <!-- Settings -->
                 <TextBlock Classes="label"
                            Text="EINSTELLUNGEN"
-                           Margin="20,16,20,4"
+                           Margin="20,28,20,4"
                            Foreground="{DynamicResource TextOnDarkBrush}"
                            Opacity="0.4" />
-                <ListBox Classes="nav"
+                <ListBox Background="Transparent"
+                         BorderThickness="0"
+                         CornerRadius="0"
+                         Padding="0"
                          ItemsSource="{Binding SettingsItems}"
-                         SelectedItem="{Binding SelectedSettingsItem}">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate x:DataType="vm:NavItem">
-                            <TextBlock Text="{Binding Label}" Foreground="{DynamicResource TextOnDarkBrush}" />
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+                         SelectedItem="{Binding SelectedSettingsItem}"
+                         ItemContainerTheme="{StaticResource NavItemTheme}" />
+
+                <!-- Info -->
+                <TextBlock Classes="label"
+                           Text="INFO"
+                           Margin="20,28,20,4"
+                           Foreground="{DynamicResource TextOnDarkBrush}"
+                           Opacity="0.4" />
+                <ListBox Background="Transparent"
+                         BorderThickness="0"
+                         CornerRadius="0"
+                         Padding="0"
+                         ItemsSource="{Binding InfoItems}"
+                         SelectedItem="{Binding SelectedInfoItem}"
+                         ItemContainerTheme="{StaticResource NavItemTheme}" />
 
             </StackPanel>
         </Border>

@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace Sektionsliga.Views;
+namespace Sektionsliga.Views.Competition;
 
 public partial class EvaluationView : UserControl
 {

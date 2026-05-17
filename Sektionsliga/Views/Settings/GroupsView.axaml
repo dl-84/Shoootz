@@ -1,7 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:vm="using:Sektionsliga.ViewModels"
-             x:Class="Sektionsliga.Views.GroupsView"
+             xmlns:vm="using:Sektionsliga.ViewModels.Settings"
+             x:Class="Sektionsliga.Views.Settings.GroupsView"
              x:DataType="vm:GroupsViewModel">
     <Border Padding="32">
         <TextBlock Classes="h2" Text="Gruppen" />

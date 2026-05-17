@@ -1,5 +1,8 @@
 using System.Collections.Generic;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Sektionsliga.ViewModels.Competition;
+using Sektionsliga.ViewModels.Info;
+using Sektionsliga.ViewModels.Settings;
 
 namespace Sektionsliga.ViewModels;
 
@@ -10,7 +13,13 @@ public partial class MainWindowViewModel : ViewModelBase
     public List<NavItem> CompetitionItems { get; } = [new("Auswerten", () => new EvaluationViewModel())];
 
     public List<NavItem> SettingsItems { get; } =
-    [new("Datenbank", () => new DatabaseViewModel()), new("Gruppen", () => new GroupsViewModel())];
+    [
+        new("Allgemein", () => new GeneralViewModel()),
+        new("Datenbank", () => new DatabaseViewModel()),
+        new("Gruppen", () => new GroupsViewModel()),
+    ];
+
+    public List<NavItem> InfoItems { get; } = [new("Version", () => new VersionViewModel())];
 
     [ObservableProperty]
     private ViewModelBase _currentPage;
@@ -20,6 +29,9 @@ public partial class MainWindowViewModel : ViewModelBase
 
     [ObservableProperty]
     private NavItem? _selectedSettingsItem;
+
+    [ObservableProperty]
+    private NavItem? _selectedInfoItem;
 
     public MainWindowViewModel()
     {
@@ -32,6 +44,7 @@ public partial class MainWindowViewModel : ViewModelBase
         if (value is null)
             return;
         SelectedSettingsItem = null;
+        SelectedInfoItem = null;
         CurrentPage = value.CreatePage();
     }
 
@@ -40,6 +53,16 @@ public partial class MainWindowViewModel : ViewModelBase
         if (value is null)
             return;
         SelectedCompetitionItem = null;
+        SelectedInfoItem = null;
+        CurrentPage = value.CreatePage();
+    }
+
+    partial void OnSelectedInfoItemChanged(NavItem? value)
+    {
+        if (value is null)
+            return;
+        SelectedCompetitionItem = null;
+        SelectedSettingsItem = null;
         CurrentPage = value.CreatePage();
     }
 }

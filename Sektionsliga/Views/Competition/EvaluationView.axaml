@@ -1,7 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:vm="using:Sektionsliga.ViewModels"
-             x:Class="Sektionsliga.Views.EvaluationView"
+             xmlns:vm="using:Sektionsliga.ViewModels.Competition"
+             x:Class="Sektionsliga.Views.Competition.EvaluationView"
              x:DataType="vm:EvaluationViewModel">
     <Border Padding="32">
         <TextBlock Classes="h2" Text="Auswerten" />
