@@ -75,6 +75,11 @@
                                        Text="{Binding InvalidLanguageCodeValue}" />
                         </StackPanel>
                     </StackPanel>
+                    <TextBlock Classes="hint-error"
+                               FontSize="{DynamicResource FontSizeBody}"
+                               Text="{loc:Localization LanguageCodeInvalidHint}"
+                               TextWrapping="Wrap"
+                               IsVisible="{Binding HasCurrentLanguageCodeError}" />
                 </StackPanel>
             </Border>
 

@@ -41,7 +41,9 @@ internal partial class GeneralViewModel : ViewModelBase
         _settings = settings;
         _settingsErrors = settingsErrors;
 
-        SelectedLanguageOption = GetLanguage(settings?.CurrentLanguageCode ?? "unknown");
+        SelectedLanguageOption = HasCurrentLanguageCodeError
+            ? null
+            : GetLanguage(settings?.CurrentLanguageCode ?? "en");
     }
 
     public IEnumerable<string> CriticalErrorMessages
@@ -91,7 +93,7 @@ internal partial class GeneralViewModel : ViewModelBase
     public List<LanguageOptionModel> LanguageOptions { get; }
 
     [ObservableProperty]
-    public partial LanguageOptionModel SelectedLanguageOption { get; set; }
+    public partial LanguageOptionModel? SelectedLanguageOption { get; set; }
 
     [RelayCommand]
     private void DeleteSettings()
@@ -106,8 +108,13 @@ internal partial class GeneralViewModel : ViewModelBase
             ) ?? LanguageOptions[0];
     }
 
-    partial void OnSelectedLanguageOptionChanged(LanguageOptionModel value)
+    partial void OnSelectedLanguageOptionChanged(LanguageOptionModel? value)
     {
+        if (value is null)
+        {
+            return;
+        }
+
         _settings?.CurrentLanguageCode = value.CultureInfo.TwoLetterISOLanguageName;
         _settingsService.Save(_settings);
         _localizationService.SetLanguage(value.CultureInfo.TwoLetterISOLanguageName);

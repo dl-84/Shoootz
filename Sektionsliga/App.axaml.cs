@@ -34,7 +34,7 @@ public class App : Application
         ILocalizationService localizationService = _serviceProvider.GetRequiredService<ILocalizationService>();
 
         SettingsModel? settings = ReadSettings(out List<SettingsError>? settingsErrors);
-        localizationService.SetLanguage(settings?.CurrentLanguageCode ?? "de");
+        localizationService.SetLanguage(settings?.CurrentLanguageCode ?? "en");
 
         if (settings is not null)
         {

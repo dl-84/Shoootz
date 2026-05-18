@@ -15,25 +15,25 @@
 
   <!-- Navigation -->
   <data name="Competition" xml:space="preserve">
-    <value>WETTKAMPF</value>
+    <value>COMPETITION</value>
   </data>
   <data name="Settings" xml:space="preserve">
-    <value>EINSTELLUNGEN</value>
+    <value>SETTINGS</value>
   </data>
   <data name="Info" xml:space="preserve">
     <value>INFO</value>
   </data>
   <data name="Evaluate" xml:space="preserve">
-    <value>Auswerten</value>
+    <value>Evaluate</value>
   </data>
   <data name="General" xml:space="preserve">
-    <value>Allgemein</value>
+    <value>General</value>
   </data>
   <data name="Database" xml:space="preserve">
-    <value>Datenbank</value>
+    <value>Database</value>
   </data>
   <data name="Groups" xml:space="preserve">
-    <value>Gruppen</value>
+    <value>Groups</value>
   </data>
   <data name="Version" xml:space="preserve">
     <value>Version</value>
@@ -41,35 +41,38 @@
 
   <!-- General Settings -->
   <data name="Error" xml:space="preserve">
-    <value>Fehler</value>
+    <value>Error</value>
   </data>
   <data name="SettingsLoadError" xml:space="preserve">
-    <value>Konfigurationsdatei ungültig</value>
+    <value>Invalid configuration file</value>
   </data>
   <data name="Language" xml:space="preserve">
-    <value>Sprache</value>
+    <value>Language</value>
   </data>
   <data name="LanguageCodeInvalid" xml:space="preserve">
-    <value>Ungültiger Sprachcode:</value>
+    <value>Invalid language code:</value>
+  </data>
+  <data name="LanguageCodeInvalidHint" xml:space="preserve">
+    <value>The app loaded in the default language. Please select a valid language from the dropdown.</value>
   </data>
   <data name="OpenFolder" xml:space="preserve">
-    <value>Ordner öffnen</value>
+    <value>Open folder</value>
   </data>
   <data name="DeleteFile" xml:space="preserve">
-    <value>Datei löschen</value>
+    <value>Delete file</value>
   </data>
 
   <!-- Version -->
   <data name="Versions" xml:space="preserve">
-    <value>Versionen</value>
+    <value>Versions</value>
   </data>
   <data name="ThirdPartyPackages" xml:space="preserve">
-    <value>Drittanbieter-Pakete</value>
+    <value>Third-party packages</value>
   </data>
   <data name="License" xml:space="preserve">
-    <value>Lizenz</value>
+    <value>License</value>
   </data>
   <data name="ConfigurationFile" xml:space="preserve">
-    <value>Konfigurationsdatei</value>
+    <value>Configuration file</value>
   </data>
 </root>
