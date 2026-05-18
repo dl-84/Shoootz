@@ -83,7 +83,8 @@
                 </StackPanel>
             </Border>
 
-            <Border Classes="card">
+            <Border Classes="card"
+                    IsEnabled="{Binding !HasValidationErrors}">
                 <StackPanel Spacing="12">
                     <TextBlock Classes="h4"
                                Text="{loc:Localization ConfigurationFile}" />

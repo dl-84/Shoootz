@@ -98,7 +98,7 @@
                                Opacity="0.4"
                                Text="{loc:Localization Competition}" />
                 </ListBoxItem>
-                <ListBoxItem>
+                <ListBoxItem IsEnabled="{Binding !HasSettingsErrors}">
                     <TextBlock FontSize="16"
                                Foreground="{DynamicResource TextOnDarkBrush}"
                                Text="{loc:Localization Evaluate}" />
@@ -119,12 +119,12 @@
                                Foreground="{DynamicResource TextOnDarkBrush}"
                                Text="{loc:Localization General}" />
                 </ListBoxItem>
-                <ListBoxItem>
+                <ListBoxItem IsEnabled="{Binding !HasSettingsErrors}">
                     <TextBlock FontSize="16"
                                Foreground="{DynamicResource TextOnDarkBrush}"
                                Text="{loc:Localization Database}" />
                 </ListBoxItem>
-                <ListBoxItem>
+                <ListBoxItem IsEnabled="{Binding !HasSettingsErrors}">
                     <TextBlock FontSize="16"
                                Foreground="{DynamicResource TextOnDarkBrush}"
                                Text="{loc:Localization Groups}" />
@@ -140,7 +140,7 @@
                                Opacity="0.4"
                                Text="{loc:Localization Info}" />
                 </ListBoxItem>
-                <ListBoxItem>
+                <ListBoxItem IsEnabled="{Binding !HasSettingsErrors}">
                     <TextBlock FontSize="16"
                                Foreground="{DynamicResource TextOnDarkBrush}"
                                Text="{loc:Localization Versions}" />

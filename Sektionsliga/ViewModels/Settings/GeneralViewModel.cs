@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -46,6 +47,8 @@ internal partial class GeneralViewModel : ViewModelBase
             : GetLanguage(settings?.CurrentLanguageCode ?? "en");
     }
 
+    public event Action? SettingsErrorsChanged;
+
     public IEnumerable<string> CriticalErrorMessages
     {
         get
@@ -85,6 +88,8 @@ internal partial class GeneralViewModel : ViewModelBase
         }
     }
 
+    public bool HasValidationErrors => _settingsErrors is not null && _settingsErrors.Count > 0;
+
     public string? InvalidLanguageCodeValue =>
         _settingsErrors
             ?.FirstOrDefault(settingsError => settingsError.Property is SettingsProperty.CurrentLanguageCode)
@@ -115,9 +120,18 @@ internal partial class GeneralViewModel : ViewModelBase
             return;
         }
 
-        _settings?.CurrentLanguageCode = value.CultureInfo.TwoLetterISOLanguageName;
-        _settingsService.Save(_settings);
+        SettingsModel settingsModel = _settings ?? new SettingsModel();
+        settingsModel.CurrentLanguageCode = value.CultureInfo.TwoLetterISOLanguageName;
+        _settingsService.Save(settingsModel);
         _localizationService.SetLanguage(value.CultureInfo.TwoLetterISOLanguageName);
+
+        _settingsErrors?.RemoveAll(e => e.Property is SettingsProperty.CurrentLanguageCode);
+
+        OnPropertyChanged(nameof(HasCurrentLanguageCodeError));
+        OnPropertyChanged(nameof(HasValidationErrors));
+        OnPropertyChanged(nameof(InvalidLanguageCodeValue));
+
+        SettingsErrorsChanged?.Invoke();
     }
 
     [RelayCommand]

@@ -46,6 +46,8 @@ internal partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty]
     public partial ViewModelBase CurrentPage { get; set; }
 
+    public bool HasSettingsErrors => _settingsErrors is not null && _settingsErrors.Count > 0;
+
     public void InitSettings(SettingsModel settings)
     {
         _settings = settings;
@@ -59,7 +61,7 @@ internal partial class MainWindowViewModel : ViewModelBase
 
     private GeneralViewModel CreateGeneralViewModel()
     {
-        return new GeneralViewModel(
+        GeneralViewModel viewModel = new GeneralViewModel(
             _grafikService,
             _languageService,
             _localizationService,
@@ -67,6 +69,10 @@ internal partial class MainWindowViewModel : ViewModelBase
             _settings,
             _settingsErrors
         );
+
+        viewModel.SettingsErrorsChanged += () => OnPropertyChanged(nameof(HasSettingsErrors));
+
+        return viewModel;
     }
 
     partial void OnActiveIndexChanged(int value)
