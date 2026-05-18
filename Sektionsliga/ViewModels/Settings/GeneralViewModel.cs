@@ -73,11 +73,6 @@ internal partial class GeneralViewModel : ViewModelBase
         }
     }
 
-    public string? InvalidLanguageCodeValue =>
-        _settingsErrors
-            ?.FirstOrDefault(settingsError => settingsError.Property is SettingsProperty.CurrentLanguageCode)
-            ?.Value;
-
     public bool HasCurrentLanguageCodeError
     {
         get
@@ -87,6 +82,11 @@ internal partial class GeneralViewModel : ViewModelBase
                 && _settingsErrors.Any(settingsError => settingsError.Property is SettingsProperty.CurrentLanguageCode);
         }
     }
+
+    public string? InvalidLanguageCodeValue =>
+        _settingsErrors
+            ?.FirstOrDefault(settingsError => settingsError.Property is SettingsProperty.CurrentLanguageCode)
+            ?.Value;
 
     public List<LanguageOptionModel> LanguageOptions { get; }
 
