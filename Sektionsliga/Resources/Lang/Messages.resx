@@ -49,6 +49,9 @@
   <data name="Language" xml:space="preserve">
     <value>Sprache</value>
   </data>
+  <data name="LanguageCodeInvalid" xml:space="preserve">
+    <value>Ungültiger Sprachcode:</value>
+  </data>
   <data name="OpenFolder" xml:space="preserve">
     <value>Ordner öffnen</value>
   </data>

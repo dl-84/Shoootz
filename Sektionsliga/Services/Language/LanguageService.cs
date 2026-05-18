@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using Sektionsliga.Models;
-using Sektionsliga.Services.Flag;
+using Sektionsliga.Services.Grafik;
 
 namespace Sektionsliga.Services.Language;
 
-internal class LanguageService(IFlagService flagService) : ILanguageService
+internal class LanguageService(IGrafikService grafikService) : ILanguageService
 {
     private readonly List<string> availableLanguages = ["de", "en"];
 
@@ -14,7 +14,7 @@ internal class LanguageService(IFlagService flagService) : ILanguageService
 
         foreach (string language in availableLanguages)
         {
-            result.Add(new LanguageOptionModel(language, flagService.GetFlag(language)));
+            result.Add(new LanguageOptionModel(language, grafikService.GetFlag(language)));
         }
 
         return result;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using Json.Schema;
 using Result;
 using Sektionsliga.Models;
@@ -52,7 +53,7 @@ internal class SettingsService : ISettingsService
         File.WriteAllText(_filePath, JsonSerializer.Serialize(settings, _jsonSerializerOptions));
     }
 
-    private static List<SettingsError> CollectErrors(EvaluationResults evaluationResults)
+    private static List<SettingsError> CollectErrors(EvaluationResults evaluationResults, JsonNode? jsonNode)
     {
         List<SettingsError> result = [];
 
@@ -70,9 +71,15 @@ internal class SettingsService : ISettingsService
                 continue;
             }
 
+            string? value = null;
+            if (detail.InstanceLocation.TryEvaluate(jsonNode, out JsonNode? node))
+            {
+                value = node?.GetValue<string>();
+            }
+
             foreach (KeyValuePair<string, string> error in detail.Errors!)
             {
-                result.Add(new SettingsError(property.Value, error.Value));
+                result.Add(new SettingsError(property.Value, error.Value, value));
             }
         }
 
@@ -100,7 +107,7 @@ internal class SettingsService : ISettingsService
 
                 if (evaluationResults is { IsValid: false })
                 {
-                    return new Error<List<SettingsError>>(CollectErrors(evaluationResults));
+                    return new Error<List<SettingsError>>(CollectErrors(evaluationResults, JsonNode.Parse(content)));
                 }
             }
 

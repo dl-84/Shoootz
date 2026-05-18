@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Sektionsliga.Models;
+using Sektionsliga.Services.Grafik;
 using Sektionsliga.Services.Language;
 using Sektionsliga.Services.Localization;
 using Sektionsliga.Services.Settings;
@@ -12,6 +13,8 @@ namespace Sektionsliga.ViewModels;
 
 internal partial class MainWindowViewModel : ViewModelBase
 {
+    private readonly IGrafikService _grafikService;
+
     private readonly ILanguageService _languageService;
 
     private readonly ILocalizationService _localizationService;
@@ -23,11 +26,13 @@ internal partial class MainWindowViewModel : ViewModelBase
     private List<SettingsError>? _settingsErrors;
 
     public MainWindowViewModel(
+        IGrafikService grafikService,
         ISettingsService settingsService,
         ILanguageService languageService,
         ILocalizationService localizationService
     )
     {
+        _grafikService = grafikService;
         _settingsService = settingsService;
         _languageService = languageService;
         _localizationService = localizationService;
@@ -52,6 +57,18 @@ internal partial class MainWindowViewModel : ViewModelBase
         ActiveIndex = 3;
     }
 
+    private GeneralViewModel CreateGeneralViewModel()
+    {
+        return new GeneralViewModel(
+            _grafikService,
+            _languageService,
+            _localizationService,
+            _settingsService,
+            _settings,
+            _settingsErrors
+        );
+    }
+
     partial void OnActiveIndexChanged(int value)
     {
         CurrentPage = value switch
@@ -63,16 +80,5 @@ internal partial class MainWindowViewModel : ViewModelBase
             7 => new VersionsViewModel(),
             _ => CurrentPage,
         };
-    }
-
-    private GeneralViewModel CreateGeneralViewModel()
-    {
-        return new GeneralViewModel(
-            _languageService,
-            _localizationService,
-            _settingsService,
-            _settings,
-            _settingsErrors
-        );
     }
 }

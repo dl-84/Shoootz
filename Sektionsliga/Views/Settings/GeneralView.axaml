@@ -37,24 +37,44 @@
                 <StackPanel Spacing="12">
                     <TextBlock Classes="h4"
                                Text="{loc:Localization Language}" />
-                    <ComboBox ItemsSource="{Binding LanguageOptions}"
-                              SelectedItem="{Binding SelectedLanguageOption}"
-                              Width="240">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate x:DataType="models:LanguageOptionModel">
-                                <StackPanel Orientation="Horizontal"
-                                            Spacing="8"
-                                            VerticalAlignment="Center">
-                                    <Image Height="24"
-                                           Source="{Binding Flag}"
-                                           VerticalAlignment="Center"
-                                           Width="40" />
-                                    <TextBlock Text="{Binding CultureInfo.NativeName}"
-                                               VerticalAlignment="Center" />
-                                </StackPanel>
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
+                    <StackPanel Orientation="Horizontal"
+                                Spacing="8">
+                        <Image Height="24"
+                               Source="{Binding ErrorTriangle}"
+                               VerticalAlignment="Center"
+                               Width="24"
+                               IsVisible="{Binding HasCurrentLanguageCodeError}" />
+                        <ComboBox ItemsSource="{Binding LanguageOptions}"
+                                  SelectedItem="{Binding SelectedLanguageOption}"
+                                  Width="240">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate x:DataType="models:LanguageOptionModel">
+                                    <StackPanel Orientation="Horizontal"
+                                                Spacing="8"
+                                                VerticalAlignment="Center">
+                                        <Image Height="24"
+                                               Source="{Binding Flag}"
+                                               VerticalAlignment="Center"
+                                               Width="40" />
+                                        <TextBlock Text="{Binding CultureInfo.NativeName}"
+                                                   VerticalAlignment="Center" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <StackPanel Orientation="Horizontal"
+                                    Spacing="4"
+                                    VerticalAlignment="Center"
+                                    IsVisible="{Binding HasCurrentLanguageCodeError}">
+                            <TextBlock Classes="hint-error"
+                                       FontSize="{DynamicResource FontSizeBody}"
+                                       Text="{loc:Localization LanguageCodeInvalid}" />
+                            <TextBlock Classes="hint-error"
+                                       FontSize="{DynamicResource FontSizeBody}"
+                                       FontWeight="Bold"
+                                       Text="{Binding InvalidLanguageCodeValue}" />
+                        </StackPanel>
+                    </StackPanel>
                 </StackPanel>
             </Border>
 

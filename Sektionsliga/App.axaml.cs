@@ -4,9 +4,8 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Microsoft.Extensions.DependencyInjection;
-using Result;
 using Sektionsliga.Models;
-using Sektionsliga.Services.Flag;
+using Sektionsliga.Services.Grafik;
 using Sektionsliga.Services.Language;
 using Sektionsliga.Services.Localization;
 using Sektionsliga.Services.Settings;
@@ -64,7 +63,7 @@ public class App : Application
 
     private static void InitSingletons(ServiceCollection services)
     {
-        services.AddSingleton<IFlagService, FlagService>();
+        services.AddSingleton<IGrafikService, GrafikService>();
         services.AddSingleton<ILanguageService, LanguageService>();
         services.AddSingleton<ILocalizationService, LocalizationService>();
         services.AddSingleton<ISettingsService, SettingsService>();
