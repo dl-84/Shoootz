@@ -11,6 +11,7 @@ using Sektionsliga.Services.Localization;
 using Sektionsliga.Services.Settings;
 using Sektionsliga.ViewModels;
 using Sektionsliga.Views;
+using Themes.Disag;
 
 namespace Sektionsliga;
 
@@ -23,6 +24,7 @@ public class App : Application
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
+        Styles.Add(new Disag());
     }
 
     /// <inheritdoc/>
