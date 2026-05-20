@@ -10,6 +10,7 @@
     <File Path=".gitignore" />
     <File Path=".csharpierrc.json" />
     <File Path="dotnet-tools.json" />
+    <File Path="LICENSE" />
     <File Path="README.md" />
     <File Path="Settings.XamlStyler" />
     <File Path="stylecop.json" />
