@@ -16,13 +16,13 @@
   <ItemGroup>
     <AvaloniaResource Include="Assets\**" />
     <EmbeddedResource Include="Resources\JsonSchemas\Settings.schema.json" />
-    <EmbeddedResource Include="Resources\licenses.json" />
+    <EmbeddedResource Include="Resources\Licenses\licenses.json" />
     <AdditionalFiles Include="..\.config\stylecop.json" />
   </ItemGroup>
 
   <Target Name="GenerateLicenses" BeforeTargets="Build">
     <Exec
-      Command="dotnet dotnet-project-licenses --input . --json --output-directory Resources"
+      Command="dotnet dotnet-project-licenses --input . --json --output-directory Resources/Licenses"
       WorkingDirectory="$(MSBuildProjectDirectory)"
     />
   </Target>
