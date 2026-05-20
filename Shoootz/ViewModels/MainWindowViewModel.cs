@@ -88,7 +88,8 @@ internal partial class MainWindowViewModel : ViewModelBase
             3 => CreateGeneralViewModel(),
             4 => new DatabaseViewModel(),
             5 => new GroupsViewModel(),
-            7 => new VersionsViewModel(_thirdPartyLicenseService),
+            7 => new AboutViewModel(),
+            8 => new LicensesViewModel(_thirdPartyLicenseService),
             _ => CurrentPage,
         };
     }

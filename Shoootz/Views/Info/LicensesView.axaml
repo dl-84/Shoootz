@@ -1,0 +1,93 @@
+﻿<UserControl x:Class="Shoootz.Views.Info.LicensesView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:loc="using:Shoootz.Extensions"
+             xmlns:models="using:Shoootz.Models"
+             xmlns:vm="using:Shoootz.ViewModels.Info"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:DataType="vm:LicensesViewModel">
+
+    <ScrollViewer>
+        <StackPanel Margin="16,32,16,32"
+                    Spacing="16">
+
+            <TextBlock Classes="h4"
+                       Text="{loc:Localization LicensesTitle}" />
+            <Border Classes="card"
+                    Padding="0">
+                <StackPanel Spacing="0">
+                    <Border Background="{DynamicResource AccentGreenBrush}"
+                            Padding="24,10">
+                        <Grid ColumnDefinitions="*,80,120,48">
+                            <TextBlock Classes="label"
+                                       FontSize="16"
+                                       Foreground="{DynamicResource AccentForegroundBrush}"
+                                       Text="{loc:Localization Name}" />
+                            <TextBlock Grid.Column="1"
+                                       Classes="label"
+                                       FontSize="16"
+                                       Foreground="{DynamicResource AccentForegroundBrush}"
+                                       Text="{loc:Localization Version}"
+                                       TextAlignment="Center" />
+                            <TextBlock Grid.Column="2"
+                                       Classes="label"
+                                       FontSize="16"
+                                       Foreground="{DynamicResource AccentForegroundBrush}"
+                                       Text="{loc:Localization License}"
+                                       TextAlignment="Center" />
+                            <TextBlock Grid.Column="3"
+                                       Classes="label"
+                                       FontSize="16"
+                                       Foreground="{DynamicResource AccentForegroundBrush}"
+                                       Text="{loc:Localization Link}"
+                                       TextAlignment="Center" />
+                        </Grid>
+                    </Border>
+                    <ItemsControl ItemsSource="{Binding Packages}"
+                                  Margin="24,0,24,8">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="models:ThirdPartyPackageModel">
+                                <Grid ColumnDefinitions="*,80,120,48"
+                                      MinHeight="36">
+                                    <StackPanel Margin="0,6,0,6"
+                                                VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding PackageName}" />
+                                        <TextBlock Classes="muted"
+                                                   Text="{Binding Copyright}"
+                                                   TextWrapping="Wrap"
+                                                   IsVisible="{Binding Copyright, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                                    </StackPanel>
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding PackageVersion}"
+                                               TextAlignment="Center"
+                                               VerticalAlignment="Center" />
+                                    <TextBlock Grid.Column="2"
+                                               Cursor="Hand"
+                                               Foreground="{DynamicResource AccentBrush}"
+                                               HorizontalAlignment="Center"
+                                               PointerPressed="OnPointerLinkClicked"
+                                               Tag="{Binding LicenseUrl}"
+                                               Text="{Binding LicenseType}"
+                                               TextDecorations="Underline"
+                                               VerticalAlignment="Center"
+                                               IsVisible="{Binding LicenseUrl, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                                    <Image Grid.Column="3"
+                                           Cursor="Hand"
+                                           Height="16"
+                                           HorizontalAlignment="Center"
+                                           PointerPressed="OnPointerLinkClicked"
+                                           Source="/Assets/Icons/ExternalLink.png"
+                                           Tag="{Binding PackageUrl}"
+                                           VerticalAlignment="Center"
+                                           Width="16"
+                                           IsVisible="{Binding PackageUrl, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+
+</UserControl>

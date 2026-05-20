@@ -1,23 +1,23 @@
 using System.Diagnostics;
 using Avalonia.Controls;
-using Avalonia.Interactivity;
+using Avalonia.Input;
 
 namespace Shoootz.Views.Info;
 
 /// <inheritdoc />
-public partial class VersionsView : UserControl
+public partial class AboutView : UserControl
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="VersionsView"/> class.
+    /// Initializes a new instance of the <see cref="AboutView"/> class.
     /// </summary>
-    public VersionsView()
+    public AboutView()
     {
         InitializeComponent();
     }
 
-    private void OnLinkClicked(object? sender, RoutedEventArgs e)
+    private void OnPointerLinkClicked(object? sender, PointerPressedEventArgs e)
     {
-        if (sender is Button { Tag: string url })
+        if (sender is Control { Tag: string url })
         {
             Process.Start(new ProcessStartInfo { FileName = url, UseShellExecute = true });
         }

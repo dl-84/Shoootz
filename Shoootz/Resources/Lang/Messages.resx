@@ -69,8 +69,17 @@
   <data name="Application" xml:space="preserve">
     <value>Application</value>
   </data>
-  <data name="Versions" xml:space="preserve">
-    <value>Versions</value>
+  <data name="About" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="AboutTitle" xml:space="preserve">
+    <value>About Shoootz</value>
+  </data>
+  <data name="Licenses" xml:space="preserve">
+    <value>Licenses</value>
+  </data>
+  <data name="LicensesTitle" xml:space="preserve">
+    <value>Third-party components used in this application</value>
   </data>
   <data name="ThirdPartyPackages" xml:space="preserve">
     <value>Third-party packages</value>

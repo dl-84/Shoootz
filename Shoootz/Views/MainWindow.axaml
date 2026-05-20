@@ -143,7 +143,12 @@
                 <ListBoxItem IsEnabled="{Binding !HasSettingsErrors}">
                     <TextBlock FontSize="16"
                                Foreground="{DynamicResource TextOnDarkBrush}"
-                               Text="{loc:Localization Versions}" />
+                               Text="{loc:Localization About}" />
+                </ListBoxItem>
+                <ListBoxItem IsEnabled="{Binding !HasSettingsErrors}">
+                    <TextBlock FontSize="16"
+                               Foreground="{DynamicResource TextOnDarkBrush}"
+                               Text="{loc:Localization Licenses}" />
                 </ListBoxItem>
 
             </ListBox>
