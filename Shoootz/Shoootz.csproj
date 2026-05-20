@@ -7,8 +7,11 @@
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
     <ApplicationIcon>Assets\Disag\Logo.ico</ApplicationIcon>
     <PublishSingleFile>true</PublishSingleFile>
+    <SelfContained>true</SelfContained>
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
-    <DebugType>embedded</DebugType>
+    <DebugType Condition="'$(Configuration)' == 'Debug'">embedded</DebugType>
+    <DebugType Condition="'$(Configuration)' == 'Release'">none</DebugType>
+    <DebugSymbols Condition="'$(Configuration)' == 'Release'">false</DebugSymbols>
     <Version>1.0.0</Version>
     <NoWarn>SA0001;SA1309;SA1101;SA1200;SA1633;SA1000;SA1009;SA1010;SA1111;SA1502;SA1313;SA1303;SA1311</NoWarn>
   </PropertyGroup>
@@ -32,6 +35,14 @@
     <ProjectReference Include="..\..\Library\Avalonia\Themes\Disag\Disag.csproj" />
     <ProjectReference Include="..\..\Library\C#\Result\Result.csproj" />
   </ItemGroup>
+
+  <Target Name="CleanPublishOutput" AfterTargets="Publish" Condition="'$(Configuration)' == 'Release'">
+    <ItemGroup>
+      <FilesToDelete Include="$(PublishDir)**\*.pdb" />
+      <FilesToDelete Include="$(PublishDir)**\*.xml" />
+    </ItemGroup>
+    <Delete Files="@(FilesToDelete)" />
+  </Target>
 
   <Target Name="FormatCode" AfterTargets="Build" Condition="'$(Configuration)' == 'Debug'">
     <Exec Command="dotnet csharpier format ." WorkingDirectory="$(MSBuildProjectDirectory)\.." />
