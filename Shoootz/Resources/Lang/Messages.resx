@@ -55,6 +55,9 @@
   <data name="LanguageCodeInvalidHint" xml:space="preserve">
     <value>The app loaded in the default language. Please select a valid language from the dropdown.</value>
   </data>
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
   <data name="OpenFolder" xml:space="preserve">
     <value>Open folder</value>
   </data>

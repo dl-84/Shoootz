@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Shoootz.Views.Dialogs;
 
 namespace Shoootz.Views.Info;
 
@@ -20,6 +21,14 @@ public partial class AboutView : UserControl
         if (sender is Control { Tag: string url })
         {
             Process.Start(new ProcessStartInfo { FileName = url, UseShellExecute = true });
+        }
+    }
+
+    private async void OnMitLicenseClicked(object? sender, PointerPressedEventArgs e)
+    {
+        if (TopLevel.GetTopLevel(this) is Window window)
+        {
+            await new LicenseDialog().ShowDialog(window);
         }
     }
 }

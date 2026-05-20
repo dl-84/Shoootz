@@ -17,6 +17,7 @@
     <AvaloniaResource Include="Assets\**" />
     <EmbeddedResource Include="Resources\JsonSchemas\Settings.schema.json" />
     <EmbeddedResource Include="Resources\Licenses\licenses.json" />
+    <EmbeddedResource Include="..\LICENSE" LogicalName="Shoootz.LICENSE" />
     <AdditionalFiles Include="..\stylecop.json" />
   </ItemGroup>
 

@@ -56,8 +56,7 @@
                                    Cursor="Hand"
                                    Foreground="{DynamicResource AccentBrush}"
                                    HorizontalAlignment="Center"
-                                   PointerPressed="OnPointerLinkClicked"
-                                   Tag="https://github.com/dl-84/Shoootz/blob/main/LICENSE"
+                                   PointerPressed="OnMitLicenseClicked"
                                    Text="MIT"
                                    TextDecorations="Underline"
                                    VerticalAlignment="Center" />
