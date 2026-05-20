@@ -1,4 +1,4 @@
-<Window x:Class="Shoootz.Views.MainWindow"
+﻿<Window x:Class="Shoootz.Views.MainWindow"
         xmlns="https://github.com/avaloniaui"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:loc="using:Shoootz.Extensions"
@@ -6,10 +6,11 @@
         xmlns:vm="using:Shoootz.ViewModels"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:DataType="vm:MainWindowViewModel"
+        ExtendClientAreaToDecorationsHint="True"
         Height="750"
         Icon="/Assets/Disag/Logo.png"
-        MinHeight="600"
-        MinWidth="900"
+        MinHeight="750"
+        MinWidth="1200"
         Title="Shoootz"
         Width="1200"
         d:DesignHeight="750"
@@ -20,7 +21,8 @@
 
         <!--  Sidebar  -->
         <Border Grid.Column="0"
-                Background="{DynamicResource PrimaryBrush}">
+                Background="{DynamicResource PrimaryBrush}"
+                Padding="{Binding $parent[Window].WindowDecorationMargin}">
             <ListBox Background="Transparent"
                      BorderThickness="0"
                      Margin="0,16,0,0"
@@ -158,6 +160,14 @@
         <ContentControl Grid.Column="1"
                         Background="{DynamicResource AppBackgroundAltBrush}"
                         Content="{Binding CurrentPage}" />
+
+        <!--  Drag region spanning full title bar  -->
+        <Panel Grid.ColumnSpan="2"
+               Background="Transparent"
+               Cursor="Hand"
+               Height="{Binding $parent[Window].WindowDecorationMargin.Top}"
+               PointerPressed="OnTitleBarDrag"
+               VerticalAlignment="Top" />
 
     </Grid>
 </Window>

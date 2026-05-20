@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Input;
 
 namespace Shoootz.Views;
 
@@ -11,5 +12,10 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+    }
+
+    private void OnTitleBarDrag(object? sender, PointerPressedEventArgs e)
+    {
+        BeginMoveDrag(e);
     }
 }

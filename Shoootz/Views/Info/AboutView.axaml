@@ -14,7 +14,7 @@
                    Text="© 2026 Daniel Lindner" />
         <Border Classes="card"
                 Padding="0">
-            <StackPanel Spacing="0">
+            <StackPanel>
                 <Border Background="{DynamicResource AccentGreenBrush}"
                         Padding="24,10">
                     <Grid ColumnDefinitions="*,80,120,48">
@@ -42,8 +42,7 @@
                                    TextAlignment="Center" />
                     </Grid>
                 </Border>
-                <StackPanel Margin="24,0,24,8"
-                            Spacing="0">
+                <StackPanel Margin="24,0,24,8">
                     <Grid ColumnDefinitions="*,80,120,48"
                           MinHeight="36">
                         <TextBlock Text="{loc:Localization Application}"

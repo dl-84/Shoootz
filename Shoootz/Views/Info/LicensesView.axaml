@@ -14,7 +14,7 @@
                        Text="{loc:Localization LicensesTitle}" />
             <Border Classes="card"
                     Padding="0">
-                <StackPanel Spacing="0">
+                <StackPanel>
                     <Border Background="{DynamicResource AccentGreenBrush}"
                             Padding="24,10">
                         <Grid ColumnDefinitions="*,80,120,48">

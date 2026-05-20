@@ -86,16 +86,14 @@
                        IsEnabled="{Binding !HasValidationErrors}" />
             <Border Classes="card"
                     IsEnabled="{Binding !HasValidationErrors}">
-                <StackPanel Spacing="12">
-                    <StackPanel Orientation="Horizontal"
-                                Spacing="8">
-                        <Button Classes="green"
-                                Command="{Binding OpenSettingsFolderCommand}"
-                                Content="{loc:Localization OpenFolder}" />
-                        <Button Classes="green"
-                                Command="{Binding DeleteSettingsCommand}"
-                                Content="{loc:Localization DeleteFile}" />
-                    </StackPanel>
+                <StackPanel Orientation="Horizontal"
+                            Spacing="8">
+                    <Button Classes="green"
+                            Command="{Binding OpenSettingsFolderCommand}"
+                            Content="{loc:Localization OpenFolder}" />
+                    <Button Classes="green"
+                            Command="{Binding DeleteSettingsCommand}"
+                            Content="{loc:Localization DeleteFile}" />
                 </StackPanel>
             </Border>
 
