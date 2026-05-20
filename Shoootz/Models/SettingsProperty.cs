@@ -1,5 +1,3 @@
-using Json.Pointer;
-
 namespace Shoootz.Models;
 
 internal enum SettingsProperty
@@ -9,14 +7,14 @@ internal enum SettingsProperty
     ExceptionOnReadContent,
 }
 
-internal static class JsonPointerExtensions
+internal static class StringExtensions
 {
-    extension(JsonPointer pointer)
+    extension(string? value)
     {
         public SettingsProperty? ToSettingsProperty() =>
-            pointer.ToString() switch
+            value switch
             {
-                "/CurrentLanguageCode" => SettingsProperty.CurrentLanguageCode,
+                "CurrentLanguageCode" => SettingsProperty.CurrentLanguageCode,
                 _ => null,
             };
     }

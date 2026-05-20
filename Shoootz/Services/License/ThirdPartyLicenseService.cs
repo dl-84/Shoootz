@@ -26,6 +26,10 @@ internal class ThirdPartyLicenseService : IThirdPartyLicenseService
         using Stream stream = assembly.GetManifestResourceStream(resourceName)!;
         List<ThirdPartyPackageModel>? packages = JsonSerializer.Deserialize<List<ThirdPartyPackageModel>>(stream);
 
-        return packages?.OrderBy(p => p.PackageName).ToList() ?? [];
+        return packages
+                ?.Where(package => !string.IsNullOrEmpty(package.LicenseType))
+                .OrderBy(p => p.PackageName)
+                .ToList()
+            ?? [];
     }
 }

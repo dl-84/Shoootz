@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text.Json;
-using System.Text.Json.Nodes;
-using Json.Schema;
+using NJsonSchema;
+using NJsonSchema.Validation;
 using Result;
 using Shoootz.Models;
 
@@ -22,6 +22,8 @@ internal class SettingsService : ISettingsService
     private static readonly string _filePath = Path.Combine(_directoryPath, fileName);
 
     private static readonly JsonSerializerOptions _jsonSerializerOptions = new() { WriteIndented = true };
+
+    private static readonly JsonSchema _schema = LoadSchema();
 
     public string FolderPath => _directoryPath;
 
@@ -53,34 +55,22 @@ internal class SettingsService : ISettingsService
         File.WriteAllText(_filePath, JsonSerializer.Serialize(settings, _jsonSerializerOptions));
     }
 
-    private static List<SettingsError> CollectErrors(EvaluationResults evaluationResults, JsonNode? jsonNode)
+    private static List<SettingsError> CollectErrors(ICollection<ValidationError> errors, JsonDocument jsonDocument)
     {
         List<SettingsError> result = [];
 
-        foreach (EvaluationResults detail in evaluationResults.Details ?? [])
+        foreach (ValidationError error in errors)
         {
-            if (detail.IsValid || detail.Errors == null)
+            if (error.Property.ToSettingsProperty() is not { } property)
             {
                 continue;
             }
 
-            SettingsProperty? property = detail.InstanceLocation.ToSettingsProperty();
+            string? value = jsonDocument.RootElement.TryGetProperty(error.Property!, out JsonElement element)
+                ? element.ToString()
+                : null;
 
-            if (property is null)
-            {
-                continue;
-            }
-
-            string? value = null;
-            if (detail.InstanceLocation.TryEvaluate(jsonNode, out JsonNode? node))
-            {
-                value = node?.GetValue<string>();
-            }
-
-            foreach (KeyValuePair<string, string> error in detail.Errors!)
-            {
-                result.Add(new SettingsError(property.Value, error.Value, value));
-            }
+            result.Add(new SettingsError(property, error.Kind.ToString(), value));
         }
 
         return result;
@@ -92,23 +82,19 @@ internal class SettingsService : ISettingsService
         const string resourceName = "Shoootz.Resources.JsonSchemas.Settings.schema.json";
 
         using StreamReader reader = new StreamReader(assembly.GetManifestResourceStream(resourceName)!);
-
-        return JsonSchema.FromText(reader.ReadToEnd());
+        return JsonSchema.FromJsonAsync(reader.ReadToEnd()).GetAwaiter().GetResult();
     }
 
     private static Result<SettingsModel, List<SettingsError>> Validate(string content)
     {
         try
         {
-            using (JsonDocument document = JsonDocument.Parse(content))
-            {
-                EvaluationOptions options = new() { OutputFormat = OutputFormat.List };
-                EvaluationResults evaluationResults = LoadSchema().Evaluate(document.RootElement, options);
+            ICollection<ValidationError> errors = _schema.Validate(content);
 
-                if (evaluationResults is { IsValid: false })
-                {
-                    return new Error<List<SettingsError>>(CollectErrors(evaluationResults, JsonNode.Parse(content)));
-                }
+            if (errors.Count > 0)
+            {
+                using JsonDocument jsonDocument = JsonDocument.Parse(content);
+                return new Error<List<SettingsError>>(CollectErrors(errors, jsonDocument));
             }
 
             SettingsModel result = JsonSerializer.Deserialize<SettingsModel>(content, _jsonSerializerOptions)!;
