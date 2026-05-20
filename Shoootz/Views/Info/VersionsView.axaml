@@ -16,8 +16,8 @@
                 <StackPanel Spacing="12">
                     <StackPanel Spacing="0">
                         <Border Background="{DynamicResource AccentGreenBrush}"
-                                Margin="-8,0,-8,2"
-                                Padding="8,10">
+                                Margin="-24,-24,-24,2"
+                                Padding="24,10">
                             <Grid ColumnDefinitions="*,80,120,48">
                                 <TextBlock Classes="label"
                                            FontSize="16"
@@ -86,8 +86,8 @@
                 <StackPanel Spacing="12">
                     <StackPanel Spacing="0">
                         <Border Background="{DynamicResource AccentGreenBrush}"
-                                Margin="-8,0,-8,2"
-                                Padding="8,10">
+                                Margin="-24,-24,-24,2"
+                                Padding="24,10">
                             <Grid ColumnDefinitions="*,80,120,48">
                                 <TextBlock Classes="label"
                                            FontSize="16"
