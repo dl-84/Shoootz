@@ -74,95 +74,98 @@
         <Grid ColumnDefinitions="220,*"
               RowDefinitions="36,*">
 
-            <!--  Title Bar  -->
+            <!--  Title Bar Left (Navbar width)  -->
             <Border Grid.Row="0"
-                    Grid.ColumnSpan="2"
-                    Background="{DynamicResource PrimaryHoverBrush}">
-                <Grid ColumnDefinitions="Auto,*,Auto">
-                    <StackPanel x:Name="MacOsButtons"
-                                Grid.Column="0"
-                                Margin="14,0,0,0"
-                                Orientation="Horizontal"
-                                PointerEntered="OnMacButtonsPointerEntered"
-                                PointerExited="OnMacButtonsPointerExited"
-                                Spacing="10"
-                                VerticalAlignment="Center">
-                        <Border Background="#FF5C5F"
-                                CornerRadius="6"
-                                Cursor="Hand"
-                                Height="12"
-                                PointerPressed="OnMacCloseClicked"
-                                Width="12">
-                            <Path x:Name="MacCloseIcon"
-                                  Data="M0,0 L5,5 M5,0 L0,5"
-                                  Height="5"
-                                  HorizontalAlignment="Center"
-                                  IsHitTestVisible="False"
-                                  Opacity="0"
-                                  Stretch="None"
-                                  Stroke="#9B1B0F"
-                                  StrokeLineCap="Round"
-                                  StrokeThickness="1.75"
-                                  VerticalAlignment="Center"
-                                  Width="5" />
-                        </Border>
-                        <Border Background="#FFC800"
-                                CornerRadius="6"
-                                Cursor="Hand"
-                                Height="12"
-                                PointerPressed="OnMacMinimizeClicked"
-                                Width="12">
-                            <Path x:Name="MacMinimizeIcon"
-                                  Data="M0,1 L6,1"
-                                  Height="2"
-                                  HorizontalAlignment="Center"
-                                  IsHitTestVisible="False"
-                                  Opacity="0"
-                                  Stretch="None"
-                                  Stroke="#9B6200"
-                                  StrokeLineCap="Round"
-                                  StrokeThickness="1.75"
-                                  VerticalAlignment="Center"
-                                  Width="6" />
-                        </Border>
-                        <Border x:Name="MacMaximizeBorder"
-                                Background="#35C759"
-                                CornerRadius="6"
-                                Cursor="Hand"
-                                Height="12"
-                                PointerPressed="OnMacMaximizeClicked"
-                                Width="12">
-                            <Path x:Name="MacMaximizeIcon"
-                                  Data="M1,6 L6,1 M4,1 L6,1 L6,3 M1,4 L1,6 L3,6"
-                                  Height="7"
-                                  HorizontalAlignment="Center"
-                                  IsHitTestVisible="False"
-                                  Opacity="0"
-                                  Stretch="None"
-                                  Stroke="#0B6B1F"
-                                  StrokeLineCap="Round"
-                                  StrokeThickness="1.75"
-                                  VerticalAlignment="Center"
-                                  Width="7" />
-                        </Border>
-                    </StackPanel>
-                    <Panel Grid.Column="1"
+                    Grid.Column="0"
+                    Background="{DynamicResource PrimaryBrush}">
+                <StackPanel x:Name="MacOsButtons"
+                            Margin="14,0,0,0"
+                            Orientation="Horizontal"
+                            PointerEntered="OnMacButtonsPointerEntered"
+                            PointerExited="OnMacButtonsPointerExited"
+                            Spacing="10"
+                            VerticalAlignment="Center">
+                    <Border Background="#FF5C5F"
+                            CornerRadius="6"
+                            Cursor="Hand"
+                            Height="12"
+                            PointerPressed="OnMacCloseClicked"
+                            Width="12">
+                        <Path x:Name="MacCloseIcon"
+                              Data="M0,0 L5,5 M5,0 L0,5"
+                              Height="5"
+                              HorizontalAlignment="Center"
+                              IsHitTestVisible="False"
+                              Opacity="0"
+                              Stretch="None"
+                              Stroke="#9B1B0F"
+                              StrokeLineCap="Round"
+                              StrokeThickness="1.75"
+                              VerticalAlignment="Center"
+                              Width="5" />
+                    </Border>
+                    <Border Background="#FFC800"
+                            CornerRadius="6"
+                            Cursor="Hand"
+                            Height="12"
+                            PointerPressed="OnMacMinimizeClicked"
+                            Width="12">
+                        <Path x:Name="MacMinimizeIcon"
+                              Data="M0,1 L6,1"
+                              Height="2"
+                              HorizontalAlignment="Center"
+                              IsHitTestVisible="False"
+                              Opacity="0"
+                              Stretch="None"
+                              Stroke="#9B6200"
+                              StrokeLineCap="Round"
+                              StrokeThickness="1.75"
+                              VerticalAlignment="Center"
+                              Width="6" />
+                    </Border>
+                    <Border x:Name="MacMaximizeBorder"
+                            Background="#35C759"
+                            CornerRadius="6"
+                            Cursor="Hand"
+                            Height="12"
+                            PointerPressed="OnMacMaximizeClicked"
+                            Width="12">
+                        <Path x:Name="MacMaximizeIcon"
+                              Data="M1,6 L6,1 M4,1 L6,1 L6,3 M1,4 L1,6 L3,6"
+                              Height="7"
+                              HorizontalAlignment="Center"
+                              IsHitTestVisible="False"
+                              Opacity="0"
+                              Stretch="None"
+                              Stroke="#0B6B1F"
+                              StrokeLineCap="Round"
+                              StrokeThickness="1.75"
+                              VerticalAlignment="Center"
+                              Width="7" />
+                    </Border>
+                </StackPanel>
+            </Border>
+
+            <!--  Title Bar Right (Content width)  -->
+            <Border Grid.Row="0"
+                    Grid.Column="1"
+                    Background="{DynamicResource AppBackgroundAltBrush}">
+                <Grid ColumnDefinitions="*,Auto">
+                    <Panel Grid.Column="0"
                            Background="Transparent"
                            Cursor="Hand"
                            PointerPressed="OnTitleBarDrag" />
                     <StackPanel x:Name="WindowControlButtons"
-                                Grid.Column="2"
+                                Grid.Column="1"
                                 Orientation="Horizontal">
-                        <Button Background="{DynamicResource PrimaryHoverBrush}"
-                                Click="OnMinimizeClicked"
+                        <Button Click="OnMinimizeClicked"
                                 MinWidth="0"
                                 Theme="{StaticResource WindowControlButton}"
                                 Width="50">
                             <TextBlock Foreground="{DynamicResource TextOnDarkBrush}"
                                        Text="─" />
                         </Button>
-                        <Button Background="{DynamicResource PrimaryHoverBrush}"
-                                Click="OnMaximizeRestoreClicked"
+                        <Button Click="OnMaximizeRestoreClicked"
                                 MinWidth="0"
                                 Theme="{StaticResource WindowControlButton}"
                                 Width="50">
@@ -173,8 +176,7 @@
                                   StrokeThickness="1.5"
                                   VerticalAlignment="Center" />
                         </Button>
-                        <Button Background="{DynamicResource PrimaryHoverBrush}"
-                                Click="OnCloseClicked"
+                        <Button Click="OnCloseClicked"
                                 MinWidth="0"
                                 Theme="{StaticResource WindowCloseButton}"
                                 Width="50">

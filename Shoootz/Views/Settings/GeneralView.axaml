@@ -7,7 +7,7 @@
              x:DataType="vm:GeneralViewModel">
 
     <ScrollViewer>
-        <StackPanel Margin="16,32,16,32"
+        <StackPanel Margin="32,0,32,32"
                     Spacing="16">
 
             <TextBlock Classes="h4"
