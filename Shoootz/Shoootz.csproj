@@ -16,8 +16,16 @@
   <ItemGroup>
     <AvaloniaResource Include="Assets\**" />
     <EmbeddedResource Include="Resources\JsonSchemas\Settings.schema.json" />
+    <EmbeddedResource Include="Resources\licenses.json" />
     <AdditionalFiles Include="..\.config\stylecop.json" />
   </ItemGroup>
+
+  <Target Name="GenerateLicenses" BeforeTargets="Build">
+    <Exec
+      Command="dotnet dotnet-project-licenses --input . --json --output-directory Resources"
+      WorkingDirectory="$(MSBuildProjectDirectory)"
+    />
+  </Target>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Library\Avalonia\Themes\Disag\Disag.csproj" />

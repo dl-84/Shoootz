@@ -30,3 +30,6 @@ bld/
 # OS
 .DS_Store
 Thumbs.db
+
+# Generated
+Shoootz/Resources/licenses.json

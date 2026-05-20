@@ -24,4 +24,4 @@ jobs:
         run: dotnet csharpier check .
 
       - name: Check XAML formatting
-        run: dotnet xstyler --recursive --directory Sektionsliga --passive
+        run: dotnet xstyler --recursive --directory Shoootz --passive

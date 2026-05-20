@@ -1,9 +1,9 @@
-name: Release Sektionsliga
+name: Release Shoootz
 
 on:
   push:
     tags:
-      - 'sektionsliga-v*'
+      - 'shoootz-v*'
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -18,17 +18,20 @@ jobs:
         with:
           dotnet-version: '10.0.x'
 
+      - name: Restore tools
+        run: dotnet tool restore
+
       - name: Publish
         shell: pwsh
         run: |
-          dotnet publish Sektionsliga/Sektionsliga.csproj `
+          dotnet publish Shoootz/Shoootz.csproj `
             -r win-x64 -c Release --self-contained true -o ./out
           Get-ChildItem ./out -Filter "*.pdb" | Remove-Item -Force
 
       - uses: actions/upload-artifact@v7
         with:
           name: windows
-          path: ./out/Sektionsliga.exe
+          path: ./out/Shoootz.exe
 
   Build_Mac:
     runs-on: macos-latest
@@ -52,20 +55,23 @@ jobs:
         with:
           dotnet-version: '10.0.x'
 
+      - name: Restore tools
+        run: dotnet tool restore
+
       - name: Publish
         run: |
-          dotnet publish Sektionsliga/Sektionsliga.csproj \
+          dotnet publish Shoootz/Shoootz.csproj \
             -r ${{ matrix.rid }} -c Release --self-contained true -o ./out
 
       - name: Create .app bundle
         run: |
           VERSION="${GITHUB_REF_NAME#v}"
-          BUNDLE=./out/Sektionsliga.app
-          LOGO=Sektionsliga/Assets/Disag/Logo.png
+          BUNDLE=./out/Shoootz.app
+          LOGO=Shoootz/Assets/Disag/Logo.png
 
           mkdir -p "$BUNDLE/Contents/MacOS"
           mkdir -p "$BUNDLE/Contents/Resources"
-          mv ./out/Sektionsliga "$BUNDLE/Contents/MacOS/"
+          mv ./out/Shoootz "$BUNDLE/Contents/MacOS/"
 
           ICONSET="$BUNDLE/Contents/Resources/AppIcon.iconset"
           mkdir -p "$ICONSET"
@@ -84,12 +90,12 @@ jobs:
           <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
           <plist version="1.0">
           <dict>
-              <key>CFBundleName</key><string>Sektionsliga</string>
-              <key>CFBundleDisplayName</key><string>Sektionsliga</string>
-              <key>CFBundleIdentifier</key><string>de.fn.sektionsliga</string>
+              <key>CFBundleName</key><string>Shoootz</string>
+              <key>CFBundleDisplayName</key><string>Shoootz</string>
+              <key>CFBundleIdentifier</key><string>de.fn.shoootz</string>
               <key>CFBundleVersion</key><string>$VERSION</string>
               <key>CFBundleShortVersionString</key><string>$VERSION</string>
-              <key>CFBundleExecutable</key><string>Sektionsliga</string>
+              <key>CFBundleExecutable</key><string>Shoootz</string>
               <key>CFBundlePackageType</key><string>APPL</string>
               <key>CFBundleIconFile</key><string>AppIcon</string>
               <key>NSHighResolutionCapable</key><true/>
@@ -99,14 +105,14 @@ jobs:
 
           codesign --deep --force --sign - "$BUNDLE"
 
-          hdiutil create -volname "Sektionsliga" \
+          hdiutil create -volname "Shoootz" \
             -srcfolder "$BUNDLE" -ov -format UDZO \
-            "./out/Sektionsliga-${{ matrix.suffix }}.dmg"
+            "./out/Shoootz-${{ matrix.suffix }}.dmg"
 
       - uses: actions/upload-artifact@v7
         with:
           name: ${{ matrix.suffix }}
-          path: ./out/Sektionsliga-${{ matrix.suffix }}.dmg
+          path: ./out/Shoootz-${{ matrix.suffix }}.dmg
 
   Build_Linux:
     runs-on: ubuntu-latest
@@ -117,9 +123,12 @@ jobs:
         with:
           dotnet-version: '10.0.x'
 
+      - name: Restore tools
+        run: dotnet tool restore
+
       - name: Publish
         run: |
-          dotnet publish Sektionsliga/Sektionsliga.csproj \
+          dotnet publish Shoootz/Shoootz.csproj \
             -r linux-x64 -c Release --self-contained true -o ./out
           find ./out -name "*.pdb" -delete
 
@@ -134,32 +143,32 @@ jobs:
           APPDIR=./AppDir
           mkdir -p "$APPDIR/usr/bin"
           mkdir -p "$APPDIR/usr/share/icons/hicolor/256x256/apps"
-          mv ./out/Sektionsliga "$APPDIR/usr/bin/"
-          cp Sektionsliga/Assets/Disag/Logo.png "$APPDIR/Sektionsliga.png"
-          cp Sektionsliga/Assets/Disag/Logo.png "$APPDIR/usr/share/icons/hicolor/256x256/apps/Sektionsliga.png"
+          mv ./out/Shoootz "$APPDIR/usr/bin/"
+          cp Shoootz/Assets/Disag/Logo.png "$APPDIR/Shoootz.png"
+          cp Shoootz/Assets/Disag/Logo.png "$APPDIR/usr/share/icons/hicolor/256x256/apps/Shoootz.png"
 
           cat > "$APPDIR/AppRun" << 'APPRUN'
           #!/bin/sh
-          exec "$APPDIR/usr/bin/Sektionsliga" "$@"
+          exec "$APPDIR/usr/bin/Shoootz" "$@"
           APPRUN
           chmod +x "$APPDIR/AppRun"
 
-          cat > "$APPDIR/Sektionsliga.desktop" << 'DESKTOP'
+          cat > "$APPDIR/Shoootz.desktop" << 'DESKTOP'
           [Desktop Entry]
-          Name=Sektionsliga
-          Exec=Sektionsliga
-          Icon=Sektionsliga
+          Name=Shoootz
+          Exec=Shoootz
+          Icon=Shoootz
           Type=Application
           Categories=Sports;
           DESKTOP
 
           ARCH=x86_64 ./appimagetool --appimage-extract-and-run \
-            "$APPDIR" ./out/Sektionsliga.AppImage
+            "$APPDIR" ./out/Shoootz.AppImage
 
       - uses: actions/upload-artifact@v7
         with:
           name: linux
-          path: ./out/Sektionsliga.AppImage
+          path: ./out/Shoootz.AppImage
 
   Create_Release:
     needs: [Build_Windows, Build_Mac, Build_Linux]
@@ -173,21 +182,21 @@ jobs:
 
       - name: Zip artifacts
         run: |
-          zip -j Sektionsliga-windows.zip      ./artifacts/windows/Sektionsliga.exe
-          zip -j Sektionsliga-macos-x64.zip   ./artifacts/macos-x64/Sektionsliga-macos-x64.dmg
-          zip -j Sektionsliga-macos-arm64.zip ./artifacts/macos-arm64/Sektionsliga-macos-arm64.dmg
-          zip -j Sektionsliga-linux.zip        ./artifacts/linux/Sektionsliga.AppImage
+          zip -j Shoootz-windows.zip      ./artifacts/windows/Shoootz.exe
+          zip -j Shoootz-macos-x64.zip   ./artifacts/macos-x64/Shoootz-macos-x64.dmg
+          zip -j Shoootz-macos-arm64.zip ./artifacts/macos-arm64/Shoootz-macos-arm64.dmg
+          zip -j Shoootz-linux.zip        ./artifacts/linux/Shoootz.AppImage
 
       - name: Create release
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
         run: |
-          VERSION="${GITHUB_REF_NAME#sektionsliga-}"
+          VERSION="${GITHUB_REF_NAME#shoootz-}"
           gh release create ${{ github.ref_name }} \
-            --title "Sektionsliga $VERSION" \
+            --title "Shoootz $VERSION" \
             --generate-notes \
-            "./Sektionsliga-windows.zip" \
-            "./Sektionsliga-macos-x64.zip" \
-            "./Sektionsliga-macos-arm64.zip" \
-            "./Sektionsliga-linux.zip"
+            "./Shoootz-windows.zip" \
+            "./Shoootz-macos-x64.zip" \
+            "./Shoootz-macos-arm64.zip" \
+            "./Shoootz-linux.zip"

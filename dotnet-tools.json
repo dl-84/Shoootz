@@ -15,6 +15,13 @@
         "xstyler"
       ],
       "rollForward": false
+    },
+    "dotnet-project-licenses": {
+      "version": "2.7.1",
+      "commands": [
+        "dotnet-project-licenses"
+      ],
+      "rollForward": true
     }
   }
 }
