@@ -1,0 +1,11 @@
+<UserControl x:Class="Shoootz.Views.Settings.DatabaseView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:loc="using:Shoootz.Extensions"
+             xmlns:vm="using:Shoootz.ViewModels.Settings"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:DataType="vm:DatabaseViewModel">
+    <Border Padding="32">
+        <TextBlock Classes="h2"
+                   Text="{loc:Localization Database}" />
+    </Border>
+</UserControl>
