@@ -1,6 +1,7 @@
 ﻿<Application x:Class="Shoootz.App"
              xmlns="https://github.com/avaloniaui"
              xmlns:local="using:Shoootz"
+             xmlns:themes="using:Themes.Disag"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              RequestedThemeVariant="Light">
 
@@ -11,5 +12,6 @@
     <Application.Styles>
         <FluentTheme />
         <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
+        <themes:Disag />
     </Application.Styles>
 </Application>
