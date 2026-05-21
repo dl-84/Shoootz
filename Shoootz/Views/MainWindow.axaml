@@ -42,64 +42,40 @@
                         <!--  Competition  -->
                         <ListBoxItem Classes="nav-header"
                                      IsEnabled="False">
-                            <TextBlock Classes="label"
-                                       FontSize="13"
-                                       Foreground="{DynamicResource TextOnDarkBrush}"
-                                       Margin="20,16,20,4"
-                                       Opacity="0.4"
+                            <TextBlock Margin="20,16,20,4"
                                        Text="{loc:Localization Competition}" />
                         </ListBoxItem>
                         <ListBoxItem IsEnabled="{Binding !HasSettingsErrors}">
-                            <TextBlock FontSize="16"
-                                       Foreground="{DynamicResource TextOnDarkBrush}"
-                                       Text="{loc:Localization Evaluate}" />
+                            <TextBlock Text="{loc:Localization Evaluate}" />
                         </ListBoxItem>
 
                         <!--  Settings  -->
                         <ListBoxItem Classes="nav-header"
                                      IsEnabled="False">
-                            <TextBlock Classes="label"
-                                       FontSize="13"
-                                       Foreground="{DynamicResource TextOnDarkBrush}"
-                                       Margin="20,28,20,4"
-                                       Opacity="0.4"
+                            <TextBlock Margin="20,28,20,4"
                                        Text="{loc:Localization Settings}" />
                         </ListBoxItem>
                         <ListBoxItem>
-                            <TextBlock FontSize="16"
-                                       Foreground="{DynamicResource TextOnDarkBrush}"
-                                       Text="{loc:Localization General}" />
+                            <TextBlock Text="{loc:Localization General}" />
                         </ListBoxItem>
                         <ListBoxItem IsEnabled="{Binding !HasSettingsErrors}">
-                            <TextBlock FontSize="16"
-                                       Foreground="{DynamicResource TextOnDarkBrush}"
-                                       Text="{loc:Localization Database}" />
+                            <TextBlock Text="{loc:Localization Database}" />
                         </ListBoxItem>
                         <ListBoxItem IsEnabled="{Binding !HasSettingsErrors}">
-                            <TextBlock FontSize="16"
-                                       Foreground="{DynamicResource TextOnDarkBrush}"
-                                       Text="{loc:Localization Groups}" />
+                            <TextBlock Text="{loc:Localization Groups}" />
                         </ListBoxItem>
 
                         <!--  Info  -->
                         <ListBoxItem Classes="nav-header"
                                      IsEnabled="False">
-                            <TextBlock Classes="label"
-                                       FontSize="13"
-                                       Foreground="{DynamicResource TextOnDarkBrush}"
-                                       Margin="20,28,20,4"
-                                       Opacity="0.4"
+                            <TextBlock Margin="20,28,20,4"
                                        Text="{loc:Localization Info}" />
                         </ListBoxItem>
                         <ListBoxItem IsEnabled="{Binding !HasSettingsErrors}">
-                            <TextBlock FontSize="16"
-                                       Foreground="{DynamicResource TextOnDarkBrush}"
-                                       Text="{loc:Localization About}" />
+                            <TextBlock Text="{loc:Localization About}" />
                         </ListBoxItem>
                         <ListBoxItem IsEnabled="{Binding !HasSettingsErrors}">
-                            <TextBlock FontSize="16"
-                                       Foreground="{DynamicResource TextOnDarkBrush}"
-                                       Text="{loc:Localization Licenses}" />
+                            <TextBlock Text="{loc:Localization Licenses}" />
                         </ListBoxItem>
 
                     </ListBox>
