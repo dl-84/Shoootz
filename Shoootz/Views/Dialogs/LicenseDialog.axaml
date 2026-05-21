@@ -3,28 +3,27 @@
         xmlns:loc="using:Shoootz.Extensions"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Background="{DynamicResource AppBackgroundAltBrush}"
-        Height="540"
-        Width="700"
+        CanResize="False"
+        Height="650"
+        Width="800"
         WindowDecorations="BorderOnly"
         WindowStartupLocation="CenterOwner">
 
     <Grid RowDefinitions="Auto,*,Auto">
 
         <Border Grid.Row="0"
-                Background="{DynamicResource PrimaryBrush}"
-                Padding="24,12"
-                PointerPressed="OnHeaderDrag">
+                Background="{DynamicResource AccentGreenBrush}"
+                Padding="24,12">
             <TextBlock Classes="label"
                        FontSize="16"
                        Foreground="{DynamicResource AccentForegroundBrush}"
                        Text="MIT License" />
         </Border>
 
-        <ScrollViewer Grid.Row="1"
-                      Margin="24,16,24,0">
-            <TextBlock x:Name="LicenseTextBlock"
-                       TextWrapping="Wrap" />
-        </ScrollViewer>
+        <TextBlock x:Name="LicenseTextBlock"
+                   Grid.Row="1"
+                   Margin="24,16,24,0"
+                   TextWrapping="Wrap" />
 
         <Button Grid.Row="2"
                 Classes="green"
@@ -32,7 +31,5 @@
                 Content="{loc:Localization Close}"
                 HorizontalAlignment="Center"
                 Margin="0,16,0,24" />
-
     </Grid>
-
 </Window>
