@@ -35,72 +35,9 @@
                 <!--  Sidebar  -->
                 <Border Grid.Column="0"
                         Background="{DynamicResource PrimaryBrush}">
-                    <ListBox Background="Transparent"
-                             BorderThickness="0"
+                    <ListBox Classes="nav"
                              Margin="0,16,0,0"
-                             Padding="0"
                              SelectedIndex="{Binding ActiveIndex}">
-
-                        <ListBox.Styles>
-                            <Style Selector="ListBoxItem:selected ContentPresenter">
-                                <Setter Property="Background" Value="Transparent" />
-                                <Setter Property="CornerRadius" Value="0" />
-                            </Style>
-                            <Style Selector="ListBoxItem:pointerover ContentPresenter">
-                                <Setter Property="Background" Value="Transparent" />
-                                <Setter Property="CornerRadius" Value="0" />
-                            </Style>
-                            <Style Selector="ListBoxItem:selected:pointerover ContentPresenter">
-                                <Setter Property="Background" Value="Transparent" />
-                                <Setter Property="CornerRadius" Value="0" />
-                            </Style>
-                        </ListBox.Styles>
-
-                        <ListBox.Resources>
-                            <ControlTheme x:Key="{x:Type ListBoxItem}"
-                                          TargetType="ListBoxItem">
-                                <Setter Property="Cursor" Value="Hand" />
-                                <Setter Property="FocusAdorner" Value="{x:Null}" />
-                                <Setter Property="HorizontalAlignment" Value="Stretch" />
-                                <Setter Property="Template">
-                                    <ControlTemplate>
-                                        <Border x:Name="Root"
-                                                Background="{DynamicResource PrimaryBrush}"
-                                                BorderBrush="Transparent"
-                                                BorderThickness="3,0,0,0"
-                                                Opacity="0.7"
-                                                Padding="28,12,20,12">
-                                            <ContentPresenter Background="Transparent"
-                                                              Content="{TemplateBinding Content}"
-                                                              HorizontalAlignment="Left"
-                                                              VerticalAlignment="Center" />
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter>
-                                <Style Selector="^:pointerover /template/ Border#Root">
-                                    <Setter Property="Background" Value="#1AFFFFFF" />
-                                    <Setter Property="Opacity" Value="0.9" />
-                                </Style>
-                                <Style Selector="^:selected /template/ Border#Root">
-                                    <Setter Property="Background" Value="#2E019DC6" />
-                                    <Setter Property="BorderBrush" Value="{DynamicResource AccentBrush}" />
-                                    <Setter Property="Opacity" Value="1" />
-                                </Style>
-                                <Style Selector="^:selected:pointerover /template/ Border#Root">
-                                    <Setter Property="Background" Value="#2E019DC6" />
-                                    <Setter Property="BorderBrush" Value="{DynamicResource AccentBrush}" />
-                                    <Setter Property="Opacity" Value="1" />
-                                </Style>
-                                <Style Selector="^.nav-header">
-                                    <Setter Property="Cursor" Value="Arrow" />
-                                    <Setter Property="Template">
-                                        <ControlTemplate>
-                                            <ContentPresenter Content="{TemplateBinding Content}" />
-                                        </ControlTemplate>
-                                    </Setter>
-                                </Style>
-                            </ControlTheme>
-                        </ListBox.Resources>
 
                         <!--  Competition  -->
                         <ListBoxItem Classes="nav-header"
