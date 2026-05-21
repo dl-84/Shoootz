@@ -1,6 +1,8 @@
 using System.Diagnostics;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Shoootz.ViewModels;
 using Shoootz.Views.Dialogs;
 
 namespace Shoootz.Views.Info;
@@ -24,11 +26,35 @@ public partial class AboutView : UserControl
         }
     }
 
-    private async void OnMitLicenseClicked(object? sender, PointerPressedEventArgs e)
+    private void OnMitLicenseClicked(object? sender, PointerPressedEventArgs e)
     {
-        if (TopLevel.GetTopLevel(this) is Window window)
+        _ = OpenLicenseDialogAsync();
+    }
+
+    private async Task OpenLicenseDialogAsync()
+    {
+        if (TopLevel.GetTopLevel(this) is not Window window)
         {
+            return;
+        }
+
+        MainWindowViewModel? vm = window.DataContext as MainWindowViewModel;
+
+        try
+        {
+            if (vm is not null)
+            {
+                vm.IsDialogOpen = true;
+            }
+
             await new LicenseDialog().ShowDialog(window);
+        }
+        finally
+        {
+            if (vm is not null)
+            {
+                vm.IsDialogOpen = false;
+            }
         }
     }
 }

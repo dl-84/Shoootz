@@ -1,8 +1,16 @@
 <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-  <rect width="512" height="512" rx="96" fill="#012e3b"/>
-  <circle cx="256" cy="256" r="196" fill="none" stroke="#019dc6" stroke-width="10" opacity="0.25"/>
-  <circle cx="256" cy="256" r="152" fill="none" stroke="#019dc6" stroke-width="10" opacity="0.45"/>
-  <circle cx="256" cy="256" r="108" fill="none" stroke="#019dc6" stroke-width="10" opacity="0.65"/>
-  <circle cx="256" cy="256" r="64"  fill="none" stroke="#8bba30" stroke-width="10" opacity="0.85"/>
-  <circle cx="256" cy="256" r="22"  fill="#8bba30"/>
+  <defs>
+    <clipPath id="shape">
+      <rect width="512" height="512" rx="96"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#shape)">
+    <rect width="512" height="512" fill="#012e3b"/>
+    <rect width="512" height="512" rx="96" fill="none" stroke="#8bba30" stroke-width="40" stroke-opacity="1"/>
+    <circle cx="256" cy="256" r="196" fill="none" stroke="#019dc6" stroke-width="10" opacity="0.25"/>
+    <circle cx="256" cy="256" r="152" fill="none" stroke="#019dc6" stroke-width="10" opacity="0.45"/>
+    <circle cx="256" cy="256" r="108" fill="none" stroke="#019dc6" stroke-width="10" opacity="0.65"/>
+    <circle cx="256" cy="256" r="64"  fill="none" stroke="#8bba30" stroke-width="10" opacity="0.85"/>
+    <circle cx="256" cy="256" r="22"  fill="#8bba30"/>
+  </g>
 </svg>

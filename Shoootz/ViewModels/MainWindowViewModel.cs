@@ -46,6 +46,9 @@ internal partial class MainWindowViewModel : ViewModelBase
     }
 
     [ObservableProperty]
+    public partial bool IsDialogOpen { get; set; }
+
+    [ObservableProperty]
     public partial int ActiveIndex { get; set; } = 1;
 
     [ObservableProperty]

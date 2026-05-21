@@ -25,69 +25,73 @@
     <Border x:Name="RootBorder"
             ClipToBounds="True"
             CornerRadius="10">
-        <DockPanel>
+        <Panel>
+            <DockPanel>
 
-            <tb:TitleBarControl BackgroundColor="{DynamicResource AppBackgroundAltBrush}"
-                                PrimaryColor="{DynamicResource PrimaryBrush}" />
+                <tb:TitleBarControl BackgroundColor="{DynamicResource AppBackgroundAltBrush}"
+                                    PrimaryColor="{DynamicResource PrimaryBrush}" />
 
-            <Grid ColumnDefinitions="220,*">
+                <Grid ColumnDefinitions="220,*">
 
-                <!--  Sidebar  -->
-                <Border Grid.Column="0"
-                        Background="{DynamicResource PrimaryBrush}">
-                    <ListBox Classes="nav"
-                             ItemContainerTheme="{DynamicResource NavigationItem}"
-                             Margin="0,16,0,0"
-                             SelectedIndex="{Binding ActiveIndex}">
+                    <!--  Sidebar  -->
+                    <Border Grid.Column="0"
+                            Background="{DynamicResource PrimaryBrush}">
+                        <ListBox Classes="nav"
+                                 ItemContainerTheme="{DynamicResource NavigationItem}"
+                                 Margin="0,16,0,0"
+                                 SelectedIndex="{Binding ActiveIndex}">
 
-                        <!--  Competition  -->
-                        <ListBoxItem Classes="navigation-header"
-                                     IsEnabled="False">
-                            <TextBlock Margin="20,16,20,4"
-                                       Text="{loc:Localization Competition}" />
-                        </ListBoxItem>
-                        <ListBoxItem IsEnabled="{Binding !HasSettingsErrors}">
-                            <TextBlock Text="{loc:Localization Evaluate}" />
-                        </ListBoxItem>
+                            <!--  Competition  -->
+                            <ListBoxItem Classes="navigation-header"
+                                         IsEnabled="False">
+                                <TextBlock Margin="20,16,20,4"
+                                           Text="{loc:Localization Competition}" />
+                            </ListBoxItem>
+                            <ListBoxItem IsEnabled="{Binding !HasSettingsErrors}">
+                                <TextBlock Text="{loc:Localization Evaluate}" />
+                            </ListBoxItem>
 
-                        <!--  Settings  -->
-                        <ListBoxItem Classes="navigation-header"
-                                     IsEnabled="False">
-                            <TextBlock Margin="20,28,20,4"
-                                       Text="{loc:Localization Settings}" />
-                        </ListBoxItem>
-                        <ListBoxItem>
-                            <TextBlock Text="{loc:Localization General}" />
-                        </ListBoxItem>
-                        <ListBoxItem IsEnabled="{Binding !HasSettingsErrors}">
-                            <TextBlock Text="{loc:Localization Database}" />
-                        </ListBoxItem>
-                        <ListBoxItem IsEnabled="{Binding !HasSettingsErrors}">
-                            <TextBlock Text="{loc:Localization Groups}" />
-                        </ListBoxItem>
+                            <!--  Settings  -->
+                            <ListBoxItem Classes="navigation-header"
+                                         IsEnabled="False">
+                                <TextBlock Margin="20,28,20,4"
+                                           Text="{loc:Localization Settings}" />
+                            </ListBoxItem>
+                            <ListBoxItem>
+                                <TextBlock Text="{loc:Localization General}" />
+                            </ListBoxItem>
+                            <ListBoxItem IsEnabled="{Binding !HasSettingsErrors}">
+                                <TextBlock Text="{loc:Localization Database}" />
+                            </ListBoxItem>
+                            <ListBoxItem IsEnabled="{Binding !HasSettingsErrors}">
+                                <TextBlock Text="{loc:Localization Groups}" />
+                            </ListBoxItem>
 
-                        <!--  Info  -->
-                        <ListBoxItem Classes="navigation-header"
-                                     IsEnabled="False">
-                            <TextBlock Margin="20,28,20,4"
-                                       Text="{loc:Localization Info}" />
-                        </ListBoxItem>
-                        <ListBoxItem IsEnabled="{Binding !HasSettingsErrors}">
-                            <TextBlock Text="{loc:Localization About}" />
-                        </ListBoxItem>
-                        <ListBoxItem IsEnabled="{Binding !HasSettingsErrors}">
-                            <TextBlock Text="{loc:Localization Licenses}" />
-                        </ListBoxItem>
+                            <!--  Info  -->
+                            <ListBoxItem Classes="navigation-header"
+                                         IsEnabled="False">
+                                <TextBlock Margin="20,28,20,4"
+                                           Text="{loc:Localization Info}" />
+                            </ListBoxItem>
+                            <ListBoxItem IsEnabled="{Binding !HasSettingsErrors}">
+                                <TextBlock Text="{loc:Localization About}" />
+                            </ListBoxItem>
+                            <ListBoxItem IsEnabled="{Binding !HasSettingsErrors}">
+                                <TextBlock Text="{loc:Localization Licenses}" />
+                            </ListBoxItem>
 
-                    </ListBox>
-                </Border>
+                        </ListBox>
+                    </Border>
 
-                <!--  Content Area  -->
-                <ContentControl Grid.Column="1"
-                                Background="{DynamicResource AppBackgroundAltBrush}"
-                                Content="{Binding CurrentPage}" />
+                    <!--  Content Area  -->
+                    <ContentControl Grid.Column="1"
+                                    Background="{DynamicResource AppBackgroundAltBrush}"
+                                    Content="{Binding CurrentPage}" />
 
-            </Grid>
-        </DockPanel>
+                </Grid>
+            </DockPanel>
+            <Border Background="{DynamicResource OverlayBrush}"
+                    IsVisible="{Binding IsDialogOpen}" />
+        </Panel>
     </Border>
 </Window>

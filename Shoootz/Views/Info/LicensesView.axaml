@@ -1,4 +1,5 @@
-﻿<UserControl x:Class="Shoootz.Views.Info.LicensesView"
+﻿
+<UserControl x:Class="Shoootz.Views.Info.LicensesView"
              xmlns="https://github.com/avaloniaui"
              xmlns:loc="using:Shoootz.Extensions"
              xmlns:models="using:Shoootz.Models"
