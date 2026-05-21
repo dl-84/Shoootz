@@ -36,6 +36,7 @@
                 <Border Grid.Column="0"
                         Background="{DynamicResource PrimaryBrush}">
                     <ListBox Classes="nav"
+                             ItemContainerTheme="{StaticResource NavListBoxItem}"
                              Margin="0,16,0,0"
                              SelectedIndex="{Binding ActiveIndex}">
 
