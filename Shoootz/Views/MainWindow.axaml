@@ -36,12 +36,12 @@
                 <Border Grid.Column="0"
                         Background="{DynamicResource PrimaryBrush}">
                     <ListBox Classes="nav"
-                             ItemContainerTheme="{DynamicResource NavListBoxItem}"
+                             ItemContainerTheme="{DynamicResource NavigationItem}"
                              Margin="0,16,0,0"
                              SelectedIndex="{Binding ActiveIndex}">
 
                         <!--  Competition  -->
-                        <ListBoxItem Classes="nav-header"
+                        <ListBoxItem Classes="navigation-header"
                                      IsEnabled="False">
                             <TextBlock Margin="20,16,20,4"
                                        Text="{loc:Localization Competition}" />
@@ -51,7 +51,7 @@
                         </ListBoxItem>
 
                         <!--  Settings  -->
-                        <ListBoxItem Classes="nav-header"
+                        <ListBoxItem Classes="navigation-header"
                                      IsEnabled="False">
                             <TextBlock Margin="20,28,20,4"
                                        Text="{loc:Localization Settings}" />
@@ -67,7 +67,7 @@
                         </ListBoxItem>
 
                         <!--  Info  -->
-                        <ListBoxItem Classes="nav-header"
+                        <ListBoxItem Classes="navigation-header"
                                      IsEnabled="False">
                             <TextBlock Margin="20,28,20,4"
                                        Text="{loc:Localization Info}" />
