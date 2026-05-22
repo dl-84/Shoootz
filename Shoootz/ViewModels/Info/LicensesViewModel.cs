@@ -6,7 +6,7 @@ using Shoootz.Services.Localization;
 
 namespace Shoootz.ViewModels.Info;
 
-internal partial class LicensesViewModel : ViewModelBase
+internal partial class LicensesViewModel : ViewModelBase, IDisposable
 {
     private readonly ILocalizationService _localizationService;
 
@@ -26,6 +26,11 @@ internal partial class LicensesViewModel : ViewModelBase
         ];
 
     public List<PackageModel> Packages { get; }
+
+    public void Dispose()
+    {
+        _localizationService.LanguageChanged -= OnLanguageChanged;
+    }
 
     private void OnLanguageChanged(object? sender, EventArgs e)
     {

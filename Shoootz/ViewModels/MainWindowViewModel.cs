@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Shoootz.Models;
@@ -97,6 +98,8 @@ internal partial class MainWindowViewModel : ViewModelBase
 
     partial void OnActiveIndexChanged(int value)
     {
+        ViewModelBase previous = CurrentPage;
+
         CurrentPage = value switch
         {
             Index1EvaluateSite => new EvaluationViewModel(),
@@ -107,5 +110,10 @@ internal partial class MainWindowViewModel : ViewModelBase
             Index8LicensesSite => new LicensesViewModel(_licenseService, _localizationService),
             _ => CurrentPage,
         };
+
+        if (!ReferenceEquals(previous, CurrentPage) && previous is IDisposable disposable)
+        {
+            disposable.Dispose();
+        }
     }
 }
