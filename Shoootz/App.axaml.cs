@@ -70,7 +70,7 @@ public class App : Application
         services.AddSingleton<ILanguageService, LanguageService>();
         services.AddSingleton<ILocalizationService, LocalizationService>();
         services.AddSingleton<ISettingsService, SettingsService>();
-        services.AddSingleton<IThirdPartyLicenseService, ThirdPartyLicenseService>();
+        services.AddSingleton<ILicenseService, LicenseService>();
         services.AddSingleton<MainWindowViewModel>();
     }
 

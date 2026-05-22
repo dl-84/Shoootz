@@ -32,8 +32,9 @@
   </Target>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Library\Avalonia\Themes\Disag\Disag.csproj" />
+    <ProjectReference Include="..\..\Library\Avalonia\Controls\LicenseTable\LicenseTable.csproj" />
     <ProjectReference Include="..\..\Library\Avalonia\Controls\TitleBar\TitleBar.csproj" />
+    <ProjectReference Include="..\..\Library\Avalonia\Themes\Disag\Disag.csproj" />
     <ProjectReference Include="..\..\Library\C#\Result\Result.csproj" />
   </ItemGroup>
 

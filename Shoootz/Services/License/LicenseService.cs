@@ -40,7 +40,6 @@ internal class LicenseService(ILocalizationService localizationService) : ILicen
     {
         return
         [
-
             // Application
             new PackageModel(
                 _assembly.GetName().Name!,
@@ -49,8 +48,8 @@ internal class LicenseService(ILocalizationService localizationService) : ILicen
                 null,
                 GetLicenseContent,
                 CopyrightInternal,
-                null),
-
+                null
+            ),
             // Datebase
             new PackageModel(
                 localizationService["Database"],
@@ -59,7 +58,8 @@ internal class LicenseService(ILocalizationService localizationService) : ILicen
                 null,
                 null,
                 CopyrightInternal,
-                null),
+                null
+            ),
         ];
     }
 
@@ -77,10 +77,7 @@ internal class LicenseService(ILocalizationService localizationService) : ILicen
         using Stream stream = _assembly.GetManifestResourceStream(resourceName)!;
         List<PackageModel>? packages = JsonSerializer.Deserialize<List<PackageModel>>(stream);
 
-        return packages
-                ?.Where(package => !_excludedPackages.Contains(package.Name))
-                .OrderBy(p => p.Name)
-                .ToList()
+        return packages?.Where(package => !_excludedPackages.Contains(package.Name)).OrderBy(p => p.Name).ToList()
             ?? [];
     }
 }

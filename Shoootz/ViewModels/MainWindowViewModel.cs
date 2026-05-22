@@ -34,7 +34,7 @@ internal partial class MainWindowViewModel : ViewModelBase
 
     private readonly ISettingsService _settingsService;
 
-    private readonly IThirdPartyLicenseService _thirdPartyLicenseService;
+    private readonly ILicenseService _licenseService;
 
     private SettingsModel? _settings;
 
@@ -45,14 +45,14 @@ internal partial class MainWindowViewModel : ViewModelBase
         ILanguageService languageService,
         ILocalizationService localizationService,
         ISettingsService settingsService,
-        IThirdPartyLicenseService thirdPartyLicenseService
+        ILicenseService licenseService
     )
     {
         _grafikService = grafikService;
         _languageService = languageService;
         _localizationService = localizationService;
         _settingsService = settingsService;
-        _thirdPartyLicenseService = thirdPartyLicenseService;
+        _licenseService = licenseService;
 
         CurrentPage = new EvaluationViewModel();
     }
@@ -103,8 +103,8 @@ internal partial class MainWindowViewModel : ViewModelBase
             Index3GeneralSite => CreateGeneralViewModel(),
             Index4DatabaseSite => new DatabaseViewModel(),
             Index5GroupsSite => new GroupsViewModel(),
-            Index7AboutSite => new AboutViewModel(),
-            Index8LicensesSite => new LicensesViewModel(_thirdPartyLicenseService),
+            Index7AboutSite => new AboutViewModel(_licenseService),
+            Index8LicensesSite => new LicensesViewModel(_licenseService),
             _ => CurrentPage,
         };
     }
