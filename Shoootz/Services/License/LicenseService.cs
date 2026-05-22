@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -24,17 +25,13 @@ internal class LicenseService(ILocalizationService localizationService) : ILicen
 
     private readonly Assembly _assembly = Assembly.GetExecutingAssembly();
 
-    private string GetLicenseContent
+    private readonly Lazy<string> _licenseContent = new Lazy<string>(() =>
     {
-        get
-        {
-            using Stream stream = _assembly.GetManifestResourceStream($"{_assembly.GetName().Name!}.LICENSE")!;
-            using StreamReader reader = new StreamReader(stream);
-            string result = reader.ReadToEnd();
-
-            return result;
-        }
-    }
+        Assembly assembly = Assembly.GetExecutingAssembly();
+        using Stream stream = assembly.GetManifestResourceStream($"{assembly.GetName().Name!}.LICENSE")!;
+        using StreamReader reader = new StreamReader(stream);
+        return reader.ReadToEnd();
+    });
 
     public List<PackageModel> GetAppPackages()
     {
@@ -45,7 +42,7 @@ internal class LicenseService(ILocalizationService localizationService) : ILicen
                 _assembly.GetName().Version?.ToString(3) ?? "n/a",
                 LicenseTypeInternal,
                 null,
-                GetLicenseContent,
+                _licenseContent.Value,
                 CopyrightInternal,
                 "https://github.com/dl-84/Shoootz"
             ),
