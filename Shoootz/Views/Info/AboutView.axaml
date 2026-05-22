@@ -11,8 +11,6 @@
 
         <TextBlock Classes="h4"
                    Text="{loc:Localization AboutTitle}" />
-        <TextBlock HorizontalAlignment="Right"
-                   Text="© 2026 Daniel Lindner" />
 
         <controls:LicenseTableControl Headers="{Binding ColumnHeaders}"
                                       Items="{Binding Packages}"

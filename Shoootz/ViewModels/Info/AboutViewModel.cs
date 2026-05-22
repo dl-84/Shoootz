@@ -6,7 +6,7 @@ using Shoootz.Services.Localization;
 
 namespace Shoootz.ViewModels.Info;
 
-internal partial class AboutViewModel : ViewModelBase, IDisposable
+internal class AboutViewModel : ViewModelBase, IDisposable
 {
     private readonly ILocalizationService _localizationService;
 
