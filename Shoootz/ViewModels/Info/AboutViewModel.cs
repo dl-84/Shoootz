@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using Shoootz.Models;
+using Controls.LicenseTable;
 using Shoootz.Services.License;
 
 namespace Shoootz.ViewModels.Info;

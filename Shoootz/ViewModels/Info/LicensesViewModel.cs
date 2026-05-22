@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Shoootz.Models;
+using Controls.LicenseTable;
 using Shoootz.Services.License;
 
 namespace Shoootz.ViewModels.Info;

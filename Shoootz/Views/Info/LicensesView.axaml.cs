@@ -1,6 +1,4 @@
-using System.Diagnostics;
 using Avalonia.Controls;
-using Avalonia.Input;
 
 namespace Shoootz.Views.Info;
 
@@ -13,13 +11,5 @@ public partial class LicensesView : UserControl
     public LicensesView()
     {
         InitializeComponent();
-    }
-
-    private void OnPointerLinkClicked(object? sender, PointerPressedEventArgs e)
-    {
-        if (sender is Control { Tag: string url })
-        {
-            Process.Start(new ProcessStartInfo { FileName = url, UseShellExecute = true });
-        }
     }
 }

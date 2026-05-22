@@ -1,9 +1,8 @@
-﻿
+
 <UserControl x:Class="Shoootz.Views.Info.LicensesView"
              xmlns="https://github.com/avaloniaui"
              xmlns:controls="using:Controls.LicenseTable"
              xmlns:loc="using:Shoootz.Extensions"
-             xmlns:models="using:Shoootz.Models"
              xmlns:vm="using:Shoootz.ViewModels.Info"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:DataType="vm:LicensesViewModel">
@@ -15,51 +14,11 @@
             <TextBlock Classes="h4"
                        Text="{loc:Localization LicensesTitle}" />
 
-            <controls:LicenseTableControl ItemsSource="{Binding Packages}"
+            <controls:LicenseTableControl Items="{Binding Packages}"
                                           LicenseColumnHeader="{loc:Localization License}"
                                           LinkColumnHeader="{loc:Localization Link}"
                                           NameColumnHeader="{loc:Localization Name}"
-                                          VersionColumnHeader="{loc:Localization Version}">
-                <controls:LicenseTableControl.ItemTemplate>
-                    <DataTemplate x:DataType="models:PackageModel">
-                        <Grid ColumnDefinitions="*,80,120,48"
-                              MinHeight="36">
-                            <StackPanel Margin="0,6,0,6"
-                                        VerticalAlignment="Center">
-                                <TextBlock Text="{Binding Name}" />
-                                <TextBlock Classes="muted"
-                                           Text="{Binding Copyright}"
-                                           TextWrapping="Wrap"
-                                           IsVisible="{Binding Copyright, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
-                            </StackPanel>
-                            <TextBlock Grid.Column="1"
-                                       Text="{Binding Version}"
-                                       TextAlignment="Center"
-                                       VerticalAlignment="Center" />
-                            <TextBlock Grid.Column="2"
-                                       Cursor="Hand"
-                                       Foreground="{DynamicResource AccentBrush}"
-                                       HorizontalAlignment="Center"
-                                       PointerPressed="OnPointerLinkClicked"
-                                       Tag="{Binding LicenseUrl}"
-                                       Text="{Binding LicenseType}"
-                                       TextDecorations="Underline"
-                                       VerticalAlignment="Center"
-                                       IsVisible="{Binding LicenseUrl, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
-                            <Image Grid.Column="3"
-                                   Cursor="Hand"
-                                   Height="16"
-                                   HorizontalAlignment="Center"
-                                   PointerPressed="OnPointerLinkClicked"
-                                   Source="/Assets/Icons/ExternalLink.png"
-                                   Tag="{Binding PackageUrl}"
-                                   VerticalAlignment="Center"
-                                   Width="16"
-                                   IsVisible="{Binding PackageUrl, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
-                        </Grid>
-                    </DataTemplate>
-                </controls:LicenseTableControl.ItemTemplate>
-            </controls:LicenseTableControl>
+                                          VersionColumnHeader="{loc:Localization Version}" />
 
         </StackPanel>
     </ScrollViewer>

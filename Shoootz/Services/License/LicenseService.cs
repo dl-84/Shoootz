@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.Json;
-using Shoootz.Models;
+using Controls.LicenseTable;
 using Shoootz.Services.Localization;
 
 namespace Shoootz.Services.License;
@@ -40,7 +40,6 @@ internal class LicenseService(ILocalizationService localizationService) : ILicen
     {
         return
         [
-            // Application
             new PackageModel(
                 _assembly.GetName().Name!,
                 _assembly.GetName().Version?.ToString(3) ?? "n/a",
@@ -50,7 +49,6 @@ internal class LicenseService(ILocalizationService localizationService) : ILicen
                 CopyrightInternal,
                 null
             ),
-            // Datebase
             new PackageModel(
                 localizationService["Database"],
                 "0.0.1",
