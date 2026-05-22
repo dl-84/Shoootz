@@ -12,14 +12,14 @@ namespace Shoootz.Services.Settings;
 
 internal class SettingsService : ISettingsService
 {
-    private const string fileName = "settings.json";
+    private const string FileName = "settings.json";
 
     private static readonly string _directoryPath = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
         AppDomain.CurrentDomain.FriendlyName
     );
 
-    private static readonly string _filePath = Path.Combine(_directoryPath, fileName);
+    private static readonly string _filePath = Path.Combine(_directoryPath, FileName);
 
     private static readonly JsonSerializerOptions _jsonSerializerOptions = new() { WriteIndented = true };
 
@@ -82,7 +82,21 @@ internal class SettingsService : ISettingsService
         const string resourceName = "Shoootz.Resources.JsonSchemas.Settings.schema.json";
 
         using StreamReader reader = new StreamReader(assembly.GetManifestResourceStream(resourceName)!);
-        return JsonSchema.FromJsonAsync(reader.ReadToEnd()).GetAwaiter().GetResult();
+        return JsonSchema.FromJsonAsync(reader.ReadToEnd()).ConfigureAwait(false).GetAwaiter().GetResult();
+    }
+
+    private static Result<string, List<SettingsError>> ReadContent()
+    {
+        try
+        {
+            return File.ReadAllText(_filePath);
+        }
+        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
+        {
+            return new Error<List<SettingsError>>([
+                new SettingsError(SettingsProperty.ExceptionOnReadContent, exception.Message),
+            ]);
+        }
     }
 
     private static Result<SettingsModel, List<SettingsError>> Validate(string content)
@@ -104,20 +118,6 @@ internal class SettingsService : ISettingsService
         {
             return new Error<List<SettingsError>>([
                 new SettingsError(SettingsProperty.JsonExceptionOnValidate, exception.Message),
-            ]);
-        }
-    }
-
-    private static Result<string, List<SettingsError>> ReadContent()
-    {
-        try
-        {
-            return File.ReadAllText(_filePath);
-        }
-        catch (Exception exception) when (exception is IOException or UnauthorizedAccessException)
-        {
-            return new Error<List<SettingsError>>([
-                new SettingsError(SettingsProperty.ExceptionOnReadContent, exception.Message),
             ]);
         }
     }

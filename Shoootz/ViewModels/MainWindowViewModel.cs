@@ -14,6 +14,18 @@ namespace Shoootz.ViewModels;
 
 internal partial class MainWindowViewModel : ViewModelBase
 {
+    private const int Index1EvaluateSite = 1;
+
+    private const int Index3GeneralSite = 3;
+
+    private const int Index4DatabaseSite = 4;
+
+    private const int Index5GroupsSite = 5;
+
+    private const int Index7AboutSite = 7;
+
+    private const int Index8LicensesSite = 8;
+
     private readonly IGrafikService _grafikService;
 
     private readonly ILanguageService _languageService;
@@ -46,15 +58,15 @@ internal partial class MainWindowViewModel : ViewModelBase
     }
 
     [ObservableProperty]
-    public partial bool IsDialogOpen { get; set; }
-
-    [ObservableProperty]
     public partial int ActiveIndex { get; set; } = 1;
 
     [ObservableProperty]
     public partial ViewModelBase CurrentPage { get; set; }
 
     public bool HasSettingsErrors => _settingsErrors is not null && _settingsErrors.Count > 0;
+
+    [ObservableProperty]
+    public partial bool IsDialogOpen { get; set; }
 
     public void InitSettings(SettingsModel settings)
     {
@@ -64,7 +76,7 @@ internal partial class MainWindowViewModel : ViewModelBase
     public void RedirectToSettings(List<SettingsError> settingsErrors)
     {
         _settingsErrors = settingsErrors;
-        ActiveIndex = 3;
+        ActiveIndex = Index3GeneralSite;
     }
 
     private GeneralViewModel CreateGeneralViewModel()
@@ -87,12 +99,12 @@ internal partial class MainWindowViewModel : ViewModelBase
     {
         CurrentPage = value switch
         {
-            1 => new EvaluationViewModel(),
-            3 => CreateGeneralViewModel(),
-            4 => new DatabaseViewModel(),
-            5 => new GroupsViewModel(),
-            7 => new AboutViewModel(),
-            8 => new LicensesViewModel(_thirdPartyLicenseService),
+            Index1EvaluateSite => new EvaluationViewModel(),
+            Index3GeneralSite => CreateGeneralViewModel(),
+            Index4DatabaseSite => new DatabaseViewModel(),
+            Index5GroupsSite => new GroupsViewModel(),
+            Index7AboutSite => new AboutViewModel(),
+            Index8LicensesSite => new LicensesViewModel(_thirdPartyLicenseService),
             _ => CurrentPage,
         };
     }

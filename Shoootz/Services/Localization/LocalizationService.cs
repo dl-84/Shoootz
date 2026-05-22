@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Resources;
 
@@ -11,6 +12,8 @@ internal class LocalizationService : ILocalizationService
         typeof(LocalizationService).Assembly
     );
 
+    private readonly List<WeakReference<EventHandler>> _handlers = [];
+
     private CultureInfo _currentCulture = CultureInfo.CurrentUICulture;
 
     public LocalizationService()
@@ -18,7 +21,17 @@ internal class LocalizationService : ILocalizationService
         Instance = this;
     }
 
-    public event EventHandler? LanguageChanged;
+    public event EventHandler? LanguageChanged
+    {
+        add
+        {
+            if (value is not null)
+            {
+                _handlers.Add(new WeakReference<EventHandler>(value));
+            }
+        }
+        remove { }
+    }
 
     public static LocalizationService Instance { get; private set; } = null!;
 
@@ -27,6 +40,14 @@ internal class LocalizationService : ILocalizationService
     public void SetLanguage(string cultureCode)
     {
         _currentCulture = new CultureInfo(cultureCode);
-        LanguageChanged?.Invoke(this, EventArgs.Empty);
+        _handlers.RemoveAll(weakReference => !weakReference.TryGetTarget(out _));
+
+        foreach (WeakReference<EventHandler> weakReference in _handlers)
+        {
+            if (weakReference.TryGetTarget(out EventHandler? handler))
+            {
+                handler(this, EventArgs.Empty);
+            }
+        }
     }
 }

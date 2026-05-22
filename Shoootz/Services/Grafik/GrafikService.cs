@@ -12,7 +12,7 @@ internal class GrafikService : IGrafikService
 
     private const string FileExtension = ".png";
 
-    public Bitmap GetErrorTriangle =>
+    public Bitmap GetErrorTriangle { get; } =
         new(AssetLoader.Open(new Uri($"{BasePathIcons}TriangleExclamationRed{FileExtension}")));
 
     public Bitmap GetFlag(string twoLetterIsoLanguageName)
