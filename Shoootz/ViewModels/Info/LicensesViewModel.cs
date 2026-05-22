@@ -4,7 +4,7 @@ using Shoootz.Services.License;
 
 namespace Shoootz.ViewModels.Info;
 
-internal partial class LicensesViewModel(IThirdPartyLicenseService thirdPartyLicenseService) : ViewModelBase
+internal partial class LicensesViewModel(ILicenseService licenseService) : ViewModelBase
 {
-    public List<ThirdPartyPackageModel> Packages { get; } = thirdPartyLicenseService.GetPackages();
+    public List<PackageModel> Packages { get; } = licenseService.GetThirdPartyPackages();
 }
