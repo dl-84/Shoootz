@@ -47,7 +47,7 @@ internal class LicenseService(ILocalizationService localizationService) : ILicen
                 null,
                 GetLicenseContent,
                 CopyrightInternal,
-                null
+                "https://github.com/dl-84/Shoootz"
             ),
             new PackageModel(
                 localizationService["Database"],

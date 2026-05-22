@@ -1,7 +1,5 @@
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Avalonia.Controls;
-using Avalonia.Input;
 using Shoootz.ViewModels;
 using Shoootz.Views.Dialogs;
 
@@ -18,20 +16,12 @@ public partial class AboutView : UserControl
         InitializeComponent();
     }
 
-    private void OnPointerLinkClicked(object? sender, PointerPressedEventArgs e)
+    private void OnLicenseContentRequested(object? sender, string content)
     {
-        if (sender is Control { Tag: string url })
-        {
-            Process.Start(new ProcessStartInfo { FileName = url, UseShellExecute = true });
-        }
+        _ = OpenLicenseDialogAsync(content);
     }
 
-    private void OnMitLicenseClicked(object? sender, PointerPressedEventArgs e)
-    {
-        _ = OpenLicenseDialogAsync();
-    }
-
-    private async Task OpenLicenseDialogAsync()
+    private async Task OpenLicenseDialogAsync(string content)
     {
         if (TopLevel.GetTopLevel(this) is not Window window)
         {
@@ -47,7 +37,7 @@ public partial class AboutView : UserControl
                 vm.IsDialogOpen = true;
             }
 
-            await new LicenseDialog().ShowDialog(window);
+            await new LicenseDialog(content).ShowDialog(window);
         }
         finally
         {

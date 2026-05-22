@@ -106,7 +106,7 @@ internal partial class MainWindowViewModel : ViewModelBase
             Index3GeneralSite => CreateGeneralViewModel(),
             Index4DatabaseSite => new DatabaseViewModel(),
             Index5GroupsSite => new GroupsViewModel(),
-            Index7AboutSite => new AboutViewModel(_licenseService),
+            Index7AboutSite => new AboutViewModel(_licenseService, _localizationService),
             Index8LicensesSite => new LicensesViewModel(_licenseService, _localizationService),
             _ => CurrentPage,
         };
