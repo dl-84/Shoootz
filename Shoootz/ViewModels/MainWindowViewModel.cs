@@ -44,16 +44,16 @@ internal partial class MainWindowViewModel : ViewModelBase
     public MainWindowViewModel(
         IGrafikService grafikService,
         ILanguageService languageService,
+        ILicenseService licenseService,
         ILocalizationService localizationService,
-        ISettingsService settingsService,
-        ILicenseService licenseService
+        ISettingsService settingsService
     )
     {
         _grafikService = grafikService;
         _languageService = languageService;
+        _licenseService = licenseService;
         _localizationService = localizationService;
         _settingsService = settingsService;
-        _licenseService = licenseService;
 
         CurrentPage = new EvaluationViewModel();
     }
@@ -80,15 +80,26 @@ internal partial class MainWindowViewModel : ViewModelBase
         ActiveIndex = Index3GeneralSite;
     }
 
+    private DatabaseViewModel CreateDatabaseViewModel()
+    {
+        DatabaseViewModel viewModel = new DatabaseViewModel(
+            _settings ?? new SettingsModel(),
+            _settingsErrors,
+            _settingsService
+        );
+        viewModel.SettingsSaved += settings => _settings = settings;
+        return viewModel;
+    }
+
     private GeneralViewModel CreateGeneralViewModel()
     {
         GeneralViewModel viewModel = new GeneralViewModel(
             _grafikService,
             _languageService,
             _localizationService,
-            _settingsService,
-            _settings,
-            _settingsErrors
+            _settings ?? new SettingsModel(),
+            _settingsErrors,
+            _settingsService
         );
 
         viewModel.SettingsErrorsChanged += () => OnPropertyChanged(nameof(HasSettingsErrors));
@@ -105,7 +116,7 @@ internal partial class MainWindowViewModel : ViewModelBase
         {
             Index1EvaluateSite => new EvaluationViewModel(),
             Index3GeneralSite => CreateGeneralViewModel(),
-            Index4DatabaseSite => new DatabaseViewModel(),
+            Index4DatabaseSite => CreateDatabaseViewModel(),
             Index5GroupsSite => new GroupsViewModel(),
             Index7AboutSite => new AboutViewModel(_licenseService, _localizationService),
             Index8LicensesSite => new LicensesViewModel(_licenseService, _localizationService),

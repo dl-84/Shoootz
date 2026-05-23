@@ -19,34 +19,35 @@ internal partial class GeneralViewModel : ViewModelBase
 {
     private readonly IGrafikService _grafikService;
 
+    private bool _allowSave;
+
     private readonly ILocalizationService _localizationService;
 
     private readonly List<SettingsError>? _settingsErrors;
 
     private readonly ISettingsService _settingsService;
 
-    private SettingsModel? _settings;
+    private readonly SettingsModel _settings;
 
     public GeneralViewModel(
         IGrafikService grafikService,
         ILanguageService languageService,
         ILocalizationService localizationService,
-        ISettingsService settingsService,
-        SettingsModel? settings,
-        List<SettingsError>? settingsErrors
+        SettingsModel settings,
+        List<SettingsError>? settingsErrors,
+        ISettingsService settingsService
     )
     {
         LanguageOptions = languageService.GetAvailableLanguages();
 
         _grafikService = grafikService;
         _localizationService = localizationService;
-        _settingsService = settingsService;
         _settings = settings;
         _settingsErrors = settingsErrors;
+        _settingsService = settingsService;
 
-        SelectedLanguageOption = HasCurrentLanguageCodeError
-            ? null
-            : GetLanguage(settings?.CurrentLanguageCode ?? "en");
+        SelectedLanguageOption = HasCurrentLanguageCodeError ? null : GetLanguage(settings.CurrentLanguageCode);
+        _allowSave = true;
     }
 
     public event Action? DeleteSettingsFolderRequested;
@@ -149,12 +150,11 @@ internal partial class GeneralViewModel : ViewModelBase
 
     partial void OnSelectedLanguageOptionChanged(LanguageOptionModel? value)
     {
-        if (value is null)
+        if (value is null || !_allowSave)
         {
             return;
         }
 
-        _settings ??= new SettingsModel();
         _settings.CurrentLanguageCode = value.CultureInfo.TwoLetterISOLanguageName;
         _settingsService.Save(_settings);
         SettingsSaved?.Invoke(_settings);
