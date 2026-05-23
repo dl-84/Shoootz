@@ -109,11 +109,12 @@ internal class SettingsService : ISettingsService
     {
         try
         {
+            using JsonDocument jsonDocument = JsonDocument.Parse(content);
+
             ICollection<ValidationError> errors = _schema.Validate(content);
 
             if (errors.Count > 0)
             {
-                using JsonDocument jsonDocument = JsonDocument.Parse(content);
                 return new Error<List<SettingsError>>(CollectErrors(errors, jsonDocument));
             }
 

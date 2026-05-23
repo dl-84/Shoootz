@@ -47,11 +47,12 @@ public partial class AboutView : UserControl
 
             await new ContentDialog
             {
-                BackgroundColor = AppBrush.BackgroundAlt,
+                BackgroundColor = AppBrush.Background,
+                CloseButtonColor = AppBrush.Green,
                 CloseText = LocalizationService.Instance["Close"],
                 DialogContent = licenseText,
                 DialogTitle = "MIT License",
-                PrimaryColor = AppBrush.PrimaryBrush,
+                PrimaryColor = AppBrush.Primary,
                 TextColor = AppBrush.PrimaryForeground,
             }.ShowDialog(window);
         }

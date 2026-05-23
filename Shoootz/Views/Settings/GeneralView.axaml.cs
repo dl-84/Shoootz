@@ -30,12 +30,13 @@ public partial class GeneralView : UserControl
         return new ConfirmDialog
         {
             AcceptText = LocalizationService.Instance["Delete"],
+            CancelButtonColor = AppBrush.Green,
             CancelText = LocalizationService.Instance["Cancel"],
-            DialogBackground = AppBrush.BackgroundAlt,
+            DialogBackground = AppBrush.Background,
             DialogTitle = title,
             ErrorBrush = AppBrush.Error,
             Message = message,
-            PrimaryBrush = AppBrush.PrimaryBrush,
+            PrimaryBrush = AppBrush.Primary,
             SecondaryBrush = AppBrush.PrimaryForeground,
         };
     }
@@ -145,11 +146,12 @@ public partial class GeneralView : UserControl
 
             await new ContentDialog
             {
-                BackgroundColor = AppBrush.BackgroundAlt,
+                BackgroundColor = AppBrush.Background,
+                CloseButtonColor = AppBrush.Green,
                 CloseText = LocalizationService.Instance["Close"],
                 DialogContent = BuildTextEditor(content),
                 DialogTitle = LocalizationService.Instance["ShowSettings"],
-                PrimaryColor = AppBrush.PrimaryBrush,
+                PrimaryColor = AppBrush.Primary,
                 TextColor = AppBrush.PrimaryForeground,
                 Width = 1000,
             }.ShowDialog(window);

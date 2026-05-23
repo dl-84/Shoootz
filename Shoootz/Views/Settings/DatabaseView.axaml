@@ -1,11 +1,45 @@
-<UserControl x:Class="Shoootz.Views.Settings.DatabaseView"
+﻿<UserControl x:Class="Shoootz.Views.Settings.DatabaseView"
              xmlns="https://github.com/avaloniaui"
              xmlns:loc="using:Shoootz.Extensions"
              xmlns:vm="using:Shoootz.ViewModels.Settings"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:DataType="vm:DatabaseViewModel">
-    <Border Padding="32,0,32,32">
-        <TextBlock Classes="h3"
-                   Text="{loc:Localization Database}" />
-    </Border>
+
+    <ScrollViewer>
+        <StackPanel Classes="page-content">
+
+            <!--  Header  -->
+            <TextBlock Classes="h3"
+                       Text="{loc:Localization Database}" />
+
+            <Border Classes="card">
+                <StackPanel Spacing="16">
+
+                    <!--  Provider  -->
+                    <StackPanel Spacing="2">
+                        <TextBlock Classes="label"
+                                   FontSize="13"
+                                   Text="{loc:Localization Provider}" />
+                        <ComboBox ItemsSource="{Binding ProviderOptions}"
+                                  SelectedItem="{Binding SelectedProvider}" />
+                    </StackPanel>
+
+                    <!--  Connection String  -->
+                    <StackPanel Spacing="2">
+                        <TextBlock Classes="label"
+                                   FontSize="13"
+                                   Text="{loc:Localization ConnectionString}" />
+                        <TextBox Text="{Binding ConnectionString}" />
+                    </StackPanel>
+
+                    <!--  Buttons  -->
+                    <Button Classes="large green"
+                            Command="{Binding SaveCommand}"
+                            Content="{loc:Localization Save}"
+                            IsEnabled="{Binding !HasValidationErrors}" />
+
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>

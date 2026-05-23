@@ -117,4 +117,15 @@
   <data name="Delete" xml:space="preserve">
     <value>Delete</value>
   </data>
+
+  <!-- Database Settings -->
+  <data name="ConnectionString" xml:space="preserve">
+    <value>Connection string</value>
+  </data>
+  <data name="Provider" xml:space="preserve">
+    <value>Provider</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
 </root>

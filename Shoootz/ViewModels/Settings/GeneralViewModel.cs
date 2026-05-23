@@ -19,15 +19,15 @@ internal partial class GeneralViewModel : ViewModelBase
 {
     private readonly IGrafikService _grafikService;
 
-    private bool _allowSave;
-
     private readonly ILocalizationService _localizationService;
+
+    private readonly SettingsModel _settings;
 
     private readonly List<SettingsError>? _settingsErrors;
 
     private readonly ISettingsService _settingsService;
 
-    private readonly SettingsModel _settings;
+    private bool _allowSave;
 
     public GeneralViewModel(
         IGrafikService grafikService,

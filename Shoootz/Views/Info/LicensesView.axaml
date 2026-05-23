@@ -8,8 +8,7 @@
              x:DataType="vm:LicensesViewModel">
 
     <ScrollViewer>
-        <StackPanel Margin="32,0,32,32"
-                    Spacing="16">
+        <StackPanel Classes="page-content">
 
             <TextBlock Classes="h4"
                        Text="{loc:Localization LicensesTitle}" />

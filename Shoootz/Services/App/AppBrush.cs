@@ -5,11 +5,13 @@ namespace Shoootz.Services.App;
 
 internal static class AppBrush
 {
-    public static IBrush? BackgroundAlt => GetBrush("AppBackgroundAltBrush");
+    public static IBrush? Background => GetBrush("AppBackgroundAltBrush");
 
     public static IBrush? Error => GetBrush("ErrorBrush");
 
-    public static IBrush? PrimaryBrush => GetBrush("PrimaryBrush");
+    public static IBrush? Green => GetBrush("AccentGreenBrush");
+
+    public static IBrush? Primary => GetBrush("PrimaryBrush");
 
     public static IBrush? PrimaryForeground => GetBrush("PrimaryForegroundBrush");
 
