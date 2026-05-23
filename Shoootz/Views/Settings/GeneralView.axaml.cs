@@ -1,5 +1,9 @@
+using System;
 using System.Threading.Tasks;
 using Avalonia.Controls;
+using Controls.ConfirmDialog;
+using Shoootz.Services.App;
+using Shoootz.Services.Localization;
 using Shoootz.ViewModels;
 using Shoootz.ViewModels.Settings;
 using Shoootz.Views.Dialogs;
@@ -18,17 +22,91 @@ public partial class GeneralView : UserControl
         DataContextChanged += OnDataContextChanged;
     }
 
-    private void OnDataContextChanged(object? sender, System.EventArgs e)
+    private static ConfirmDialog BuildConfirmDialog(string title, string message)
+    {
+        return new ConfirmDialog
+        {
+            AcceptText = LocalizationService.Instance["Delete"],
+            CancelText = LocalizationService.Instance["Cancel"],
+            DialogBackground = AppBrush.BackgroundAlt,
+            DialogTitle = title,
+            ErrorBrush = AppBrush.Error,
+            Message = message,
+            PrimaryBrush = AppBrush.PrimaryBrush,
+            SecondaryBrush = AppBrush.PrimaryForeground,
+        };
+    }
+
+    private void OnDataContextChanged(object? sender, EventArgs e)
     {
         if (DataContext is GeneralViewModel viewModel)
         {
+            viewModel.DeleteSettingsFileRequested += OnDeleteSettingsFileRequested;
+            viewModel.DeleteSettingsFolderRequested += OnDeleteSettingsFolderRequested;
             viewModel.SettingsContentRequested += OnSettingsContentRequested;
         }
+    }
+
+    private void OnDeleteSettingsFileRequested()
+    {
+        _ = OpenConfirmDialogAsync(
+            LocalizationService.Instance["DeleteSettingsFile"],
+            LocalizationService.Instance["ConfirmDeleteSettingsFileMessage"],
+            () =>
+            {
+                if (DataContext is GeneralViewModel viewModel)
+                {
+                    viewModel.ExecuteDeleteSettingsFile();
+                }
+            }
+        );
+    }
+
+    private void OnDeleteSettingsFolderRequested()
+    {
+        _ = OpenConfirmDialogAsync(
+            LocalizationService.Instance["DeleteAll"],
+            LocalizationService.Instance["ConfirmDeleteAllMessage"],
+            () =>
+            {
+                if (DataContext is GeneralViewModel viewModel)
+                {
+                    viewModel.ExecuteDeleteSettingsFolder();
+                }
+            }
+        );
     }
 
     private void OnSettingsContentRequested(string content)
     {
         _ = OpenSettingsContentDialogAsync(content);
+    }
+
+    private async Task OpenConfirmDialogAsync(string title, string message, Action onConfirmed)
+    {
+        if (TopLevel.GetTopLevel(this) is not Window window)
+        {
+            return;
+        }
+
+        ConfirmDialog dialog = BuildConfirmDialog(title, message);
+        MainWindowViewModel? mainWindowViewModel = window.DataContext as MainWindowViewModel;
+
+        try
+        {
+            mainWindowViewModel?.IsDialogOpen = true;
+
+            bool? result = await dialog.ShowDialog<bool?>(window);
+
+            if (result is true)
+            {
+                onConfirmed();
+            }
+        }
+        finally
+        {
+            mainWindowViewModel?.IsDialogOpen = false;
+        }
     }
 
     private async Task OpenSettingsContentDialogAsync(string content)
@@ -38,23 +116,16 @@ public partial class GeneralView : UserControl
             return;
         }
 
-        MainWindowViewModel? vm = window.DataContext as MainWindowViewModel;
+        MainWindowViewModel? mainWindowViewModel = window.DataContext as MainWindowViewModel;
 
         try
         {
-            if (vm is not null)
-            {
-                vm.IsDialogOpen = true;
-            }
-
+            mainWindowViewModel?.IsDialogOpen = true;
             await new SettingsContentDialog(content).ShowDialog(window);
         }
         finally
         {
-            if (vm is not null)
-            {
-                vm.IsDialogOpen = false;
-            }
+            mainWindowViewModel?.IsDialogOpen = false;
         }
     }
 }

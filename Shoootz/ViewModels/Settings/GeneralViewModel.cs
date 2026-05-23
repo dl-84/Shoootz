@@ -49,6 +49,10 @@ internal partial class GeneralViewModel : ViewModelBase
             : GetLanguage(settings?.CurrentLanguageCode ?? "en");
     }
 
+    public event Action? DeleteSettingsFolderRequested;
+
+    public event Action? DeleteSettingsFileRequested;
+
     public event Action<string>? SettingsContentRequested;
 
     public event Action? SettingsErrorsChanged;
@@ -108,22 +112,32 @@ internal partial class GeneralViewModel : ViewModelBase
     [ObservableProperty]
     public partial LanguageOptionModel? SelectedLanguageOption { get; set; }
 
-    [RelayCommand]
-    private void ShowSettingsContent()
+    public void ExecuteDeleteSettingsFile()
     {
-        SettingsContentRequested?.Invoke(_settingsService.LoadRaw());
+        _settingsService.DeleteSettingsFile();
     }
 
-    [RelayCommand]
-    private void DeleteSettingsFolder()
+    public void ExecuteDeleteSettingsFolder()
     {
         _settingsService.DeleteSettingsFolder();
     }
 
     [RelayCommand]
+    private void DeleteSettingsFolder()
+    {
+        DeleteSettingsFolderRequested?.Invoke();
+    }
+
+    [RelayCommand]
     private void DeleteSettingsFile()
     {
-        _settingsService.DeleteSettingsFile();
+        DeleteSettingsFileRequested?.Invoke();
+    }
+
+    [RelayCommand]
+    private void ShowSettingsContent()
+    {
+        SettingsContentRequested?.Invoke(_settingsService.LoadRaw());
     }
 
     private LanguageOptionModel GetLanguage(string cultureCode)

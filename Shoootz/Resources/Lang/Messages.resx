@@ -95,6 +95,16 @@
   <data name="Name" xml:space="preserve">
     <value>Name</value>
   </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="ConfirmDeleteAllMessage" xml:space="preserve">
+    <value>Delete all settings including the database?
+</value>
+  </data>
+  <data name="ConfirmDeleteSettingsFileMessage" xml:space="preserve">
+    <value>Delete the file containing all settings?</value>
+  </data>
   <data name="DangerZone" xml:space="preserve">
     <value>Danger zone</value>
   </data>
@@ -103,5 +113,8 @@
   </data>
   <data name="DeleteSettingsFile" xml:space="preserve">
     <value>Delete settings file</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
   </data>
 </root>
