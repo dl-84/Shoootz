@@ -1,7 +1,11 @@
 using System.Threading.Tasks;
+using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Media;
+using Controls.ContentDialog;
+using Shoootz.Services.App;
+using Shoootz.Services.Localization;
 using Shoootz.ViewModels;
-using Shoootz.Views.Dialogs;
 
 namespace Shoootz.Views.Info;
 
@@ -32,19 +36,28 @@ public partial class AboutView : UserControl
 
         try
         {
-            if (vm is not null)
-            {
-                vm.IsDialogOpen = true;
-            }
+            vm?.IsDialogOpen = true;
 
-            await new LicenseDialog(content).ShowDialog(window);
+            TextBlock licenseText = new TextBlock
+            {
+                Margin = new Thickness(24, 16, 24, 0),
+                Text = content,
+                TextWrapping = TextWrapping.Wrap,
+            };
+
+            await new ContentDialog
+            {
+                BackgroundColor = AppBrush.BackgroundAlt,
+                CloseText = LocalizationService.Instance["Close"],
+                DialogContent = licenseText,
+                DialogTitle = "MIT License",
+                PrimaryColor = AppBrush.PrimaryBrush,
+                TextColor = AppBrush.PrimaryForeground,
+            }.ShowDialog(window);
         }
         finally
         {
-            if (vm is not null)
-            {
-                vm.IsDialogOpen = false;
-            }
+            vm?.IsDialogOpen = false;
         }
     }
 }

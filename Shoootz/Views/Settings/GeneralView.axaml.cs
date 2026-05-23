@@ -1,12 +1,15 @@
 using System;
 using System.Threading.Tasks;
 using Avalonia.Controls;
+using AvaloniaEdit;
+using AvaloniaEdit.TextMate;
 using Controls.ConfirmDialog;
+using Controls.ContentDialog;
 using Shoootz.Services.App;
 using Shoootz.Services.Localization;
 using Shoootz.ViewModels;
 using Shoootz.ViewModels.Settings;
-using Shoootz.Views.Dialogs;
+using TextMateSharp.Grammars;
 
 namespace Shoootz.Views.Settings;
 
@@ -35,6 +38,24 @@ public partial class GeneralView : UserControl
             PrimaryBrush = AppBrush.PrimaryBrush,
             SecondaryBrush = AppBrush.PrimaryForeground,
         };
+    }
+
+    private static TextEditor BuildTextEditor(string content)
+    {
+        RegistryOptions registryOptions = new RegistryOptions(ThemeName.LightPlus);
+        TextEditor result = new TextEditor
+        {
+            FontFamily = new Avalonia.Media.FontFamily("Consolas,Courier New,monospace"),
+            FontSize = 15,
+            IsReadOnly = true,
+            Margin = new Avalonia.Thickness(0, 8, 0, 0),
+            ShowLineNumbers = true,
+            WordWrap = false,
+        };
+        result.InstallTextMate(registryOptions).SetGrammar(registryOptions.GetScopeByLanguageId("json"));
+        result.Document.Text = content;
+
+        return result;
     }
 
     private void OnDataContextChanged(object? sender, EventArgs e)
@@ -121,7 +142,17 @@ public partial class GeneralView : UserControl
         try
         {
             mainWindowViewModel?.IsDialogOpen = true;
-            await new SettingsContentDialog(content).ShowDialog(window);
+
+            await new ContentDialog
+            {
+                BackgroundColor = AppBrush.BackgroundAlt,
+                CloseText = LocalizationService.Instance["Close"],
+                DialogContent = BuildTextEditor(content),
+                DialogTitle = LocalizationService.Instance["ShowSettings"],
+                PrimaryColor = AppBrush.PrimaryBrush,
+                TextColor = AppBrush.PrimaryForeground,
+                Width = 1000,
+            }.ShowDialog(window);
         }
         finally
         {
