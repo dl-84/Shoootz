@@ -5,7 +5,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Shoootz.Data;
+using Shoootz.Context;
 using Shoootz.Models.Settings;
 using Shoootz.Models.Settings.Database;
 using Shoootz.Services.Database;

@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Shoootz.Data;
+using Shoootz.Context;
 
 namespace Shoootz.Services.Database;
 
@@ -8,7 +8,7 @@ internal class DatabaseService(IDbContextFactory<AppDbContext> contextFactory) :
 {
     public async Task InitializeAsync()
     {
-        using AppDbContext context = await contextFactory.CreateDbContextAsync().ConfigureAwait(false);
+        await using AppDbContext context = await contextFactory.CreateDbContextAsync().ConfigureAwait(false);
         await context.Database.MigrateAsync().ConfigureAwait(false);
     }
 }

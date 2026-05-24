@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace Shoootz.Data;
+namespace Shoootz.Context;
 
 internal class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options) { }
