@@ -1,5 +1,6 @@
 <UserControl x:Class="Shoootz.Views.Error.SettingsErrorView"
              xmlns="https://github.com/avaloniaui"
+             xmlns:jsonEditor="using:Controls.JsonEditor"
              xmlns:loc="using:Shoootz.Extensions"
              xmlns:vm="using:Shoootz.ViewModels.Error"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -26,16 +27,16 @@
             </ItemsControl>
         </Border>
 
-        <ContentControl x:Name="EditorContainer"
-                        Grid.Row="2"
-                        Margin="0,16,0,0" />
+        <jsonEditor:JsonEditorControl Grid.Row="2"
+                                      Margin="0,16,0,0"
+                                      Text="{Binding EditorContent}" />
 
         <StackPanel Grid.Row="3"
                     Margin="0,16,0,0"
                     Orientation="Horizontal"
                     Spacing="8">
-            <Button x:Name="SaveButton"
-                    Classes="large green"
+            <Button Classes="large green"
+                    Command="{Binding SaveCommand}"
                     Content="{loc:Localization SaveAndRestart}" />
             <Button Classes="large green"
                     Command="{Binding RestoreDefaultsCommand}"

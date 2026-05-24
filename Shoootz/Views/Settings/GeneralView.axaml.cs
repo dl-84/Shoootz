@@ -1,15 +1,13 @@
 using System;
 using System.Threading.Tasks;
 using Avalonia.Controls;
-using AvaloniaEdit;
-using AvaloniaEdit.TextMate;
 using Controls.ConfirmDialog;
 using Controls.ContentDialog;
+using Controls.JsonEditor;
 using Shoootz.Services.App;
 using Shoootz.Services.Localization;
 using Shoootz.ViewModels;
 using Shoootz.ViewModels.Settings;
-using TextMateSharp.Grammars;
 
 namespace Shoootz.Views.Settings;
 
@@ -41,22 +39,9 @@ public partial class GeneralView : UserControl
         };
     }
 
-    private static TextEditor BuildTextEditor(string content)
+    private static JsonEditorControl BuildTextEditor(string content)
     {
-        RegistryOptions registryOptions = new RegistryOptions(ThemeName.LightPlus);
-        TextEditor result = new TextEditor
-        {
-            FontFamily = new Avalonia.Media.FontFamily("Consolas,Courier New,monospace"),
-            FontSize = 15,
-            IsReadOnly = true,
-            Margin = new Avalonia.Thickness(0, 8, 0, 0),
-            ShowLineNumbers = true,
-            WordWrap = false,
-        };
-        result.InstallTextMate(registryOptions).SetGrammar(registryOptions.GetScopeByLanguageId("json"));
-        result.Document.Text = content;
-
-        return result;
+        return new JsonEditorControl { IsReadOnly = true, Text = content };
     }
 
     private void OnDataContextChanged(object? sender, EventArgs e)

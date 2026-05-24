@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Shoootz.Models.Settings;
 using Shoootz.Services.Settings;
@@ -15,19 +16,14 @@ internal partial class SettingsErrorViewModel : ViewModelBase
     public SettingsErrorViewModel(List<SettingsError> settingsErrors, ISettingsService settingsService)
     {
         ErrorMessages = settingsErrors.Select(settingsError => settingsError.Message).ToList();
-        RawContent = settingsService.LoadRaw();
+        EditorContent = settingsService.LoadRaw();
         _settingsService = settingsService;
     }
 
     public IReadOnlyList<string> ErrorMessages { get; }
 
-    public string RawContent { get; }
-
-    public void SaveContent(string content)
-    {
-        _settingsService.SaveRaw(content);
-        Restart();
-    }
+    [ObservableProperty]
+    public partial string EditorContent { get; set; }
 
     private static void Restart()
     {
@@ -39,6 +35,13 @@ internal partial class SettingsErrorViewModel : ViewModelBase
     private void RestoreDefaults()
     {
         _settingsService.DeleteSettingsFile();
+        Restart();
+    }
+
+    [RelayCommand]
+    private void Save()
+    {
+        _settingsService.SaveRaw(EditorContent);
         Restart();
     }
 }
