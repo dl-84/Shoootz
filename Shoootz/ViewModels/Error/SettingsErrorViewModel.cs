@@ -15,33 +15,63 @@ internal partial class SettingsErrorViewModel : ViewModelBase
 
     public SettingsErrorViewModel(List<SettingsError> settingsErrors, ISettingsService settingsService)
     {
+        _settingsService = settingsService;
         ErrorMessages = settingsErrors.Select(settingsError => settingsError.Message).ToList();
         EditorContent = settingsService.LoadRaw();
-        _settingsService = settingsService;
     }
-
-    public IReadOnlyList<string> ErrorMessages { get; }
 
     [ObservableProperty]
     public partial string EditorContent { get; set; }
 
-    private static void Restart()
+    public IReadOnlyList<string> ErrorMessages { get; }
+
+    [ObservableProperty]
+    public partial bool IsSaved { get; set; }
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ShowOriginalErrors))]
+    [NotifyPropertyChangedFor(nameof(ShowValidationError))]
+    public partial bool IsValid { get; set; }
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ShowOriginalErrors))]
+    [NotifyPropertyChangedFor(nameof(ShowValidationError))]
+    public partial string? ValidationError { get; set; }
+
+    public bool ShowOriginalErrors => ValidationError == null;
+
+    public bool ShowValidationError => ValidationError != null;
+
+    private static void PerformRestart()
     {
         Process.Start(new ProcessStartInfo { FileName = Environment.ProcessPath!, UseShellExecute = true });
         Environment.Exit(0);
     }
 
     [RelayCommand]
-    private void RestoreDefaults()
+    private static void Restart() => PerformRestart();
+
+    partial void OnEditorContentChanged(string value)
     {
-        _settingsService.DeleteSettingsFile();
-        Restart();
+        IsValid = false;
+        IsSaved = false;
+        ValidationError = null;
     }
 
     [RelayCommand]
     private void Save()
     {
         _settingsService.SaveRaw(EditorContent);
-        Restart();
+        IsSaved = true;
+    }
+
+    [RelayCommand]
+    private void Validate()
+    {
+        ValidationError = _settingsService
+            .Validate(EditorContent)
+            .Match(_ => null, settingsError => settingsError.Value.Count > 0 ? settingsError.Value[0].Message : null);
+
+        IsValid = ValidationError == null;
     }
 }

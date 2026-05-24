@@ -17,4 +17,6 @@ internal interface ISettingsService
     void Save(SettingsModel? settings);
 
     void SaveRaw(string content);
+
+    Result<SettingsModel, List<SettingsError>> Validate(string content);
 }

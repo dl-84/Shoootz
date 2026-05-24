@@ -49,8 +49,23 @@
   <data name="SaveAndRestart" xml:space="preserve">
     <value>Speichern &amp; Neustart</value>
   </data>
+<data name="Restart" xml:space="preserve">
+    <value>Neustart</value>
+  </data>
+  <data name="SettingsErrorHint" xml:space="preserve">
+    <value>Beheben Sie den folgenden Fehler und validieren Sie die Datei erneut.</value>
+  </data>
+  <data name="SettingsValidSuccess" xml:space="preserve">
+    <value>Validierung erfolgreich.</value>
+  </data>
+  <data name="SettingsValidSuccessHint" xml:space="preserve">
+    <value>Datei speichern und Anwendung neu starten.</value>
+  </data>
   <data name="SettingsFileError" xml:space="preserve">
     <value>Fehler in der Einstellungsdatei</value>
+  </data>
+  <data name="Validate" xml:space="preserve">
+    <value>Validieren</value>
   </data>
   <data name="SettingsLoadError" xml:space="preserve">
     <value>Konfigurationsdatei ungültig</value>
@@ -58,13 +73,7 @@
   <data name="Language" xml:space="preserve">
     <value>Sprache</value>
   </data>
-  <data name="LanguageCodeInvalid" xml:space="preserve">
-    <value>Ungültiger Sprachcode:</value>
-  </data>
-  <data name="LanguageCodeInvalidHint" xml:space="preserve">
-    <value>Die App wurde in der Standardsprache geladen. Bitte wähle eine gültige Sprache in der Auswahlliste.</value>
-  </data>
-  <data name="Close" xml:space="preserve">
+<data name="Close" xml:space="preserve">
     <value>Schließen</value>
   </data>
   <data name="OpenFolder" xml:space="preserve">

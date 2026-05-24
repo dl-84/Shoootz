@@ -49,8 +49,23 @@
   <data name="SaveAndRestart" xml:space="preserve">
     <value>Save &amp; restart</value>
   </data>
+<data name="Restart" xml:space="preserve">
+    <value>Restart</value>
+  </data>
+  <data name="SettingsErrorHint" xml:space="preserve">
+    <value>Fix the following error and validate the file again.</value>
+  </data>
+  <data name="SettingsValidSuccess" xml:space="preserve">
+    <value>Validation successful.</value>
+  </data>
+  <data name="SettingsValidSuccessHint" xml:space="preserve">
+    <value>Save the file and restart the application.</value>
+  </data>
   <data name="SettingsFileError" xml:space="preserve">
     <value>Settings file error</value>
+  </data>
+  <data name="Validate" xml:space="preserve">
+    <value>Validate</value>
   </data>
   <data name="SettingsLoadError" xml:space="preserve">
     <value>Invalid configuration file</value>
@@ -58,13 +73,7 @@
   <data name="Language" xml:space="preserve">
     <value>Language</value>
   </data>
-  <data name="LanguageCodeInvalid" xml:space="preserve">
-    <value>Invalid language code:</value>
-  </data>
-  <data name="LanguageCodeInvalidHint" xml:space="preserve">
-    <value>The app loaded in the default language. Please select a valid language from the dropdown.</value>
-  </data>
-  <data name="Close" xml:space="preserve">
+<data name="Close" xml:space="preserve">
     <value>Close</value>
   </data>
   <data name="OpenFolder" xml:space="preserve">

@@ -57,8 +57,7 @@ internal class SettingsService : ISettingsService
             return;
         }
 
-        Directory.CreateDirectory(AppPath.AppDataBase);
-        File.WriteAllText(AppPath.SettingsFile, JsonSerializer.Serialize(settings, _jsonSerializerOptions));
+        SaveRaw(JsonSerializer.Serialize(settings, _jsonSerializerOptions));
     }
 
     public void SaveRaw(string content)
@@ -69,6 +68,30 @@ internal class SettingsService : ISettingsService
         }
 
         File.WriteAllText(AppPath.SettingsFile, content);
+    }
+
+    public Result<SettingsModel, List<SettingsError>> Validate(string content)
+    {
+        try
+        {
+            using JsonDocument jsonDocument = JsonDocument.Parse(content);
+
+            ICollection<ValidationError> errors = _schema.Validate(content);
+
+            if (errors.Count > 0)
+            {
+                return new Error<List<SettingsError>>(CollectErrors(errors, jsonDocument));
+            }
+
+            SettingsModel result = JsonSerializer.Deserialize<SettingsModel>(content, _jsonSerializerOptions)!;
+            return result;
+        }
+        catch (JsonException exception)
+        {
+            return new Error<List<SettingsError>>([
+                new SettingsError(SettingsPropertyType.JsonExceptionOnValidate, exception.Message),
+            ]);
+        }
     }
 
     private static List<SettingsError> CollectErrors(ICollection<ValidationError> errors, JsonDocument jsonDocument)
@@ -86,7 +109,15 @@ internal class SettingsService : ISettingsService
                 ? element.ToString()
                 : null;
 
-            result.Add(new SettingsError(property, error.Kind.ToString(), value));
+            string allowed = error is { Kind: ValidationErrorKind.NotInEnumeration, Schema.Enumeration.Count: > 0 }
+                ? $" — Valid: {string.Join(", ", error.Schema.Enumeration)}"
+                : string.Empty;
+
+            string message = value is not null
+                ? $"{error.Property}: {error.Kind} ('{value}'){allowed}"
+                : $"{error.Property}: {error.Kind}{allowed}";
+
+            result.Add(new SettingsError(property, message, value));
         }
 
         return result;
@@ -111,30 +142,6 @@ internal class SettingsService : ISettingsService
         {
             return new Error<List<SettingsError>>([
                 new SettingsError(SettingsPropertyType.ExceptionOnReadContent, exception.Message),
-            ]);
-        }
-    }
-
-    private static Result<SettingsModel, List<SettingsError>> Validate(string content)
-    {
-        try
-        {
-            using JsonDocument jsonDocument = JsonDocument.Parse(content);
-
-            ICollection<ValidationError> errors = _schema.Validate(content);
-
-            if (errors.Count > 0)
-            {
-                return new Error<List<SettingsError>>(CollectErrors(errors, jsonDocument));
-            }
-
-            SettingsModel result = JsonSerializer.Deserialize<SettingsModel>(content, _jsonSerializerOptions)!;
-            return result;
-        }
-        catch (JsonException exception)
-        {
-            return new Error<List<SettingsError>>([
-                new SettingsError(SettingsPropertyType.JsonExceptionOnValidate, exception.Message),
             ]);
         }
     }
