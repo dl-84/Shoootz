@@ -27,7 +27,8 @@
             </ItemsControl>
         </Border>
 
-        <jsonEditor:JsonEditorControl Grid.Row="2"
+        <jsonEditor:JsonEditorControl x:Name="JsonEditor"
+                                      Grid.Row="2"
                                       Margin="0,16,0,0"
                                       Text="{Binding EditorContent}" />
 
@@ -37,7 +38,8 @@
                     Spacing="8">
             <Button Classes="large green"
                     Command="{Binding SaveCommand}"
-                    Content="{loc:Localization SaveAndRestart}" />
+                    Content="{loc:Localization SaveAndRestart}"
+                    IsEnabled="{Binding #JsonEditor.IsModified}" />
             <Button Classes="large green"
                     Command="{Binding RestoreDefaultsCommand}"
                     Content="{loc:Localization RestoreDefaults}" />
