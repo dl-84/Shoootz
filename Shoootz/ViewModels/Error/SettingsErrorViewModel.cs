@@ -42,14 +42,12 @@ internal partial class SettingsErrorViewModel : ViewModelBase
 
     public bool ShowValidationError => ValidationError != null;
 
-    private static void PerformRestart()
+    [RelayCommand]
+    private static void Restart()
     {
         Process.Start(new ProcessStartInfo { FileName = Environment.ProcessPath!, UseShellExecute = true });
         Environment.Exit(0);
     }
-
-    [RelayCommand]
-    private static void Restart() => PerformRestart();
 
     partial void OnEditorContentChanged(string value)
     {

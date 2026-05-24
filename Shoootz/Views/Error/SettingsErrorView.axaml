@@ -9,12 +9,10 @@
     <Grid Margin="16,0,16,16"
           RowDefinitions="Auto,Auto,*,Auto">
 
-        <!--  Header  -->
         <TextBlock Grid.Row="0"
                    Classes="h3"
                    Text="{loc:Localization SettingsFileError}" />
 
-        <!--  Errors  -->
         <Border Grid.Row="1"
                 Classes="card-error"
                 Margin="0,16,0,0"
@@ -41,7 +39,6 @@
             </StackPanel>
         </Border>
 
-        <!--  Success  -->
         <Border Grid.Row="1"
                 Classes="card-success"
                 Margin="0,16,0,0"
@@ -55,13 +52,11 @@
             </StackPanel>
         </Border>
 
-        <!--  Editor  -->
         <jsonEditor:JsonEditorControl x:Name="JsonEditor"
                                       Grid.Row="2"
                                       Margin="0,16,0,0"
                                       Text="{Binding EditorContent}" />
 
-        <!--  Buttons  -->
         <StackPanel Grid.Row="3"
                     Margin="0,16,0,0"
                     Orientation="Horizontal"
