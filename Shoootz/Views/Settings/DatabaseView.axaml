@@ -36,11 +36,11 @@
                     <Grid ColumnDefinitions="Auto,Auto"
                           ColumnSpacing="8">
                         <Button Grid.Column="0"
-                                Classes="large green"
+                                Classes="green"
                                 Command="{Binding SaveCommand}"
                                 Content="{loc:Localization Save}" />
                         <Button Grid.Column="1"
-                                Classes="large"
+                                Classes="green"
                                 Command="{Binding TestConnectionCommand}"
                                 Content="{loc:Localization TestConnection}" />
                     </Grid>

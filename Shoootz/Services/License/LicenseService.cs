@@ -28,9 +28,14 @@ internal class LicenseService(ILocalizationService localizationService) : ILicen
     private readonly Lazy<string> _licenseContent = new Lazy<string>(() =>
     {
         Assembly assembly = Assembly.GetExecutingAssembly();
-        using Stream stream = assembly.GetManifestResourceStream($"{assembly.GetName().Name!}.LICENSE")!;
-        using StreamReader reader = new StreamReader(stream);
-        return reader.ReadToEnd();
+
+        using (Stream stream = assembly.GetManifestResourceStream($"{assembly.GetName().Name!}.LICENSE")!)
+        {
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                return reader.ReadToEnd();
+            }
+        }
     });
 
     public List<PackageModel> GetAppPackages()
@@ -52,8 +57,7 @@ internal class LicenseService(ILocalizationService localizationService) : ILicen
                 LicenseTypeInternal,
                 null,
                 null,
-                CopyrightInternal,
-                null
+                CopyrightInternal
             ),
         ];
     }
@@ -69,10 +73,12 @@ internal class LicenseService(ILocalizationService localizationService) : ILicen
             return [];
         }
 
-        using Stream stream = _assembly.GetManifestResourceStream(resourceName)!;
-        List<PackageModel>? packages = JsonSerializer.Deserialize<List<PackageModel>>(stream);
+        using (Stream stream = _assembly.GetManifestResourceStream(resourceName)!)
+        {
+            List<PackageModel>? packages = JsonSerializer.Deserialize<List<PackageModel>>(stream);
 
-        return packages?.Where(package => !_excludedPackages.Contains(package.Name)).OrderBy(p => p.Name).ToList()
-            ?? [];
+            return packages?.Where(package => !_excludedPackages.Contains(package.Name)).OrderBy(p => p.Name).ToList()
+                ?? [];
+        }
     }
 }

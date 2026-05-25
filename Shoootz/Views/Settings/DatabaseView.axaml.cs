@@ -54,7 +54,7 @@ public partial class DatabaseView : UserControl
             {
                 CloseText = LocalizationService.Instance["Close"],
                 DialogTitle = LocalizationService.Instance["TestConnection"],
-                IconType = IconType.Error, // success ? IconType.Info : IconType.Warning,
+                IconType = success ? IconType.Info : IconType.Warning,
                 Message = success
                     ? LocalizationService.Instance["ConnectionSuccessful"]
                     : errorMessage ?? LocalizationService.Instance["ConnectionFailed"],

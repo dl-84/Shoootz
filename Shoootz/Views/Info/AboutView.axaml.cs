@@ -35,10 +35,7 @@ public partial class AboutView : UserControl
 
         try
         {
-            if (vm is not null)
-            {
-                vm.IsDialogOpen = true;
-            }
+            vm?.IsDialogOpen = true;
 
             TextBlock licenseText = new TextBlock
             {
@@ -51,15 +48,12 @@ public partial class AboutView : UserControl
             {
                 CloseText = LocalizationService.Instance["Close"],
                 DialogContent = licenseText,
-                DialogTitle = "MIT License",
+                DialogTitle = LocalizationService.Instance["MitLicense"],
             }.ShowDialog(window);
         }
         finally
         {
-            if (vm is not null)
-            {
-                vm.IsDialogOpen = false;
-            }
+            vm?.IsDialogOpen = false;
         }
     }
 }

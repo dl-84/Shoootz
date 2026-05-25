@@ -110,6 +110,9 @@
   <data name="Link" xml:space="preserve">
     <value>Link</value>
   </data>
+  <data name="MitLicense" xml:space="preserve">
+    <value>MIT Lizenz</value>
+  </data>
   <data name="Name" xml:space="preserve">
     <value>Name</value>
   </data>
@@ -138,6 +141,12 @@
   <!-- Database Settings -->
   <data name="ConnectionFailed" xml:space="preserve">
     <value>Verbindung fehlgeschlagen</value>
+  </data>
+  <data name="DbErrorFileNotFound" xml:space="preserve">
+    <value>Datenbankdatei nicht gefunden: {0}</value>
+  </data>
+  <data name="DbErrorUnknownProvider" xml:space="preserve">
+    <value>Unbekannter Datenbankprovider</value>
   </data>
   <data name="ConnectionString" xml:space="preserve">
     <value>Connection String</value>

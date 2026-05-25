@@ -75,17 +75,18 @@ internal class SettingsService : ISettingsService
     {
         try
         {
-            using JsonDocument jsonDocument = JsonDocument.Parse(content);
-
-            ICollection<ValidationError> errors = _schema.Validate(content);
-
-            if (errors.Count > 0)
+            using (JsonDocument jsonDocument = JsonDocument.Parse(content))
             {
-                return new Error<List<SettingsError>>(CollectErrors(errors, jsonDocument));
-            }
+                ICollection<ValidationError> errors = _schema.Validate(content);
 
-            SettingsModel result = JsonSerializer.Deserialize<SettingsModel>(content, _jsonSerializerOptions)!;
-            return result;
+                if (errors.Count > 0)
+                {
+                    return new Error<List<SettingsError>>(CollectErrors(errors, jsonDocument));
+                }
+
+                SettingsModel result = JsonSerializer.Deserialize<SettingsModel>(content, _jsonSerializerOptions)!;
+                return result;
+            }
         }
         catch (JsonException exception)
         {
@@ -129,8 +130,10 @@ internal class SettingsService : ISettingsService
         Assembly assembly = Assembly.GetExecutingAssembly();
         const string resourceName = "Shoootz.Resources.JsonSchemas.Settings.schema.json";
 
-        using StreamReader reader = new StreamReader(assembly.GetManifestResourceStream(resourceName)!);
-        return JsonSchema.FromJsonAsync(reader.ReadToEnd()).ConfigureAwait(false).GetAwaiter().GetResult();
+        using (StreamReader reader = new StreamReader(assembly.GetManifestResourceStream(resourceName)!))
+        {
+            return JsonSchema.FromJsonAsync(reader.ReadToEnd()).ConfigureAwait(false).GetAwaiter().GetResult();
+        }
     }
 
     private static Result<string, List<SettingsError>> ReadContent()
