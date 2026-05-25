@@ -4,7 +4,6 @@ using Avalonia.Controls;
 using Controls.ConfirmDialog;
 using Controls.ContentDialog;
 using Controls.JsonEditor;
-using Shoootz.Services.App;
 using Shoootz.Services.Localization;
 using Shoootz.ViewModels;
 using Shoootz.ViewModels.Settings;
@@ -28,14 +27,9 @@ public partial class GeneralView : UserControl
         return new ConfirmDialog
         {
             AcceptText = LocalizationService.Instance["Delete"],
-            CancelButtonColor = AppBrush.Green,
             CancelText = LocalizationService.Instance["Cancel"],
-            DialogBackground = AppBrush.Background,
             DialogTitle = title,
-            ErrorBrush = AppBrush.Error,
             Message = message,
-            PrimaryBrush = AppBrush.Primary,
-            SecondaryBrush = AppBrush.PrimaryForeground,
         };
     }
 
@@ -101,7 +95,10 @@ public partial class GeneralView : UserControl
 
         try
         {
-            mainWindowViewModel?.IsDialogOpen = true;
+            if (mainWindowViewModel is not null)
+            {
+                mainWindowViewModel.IsDialogOpen = true;
+            }
 
             bool? result = await dialog.ShowDialog<bool?>(window);
 
@@ -112,7 +109,10 @@ public partial class GeneralView : UserControl
         }
         finally
         {
-            mainWindowViewModel?.IsDialogOpen = false;
+            if (mainWindowViewModel is not null)
+            {
+                mainWindowViewModel.IsDialogOpen = false;
+            }
         }
     }
 
@@ -127,23 +127,25 @@ public partial class GeneralView : UserControl
 
         try
         {
-            mainWindowViewModel?.IsDialogOpen = true;
+            if (mainWindowViewModel is not null)
+            {
+                mainWindowViewModel.IsDialogOpen = true;
+            }
 
             await new ContentDialog
             {
-                BackgroundColor = AppBrush.Background,
-                CloseButtonColor = AppBrush.Green,
                 CloseText = LocalizationService.Instance["Close"],
                 DialogContent = BuildTextEditor(content),
                 DialogTitle = LocalizationService.Instance["ShowSettings"],
-                PrimaryColor = AppBrush.Primary,
-                TextColor = AppBrush.PrimaryForeground,
                 Width = 1000,
             }.ShowDialog(window);
         }
         finally
         {
-            mainWindowViewModel?.IsDialogOpen = false;
+            if (mainWindowViewModel is not null)
+            {
+                mainWindowViewModel.IsDialogOpen = false;
+            }
         }
     }
 }

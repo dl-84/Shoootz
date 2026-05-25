@@ -2,7 +2,6 @@ using System;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Controls.InfoDialog;
-using Shoootz.Services.App;
 using Shoootz.Services.Localization;
 using Shoootz.ViewModels;
 using Shoootz.ViewModels.Settings;
@@ -52,15 +51,8 @@ public partial class DatabaseView : UserControl
 
             await new InfoDialog
             {
-                CloseButtonBackground = AppBrush.Green,
-                CloseButtonForeground = AppBrush.PrimaryForeground,
                 CloseText = LocalizationService.Instance["Close"],
-                DialogBackground = AppBrush.Background,
-                DialogForeground = AppBrush.PrimaryForeground,
                 DialogTitle = LocalizationService.Instance["TestConnection"],
-                HeaderBackground = AppBrush.Primary,
-                HeaderForeground = AppBrush.PrimaryForeground,
-                IconBrush = success ? AppBrush.Green : AppBrush.Error,
                 IconType = success ? IconType.Info : IconType.Warning,
                 Message = success
                     ? LocalizationService.Instance["ConnectionSuccessful"]

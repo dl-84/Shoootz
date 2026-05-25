@@ -3,7 +3,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Controls.ContentDialog;
-using Shoootz.Services.App;
 using Shoootz.Services.Localization;
 using Shoootz.ViewModels;
 
@@ -36,7 +35,10 @@ public partial class AboutView : UserControl
 
         try
         {
-            vm?.IsDialogOpen = true;
+            if (vm is not null)
+            {
+                vm.IsDialogOpen = true;
+            }
 
             TextBlock licenseText = new TextBlock
             {
@@ -47,18 +49,17 @@ public partial class AboutView : UserControl
 
             await new ContentDialog
             {
-                BackgroundColor = AppBrush.Background,
-                CloseButtonColor = AppBrush.Green,
                 CloseText = LocalizationService.Instance["Close"],
                 DialogContent = licenseText,
                 DialogTitle = "MIT License",
-                PrimaryColor = AppBrush.Primary,
-                TextColor = AppBrush.PrimaryForeground,
             }.ShowDialog(window);
         }
         finally
         {
-            vm?.IsDialogOpen = false;
+            if (vm is not null)
+            {
+                vm.IsDialogOpen = false;
+            }
         }
     }
 }

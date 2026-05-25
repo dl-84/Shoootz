@@ -28,8 +28,7 @@
         <Panel>
             <DockPanel>
 
-                <tb:TitleBarControl BackgroundColor="{DynamicResource AppBackgroundAltBrush}"
-                                    PrimaryColor="{DynamicResource PrimaryBrush}" />
+                <tb:TitleBarControl />
 
                 <Grid ColumnDefinitions="220,*">
 

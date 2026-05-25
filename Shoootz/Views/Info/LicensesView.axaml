@@ -13,12 +13,8 @@
             <TextBlock Classes="h4"
                        Text="{loc:Localization LicensesTitle}" />
 
-            <controls:LicenseTableControl HeaderBackgroundColor="{DynamicResource AccentGreenBrush}"
-                                          HeaderFontColor="{DynamicResource AccentForegroundBrush}"
-                                          Headers="{Binding ColumnHeaders}"
-                                          Items="{Binding Packages}"
-                                          PrimaryTextColor="{DynamicResource TextPrimaryBrush}"
-                                          SecondaryTextColor="{DynamicResource TextMutedBrush}" />
+            <controls:LicenseTableControl Headers="{Binding ColumnHeaders}"
+                                          Items="{Binding Packages}" />
 
         </StackPanel>
     </ScrollViewer>
