@@ -42,7 +42,7 @@
                                 <StackPanel Orientation="Horizontal"
                                             Spacing="6"
                                             VerticalAlignment="Center">
-                                    <Ellipse Fill="{DynamicResource AccentGreenBrush}"
+                                    <Ellipse Fill="{DynamicResource SecondaryBrush}"
                                              Height="8"
                                              VerticalAlignment="Center"
                                              Width="8" />

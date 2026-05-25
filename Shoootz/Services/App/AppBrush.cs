@@ -9,7 +9,7 @@ internal static class AppBrush
 
     public static IBrush? Error => GetBrush("ErrorBrush");
 
-    public static IBrush? Green => GetBrush("AccentGreenBrush");
+    public static IBrush? Secondary => GetBrush("SecondaryBrush");
 
     public static IBrush? Primary => GetBrush("PrimaryBrush");
 
