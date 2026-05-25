@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.Json;
-using Controls.LicenseTable;
+using Controls.LicenseTable.Models;
 using Shoootz.Services.Localization;
 
 namespace Shoootz.Services.License;

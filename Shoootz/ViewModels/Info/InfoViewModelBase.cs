@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Controls.LicenseTable;
+using Controls.LicenseTable.Models;
 using Shoootz.Services.Localization;
 
 namespace Shoootz.ViewModels.Info;

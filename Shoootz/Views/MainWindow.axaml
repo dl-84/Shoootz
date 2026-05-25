@@ -36,55 +36,85 @@
                     <!--  Sidebar  -->
                     <Border Grid.Column="0"
                             Background="{DynamicResource PrimaryBrush}">
-                        <ListBox Classes="nav"
-                                 ItemContainerTheme="{DynamicResource NavigationItem}"
-                                 Margin="0,16,0,0"
-                                 SelectedIndex="{Binding ActiveIndex}"
-                                 IsEnabled="{Binding IsNavbarEnabled}">
+                        <DockPanel>
+                            <StackPanel DockPanel.Dock="Bottom"
+                                        Margin="20,16"
+                                        Spacing="8">
+                                <StackPanel Orientation="Horizontal"
+                                            Spacing="6"
+                                            VerticalAlignment="Center">
+                                    <Ellipse Fill="{DynamicResource AccentGreenBrush}"
+                                             Height="8"
+                                             VerticalAlignment="Center"
+                                             Width="8" />
+                                    <TextBlock FontSize="11"
+                                               Foreground="{DynamicResource FooterForegroundBrush}"
+                                               Text="{loc:Localization Database}"
+                                               VerticalAlignment="Center" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal"
+                                            Spacing="6"
+                                            VerticalAlignment="Center">
+                                    <Ellipse Fill="{DynamicResource ErrorBrush}"
+                                             Height="8"
+                                             VerticalAlignment="Center"
+                                             Width="8" />
+                                    <TextBlock FontSize="11"
+                                               Foreground="{DynamicResource FooterForegroundBrush}"
+                                               Text="UNC Broadcast"
+                                               VerticalAlignment="Center" />
+                                </StackPanel>
+                            </StackPanel>
+                            <ListBox Classes="nav"
+                                     ItemContainerTheme="{DynamicResource NavigationItem}"
+                                     Margin="0,16,0,0"
+                                     SelectedIndex="{Binding ActiveIndex}"
+                                     IsEnabled="{Binding IsNavbarEnabled}">
 
-                            <!--  Competition  -->
-                            <ListBoxItem Classes="navigation-header"
-                                         IsEnabled="False">
-                                <TextBlock Margin="20,16,20,4"
-                                           Text="{loc:Localization Competition,
-                                                                   ToUpper=True}" />
-                            </ListBoxItem>
-                            <ListBoxItem>
-                                <TextBlock Text="{loc:Localization Evaluate}" />
-                            </ListBoxItem>
+                                <!--  Competition  -->
+                                <ListBoxItem Classes="navigation-header"
+                                             IsEnabled="False">
+                                    <TextBlock Margin="20,16,20,4"
+                                               Text="{loc:Localization Competition,
+                                                                       ToUpper=True}" />
+                                </ListBoxItem>
+                                <ListBoxItem>
+                                    <TextBlock Text="{loc:Localization Evaluate}" />
+                                </ListBoxItem>
 
-                            <!--  Settings  -->
-                            <ListBoxItem Classes="navigation-header"
-                                         IsEnabled="False">
-                                <TextBlock Margin="20,28,20,4"
-                                           Text="{loc:Localization Settings,
-                                                                   ToUpper=True}" />
-                            </ListBoxItem>
-                            <ListBoxItem>
-                                <TextBlock Text="{loc:Localization General}" />
-                            </ListBoxItem>
-                            <ListBoxItem>
-                                <TextBlock Text="{loc:Localization Database}" />
-                            </ListBoxItem>
-                            <ListBoxItem>
-                                <TextBlock Text="{loc:Localization Groups}" />
-                            </ListBoxItem>
+                                <!--  Settings  -->
+                                <ListBoxItem Classes="navigation-header"
+                                             IsEnabled="False">
+                                    <TextBlock Margin="20,28,20,4"
+                                               Text="{loc:Localization Settings,
+                                                                       ToUpper=True}" />
+                                </ListBoxItem>
+                                <ListBoxItem>
+                                    <TextBlock Text="{loc:Localization General}" />
+                                </ListBoxItem>
+                                <ListBoxItem>
+                                    <TextBlock Text="{loc:Localization Database}" />
+                                </ListBoxItem>
+                                <ListBoxItem>
+                                    <TextBlock Text="{loc:Localization Groups}" />
+                                </ListBoxItem>
 
-                            <!--  Info  -->
-                            <ListBoxItem Classes="navigation-header"
-                                         IsEnabled="False">
-                                <TextBlock Margin="20,28,20,4"
-                                           Text="{loc:Localization Info,
-                                                                   ToUpper=True}" />
-                            </ListBoxItem>
-                            <ListBoxItem>
-                                <TextBlock Text="{loc:Localization About}" />
-                            </ListBoxItem>
-                            <ListBoxItem>
-                                <TextBlock Text="{loc:Localization Licenses}" />
-                            </ListBoxItem>
+                                <!--  Info  -->
+                                <ListBoxItem Classes="navigation-header"
+                                             IsEnabled="False">
+                                    <TextBlock Margin="20,28,20,4"
+                                               Text="{loc:Localization Info,
+                                                                       ToUpper=True}" />
+                                </ListBoxItem>
+                                <ListBoxItem>
+                                    <TextBlock Text="{loc:Localization About}" />
+                                </ListBoxItem>
+                                <ListBoxItem>
+                                    <TextBlock Text="{loc:Localization Licenses}" />
+                                </ListBoxItem>
 
-                        </ListBox>
+                            </ListBox>
+                        </DockPanel>
                     </Border>
 
                     <!--  Content Area  -->

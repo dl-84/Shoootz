@@ -9,6 +9,7 @@
   <Folder Name="/Controls/">
     <Project Path="../Library/Avalonia/Controls/ConfirmDialog/ConfirmDialog.csproj" />
     <Project Path="../Library/Avalonia/Controls/ContentDialog/ContentDialog.csproj" />
+    <Project Path="../Library/Avalonia/Controls/InfoDialog/InfoDialog.csproj" />
     <Project Path="../Library/Avalonia/Controls/LicenseTable/LicenseTable.csproj" />
     <Project Path="../Library/Avalonia/Controls/TextEditor/TextEditor.csproj" />
     <Project Path="../Library/Avalonia/Controls/TitleBar/TitleBar.csproj" />

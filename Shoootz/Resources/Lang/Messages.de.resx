@@ -136,13 +136,22 @@
   </data>
 
   <!-- Database Settings -->
+  <data name="ConnectionFailed" xml:space="preserve">
+    <value>Verbindung fehlgeschlagen</value>
+  </data>
   <data name="ConnectionString" xml:space="preserve">
     <value>Connection String</value>
+  </data>
+  <data name="ConnectionSuccessful" xml:space="preserve">
+    <value>Verbindung erfolgreich</value>
   </data>
   <data name="Provider" xml:space="preserve">
     <value>Provider</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>Speichern</value>
+  </data>
+  <data name="TestConnection" xml:space="preserve">
+    <value>Verbindung testen</value>
   </data>
 </root>

@@ -48,7 +48,7 @@ public class App : Application
         if (settings is not null)
         {
             mainWindowViewModel.InitSettings(settings);
-            _serviceProvider.GetRequiredService<IDatabaseService>().InitializeAsync().GetAwaiter().GetResult();
+            _serviceProvider.GetRequiredService<IDbService>().InitializeAsync().GetAwaiter().GetResult();
         }
 
         if (settingsErrors is not null)
@@ -94,11 +94,12 @@ public class App : Application
             }
         });
 
-        services.AddSingleton<IDatabaseService, DatabaseService>();
+        services.AddSingleton<IDbService, DbService>();
     }
 
     private static void InitSingletons(ServiceCollection services)
     {
+        services.AddSingleton<IDbConnectionTester, DbConnectionTester>();
         services.AddSingleton<IGrafikService, GrafikService>();
         services.AddSingleton<ILanguageService, LanguageService>();
         services.AddSingleton<ILicenseService, LicenseService>();

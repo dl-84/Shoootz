@@ -6,6 +6,7 @@ using System.Text.Json;
 using NJsonSchema;
 using NJsonSchema.Validation;
 using Result;
+using Result.Struct;
 using Shoootz.Models.Settings;
 using Shoootz.Services.App;
 

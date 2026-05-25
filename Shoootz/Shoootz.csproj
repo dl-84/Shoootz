@@ -33,9 +33,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Library\Avalonia\Controls\ConfirmDialog\ConfirmDialog.csproj" />
-    <ProjectReference Include="..\..\Library\Avalonia\Controls\TextEditor\TextEditor.csproj" />
     <ProjectReference Include="..\..\Library\Avalonia\Controls\ContentDialog\ContentDialog.csproj" />
+    <ProjectReference Include="..\..\Library\Avalonia\Controls\InfoDialog\InfoDialog.csproj" />
     <ProjectReference Include="..\..\Library\Avalonia\Controls\LicenseTable\LicenseTable.csproj" />
+    <ProjectReference Include="..\..\Library\Avalonia\Controls\TextEditor\TextEditor.csproj" />
     <ProjectReference Include="..\..\Library\Avalonia\Controls\TitleBar\TitleBar.csproj" />
     <ProjectReference Include="..\..\Library\Avalonia\Themes\Disag\Disag.csproj" />
     <ProjectReference Include="..\..\Library\C#\Result\Result.csproj" />

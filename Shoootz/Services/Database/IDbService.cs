@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 
 namespace Shoootz.Services.Database;
 
-internal interface IDatabaseService
+internal interface IDbService
 {
     Task InitializeAsync();
 }

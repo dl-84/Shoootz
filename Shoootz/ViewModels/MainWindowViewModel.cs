@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Shoootz.Models.Settings;
+using Shoootz.Services.Database;
 using Shoootz.Services.Language;
 using Shoootz.Services.License;
 using Shoootz.Services.Localization;
@@ -26,6 +27,8 @@ internal partial class MainWindowViewModel : ViewModelBase
 
     private const int Index8LicensesSite = 8;
 
+    private readonly IDbConnectionTester _connectionTester;
+
     private readonly ILanguageService _languageService;
 
     private readonly ILicenseService _licenseService;
@@ -37,12 +40,14 @@ internal partial class MainWindowViewModel : ViewModelBase
     private SettingsModel? _settings;
 
     public MainWindowViewModel(
+        IDbConnectionTester connectionTester,
         ILanguageService languageService,
         ILicenseService licenseService,
         ILocalizationService localizationService,
         ISettingsService settingsService
     )
     {
+        _connectionTester = connectionTester;
         _languageService = languageService;
         _licenseService = licenseService;
         _localizationService = localizationService;
@@ -75,7 +80,11 @@ internal partial class MainWindowViewModel : ViewModelBase
 
     private DatabaseViewModel CreateDatabaseViewModel()
     {
-        DatabaseViewModel viewModel = new DatabaseViewModel(_settings ?? new SettingsModel(), _settingsService);
+        DatabaseViewModel viewModel = new DatabaseViewModel(
+            _connectionTester,
+            _settings ?? new SettingsModel(),
+            _settingsService
+        );
         viewModel.SettingsSaved += settings => _settings = settings;
         return viewModel;
     }

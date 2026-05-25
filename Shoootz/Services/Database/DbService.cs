@@ -4,7 +4,7 @@ using Shoootz.Context;
 
 namespace Shoootz.Services.Database;
 
-internal class DatabaseService(IDbContextFactory<AppDbContext> contextFactory) : IDatabaseService
+internal class DbService(IDbContextFactory<AppDbContext> contextFactory) : IDbService
 {
     public async Task InitializeAsync()
     {
