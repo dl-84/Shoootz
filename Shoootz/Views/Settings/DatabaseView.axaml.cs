@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Controls.InfoDialog;
+using Controls.InfoDialog.Enum;
 using Shoootz.Services.Localization;
 using Shoootz.ViewModels;
 using Shoootz.ViewModels.Settings;
@@ -53,7 +54,7 @@ public partial class DatabaseView : UserControl
             {
                 CloseText = LocalizationService.Instance["Close"],
                 DialogTitle = LocalizationService.Instance["TestConnection"],
-                IconType = success ? IconType.Info : IconType.Warning,
+                IconType = IconType.Error, // success ? IconType.Info : IconType.Warning,
                 Message = success
                     ? LocalizationService.Instance["ConnectionSuccessful"]
                     : errorMessage ?? LocalizationService.Instance["ConnectionFailed"],
