@@ -22,6 +22,15 @@
         d:DesignWidth="1200"
         mc:Ignorable="d">
 
+    <Window.Styles>
+        <Style Selector="Border.status-pill">
+            <Setter Property="Background" Value="{DynamicResource ErrorBrush}" />
+        </Style>
+        <Style Selector="Border.status-pill.connected">
+            <Setter Property="Background" Value="{DynamicResource SuccessBrush}" />
+        </Style>
+    </Window.Styles>
+
     <Border x:Name="RootBorder"
             ClipToBounds="True"
             CornerRadius="10">
@@ -37,32 +46,28 @@
                             Background="{DynamicResource PrimaryBrush}">
                         <DockPanel>
                             <StackPanel DockPanel.Dock="Bottom"
-                                        Margin="20,16"
+                                        Margin="20,16,20,20"
                                         Spacing="8">
-                                <StackPanel Orientation="Horizontal"
-                                            Spacing="6"
-                                            VerticalAlignment="Center">
-                                    <Ellipse Fill="{DynamicResource SecondaryBrush}"
-                                             Height="8"
-                                             VerticalAlignment="Center"
-                                             Width="8" />
-                                    <TextBlock FontSize="11"
-                                               Foreground="{DynamicResource FooterForegroundBrush}"
-                                               Text="{loc:Localization Database}"
-                                               VerticalAlignment="Center" />
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal"
-                                            Spacing="6"
-                                            VerticalAlignment="Center">
-                                    <Ellipse Fill="{DynamicResource ErrorBrush}"
-                                             Height="8"
-                                             VerticalAlignment="Center"
-                                             Width="8" />
-                                    <TextBlock FontSize="11"
-                                               Foreground="{DynamicResource FooterForegroundBrush}"
-                                               Text="UNC Broadcast"
-                                               VerticalAlignment="Center" />
-                                </StackPanel>
+                                <Border Classes="status-pill"
+                                        Classes.connected="{Binding IsDbConnected}"
+                                        CornerRadius="6"
+                                        Padding="12,6">
+                                    <TextBlock FontSize="13"
+                                               Foreground="{DynamicResource TextWhiteBrush}"
+                                               HorizontalAlignment="Center"
+                                               Text="{Binding DbBadgeText}"
+                                               TextAlignment="Center" />
+                                </Border>
+                                <Border Classes="status-pill"
+                                        Classes.connected="{Binding IsUdpConnected}"
+                                        CornerRadius="6"
+                                        Padding="12,6">
+                                    <TextBlock FontSize="13"
+                                               Foreground="{DynamicResource TextWhiteBrush}"
+                                               HorizontalAlignment="Center"
+                                               Text="{Binding UdpBadgeText}"
+                                               TextAlignment="Center" />
+                                </Border>
                             </StackPanel>
                             <ListBox Classes="nav"
                                      ItemContainerTheme="{DynamicResource NavigationItem}"

@@ -138,6 +138,13 @@
     <value>Löschen</value>
   </data>
 
+  <data name="StatusConnected" xml:space="preserve">
+    <value>verbunden</value>
+  </data>
+  <data name="StatusDisconnected" xml:space="preserve">
+    <value>getrennt</value>
+  </data>
+
   <!-- Database Settings -->
   <data name="ConnectionFailed" xml:space="preserve">
     <value>Verbindung fehlgeschlagen</value>
@@ -162,5 +169,8 @@
   </data>
   <data name="TestConnection" xml:space="preserve">
     <value>Verbindung testen</value>
+  </data>
+  <data name="UdpBroadcast" xml:space="preserve">
+    <value>UDP Broadcast</value>
   </data>
 </root>

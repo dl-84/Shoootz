@@ -139,6 +139,13 @@
     <value>Delete</value>
   </data>
 
+  <data name="StatusConnected" xml:space="preserve">
+    <value>connected</value>
+  </data>
+  <data name="StatusDisconnected" xml:space="preserve">
+    <value>disconnected</value>
+  </data>
+
   <!-- Database Settings -->
   <data name="ConnectionFailed" xml:space="preserve">
     <value>Connection failed</value>
@@ -163,5 +170,8 @@
   </data>
   <data name="TestConnection" xml:space="preserve">
     <value>Test connection</value>
+  </data>
+  <data name="UdpBroadcast" xml:space="preserve">
+    <value>UDP Broadcast</value>
   </data>
 </root>

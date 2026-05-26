@@ -48,6 +48,7 @@ public class App : Application
         if (settings is not null)
         {
             mainWindowViewModel.InitSettings(settings);
+            mainWindowViewModel.CheckDbConnection();
             _serviceProvider.GetRequiredService<IDbService>().InitializeAsync().GetAwaiter().GetResult();
         }
 

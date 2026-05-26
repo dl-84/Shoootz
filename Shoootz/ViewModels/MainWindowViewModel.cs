@@ -64,9 +64,46 @@ internal partial class MainWindowViewModel : ViewModelBase
     public partial ViewModelBase CurrentPage { get; set; }
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(DbBadgeText))]
+    public partial bool IsDbConnected { get; set; }
+
+    [ObservableProperty]
     public partial bool IsDialogOpen { get; set; }
 
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(UdpBadgeText))]
+    public partial bool IsUdpConnected { get; set; }
+
     public bool IsNavbarEnabled => CurrentPage is not SettingsErrorViewModel;
+
+    public string DbBadgeText =>
+        $"{_localizationService["Database"]} {_localizationService[IsDbConnected ? "StatusConnected" : "StatusDisconnected"]}";
+
+    public string UdpBadgeText =>
+        $"{_localizationService["UdpBroadcast"]} {_localizationService[IsUdpConnected ? "StatusConnected" : "StatusDisconnected"]}";
+
+    public void CheckDbConnection()
+    {
+        if (_settings is null)
+        {
+            return;
+        }
+
+        _connectionTester
+            .Run(_settings.DbConnectionModel)
+            .Match<object?>(
+                _ =>
+                {
+                    IsDbConnected = true;
+                    return null;
+                },
+                _ =>
+                {
+                    IsDbConnected = false;
+                    return null;
+                }
+            );
+    }
 
     public void InitSettings(SettingsModel settings)
     {
@@ -85,7 +122,11 @@ internal partial class MainWindowViewModel : ViewModelBase
             _settings ?? new SettingsModel(),
             _settingsService
         );
-        viewModel.SettingsSaved += settings => _settings = settings;
+        viewModel.SettingsSaved += settings =>
+        {
+            _settings = settings;
+            CheckDbConnection();
+        };
         return viewModel;
     }
 
