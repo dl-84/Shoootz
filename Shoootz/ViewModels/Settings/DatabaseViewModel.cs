@@ -43,14 +43,23 @@ internal partial class DatabaseViewModel : ViewModelBase
     [ObservableProperty]
     public partial ProviderType SelectedProvider { get; set; }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(CanSave))]
     private void Save()
     {
         _settings.DbConnectionModel.ConnectionString = ConnectionString;
         _settings.DbConnectionModel.ProviderType = SelectedProvider;
         _settingsService.Save(_settings);
         SettingsSaved?.Invoke(_settings);
+        SaveCommand.NotifyCanExecuteChanged();
     }
+
+    private bool CanSave() =>
+        ConnectionString != _settings.DbConnectionModel.ConnectionString
+        || SelectedProvider != _settings.DbConnectionModel.ProviderType;
+
+    partial void OnConnectionStringChanged(string value) => SaveCommand.NotifyCanExecuteChanged();
+
+    partial void OnSelectedProviderChanged(ProviderType value) => SaveCommand.NotifyCanExecuteChanged();
 
     [RelayCommand]
     private void TestConnection()

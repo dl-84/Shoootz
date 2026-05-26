@@ -17,7 +17,7 @@
         Title="Shoootz"
         TransparencyLevelHint="Transparent"
         Width="1200"
-        WindowDecorations="None"
+        WindowDecorations="BorderOnly"
         d:DesignHeight="750"
         d:DesignWidth="1200"
         mc:Ignorable="d">
