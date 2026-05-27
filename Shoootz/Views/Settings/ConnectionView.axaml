@@ -15,34 +15,41 @@
             <Border Classes="card">
                 <StackPanel Spacing="16">
 
-                    <!--  Provider  -->
-                    <StackPanel Spacing="2">
-                        <TextBlock Classes="label"
-                                   FontSize="13"
-                                   Text="{loc:Localization Provider}" />
-                        <ComboBox ItemsSource="{Binding ProviderOptions}"
-                                  SelectedItem="{Binding SelectedProvider}" />
-                    </StackPanel>
-
-                    <!--  Connection String  -->
-                    <StackPanel Spacing="2">
-                        <TextBlock Classes="label"
-                                   FontSize="13"
-                                   Text="{loc:Localization ConnectionString}" />
-                        <TextBox Text="{Binding ConnectionString}" />
-                    </StackPanel>
-
-                    <!--  Buttons  -->
-                    <Grid ColumnDefinitions="Auto,Auto"
+                    <Grid ColumnDefinitions="Auto,*"
                           ColumnSpacing="8">
-                        <Button Grid.Column="0"
-                                Classes="green"
-                                Command="{Binding SaveCommand}"
-                                Content="{loc:Localization Save}" />
-                        <Button Grid.Column="1"
-                                Classes="green"
-                                Command="{Binding TestConnectionCommand}"
-                                Content="{loc:Localization TestConnection}" />
+
+                        <!--  Provider  -->
+                        <StackPanel Grid.Column="0"
+                                    Spacing="2">
+                            <TextBlock Classes="label"
+                                       FontSize="13"
+                                       Text="{loc:Localization Provider}" />
+                            <ComboBox ItemsSource="{Binding ProviderOptions}"
+                                      SelectedItem="{Binding SelectedProvider}"
+                                      Width="170" />
+                        </StackPanel>
+
+                        <!--  Connection String + Buttons  -->
+                        <StackPanel Grid.Column="1"
+                                    Spacing="8">
+                            <StackPanel Spacing="2">
+                                <TextBlock Classes="label"
+                                           FontSize="13"
+                                           Text="{loc:Localization ConnectionString}" />
+                                <TextBox Text="{Binding ConnectionString}" />
+                            </StackPanel>
+                            <StackPanel HorizontalAlignment="Right"
+                                        Orientation="Horizontal"
+                                        Spacing="8">
+                                <Button Classes="green"
+                                        Command="{Binding SaveCommand}"
+                                        Content="{loc:Localization Save}" />
+                                <Button Classes="green"
+                                        Command="{Binding TestConnectionCommand}"
+                                        Content="{loc:Localization TestConnection}" />
+                            </StackPanel>
+                        </StackPanel>
+
                     </Grid>
 
                 </StackPanel>

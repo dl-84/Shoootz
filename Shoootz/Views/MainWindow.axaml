@@ -52,7 +52,7 @@
                                         Classes.connected="{Binding IsDbConnected}"
                                         CornerRadius="6"
                                         Padding="12,6">
-                                    <TextBlock FontSize="13"
+                                    <TextBlock FontSize="14"
                                                Foreground="{DynamicResource TextWhiteBrush}"
                                                HorizontalAlignment="Center"
                                                Text="{Binding DbBadgeText}"
@@ -62,7 +62,7 @@
                                         Classes.connected="{Binding IsUdpConnected}"
                                         CornerRadius="6"
                                         Padding="12,6">
-                                    <TextBlock FontSize="13"
+                                    <TextBlock FontSize="14"
                                                Foreground="{DynamicResource TextWhiteBrush}"
                                                HorizontalAlignment="Center"
                                                Text="{Binding UdpBadgeText}"
