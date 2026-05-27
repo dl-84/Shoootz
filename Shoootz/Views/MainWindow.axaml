@@ -97,7 +97,7 @@
                                     <TextBlock Text="{loc:Localization General}" />
                                 </ListBoxItem>
                                 <ListBoxItem>
-                                    <TextBlock Text="{loc:Localization Database}" />
+                                    <TextBlock Text="{loc:Localization Connections}" />
                                 </ListBoxItem>
                                 <ListBoxItem>
                                     <TextBlock Text="{loc:Localization Groups}" />

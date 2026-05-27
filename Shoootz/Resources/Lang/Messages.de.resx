@@ -15,13 +15,13 @@
 
   <!-- Navigation -->
   <data name="Competition" xml:space="preserve">
-    <value> Wettkampf</value>
+    <value>Wettkampf</value>
   </data>
-  <data name="Settings" xml:space="preserve">
-    <value>Einstellungen</value>
+  <data name="Connections" xml:space="preserve">
+    <value>Verbindungen</value>
   </data>
-  <data name="Info" xml:space="preserve">
-    <value>Info</value>
+  <data name="Database" xml:space="preserve">
+    <value>Datenbank</value>
   </data>
   <data name="Evaluate" xml:space="preserve">
     <value>Auswerten</value>
@@ -29,31 +29,40 @@
   <data name="General" xml:space="preserve">
     <value>Allgemein</value>
   </data>
-  <data name="Database" xml:space="preserve">
-    <value>Datenbank</value>
-  </data>
   <data name="Groups" xml:space="preserve">
     <value>Gruppen</value>
+  </data>
+  <data name="Info" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Einstellungen</value>
   </data>
   <data name="Version" xml:space="preserve">
     <value>Version</value>
   </data>
 
   <!-- General Settings -->
-  <data name="Error" xml:space="preserve">
-    <value>Fehler</value>
+  <data name="Close" xml:space="preserve">
+    <value>Schließen</value>
   </data>
-  <data name="RestoreDefaults" xml:space="preserve">
-    <value>Standard wiederherstellen</value>
+  <data name="Language" xml:space="preserve">
+    <value>Sprache</value>
   </data>
-  <data name="SaveAndRestart" xml:space="preserve">
-    <value>Speichern &amp; Neustart</value>
+  <data name="OpenFolder" xml:space="preserve">
+    <value>Ordner öffnen</value>
   </data>
-<data name="Restart" xml:space="preserve">
+  <data name="Restart" xml:space="preserve">
     <value>Neustart</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Speichern</value>
   </data>
   <data name="SettingsErrorHint" xml:space="preserve">
     <value>Beheben Sie den folgenden Fehler und validieren Sie die Datei erneut.</value>
+  </data>
+  <data name="SettingsFileError" xml:space="preserve">
+    <value>Fehler in der Einstellungsdatei</value>
   </data>
   <data name="SettingsValidSuccess" xml:space="preserve">
     <value>Validierung erfolgreich.</value>
@@ -61,60 +70,19 @@
   <data name="SettingsValidSuccessHint" xml:space="preserve">
     <value>Datei speichern und Anwendung neu starten.</value>
   </data>
-  <data name="SettingsFileError" xml:space="preserve">
-    <value>Fehler in der Einstellungsdatei</value>
+  <data name="ShowSettings" xml:space="preserve">
+    <value>Einstellungen anzeigen</value>
   </data>
   <data name="Validate" xml:space="preserve">
     <value>Validieren</value>
   </data>
-  <data name="SettingsLoadError" xml:space="preserve">
-    <value>Konfigurationsdatei ungültig</value>
-  </data>
-  <data name="Language" xml:space="preserve">
-    <value>Sprache</value>
-  </data>
-<data name="Close" xml:space="preserve">
-    <value>Schließen</value>
-  </data>
-  <data name="OpenFolder" xml:space="preserve">
-    <value>Ordner öffnen</value>
-  </data>
-  <data name="ShowSettings" xml:space="preserve">
-    <value>Einstellungen anzeigen</value>
-  </data>
-  <!-- Version -->
-  <data name="AppName" xml:space="preserve">
-    <value>Shoootz</value>
-  </data>
-  <data name="Application" xml:space="preserve">
-    <value>Anwendung</value>
-  </data>
+
+  <!-- Version / Info -->
   <data name="About" xml:space="preserve">
     <value>Über</value>
   </data>
   <data name="AboutTitle" xml:space="preserve">
     <value>Über Shoootz</value>
-  </data>
-  <data name="Licenses" xml:space="preserve">
-    <value>Lizenzen</value>
-  </data>
-  <data name="LicensesTitle" xml:space="preserve">
-    <value>Genutzte Drittanbieter-Komponenten dieser Anwendung</value>
-  </data>
-  <data name="ThirdPartyPackages" xml:space="preserve">
-    <value>Drittanbieter-Pakete</value>
-  </data>
-  <data name="License" xml:space="preserve">
-    <value>Lizenz</value>
-  </data>
-  <data name="Link" xml:space="preserve">
-    <value>Link</value>
-  </data>
-  <data name="MitLicense" xml:space="preserve">
-    <value>MIT Lizenz</value>
-  </data>
-  <data name="Name" xml:space="preserve">
-    <value>Name</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Abbrechen</value>
@@ -128,32 +96,48 @@
   <data name="DangerZone" xml:space="preserve">
     <value>Danger Zone</value>
   </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
   <data name="DeleteAll" xml:space="preserve">
     <value>Alles löschen</value>
   </data>
   <data name="DeleteSettingsFile" xml:space="preserve">
     <value>Einstellungsdatei löschen</value>
   </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Löschen</value>
+  <data name="License" xml:space="preserve">
+    <value>Lizenz</value>
+  </data>
+  <data name="Licenses" xml:space="preserve">
+    <value>Lizenzen</value>
+  </data>
+  <data name="LicensesTitle" xml:space="preserve">
+    <value>Genutzte Drittanbieter-Komponenten dieser Anwendung</value>
+  </data>
+  <data name="Link" xml:space="preserve">
+    <value>Link</value>
+  </data>
+  <data name="MitLicense" xml:space="preserve">
+    <value>MIT Lizenz</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
   </data>
 
+  <!-- Connection Status -->
   <data name="StatusConnected" xml:space="preserve">
     <value>verbunden</value>
   </data>
   <data name="StatusDisconnected" xml:space="preserve">
     <value>getrennt</value>
   </data>
+  <data name="UdpBroadcast" xml:space="preserve">
+    <value>UDP Broadcast</value>
+  </data>
 
   <!-- Database Settings -->
   <data name="ConnectionFailed" xml:space="preserve">
     <value>Verbindung fehlgeschlagen</value>
-  </data>
-  <data name="DbErrorFileNotFound" xml:space="preserve">
-    <value>Datenbankdatei nicht gefunden: {0}</value>
-  </data>
-  <data name="DbErrorUnknownProvider" xml:space="preserve">
-    <value>Unbekannter Datenbankprovider</value>
   </data>
   <data name="ConnectionString" xml:space="preserve">
     <value>Connection String</value>
@@ -161,16 +145,16 @@
   <data name="ConnectionSuccessful" xml:space="preserve">
     <value>Verbindung erfolgreich</value>
   </data>
+  <data name="DbErrorFileNotFound" xml:space="preserve">
+    <value>Datenbankdatei nicht gefunden: {0}</value>
+  </data>
+  <data name="DbErrorUnknownProvider" xml:space="preserve">
+    <value>Unbekannter Datenbankprovider</value>
+  </data>
   <data name="Provider" xml:space="preserve">
     <value>Provider</value>
   </data>
-  <data name="Save" xml:space="preserve">
-    <value>Speichern</value>
-  </data>
   <data name="TestConnection" xml:space="preserve">
     <value>Verbindung testen</value>
-  </data>
-  <data name="UdpBroadcast" xml:space="preserve">
-    <value>UDP Broadcast</value>
   </data>
 </root>
