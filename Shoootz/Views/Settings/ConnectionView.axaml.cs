@@ -10,12 +10,12 @@ using Shoootz.ViewModels.Settings;
 namespace Shoootz.Views.Settings;
 
 /// <inheritdoc />
-public partial class DatabaseView : UserControl
+public partial class ConnectionView : UserControl
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="DatabaseView"/> class.
+    /// Initializes a new instance of the <see cref="ConnectionView"/> class.
     /// </summary>
-    public DatabaseView()
+    public ConnectionView()
     {
         InitializeComponent();
         DataContextChanged += OnDataContextChanged;
@@ -23,7 +23,7 @@ public partial class DatabaseView : UserControl
 
     private void OnDataContextChanged(object? sender, EventArgs e)
     {
-        if (DataContext is DatabaseViewModel viewModel)
+        if (DataContext is ConnectionViewModel viewModel)
         {
             viewModel.ConnectionTestCompleted += OnConnectionTestCompleted;
         }

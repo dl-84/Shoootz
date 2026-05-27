@@ -9,7 +9,7 @@ using Shoootz.Services.Settings;
 
 namespace Shoootz.ViewModels.Settings;
 
-internal partial class DatabaseViewModel : ViewModelBase
+internal partial class ConnectionViewModel : ViewModelBase
 {
     private readonly IDbConnectionTester _connectionTester;
 
@@ -17,7 +17,7 @@ internal partial class DatabaseViewModel : ViewModelBase
 
     private readonly SettingsModel _settings;
 
-    public DatabaseViewModel(
+    public ConnectionViewModel(
         IDbConnectionTester connectionTester,
         SettingsModel settings,
         ISettingsService settingsService

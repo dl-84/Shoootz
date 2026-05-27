@@ -115,9 +115,9 @@ internal partial class MainWindowViewModel : ViewModelBase
         CurrentPage = new SettingsErrorViewModel(settingsErrors, _settingsService);
     }
 
-    private DatabaseViewModel CreateDatabaseViewModel()
+    private ConnectionViewModel CreateConnectionViewModel()
     {
-        DatabaseViewModel viewModel = new DatabaseViewModel(
+        ConnectionViewModel viewModel = new ConnectionViewModel(
             _connectionTester,
             _settings ?? new SettingsModel(),
             _settingsService
@@ -150,7 +150,7 @@ internal partial class MainWindowViewModel : ViewModelBase
         {
             Index1EvaluateSite => new EvaluationViewModel(),
             Index3GeneralSite => CreateGeneralViewModel(),
-            Index4DatabaseSite => CreateDatabaseViewModel(),
+            Index4DatabaseSite => CreateConnectionViewModel(),
             Index5GroupsSite => new GroupsViewModel(),
             Index7AboutSite => new AboutViewModel(_licenseService, _localizationService),
             Index8LicensesSite => new LicensesViewModel(_licenseService, _localizationService),
