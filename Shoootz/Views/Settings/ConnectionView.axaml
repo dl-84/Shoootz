@@ -1,4 +1,4 @@
-<UserControl x:Class="Shoootz.Views.Settings.ConnectionView"
+﻿<UserControl x:Class="Shoootz.Views.Settings.ConnectionView"
              xmlns="https://github.com/avaloniaui"
              xmlns:loc="using:Shoootz.Extensions"
              xmlns:vm="using:Shoootz.ViewModels.Settings"
@@ -42,9 +42,16 @@
                                     <TextBox Grid.Column="0"
                                              Text="{Binding ConnectionString}" />
                                     <Button Grid.Column="1"
-                                            Classes="green xsmall"
+                                            Classes="green icon"
                                             Command="{Binding TestConnectionCommand}"
-                                            Content="{loc:Localization Test}" />
+                                            ToolTip.HorizontalOffset="0"
+                                            ToolTip.Placement="TopEdgeAlignedRight"
+                                            ToolTip.Tip="{loc:Localization TestConnection}"
+                                            ToolTip.VerticalOffset="-2">
+                                        <Image Height="24"
+                                               Source="{Binding HeartPulseIcon}"
+                                               Width="24" />
+                                    </Button>
                                 </Grid>
                             </StackPanel>
 
@@ -83,7 +90,9 @@
                                     <TextBox Grid.Column="0" />
                                     <Button Grid.Column="1"
                                             Classes="green xsmall"
-                                            Content="{loc:Localization Test}" />
+                                            Content="{loc:Localization Test}"
+                                            ToolTip.Placement="TopEdgeAlignedRight"
+                                            ToolTip.Tip="{loc:Localization TestConnection}" />
                                 </Grid>
                             </StackPanel>
 

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Shoootz.Models.Settings;
 using Shoootz.Services.Database;
+using Shoootz.Services.Grafik;
 using Shoootz.Services.Language;
 using Shoootz.Services.License;
 using Shoootz.Services.Localization;
@@ -29,6 +30,8 @@ internal partial class MainWindowViewModel : ViewModelBase
 
     private readonly IDbConnectionTester _connectionTester;
 
+    private readonly IGrafikService _grafikService;
+
     private readonly ILanguageService _languageService;
 
     private readonly ILicenseService _licenseService;
@@ -41,6 +44,7 @@ internal partial class MainWindowViewModel : ViewModelBase
 
     public MainWindowViewModel(
         IDbConnectionTester connectionTester,
+        IGrafikService grafikService,
         ILanguageService languageService,
         ILicenseService licenseService,
         ILocalizationService localizationService,
@@ -48,6 +52,7 @@ internal partial class MainWindowViewModel : ViewModelBase
     )
     {
         _connectionTester = connectionTester;
+        _grafikService = grafikService;
         _languageService = languageService;
         _licenseService = licenseService;
         _localizationService = localizationService;
@@ -119,6 +124,7 @@ internal partial class MainWindowViewModel : ViewModelBase
     {
         ConnectionViewModel viewModel = new ConnectionViewModel(
             _connectionTester,
+            _grafikService,
             _settings ?? new SettingsModel(),
             _settingsService
         );

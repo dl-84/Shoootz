@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
+using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Shoootz.Models.Settings;
 using Shoootz.Models.Settings.Database;
+using Shoootz.Services.App;
 using Shoootz.Services.Database;
+using Shoootz.Services.Grafik;
 using Shoootz.Services.Settings;
 
 namespace Shoootz.ViewModels.Settings;
@@ -19,6 +22,7 @@ internal partial class ConnectionViewModel : ViewModelBase
 
     public ConnectionViewModel(
         IDbConnectionTester connectionTester,
+        IGrafikService grafikService,
         SettingsModel settings,
         ISettingsService settingsService
     )
@@ -29,11 +33,14 @@ internal partial class ConnectionViewModel : ViewModelBase
 
         ConnectionString = settings.DbConnectionModel.ConnectionString;
         SelectedProvider = settings.DbConnectionModel.ProviderType;
+        HeartPulseIcon = grafikService.GetIcon(AppIcon.HeartPulse, AppBrush.PrimaryForeground);
     }
 
     public event Action<bool, string?>? ConnectionTestCompleted;
 
     public event Action<SettingsModel>? SettingsSaved;
+
+    public IImage HeartPulseIcon { get; }
 
     public IEnumerable<ProviderType> ProviderOptions { get; } = Enum.GetValues<ProviderType>();
 

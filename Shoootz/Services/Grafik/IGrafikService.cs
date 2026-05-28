@@ -1,10 +1,11 @@
+using Avalonia.Media;
 using Avalonia.Media.Imaging;
 
 namespace Shoootz.Services.Grafik;
 
 internal interface IGrafikService
 {
-    Bitmap GetErrorTriangle { get; }
+    IImage GetIcon(string name, IBrush brush);
 
     Bitmap GetFlag(string twoLetterIsoLanguageName);
 }
