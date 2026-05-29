@@ -26,7 +26,6 @@
       <StronglyTypedClassName>Messages</StronglyTypedClassName>
     </EmbeddedResource>
     <Compile Update="Resources\Lang\Messages.Designer.cs">
-      <AutoGen>True</AutoGen>
       <DependentUpon>Messages.resx</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Resources\JsonSchemas\Settings.schema.json" />
