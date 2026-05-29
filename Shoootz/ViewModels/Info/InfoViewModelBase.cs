@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using Controls.LicenseTable.Models;
+using Shoootz.Resources.Lang;
 using Shoootz.Services.Localization;
+using Tmds.DBus.Protocol;
 
 namespace Shoootz.ViewModels.Info;
 
@@ -28,10 +30,10 @@ internal abstract class InfoViewModelBase : ViewModelBase, IDisposable
 
     private IReadOnlyList<string> BuildColumnHeaders() =>
         [
-            _localizationService["Name"],
-            _localizationService["Version"],
-            _localizationService["License"],
-            _localizationService["Link"],
+            _localizationService[nameof(Messages.Database)],
+            _localizationService[nameof(Messages.Version)],
+            _localizationService[nameof(Messages.License)],
+            _localizationService[nameof(Messages.Link)],
         ];
 
     private void OnLanguageChanged(object? sender, EventArgs e)

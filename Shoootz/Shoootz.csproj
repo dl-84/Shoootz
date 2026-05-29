@@ -13,11 +13,22 @@
     <DebugType Condition="'$(Configuration)' == 'Release'">none</DebugType>
     <DebugSymbols Condition="'$(Configuration)' == 'Release'">false</DebugSymbols>
     <Version>1.0.0</Version>
-    <NoWarn>SA0001;SA1309;SA1101;SA1200;SA1633;SA1000;SA1009;SA1010;SA1111;SA1502;SA1313;SA1303;SA1311;AVLN3001</NoWarn>
+    <NoWarn>SA0001;SA1309;SA1101;SA1200;SA1633;SA1000;SA1009;SA1010;SA1111;SA1502;SA1313;SA1303;SA1311;AVLN3001;CS2002</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
     <AvaloniaResource Include="Assets\**" />
+    <EmbeddedResource Update="Resources\Lang\Messages.resx">
+      <Generator>MSBuild:Compile</Generator>
+      <StronglyTypedFileName>Resources\Lang\Messages.Designer.cs</StronglyTypedFileName>
+      <StronglyTypedLanguage>CSharp</StronglyTypedLanguage>
+      <StronglyTypedNamespace>Shoootz.Resources.Lang</StronglyTypedNamespace>
+      <StronglyTypedClassName>Messages</StronglyTypedClassName>
+    </EmbeddedResource>
+    <Compile Update="Resources\Lang\Messages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Messages.resx</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Resources\JsonSchemas\Settings.schema.json" />
     <EmbeddedResource Include="Resources\Licenses\licenses.json" />
     <EmbeddedResource Include="..\LICENSE" LogicalName="Shoootz.LICENSE" />

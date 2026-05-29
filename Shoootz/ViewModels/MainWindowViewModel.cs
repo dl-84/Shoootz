@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Shoootz.Models.Settings;
+using Shoootz.Resources.Lang;
 using Shoootz.Services.Database;
 using Shoootz.Services.Grafik;
 using Shoootz.Services.Language;
@@ -81,11 +82,32 @@ internal partial class MainWindowViewModel : ViewModelBase
 
     public bool IsNavbarEnabled => CurrentPage is not SettingsErrorViewModel;
 
-    public string DbBadgeText =>
-        $"{_localizationService["Database"]} {_localizationService[IsDbConnected ? "StatusConnected" : "StatusDisconnected"]}";
+    public string DbBadgeText
+    {
+        get
+        {
+            string connectionType = _localizationService[nameof(Messages.Database)];
 
-    public string UdpBadgeText =>
-        $"{_localizationService["UdpBroadcast"]} {_localizationService[IsUdpConnected ? "StatusConnected" : "StatusDisconnected"]}";
+            string connectionState = _localizationService[
+                IsDbConnected ? nameof(Messages.StatusConnected) : nameof(Messages.StatusDisconnected)
+            ];
+            return $"{connectionType} {connectionState}";
+        }
+    }
+
+    public string UdpBadgeText
+    {
+        get
+        {
+            string connectionType = _localizationService[nameof(Messages.UdpBroadcast)];
+
+            string connectionState = _localizationService[
+                IsUdpConnected ? nameof(Messages.StatusConnected) : nameof(Messages.StatusDisconnected)
+            ];
+
+            return $"{connectionType} {connectionState}";
+        }
+    }
 
     public void CheckDbConnection()
     {
