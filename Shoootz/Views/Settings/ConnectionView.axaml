@@ -121,6 +121,10 @@
 
                         </Grid>
 
+                        <CheckBox Content="{loc:Localization AutoConnect}"
+                                  FontSize="16"
+                                  IsChecked="{Binding AutoConnect}" />
+
                     </StackPanel>
                 </Border>
 

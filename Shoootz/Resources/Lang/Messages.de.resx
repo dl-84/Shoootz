@@ -136,6 +136,9 @@
   </data>
 
   <!-- UDP Settings -->
+  <data name="AutoConnect" xml:space="preserve">
+    <value>Beim Start automatisch verbinden</value>
+  </data>
   <data name="IpAddress" xml:space="preserve">
     <value>IP-Adresse</value>
   </data>

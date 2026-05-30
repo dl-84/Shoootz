@@ -31,6 +31,7 @@ internal partial class ConnectionViewModel : ViewModelBase
         _settings = settings;
         _settingsService = settingsService;
 
+        AutoConnect = settings.UdpConnectionModel.AutoConnect;
         ConnectionString = settings.DbConnectionModel.ConnectionString;
         IpAddress = settings.UdpConnectionModel.IpAddress;
         Port = settings.UdpConnectionModel.Port.ToString();
@@ -48,6 +49,9 @@ internal partial class ConnectionViewModel : ViewModelBase
 
     [ObservableProperty]
     public partial string ConnectionString { get; set; }
+
+    [ObservableProperty]
+    public partial bool AutoConnect { get; set; }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsIpAddressValid))]
@@ -69,6 +73,7 @@ internal partial class ConnectionViewModel : ViewModelBase
     {
         _settings.DbConnectionModel.ConnectionString = ConnectionString;
         _settings.DbConnectionModel.ProviderType = SelectedProvider;
+        _settings.UdpConnectionModel.AutoConnect = AutoConnect;
         _settings.UdpConnectionModel.IpAddress = IpAddress;
         _settings.UdpConnectionModel.Port = int.Parse(Port);
         _settingsService.Save(_settings);
@@ -80,11 +85,14 @@ internal partial class ConnectionViewModel : ViewModelBase
         int.TryParse(Port, out int port)
         && port is >= 1 and <= 65535
         && (
-            ConnectionString != _settings.DbConnectionModel.ConnectionString
+            AutoConnect != _settings.UdpConnectionModel.AutoConnect
+            || ConnectionString != _settings.DbConnectionModel.ConnectionString
             || IpAddress != _settings.UdpConnectionModel.IpAddress
             || Port != _settings.UdpConnectionModel.Port.ToString()
             || SelectedProvider != _settings.DbConnectionModel.ProviderType
         );
+
+    partial void OnAutoConnectChanged(bool value) => SaveCommand.NotifyCanExecuteChanged();
 
     partial void OnConnectionStringChanged(string value) => SaveCommand.NotifyCanExecuteChanged();
 

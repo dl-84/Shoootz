@@ -76,6 +76,15 @@ namespace Shoootz.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Automatically connect on startup.
+        /// </summary>
+        internal static string AutoConnect {
+            get {
+                return ResourceManager.GetString("AutoConnect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         internal static string Cancel {

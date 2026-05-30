@@ -32,6 +32,9 @@
     "UDP": {
       "type": "object",
       "properties": {
+        "AutoConnect": {
+          "type": "boolean"
+        },
         "IpAddress": {
           "$ref": "#/definitions/IpAddress"
         },
@@ -39,7 +42,7 @@
           "$ref": "#/definitions/PortNumber"
         }
       },
-      "required": ["IpAddress", "Port"],
+      "required": ["AutoConnect", "IpAddress", "Port"],
       "additionalProperties": false
     }
   },
