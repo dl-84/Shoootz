@@ -14,6 +14,7 @@ using Shoootz.Services.Language;
 using Shoootz.Services.License;
 using Shoootz.Services.Localization;
 using Shoootz.Services.Settings;
+using Shoootz.Services.Udp;
 using Shoootz.ViewModels;
 using Shoootz.Views;
 using Themes.Disag;
@@ -50,6 +51,11 @@ public class App : Application
             mainWindowViewModel.InitSettings(settings);
             mainWindowViewModel.CheckDbConnection();
             _serviceProvider.GetRequiredService<IDbService>().InitializeAsync().GetAwaiter().GetResult();
+
+            if (settings.UdpConnectionModel.AutoConnect)
+            {
+                _serviceProvider.GetRequiredService<IUdpListenerService>().Start(settings.UdpConnectionModel.Port);
+            }
         }
 
         if (settingsErrors is not null)
@@ -106,6 +112,7 @@ public class App : Application
         services.AddSingleton<ILicenseService, LicenseService>();
         services.AddSingleton<ILocalizationService, LocalizationService>();
         services.AddSingleton<ISettingsService>(_settingsService);
+        services.AddSingleton<IUdpListenerService, UdpListenerService>();
         services.AddSingleton<MainWindowViewModel>();
     }
 

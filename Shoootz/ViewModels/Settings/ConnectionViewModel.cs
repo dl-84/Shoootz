@@ -9,6 +9,7 @@ using Shoootz.Services.App;
 using Shoootz.Services.Database;
 using Shoootz.Services.Grafik;
 using Shoootz.Services.Settings;
+using Shoootz.Services.Udp;
 
 namespace Shoootz.ViewModels.Settings;
 
@@ -20,16 +21,20 @@ internal partial class ConnectionViewModel : ViewModelBase
 
     private readonly SettingsModel _settings;
 
+    private readonly IUdpListenerService _udpListenerService;
+
     public ConnectionViewModel(
         IDbConnectionTester connectionTester,
         IGrafikService grafikService,
         SettingsModel settings,
-        ISettingsService settingsService
+        ISettingsService settingsService,
+        IUdpListenerService udpListenerService
     )
     {
         _connectionTester = connectionTester;
         _settings = settings;
         _settingsService = settingsService;
+        _udpListenerService = udpListenerService;
 
         AutoConnect = settings.UdpConnectionModel.AutoConnect;
         ConnectionString = settings.DbConnectionModel.ConnectionString;
@@ -77,6 +82,7 @@ internal partial class ConnectionViewModel : ViewModelBase
         _settings.UdpConnectionModel.IpAddress = IpAddress;
         _settings.UdpConnectionModel.Port = int.Parse(Port);
         _settingsService.Save(_settings);
+
         SettingsSaved?.Invoke(_settings);
         SaveCommand.NotifyCanExecuteChanged();
     }
@@ -103,7 +109,23 @@ internal partial class ConnectionViewModel : ViewModelBase
     partial void OnSelectedProviderChanged(ProviderType value) => SaveCommand.NotifyCanExecuteChanged();
 
     [RelayCommand]
-    private void TestConnection()
+    private void TestUdpConnection()
+    {
+        if (!int.TryParse(Port, out int port))
+        {
+            return;
+        }
+
+        _udpListenerService
+            .TestConnection(port)
+            .Match(
+                _ => ConnectionTestCompleted?.Invoke(true, null),
+                error => ConnectionTestCompleted?.Invoke(false, error.Value.Message)
+            );
+    }
+
+    [RelayCommand]
+    private void TestDbConnection()
     {
         DbConnectionModel dbConnection = new DbConnectionModel
         {
@@ -113,17 +135,9 @@ internal partial class ConnectionViewModel : ViewModelBase
 
         _connectionTester
             .Run(dbConnection)
-            .Match<object?>(
-                _ =>
-                {
-                    ConnectionTestCompleted?.Invoke(true, null);
-                    return null;
-                },
-                error =>
-                {
-                    ConnectionTestCompleted?.Invoke(false, error.Value.Message);
-                    return null;
-                }
+            .Match(
+                _ => ConnectionTestCompleted?.Invoke(true, null),
+                error => ConnectionTestCompleted?.Invoke(false, error.Value.Message)
             );
     }
 }

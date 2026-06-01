@@ -43,7 +43,7 @@
                                              Text="{Binding ConnectionString}" />
                                     <Button Grid.Column="1"
                                             Classes="green icon"
-                                            Command="{Binding TestConnectionCommand}"
+                                            Command="{Binding TestDbConnectionCommand}"
                                             ToolTip.HorizontalOffset="0"
                                             ToolTip.Placement="TopEdgeAlignedRight"
                                             ToolTip.Tip="{loc:Localization TestConnection}"
@@ -103,6 +103,7 @@
                                              loc:InputFilter.AllowedPattern="[0-9.]" />
                                     <Button Grid.Column="1"
                                             Classes="green icon"
+                                            Command="{Binding TestUdpConnectionCommand}"
                                             ToolTip.HorizontalOffset="0"
                                             ToolTip.Placement="TopEdgeAlignedRight"
                                             ToolTip.Tip="{loc:Localization TestConnection}"

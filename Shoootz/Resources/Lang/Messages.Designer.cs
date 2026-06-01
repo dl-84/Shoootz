@@ -491,6 +491,15 @@ namespace Shoootz.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to UDP.
+        /// </summary>
+        internal static string Udp {
+            get {
+                return ResourceManager.GetString("Udp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to UDP Broadcast.
         /// </summary>
         internal static string UdpBroadcast {

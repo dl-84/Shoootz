@@ -178,4 +178,7 @@
   <data name="TestConnection" xml:space="preserve">
     <value>Test connection</value>
   </data>
+  <data name="Udp" xml:space="preserve">
+    <value>UDP</value>
+  </data>
 </root>

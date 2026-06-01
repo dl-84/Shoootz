@@ -8,6 +8,7 @@ using Shoootz.Services.Language;
 using Shoootz.Services.License;
 using Shoootz.Services.Localization;
 using Shoootz.Services.Settings;
+using Shoootz.Services.Udp;
 using Shoootz.ViewModels.Competition;
 using Shoootz.ViewModels.Error;
 using Shoootz.ViewModels.Info;
@@ -41,6 +42,8 @@ internal partial class MainWindowViewModel : ViewModelBase
 
     private readonly ISettingsService _settingsService;
 
+    private readonly IUdpListenerService _udpListenerService;
+
     private SettingsModel? _settings;
 
     public MainWindowViewModel(
@@ -49,7 +52,8 @@ internal partial class MainWindowViewModel : ViewModelBase
         ILanguageService languageService,
         ILicenseService licenseService,
         ILocalizationService localizationService,
-        ISettingsService settingsService
+        ISettingsService settingsService,
+        IUdpListenerService udpListenerService
     )
     {
         _connectionTester = connectionTester;
@@ -58,6 +62,8 @@ internal partial class MainWindowViewModel : ViewModelBase
         _licenseService = licenseService;
         _localizationService = localizationService;
         _settingsService = settingsService;
+        _udpListenerService = udpListenerService;
+        _udpListenerService.IsListeningChanged += (_, isListening) => IsUdpConnected = isListening;
 
         CurrentPage = new EvaluationViewModel();
     }
@@ -99,7 +105,7 @@ internal partial class MainWindowViewModel : ViewModelBase
     {
         get
         {
-            string connectionType = _localizationService[nameof(Messages.UdpBroadcast)];
+            string connectionType = _localizationService[nameof(Messages.Udp)];
 
             string connectionState = _localizationService[
                 IsUdpConnected ? nameof(Messages.StatusConnected) : nameof(Messages.StatusDisconnected)
@@ -116,20 +122,7 @@ internal partial class MainWindowViewModel : ViewModelBase
             return;
         }
 
-        _connectionTester
-            .Run(_settings.DbConnectionModel)
-            .Match<object?>(
-                _ =>
-                {
-                    IsDbConnected = true;
-                    return null;
-                },
-                _ =>
-                {
-                    IsDbConnected = false;
-                    return null;
-                }
-            );
+        _connectionTester.Run(_settings.DbConnectionModel).Match(_ => IsDbConnected = true, _ => IsDbConnected = false);
     }
 
     public void InitSettings(SettingsModel settings)
@@ -148,7 +141,8 @@ internal partial class MainWindowViewModel : ViewModelBase
             _connectionTester,
             _grafikService,
             _settings ?? new SettingsModel(),
-            _settingsService
+            _settingsService,
+            _udpListenerService
         );
         viewModel.SettingsSaved += settings =>
         {
