@@ -13,6 +13,7 @@ using Shoootz.Services.Grafik;
 using Shoootz.Services.Language;
 using Shoootz.Services.License;
 using Shoootz.Services.Localization;
+using Shoootz.Services.Parser;
 using Shoootz.Services.Settings;
 using Shoootz.Services.Udp;
 using Shoootz.ViewModels;
@@ -114,6 +115,7 @@ public class App : Application
         services.AddSingleton<ILicenseService, LicenseService>();
         services.AddSingleton<ILocalizationService, LocalizationService>();
         services.AddSingleton<ISettingsService>(_settingsService);
+        services.AddSingleton<IShotDataParser, ShotDataParser>();
         services.AddSingleton<IUdpListenerService, UdpListenerService>();
         services.AddSingleton<MainWindowViewModel>();
     }
