@@ -10,7 +10,9 @@ internal interface IUdpListenerService : IDisposable
 
     event EventHandler<byte[]> PacketReceived;
 
-    void Start(int port);
+    bool IsListening { get; }
+
+    void Start(string ipAddress, int port);
 
     void Stop();
 

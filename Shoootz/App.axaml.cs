@@ -54,7 +54,9 @@ public class App : Application
 
             if (settings.UdpConnectionModel.AutoConnect)
             {
-                _serviceProvider.GetRequiredService<IUdpListenerService>().Start(settings.UdpConnectionModel.Port);
+                _serviceProvider
+                    .GetRequiredService<IUdpListenerService>()
+                    .Start(settings.UdpConnectionModel.IpAddress, settings.UdpConnectionModel.Port);
             }
         }
 

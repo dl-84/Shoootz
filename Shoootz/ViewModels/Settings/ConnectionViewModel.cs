@@ -39,9 +39,12 @@ internal partial class ConnectionViewModel : ViewModelBase
         AutoConnect = settings.UdpConnectionModel.AutoConnect;
         ConnectionString = settings.DbConnectionModel.ConnectionString;
         IpAddress = settings.UdpConnectionModel.IpAddress;
+        IsUdpListening = udpListenerService.IsListening;
         Port = settings.UdpConnectionModel.Port.ToString();
         SelectedProvider = settings.DbConnectionModel.ProviderType;
         HeartPulseIcon = grafikService.GetIcon(AppIcon.HeartPulse, AppBrush.PrimaryForeground);
+
+        _udpListenerService.IsListeningChanged += (_, isListening) => IsUdpListening = isListening;
     }
 
     public event Action<bool, string?>? ConnectionTestCompleted;
@@ -57,6 +60,9 @@ internal partial class ConnectionViewModel : ViewModelBase
 
     [ObservableProperty]
     public partial bool AutoConnect { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsUdpListening { get; set; }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsIpAddressValid))]
@@ -107,6 +113,18 @@ internal partial class ConnectionViewModel : ViewModelBase
     partial void OnPortChanged(string value) => SaveCommand.NotifyCanExecuteChanged();
 
     partial void OnSelectedProviderChanged(ProviderType value) => SaveCommand.NotifyCanExecuteChanged();
+
+    [RelayCommand]
+    private void StartUdp()
+    {
+        if (int.TryParse(Port, out int port))
+        {
+            _udpListenerService.Start(IpAddress, port);
+        }
+    }
+
+    [RelayCommand]
+    private void StopUdp() => _udpListenerService.Stop();
 
     [RelayCommand]
     private void TestUdpConnection()

@@ -12,22 +12,25 @@ internal class UdpListenerService : IUdpListenerService
 {
     private CancellationTokenSource? _cancellationTokenSource;
 
-    private bool _isListening;
-
     private UdpClient? _client;
+
+    private string? _ipAddressFilter;
 
     public event EventHandler<bool>? IsListeningChanged;
 
     public event EventHandler<byte[]>? PacketReceived;
 
+    public bool IsListening { get; private set; }
+
     public void Dispose() => Stop();
 
-    public void Start(int port)
+    public void Start(string ipAddress, int port)
     {
         Stop();
 
         try
         {
+            _ipAddressFilter = ipAddress;
             _client = new UdpClient(port);
             _cancellationTokenSource = new CancellationTokenSource();
 
@@ -65,12 +68,12 @@ internal class UdpListenerService : IUdpListenerService
 
     private void SetIsListening(bool value)
     {
-        if (_isListening == value)
+        if (IsListening == value)
         {
             return;
         }
 
-        _isListening = value;
+        IsListening = value;
         IsListeningChanged?.Invoke(this, value);
     }
 
@@ -81,7 +84,11 @@ internal class UdpListenerService : IUdpListenerService
             try
             {
                 UdpReceiveResult result = await _client.ReceiveAsync(cancellationToken);
-                PacketReceived?.Invoke(this, result.Buffer);
+
+                if (string.Equals(result.RemoteEndPoint.Address.ToString(), _ipAddressFilter))
+                {
+                    PacketReceived?.Invoke(this, result.Buffer);
+                }
             }
             catch (OperationCanceledException)
             {
