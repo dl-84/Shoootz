@@ -1,9 +1,12 @@
 using System;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
+using System.Threading.Tasks;
 using Result;
 using Result.Struct;
 using Shoootz.Models.Shot;
+using Shoootz.Services.Udp;
 
 namespace Shoootz.Services.Parser;
 
@@ -14,7 +17,23 @@ internal class ShotDataParser : IShotDataParser
         PropertyNameCaseInsensitive = true,
     };
 
-    public Result<Shot, ShotParseError> Run(byte[] data)
+    private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
+
+    private readonly IUdpListenerService _udpListenerService;
+
+    public ShotDataParser(IUdpListenerService udpListenerService)
+    {
+        _udpListenerService = udpListenerService;
+        _ = ProcessLoopAsync(_cancellationTokenSource.Token);
+    }
+
+    public void Dispose()
+    {
+        _cancellationTokenSource.Cancel();
+        _cancellationTokenSource.Dispose();
+    }
+
+    private static Result<Shot, ShotParseError> Run(byte[] data)
     {
         try
         {
@@ -31,6 +50,14 @@ internal class ShotDataParser : IShotDataParser
         catch (Exception exception)
         {
             return new Error<ShotParseError>(new ShotParseError(exception.Message));
+        }
+    }
+
+    private async Task ProcessLoopAsync(CancellationToken cancellationToken)
+    {
+        await foreach (byte[] data in _udpListenerService.Reader.ReadAllAsync(cancellationToken))
+        {
+            _ = Run(data);
         }
     }
 }
