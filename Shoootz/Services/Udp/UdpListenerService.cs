@@ -1,18 +1,16 @@
 using System;
 using System.Net.Sockets;
 using System.Threading;
-using System.Threading.Channels;
 using System.Threading.Tasks;
 using Result;
 using Result.Struct;
 using Shoootz.Models.Settings.Udp;
+using Shoootz.Services.Data;
 
 namespace Shoootz.Services.Udp;
 
-internal class UdpListenerService : IUdpListenerService
+internal class UdpListenerService(IDataManager dataManager) : IUdpListenerService
 {
-    private readonly Channel<byte[]> _channel = Channel.CreateUnbounded<byte[]>();
-
     private CancellationTokenSource? _cancellationTokenSource;
 
     private UdpClient? _client;
@@ -22,8 +20,6 @@ internal class UdpListenerService : IUdpListenerService
     public event EventHandler<bool>? IsListeningChanged;
 
     public bool IsListening { get; private set; }
-
-    public ChannelReader<byte[]> Reader => _channel.Reader;
 
     public void Dispose() => Stop();
 
@@ -90,7 +86,7 @@ internal class UdpListenerService : IUdpListenerService
 
                 if (string.Equals(result.RemoteEndPoint.Address.ToString(), _ipAddressFilter))
                 {
-                    _channel.Writer.TryWrite(result.Buffer);
+                    dataManager.UdpChannel.TryWrite(result.Buffer);
                 }
             }
             catch (OperationCanceledException)

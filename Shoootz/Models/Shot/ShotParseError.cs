@@ -1,3 +1,3 @@
 namespace Shoootz.Models.Shot;
 
-internal record ShotParseError(string Message);
+internal record ShotParseError(string Message, string rawData);

@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Shoootz.Context;
 using Shoootz.Models.Settings;
 using Shoootz.Models.Settings.Database;
+using Shoootz.Services.Data;
 using Shoootz.Services.Database;
 using Shoootz.Services.Grafik;
 using Shoootz.Services.Language;
@@ -44,8 +45,6 @@ public class App : Application
 
         MainWindowViewModel mainWindowViewModel = _serviceProvider.GetRequiredService<MainWindowViewModel>();
         ILocalizationService localizationService = _serviceProvider.GetRequiredService<ILocalizationService>();
-        _serviceProvider.GetRequiredService<IShotDataParser>();
-
         localizationService.SetLanguage(settings?.CurrentLanguageCode ?? "de");
 
         if (settings is not null)
@@ -110,6 +109,7 @@ public class App : Application
 
     private static void InitSingletons(ServiceCollection services)
     {
+        services.AddSingleton<IDataManager, DataManager>();
         services.AddSingleton<IDbConnectionTester, DbConnectionTester>();
         services.AddSingleton<IGrafikService, GrafikService>();
         services.AddSingleton<ILanguageService, LanguageService>();

@@ -446,6 +446,15 @@ namespace Shoootz.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deserialization returned null..
+        /// </summary>
+        internal static string ShotParseErrorNull {
+            get {
+                return ResourceManager.GetString("ShotParseErrorNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show settings.
         /// </summary>
         internal static string ShowSettings {

@@ -1,63 +1,37 @@
 using System;
 using System.Text;
 using System.Text.Json;
-using System.Threading;
-using System.Threading.Tasks;
 using Result;
 using Result.Struct;
 using Shoootz.Models.Shot;
-using Shoootz.Services.Udp;
+using Shoootz.Resources.Lang;
+using Shoootz.Services.Localization;
 
 namespace Shoootz.Services.Parser;
 
-internal class ShotDataParser : IShotDataParser
+internal class ShotDataParser(ILocalizationService localizationService) : IShotDataParser
 {
-    private static readonly JsonSerializerOptions _options = new JsonSerializerOptions
-    {
-        PropertyNameCaseInsensitive = true,
-    };
+    private static readonly JsonSerializerOptions _options = new() { PropertyNameCaseInsensitive = true };
 
-    private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
-
-    private readonly IUdpListenerService _udpListenerService;
-
-    public ShotDataParser(IUdpListenerService udpListenerService)
-    {
-        _udpListenerService = udpListenerService;
-        _ = ProcessLoopAsync(_cancellationTokenSource.Token);
-    }
-
-    public void Dispose()
-    {
-        _cancellationTokenSource.Cancel();
-        _cancellationTokenSource.Dispose();
-    }
-
-    private static Result<Shot, ShotParseError> Run(byte[] data)
+    public Result<Shot, ShotParseError> Run(byte[] data)
     {
         try
         {
-            string json = Encoding.UTF8.GetString(data);
-            Shot? message = JsonSerializer.Deserialize<Shot>(json, _options);
+            string rawData = Encoding.UTF8.GetString(data);
+            Shot? shot = JsonSerializer.Deserialize<Shot>(rawData, _options);
 
-            if (message is null)
+            if (shot is null)
             {
-                return new Error<ShotParseError>(new ShotParseError("Deserialization returned null."));
+                return new Error<ShotParseError>(
+                    new ShotParseError(localizationService[nameof(Messages.ShotParseErrorNull)], rawData)
+                );
             }
 
-            return message;
+            return shot;
         }
         catch (Exception exception)
         {
-            return new Error<ShotParseError>(new ShotParseError(exception.Message));
-        }
-    }
-
-    private async Task ProcessLoopAsync(CancellationToken cancellationToken)
-    {
-        await foreach (byte[] data in _udpListenerService.Reader.ReadAllAsync(cancellationToken))
-        {
-            _ = Run(data);
+            return new Error<ShotParseError>(new ShotParseError(exception.Message, Convert.ToBase64String(data)));
         }
     }
 }
