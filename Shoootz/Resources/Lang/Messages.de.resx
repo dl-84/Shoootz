@@ -183,6 +183,9 @@
   <data name="TestConnection" xml:space="preserve">
     <value>Verbindung testen</value>
   </data>
+  <data name="ShotParseErrorObjectCount" xml:space="preserve">
+    <value>Genau ein Schuss-Objekt erwartet, aber {0} empfangen.</value>
+  </data>
   <data name="ShotParseErrorNull" xml:space="preserve">
     <value>Deserialisierung hat null zurückgegeben.</value>
   </data>

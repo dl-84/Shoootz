@@ -1,9 +1,8 @@
 using System.Text.Json.Serialization;
-using Microsoft.VisualBasic.CompilerServices;
 
 namespace Shoootz.Models.Udp;
 
-internal class UdpShotData
+internal class UdpShotDetailModel
 {
     public string? Competition { get; set; }
 
@@ -36,7 +35,7 @@ internal class UdpShotData
     public UdpMenuItemModel? MenuItem { get; set; }
 
     [JsonConverter(typeof(JsonStringEnumConverter))]
-    public ObjectType? ObjectType { get; set; }
+    public UdpObjectType? ObjectType { get; set; }
 
     public int Range { get; set; }
 
@@ -44,7 +43,7 @@ internal class UdpShotData
 
     public int Run { get; set; }
 
-    public UdpShooterData? Shooter { get; set; }
+    public UdpShooterModel? Shooter { get; set; }
 
     public string? ShotDateTime { get; set; }
 

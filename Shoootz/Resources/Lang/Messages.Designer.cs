@@ -455,6 +455,15 @@ namespace Shoootz.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Expected exactly one shot object, but received {0}..
+        /// </summary>
+        internal static string ShotParseErrorObjectCount {
+            get {
+                return ResourceManager.GetString("ShotParseErrorObjectCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show settings.
         /// </summary>
         internal static string ShowSettings {

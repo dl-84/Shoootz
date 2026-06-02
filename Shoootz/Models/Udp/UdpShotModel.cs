@@ -1,10 +1,9 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using Microsoft.VisualBasic.CompilerServices;
 
 namespace Shoootz.Models.Udp;
 
-internal class UdpShot
+internal class UdpShotModel
 {
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public UdpMessageType UdpMessageType { get; set; }
@@ -12,9 +11,9 @@ internal class UdpShot
     public string? MessageVerb { get; set; }
 
     [JsonConverter(typeof(JsonStringEnumConverter))]
-    public ObjectType? ObjectType { get; set; }
+    public UdpObjectType? ObjectType { get; set; }
 
-    public List<UdpShotData> Objects { get; set; } = [];
+    public List<UdpShotDetailModel> Objects { get; set; } = [];
 
     public int Ranges { get; set; }
 
