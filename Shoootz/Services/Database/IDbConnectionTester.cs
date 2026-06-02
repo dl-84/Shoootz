@@ -1,4 +1,5 @@
 using Result;
+using Shoootz.Models.Error;
 using Shoootz.Models.Settings.Database;
 
 namespace Shoootz.Services.Database;

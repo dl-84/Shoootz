@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Result;
 using Result.Struct;
+using Shoootz.Models.Error;
 using Shoootz.Models.Settings.Udp;
 using Shoootz.Services.Data;
 
@@ -52,7 +53,7 @@ internal class UdpListenerService(IDataManager dataManager) : IUdpListenerServic
         SetIsListening(false);
     }
 
-    public Result<bool, UdpError> TestConnection(int port)
+    public Result<bool, UdpConnectionError> TestConnection(int port)
     {
         try
         {
@@ -61,7 +62,7 @@ internal class UdpListenerService(IDataManager dataManager) : IUdpListenerServic
         }
         catch (Exception exception)
         {
-            return new Error<UdpError>(new UdpError(exception.Message));
+            return new Error<UdpConnectionError>(new UdpConnectionError(exception.Message));
         }
     }
 

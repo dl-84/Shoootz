@@ -2,7 +2,8 @@ using System;
 using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
-using Shoootz.Models.Shot;
+using Shoootz.Models.Error;
+using Shoootz.Models.Udp;
 using Shoootz.Services.Parser;
 
 namespace Shoootz.Services.Data;
@@ -38,7 +39,7 @@ internal class DataManager : IDataManager, IDisposable
                 .Match(
                     shot =>
                     {
-                        Shot tt = shot;
+                        UdpShot tt = shot;
                     },
                     error =>
                     {

@@ -1,8 +1,9 @@
 using System.Text.Json.Serialization;
+using Microsoft.VisualBasic.CompilerServices;
 
-namespace Shoootz.Models.Shot;
+namespace Shoootz.Models.Udp;
 
-internal class MenuItemData
+internal class UdpMenuItemModel
 {
     public string? MenuID { get; set; }
 
@@ -11,5 +12,5 @@ internal class MenuItemData
     public string? MenuPointName { get; set; }
 
     [JsonConverter(typeof(JsonStringEnumConverter))]
-    public ObjectType ObjectType { get; set; }
+    public ObjectType? ObjectType { get; set; }
 }

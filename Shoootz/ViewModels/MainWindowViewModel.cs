@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Shoootz.Models.Error;
 using Shoootz.Models.Settings;
 using Shoootz.Resources.Lang;
 using Shoootz.Services.Database;

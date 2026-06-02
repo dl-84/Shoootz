@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Shoootz.Models.Settings;
+using Shoootz.Models.Error;
 using Shoootz.Services.Settings;
 
 namespace Shoootz.ViewModels.Error;

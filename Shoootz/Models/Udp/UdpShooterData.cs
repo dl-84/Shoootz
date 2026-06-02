@@ -1,6 +1,6 @@
-namespace Shoootz.Models.Shot;
+namespace Shoootz.Models.Udp;
 
-internal class ShooterData
+internal class UdpShooterData
 {
     public int Birthyear { get; set; }
 

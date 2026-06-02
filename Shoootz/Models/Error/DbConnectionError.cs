@@ -1,3 +1,3 @@
-namespace Shoootz.Models.Settings.Database;
+namespace Shoootz.Models.Error;
 
 internal record DbConnectionError(string Message);

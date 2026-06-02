@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Result;
+using Shoootz.Models.Error;
 using Shoootz.Models.Settings;
 
 namespace Shoootz.Services.Settings;

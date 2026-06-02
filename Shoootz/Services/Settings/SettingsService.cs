@@ -7,6 +7,7 @@ using NJsonSchema;
 using NJsonSchema.Validation;
 using Result;
 using Result.Struct;
+using Shoootz.Models.Error;
 using Shoootz.Models.Settings;
 using Shoootz.Services.App;
 

@@ -3,7 +3,8 @@ using System.Text;
 using System.Text.Json;
 using Result;
 using Result.Struct;
-using Shoootz.Models.Shot;
+using Shoootz.Models.Error;
+using Shoootz.Models.Udp;
 using Shoootz.Resources.Lang;
 using Shoootz.Services.Localization;
 
@@ -13,12 +14,12 @@ internal class ShotDataParser(ILocalizationService localizationService) : IShotD
 {
     private static readonly JsonSerializerOptions _options = new() { PropertyNameCaseInsensitive = true };
 
-    public Result<Shot, ShotParseError> Run(byte[] data)
+    public Result<UdpShot, ShotParseError> Run(byte[] data)
     {
         try
         {
             string rawData = Encoding.UTF8.GetString(data);
-            Shot? shot = JsonSerializer.Deserialize<Shot>(rawData, _options);
+            UdpShot? shot = JsonSerializer.Deserialize<UdpShot>(rawData, _options);
 
             if (shot is null)
             {

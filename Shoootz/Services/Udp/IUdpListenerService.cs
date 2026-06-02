@@ -1,6 +1,6 @@
 using System;
 using Result;
-using Shoootz.Models.Settings.Udp;
+using Shoootz.Models.Error;
 
 namespace Shoootz.Services.Udp;
 
@@ -14,5 +14,5 @@ internal interface IUdpListenerService : IDisposable
 
     void Stop();
 
-    Result<bool, UdpError> TestConnection(int port);
+    Result<bool, UdpConnectionError> TestConnection(int port);
 }

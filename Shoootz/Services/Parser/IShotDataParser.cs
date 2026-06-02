@@ -1,9 +1,10 @@
 using Result;
-using Shoootz.Models.Shot;
+using Shoootz.Models.Error;
+using Shoootz.Models.Udp;
 
 namespace Shoootz.Services.Parser;
 
 internal interface IShotDataParser
 {
-    Result<Shot, ShotParseError> Run(byte[] data);
+    Result<UdpShot, ShotParseError> Run(byte[] data);
 }

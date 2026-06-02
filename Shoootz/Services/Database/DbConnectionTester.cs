@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Result;
 using Result.Struct;
 using Shoootz.Context;
+using Shoootz.Models.Error;
 using Shoootz.Models.Settings.Database;
 using Shoootz.Services.Localization;
 
