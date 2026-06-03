@@ -6,11 +6,10 @@ using Result;
 using Result.Struct;
 using Shoootz.Models.Error;
 using Shoootz.Models.Settings.Udp;
-using Shoootz.Services.Data;
 
 namespace Shoootz.Services.Udp;
 
-internal class UdpListenerService(IDataManager dataManager) : IUdpListenerService
+internal class UdpListenerService : IUdpListenerService
 {
     private CancellationTokenSource? _cancellationTokenSource;
 
@@ -19,6 +18,8 @@ internal class UdpListenerService(IDataManager dataManager) : IUdpListenerServic
     private string? _ipAddressFilter;
 
     public event EventHandler<bool>? IsListeningChanged;
+
+    public event EventHandler<byte[]>? ShotRawDataReceived;
 
     public bool IsListening { get; private set; }
 
@@ -87,7 +88,7 @@ internal class UdpListenerService(IDataManager dataManager) : IUdpListenerServic
 
                 if (string.Equals(result.RemoteEndPoint.Address.ToString(), _ipAddressFilter))
                 {
-                    dataManager.UdpChannel.TryWrite(result.Buffer);
+                    ShotRawDataReceived?.Invoke(this, result.Buffer);
                 }
             }
             catch (OperationCanceledException)

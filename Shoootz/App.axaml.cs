@@ -110,7 +110,7 @@ public class App : Application
 
     private static void InitSingletons(ServiceCollection services)
     {
-        services.AddSingleton<IDataManager, DataManager>();
+        services.AddSingleton<IDataProcessor, DataProcessor>();
         services.AddSingleton<IDbConnectionTester, DbConnectionTester>();
         services.AddSingleton<IGrafikService, GrafikService>();
         services.AddSingleton<ILanguageService, LanguageService>();

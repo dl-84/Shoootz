@@ -8,6 +8,8 @@ internal interface IUdpListenerService : IDisposable
 {
     event EventHandler<bool> IsListeningChanged;
 
+    event EventHandler<byte[]> ShotRawDataReceived;
+
     bool IsListening { get; }
 
     void Start(string ipAddress, int port);
