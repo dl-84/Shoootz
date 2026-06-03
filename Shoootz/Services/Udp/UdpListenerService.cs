@@ -3,7 +3,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using Result;
-using Result.Struct;
+using Result.Types;
 using Shoootz.Models.Error;
 using Shoootz.Models.Settings.Udp;
 

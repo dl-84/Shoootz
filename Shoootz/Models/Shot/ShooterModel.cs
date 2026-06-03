@@ -8,7 +8,7 @@ internal class ShooterModel
 
     public string? Firstname { get; set; }
 
-    public string? Identification { get; set; }
+    public string? Id { get; set; }
 
     public string? Lastname { get; set; }
 

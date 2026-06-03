@@ -3,7 +3,7 @@ using System.IO;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Result;
-using Result.Struct;
+using Result.Types;
 using Shoootz.Context;
 using Shoootz.Models.Error;
 using Shoootz.Models.Settings.Database;

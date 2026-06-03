@@ -1,0 +1,94 @@
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
+
+#nullable disable
+
+namespace Shoootz.Migrations
+{
+    /// <inheritdoc />
+    public partial class InitialShotSchema : Migration
+    {
+        /// <inheritdoc />
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.CreateTable(
+                name: "Shooters",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "TEXT", nullable: false),
+                    Birthyear = table.Column<int>(type: "INTEGER", nullable: false),
+                    Club = table.Column<string>(type: "TEXT", nullable: true),
+                    Firstname = table.Column<string>(type: "TEXT", nullable: true),
+                    Lastname = table.Column<string>(type: "TEXT", nullable: true),
+                    Startnumber = table.Column<int>(type: "INTEGER", nullable: false),
+                    Team = table.Column<string>(type: "TEXT", nullable: true),
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Shooters", x => x.Id);
+                }
+            );
+
+            migrationBuilder.CreateTable(
+                name: "ShotInfos",
+                columns: table => new
+                {
+                    MenuId = table.Column<string>(type: "TEXT", nullable: false),
+                    MenuItemName = table.Column<string>(type: "TEXT", nullable: true),
+                    MenuPointName = table.Column<string>(type: "TEXT", nullable: true),
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ShotInfos", x => x.MenuId);
+                }
+            );
+
+            migrationBuilder.CreateTable(
+                name: "Shots",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false).Annotation("Sqlite:Autoincrement", true),
+                    Count = table.Column<int>(type: "INTEGER", nullable: false),
+                    DecValue = table.Column<double>(type: "REAL", nullable: false),
+                    DiscType = table.Column<string>(type: "TEXT", nullable: true),
+                    Distance = table.Column<double>(type: "REAL", nullable: false),
+                    IsHot = table.Column<bool>(type: "INTEGER", nullable: false),
+                    IsValid = table.Column<bool>(type: "INTEGER", nullable: false),
+                    ShotDateTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    ShooterId = table.Column<string>(type: "TEXT", nullable: true),
+                    ShotInfoMenuId = table.Column<string>(type: "TEXT", nullable: true),
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Shots", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Shots_Shooters_ShooterId",
+                        column: x => x.ShooterId,
+                        principalTable: "Shooters",
+                        principalColumn: "Id"
+                    );
+                    table.ForeignKey(
+                        name: "FK_Shots_ShotInfos_ShotInfoMenuId",
+                        column: x => x.ShotInfoMenuId,
+                        principalTable: "ShotInfos",
+                        principalColumn: "MenuId"
+                    );
+                }
+            );
+
+            migrationBuilder.CreateIndex(name: "IX_Shots_ShooterId", table: "Shots", column: "ShooterId");
+
+            migrationBuilder.CreateIndex(name: "IX_Shots_ShotInfoMenuId", table: "Shots", column: "ShotInfoMenuId");
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropTable(name: "Shots");
+
+            migrationBuilder.DropTable(name: "Shooters");
+
+            migrationBuilder.DropTable(name: "ShotInfos");
+        }
+    }
+}

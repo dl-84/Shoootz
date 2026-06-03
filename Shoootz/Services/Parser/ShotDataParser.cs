@@ -3,7 +3,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using Result;
-using Result.Struct;
+using Result.Types;
 using Shoootz.Models.Error;
 using Shoootz.Models.Shot;
 using Shoootz.Models.Udp;
@@ -60,7 +60,7 @@ internal class ShotDataParser(ILocalizationService localizationService) : IShotD
             Birthyear = udpShooter.Birthyear,
             Club = udpShooter.Club,
             Firstname = udpShooter.Firstname,
-            Identification = udpShooter.Identification,
+            Id = udpShooter.Identification,
             Lastname = udpShooter.Lastname,
             Startnumber = udpShooter.Startnumber,
             Team = udpShooter.Team,
@@ -71,7 +71,12 @@ internal class ShotDataParser(ILocalizationService localizationService) : IShotD
     {
         return udpMenuItem is null
             ? null
-            : new ShotInfoModel { MenuItemName = udpMenuItem.MenuItemName, MenuPointName = udpMenuItem.MenuPointName };
+            : new ShotInfoModel
+            {
+                MenuId = udpMenuItem.MenuID,
+                MenuItemName = udpMenuItem.MenuItemName,
+                MenuPointName = udpMenuItem.MenuPointName,
+            };
     }
 
     private static ShotModel MapToShotModel(UdpShotDetailModel udpShotDetail)

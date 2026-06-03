@@ -4,9 +4,11 @@ internal interface IDataProcessor
 {
     int ErrorParsedShotCounter { get; }
 
-    int SavedToDbShotCounter { get; }
+    int ErrorOnSaveShotToDbCounter { get; }
 
     int SuccessParsedShotCounter { get; }
+
+    int SuccessSavedShotToDbCounter { get; }
 
     int UdpRawShotCounter { get; }
 
