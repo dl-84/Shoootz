@@ -4,6 +4,7 @@
     <Project Path="../Library/Avalonia/Themes/Disag/Disag.csproj" />
   </Folder>
   <Folder Name="/Store/">
+    <File Path="Store/Shoootz.Store/README.md" />
     <Project Path="Store/Shoootz.Store/Shoootz.Store.csproj" />
   </Folder>
   <Folder Name="/Store/Adapter/">
