@@ -5,6 +5,7 @@
   </Folder>
   <Folder Name="/Store/">
     <File Path="Store/Shoootz.Store/README.md" />
+    <File Path="Store\README.md" />
     <Project Path="Store/Shoootz.Store/Shoootz.Store.csproj" />
   </Folder>
   <Folder Name="/Store/Adapter/">
