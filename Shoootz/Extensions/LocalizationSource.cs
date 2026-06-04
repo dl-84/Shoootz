@@ -7,6 +7,7 @@ namespace Shoootz.Extensions;
 internal class LocalizationSource : INotifyPropertyChanged
 {
     private readonly string _key;
+
     private readonly bool _toUpper;
 
     public LocalizationSource(string key, bool toUpper = false)

@@ -19,6 +19,10 @@ internal class SettingsService : ISettingsService
 
     private static readonly JsonSchema _schema = LoadSchema();
 
+    public event Action<SettingsModel>? SettingsSaved;
+
+    public SettingsModel? CurrentSettings { get; private set; }
+
     public void DeleteSettingsFile()
     {
         if (File.Exists(AppPath.SettingsFile))
@@ -49,7 +53,9 @@ internal class SettingsService : ISettingsService
             return settings;
         }
 
-        return ReadContent().AndThen(Validate);
+        Result<SettingsModel, List<SettingsError>> result = ReadContent().AndThen(Validate);
+        result.Match(settings => CurrentSettings = settings, _ => { });
+        return result;
     }
 
     public void Save(SettingsModel? settings)
@@ -59,7 +65,9 @@ internal class SettingsService : ISettingsService
             return;
         }
 
+        CurrentSettings = settings;
         SaveRaw(JsonSerializer.Serialize(settings, _jsonSerializerOptions));
+        SettingsSaved?.Invoke(settings);
     }
 
     public void SaveRaw(string content)

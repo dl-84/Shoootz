@@ -7,6 +7,10 @@ internal enum SettingsPropertyType
     DatabaseProvider,
     ExceptionOnReadContent,
     JsonExceptionOnValidate,
+    UdpAutoConnect,
+    UdpIpAddress,
+    UdpPort,
+    Unknown,
 }
 
 internal static class StringExtensions
@@ -16,10 +20,13 @@ internal static class StringExtensions
         public SettingsPropertyType? ToSettingsProperty() =>
             value switch
             {
+                "AutoConnect" => SettingsPropertyType.UdpAutoConnect,
                 "ConnectionString" => SettingsPropertyType.DatabaseConnectionString,
                 "CurrentLanguageCode" => SettingsPropertyType.CurrentLanguageCode,
+                "IpAddress" => SettingsPropertyType.UdpIpAddress,
+                "Port" => SettingsPropertyType.UdpPort,
                 "Provider" => SettingsPropertyType.DatabaseProvider,
-                _ => null,
+                _ => SettingsPropertyType.Unknown,
             };
     }
 }

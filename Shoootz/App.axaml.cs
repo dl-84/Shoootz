@@ -5,6 +5,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Shoootz.Factory.ViewModel;
 using Shoootz.Models.Error;
 using Shoootz.Models.Settings;
 using Shoootz.Models.Settings.Database;
@@ -56,7 +57,6 @@ public class App : Application
         }
         else
         {
-            mainWindowViewModel.InitSettings(settings!);
             mainWindowViewModel.CheckDbConnection();
             _serviceProvider.GetRequiredService<IStoreService>().InitializeAsync().GetAwaiter().GetResult();
 
@@ -126,6 +126,7 @@ public class App : Application
         services.AddSingleton<ISettingsService>(settingsService);
         services.AddSingleton<IShotDataParser, ShotDataParser>();
         services.AddSingleton<IUdpListenerService, UdpListenerService>();
+        services.AddSingleton<IViewModelFactory, ViewModelFactory>();
         services.AddSingleton<MainWindowViewModel>();
     }
 
@@ -134,10 +135,7 @@ public class App : Application
         List<SettingsError>? errorList = null;
         SettingsModel? loadedSettings = null;
 
-        settingsService.Load().Match(
-            settings => loadedSettings = settings,
-            errors => errorList = errors.Value
-        );
+        settingsService.Load().Match(settings => loadedSettings = settings, errors => errorList = errors.Value);
 
         settingsErrors = errorList;
         return loadedSettings;

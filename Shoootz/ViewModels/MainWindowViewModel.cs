@@ -1,46 +1,23 @@
 using System.Collections.Generic;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Result;
+using Shoootz.Factory.ViewModel;
 using Shoootz.Models.Error;
 using Shoootz.Models.Settings;
 using Shoootz.Models.Settings.Database;
 using Shoootz.Resources.Lang;
-using Shoootz.Services.Graphics;
-using Shoootz.Services.Language;
-using Shoootz.Services.License;
 using Shoootz.Services.Localization;
 using Shoootz.Services.Settings;
 using Shoootz.Services.Udp;
 using Shoootz.Store;
 using Shoootz.Store.Services;
-using Shoootz.ViewModels.Competition;
 using Shoootz.ViewModels.Error;
-using Shoootz.ViewModels.Info;
-using Shoootz.ViewModels.Settings;
 
 namespace Shoootz.ViewModels;
 
 internal partial class MainWindowViewModel : ViewModelBase
 {
-    private const int Index1EvaluateSite = 1;
-
-    private const int Index3GeneralSite = 3;
-
-    private const int Index4DatabaseSite = 4;
-
-    private const int Index5GroupsSite = 5;
-
-    private const int Index7AboutSite = 7;
-
-    private const int Index8LicensesSite = 8;
-
     private readonly IConnectionTester _connectionTester;
-
-    private readonly IGraphicsService _grafikService;
-
-    private readonly ILanguageService _languageService;
-
-    private readonly ILicenseService _licenseService;
 
     private readonly ILocalizationService _localizationService;
 
@@ -48,28 +25,27 @@ internal partial class MainWindowViewModel : ViewModelBase
 
     private readonly IUdpListenerService _udpListenerService;
 
-    private SettingsModel? _settings;
+    private readonly IViewModelFactory _viewModelFactory;
 
     public MainWindowViewModel(
         IConnectionTester connectionTester,
-        IGraphicsService grafikService,
-        ILanguageService languageService,
-        ILicenseService licenseService,
         ILocalizationService localizationService,
         ISettingsService settingsService,
-        IUdpListenerService udpListenerService
+        IUdpListenerService udpListenerService,
+        IViewModelFactory viewModelFactory
     )
     {
         _connectionTester = connectionTester;
-        _grafikService = grafikService;
-        _languageService = languageService;
-        _licenseService = licenseService;
         _localizationService = localizationService;
+
         _settingsService = settingsService;
+        _settingsService.SettingsSaved += _ => CheckDbConnection();
+
         _udpListenerService = udpListenerService;
         _udpListenerService.IsListeningChanged += (_, isListening) => IsUdpConnected = isListening;
 
-        CurrentPage = new EvaluationViewModel();
+        _viewModelFactory = viewModelFactory;
+        CurrentPage = _viewModelFactory.CreateView(ActiveIndex)!;
     }
 
     [ObservableProperty]
@@ -121,23 +97,20 @@ internal partial class MainWindowViewModel : ViewModelBase
 
     public void CheckDbConnection()
     {
-        if (_settings is null)
+        SettingsModel? settings = _settingsService.CurrentSettings;
+
+        if (settings is null)
         {
             return;
         }
 
-        Result<bool, DbConnectionError> result = _settings.DbConnectionModel.ProviderType switch
+        Result<bool, DbConnectionError> result = settings.DbConnectionModel.ProviderType switch
         {
-            ProviderType.PostgreSql => _connectionTester.PostgreSql(_settings.DbConnectionModel.ConnectionString),
-            _ => _connectionTester.Sqlite(_settings.DbConnectionModel.ConnectionString),
+            ProviderType.PostgreSql => _connectionTester.PostgreSql(settings.DbConnectionModel.ConnectionString),
+            _ => _connectionTester.Sqlite(settings.DbConnectionModel.ConnectionString),
         };
 
         result.Match(_ => IsDbConnected = true, _ => IsDbConnected = false);
-    }
-
-    public void InitSettings(SettingsModel settings)
-    {
-        _settings = settings;
     }
 
     public void RedirectToSettingsError(List<SettingsError> settingsErrors)
@@ -145,49 +118,17 @@ internal partial class MainWindowViewModel : ViewModelBase
         CurrentPage = new SettingsErrorViewModel(settingsErrors, _settingsService);
     }
 
-    private ConnectionViewModel CreateConnectionViewModel()
-    {
-        ConnectionViewModel viewModel = new ConnectionViewModel(
-            _connectionTester,
-            _grafikService,
-            _settings ?? new SettingsModel(),
-            _settingsService,
-            _udpListenerService
-        );
-        viewModel.SettingsSaved += settings =>
-        {
-            _settings = settings;
-            CheckDbConnection();
-        };
-        return viewModel;
-    }
-
-    private GeneralViewModel CreateGeneralViewModel()
-    {
-        GeneralViewModel viewModel = new GeneralViewModel(
-            _languageService,
-            _localizationService,
-            _settings ?? new SettingsModel(),
-            _settingsService
-        );
-        viewModel.SettingsSaved += settings => _settings = settings;
-        return viewModel;
-    }
-
     partial void OnActiveIndexChanged(int value)
     {
         ViewModelBase previous = CurrentPage;
+        ViewModelBase? next = _viewModelFactory.CreateView(value);
 
-        CurrentPage = value switch
+        if (next is null)
         {
-            Index1EvaluateSite => new EvaluationViewModel(),
-            Index3GeneralSite => CreateGeneralViewModel(),
-            Index4DatabaseSite => CreateConnectionViewModel(),
-            Index5GroupsSite => new GroupsViewModel(),
-            Index7AboutSite => new AboutViewModel(_licenseService, _localizationService),
-            Index8LicensesSite => new LicensesViewModel(_licenseService, _localizationService),
-            _ => CurrentPage,
-        };
+            return;
+        }
+
+        CurrentPage = next;
 
         if (!ReferenceEquals(previous, CurrentPage) && previous is System.IDisposable disposable)
         {

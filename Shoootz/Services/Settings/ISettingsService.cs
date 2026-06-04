@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Result;
 using Shoootz.Models.Error;
@@ -7,6 +8,10 @@ namespace Shoootz.Services.Settings;
 
 internal interface ISettingsService
 {
+    event Action<SettingsModel>? SettingsSaved;
+
+    SettingsModel? CurrentSettings { get; }
+
     void DeleteSettingsFile();
 
     void DeleteSettingsFolder();
