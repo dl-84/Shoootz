@@ -24,6 +24,8 @@ internal class DataProcessor : IDataProcessor, IDisposable
 
     private readonly Channel<byte[]> _udpChannel = Channel.CreateUnbounded<byte[]>();
 
+    private readonly IUdpListenerService _udpListenerService;
+
     private int _errorParsedShotCounter;
 
     private int _errorOnSaveShotToDbCounter;
@@ -40,7 +42,10 @@ internal class DataProcessor : IDataProcessor, IDisposable
     {
         _parser = parser;
         _dbService = dbService;
-        udpListenerService.ShotRawDataReceived += OnPacketReceived;
+        _udpListenerService = udpListenerService;
+
+        _udpListenerService.ShotRawDataReceived += OnPacketReceived;
+
         _ = ProcessUdpChannelReaderLoopAsync(_cancellationTokenSource.Token);
         _ = ProcessShotChannelReaderLoopAsync(_cancellationTokenSource.Token);
     }
@@ -59,6 +64,7 @@ internal class DataProcessor : IDataProcessor, IDisposable
 
     public void Dispose()
     {
+        _udpListenerService.ShotRawDataReceived -= OnPacketReceived;
         _cancellationTokenSource.Cancel();
         _cancellationTokenSource.Dispose();
     }
