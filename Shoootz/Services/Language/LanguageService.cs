@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using Shoootz.Models.Settings.Language;
-using Shoootz.Services.Grafik;
+using Shoootz.Services.Graphics;
 
 namespace Shoootz.Services.Language;
 
-internal class LanguageService(IGrafikService grafikService) : ILanguageService
+internal class LanguageService(IGraphicsService grafikService) : ILanguageService
 {
     private readonly List<string> availableLanguages = ["de", "en"];
 

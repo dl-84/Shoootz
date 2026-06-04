@@ -1,15 +1,18 @@
 using System.Collections.Generic;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Result;
 using Shoootz.Models.Error;
 using Shoootz.Models.Settings;
+using Shoootz.Models.Settings.Database;
 using Shoootz.Resources.Lang;
-using Shoootz.Services.Database;
-using Shoootz.Services.Grafik;
+using Shoootz.Services.Graphics;
 using Shoootz.Services.Language;
 using Shoootz.Services.License;
 using Shoootz.Services.Localization;
 using Shoootz.Services.Settings;
 using Shoootz.Services.Udp;
+using Shoootz.Store;
+using Shoootz.Store.Services;
 using Shoootz.ViewModels.Competition;
 using Shoootz.ViewModels.Error;
 using Shoootz.ViewModels.Info;
@@ -31,9 +34,9 @@ internal partial class MainWindowViewModel : ViewModelBase
 
     private const int Index8LicensesSite = 8;
 
-    private readonly IDbConnectionTester _connectionTester;
+    private readonly IConnectionTester _connectionTester;
 
-    private readonly IGrafikService _grafikService;
+    private readonly IGraphicsService _grafikService;
 
     private readonly ILanguageService _languageService;
 
@@ -48,8 +51,8 @@ internal partial class MainWindowViewModel : ViewModelBase
     private SettingsModel? _settings;
 
     public MainWindowViewModel(
-        IDbConnectionTester connectionTester,
-        IGrafikService grafikService,
+        IConnectionTester connectionTester,
+        IGraphicsService grafikService,
         ILanguageService languageService,
         ILicenseService licenseService,
         ILocalizationService localizationService,
@@ -123,7 +126,13 @@ internal partial class MainWindowViewModel : ViewModelBase
             return;
         }
 
-        _connectionTester.Run(_settings.DbConnectionModel).Match(_ => IsDbConnected = true, _ => IsDbConnected = false);
+        Result<bool, DbConnectionError> result = _settings.DbConnectionModel.ProviderType switch
+        {
+            ProviderType.PostgreSql => _connectionTester.PostgreSql(_settings.DbConnectionModel.ConnectionString),
+            _ => _connectionTester.Sqlite(_settings.DbConnectionModel.ConnectionString),
+        };
+
+        result.Match(_ => IsDbConnected = true, _ => IsDbConnected = false);
     }
 
     public void InitSettings(SettingsModel settings)

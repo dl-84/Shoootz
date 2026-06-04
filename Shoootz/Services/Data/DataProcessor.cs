@@ -6,8 +6,8 @@ using Result;
 using Result.Types;
 using Shoootz.Models.Error;
 using Shoootz.Models.Shot;
-using Shoootz.Services.Database;
 using Shoootz.Services.Parser;
+using Shoootz.Services.Store;
 using Shoootz.Services.Udp;
 
 namespace Shoootz.Services.Data;
@@ -16,7 +16,7 @@ internal class DataProcessor : IDataProcessor, IDisposable
 {
     private readonly CancellationTokenSource _cancellationTokenSource = new();
 
-    private readonly IDbService _dbService;
+    private readonly IStoreService _dbService;
 
     private readonly IShotDataParser _parser;
 
@@ -36,7 +36,7 @@ internal class DataProcessor : IDataProcessor, IDisposable
 
     private int _warmupShotCounter;
 
-    public DataProcessor(IUdpListenerService udpListenerService, IShotDataParser parser, IDbService dbService)
+    public DataProcessor(IUdpListenerService udpListenerService, IShotDataParser parser, IStoreService dbService)
     {
         _parser = parser;
         _dbService = dbService;
@@ -102,7 +102,7 @@ internal class DataProcessor : IDataProcessor, IDisposable
     {
         await foreach (ShotModel shot in _shotChannel.Reader.ReadAllAsync(cancellationToken))
         {
-            Result<Unit, DbSaveError> result = await _dbService.SaveShotAsync(shot).ConfigureAwait(false);
+            Result<Unit, StoreSaveError> result = await _dbService.SaveShotAsync(shot).ConfigureAwait(false);
 
             result.Match(
                 _ =>

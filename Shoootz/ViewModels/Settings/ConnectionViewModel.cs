@@ -3,19 +3,21 @@ using System.Collections.Generic;
 using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Result;
 using Shoootz.Models.Settings;
 using Shoootz.Models.Settings.Database;
 using Shoootz.Services.App;
-using Shoootz.Services.Database;
-using Shoootz.Services.Grafik;
+using Shoootz.Services.Graphics;
 using Shoootz.Services.Settings;
 using Shoootz.Services.Udp;
+using Shoootz.Store;
+using Shoootz.Store.Services;
 
 namespace Shoootz.ViewModels.Settings;
 
 internal partial class ConnectionViewModel : ViewModelBase
 {
-    private readonly IDbConnectionTester _connectionTester;
+    private readonly IConnectionTester _connectionTester;
 
     private readonly ISettingsService _settingsService;
 
@@ -24,8 +26,8 @@ internal partial class ConnectionViewModel : ViewModelBase
     private readonly IUdpListenerService _udpListenerService;
 
     public ConnectionViewModel(
-        IDbConnectionTester connectionTester,
-        IGrafikService grafikService,
+        IConnectionTester connectionTester,
+        IGraphicsService grafikService,
         SettingsModel settings,
         ISettingsService settingsService,
         IUdpListenerService udpListenerService
@@ -145,17 +147,15 @@ internal partial class ConnectionViewModel : ViewModelBase
     [RelayCommand]
     private void TestDbConnection()
     {
-        DbConnectionModel dbConnection = new DbConnectionModel
+        Result<bool, DbConnectionError> result = SelectedProvider switch
         {
-            ConnectionString = ConnectionString,
-            ProviderType = SelectedProvider,
+            ProviderType.PostgreSql => _connectionTester.PostgreSql(ConnectionString),
+            _ => _connectionTester.Sqlite(ConnectionString),
         };
 
-        _connectionTester
-            .Run(dbConnection)
-            .Match(
-                _ => ConnectionTestCompleted?.Invoke(true, null),
-                error => ConnectionTestCompleted?.Invoke(false, error.Value.Message)
-            );
+        result.Match(
+            _ => ConnectionTestCompleted?.Invoke(true, null),
+            error => ConnectionTestCompleted?.Invoke(false, error.Value.Message)
+        );
     }
 }

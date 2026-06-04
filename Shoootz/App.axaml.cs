@@ -9,15 +9,16 @@ using Shoootz.Models.Error;
 using Shoootz.Models.Settings;
 using Shoootz.Models.Settings.Database;
 using Shoootz.Services.Data;
-using Shoootz.Services.Database;
-using Shoootz.Services.Grafik;
+using Shoootz.Services.Graphics;
 using Shoootz.Services.Language;
 using Shoootz.Services.License;
 using Shoootz.Services.Localization;
 using Shoootz.Services.Parser;
 using Shoootz.Services.Settings;
+using Shoootz.Services.Store;
 using Shoootz.Services.Udp;
 using Shoootz.Store;
+using Shoootz.Store.Services;
 using Shoootz.ViewModels;
 using Shoootz.Views;
 using Themes.Disag;
@@ -52,7 +53,7 @@ public class App : Application
         {
             mainWindowViewModel.InitSettings(settings);
             mainWindowViewModel.CheckDbConnection();
-            _serviceProvider.GetRequiredService<IDbService>().InitializeAsync().GetAwaiter().GetResult();
+            _serviceProvider.GetRequiredService<IStoreService>().InitializeAsync().GetAwaiter().GetResult();
 
             if (settings.UdpConnectionModel.AutoConnect)
             {
@@ -97,7 +98,7 @@ public class App : Application
                 case ProviderType.PostgreSql:
                     options.UseNpgsql(
                         dbConnection.ConnectionString,
-                        o => o.MigrationsAssembly("Shoootz.Store.Adapter.PostgreSQL")
+                        optionsBuilder => optionsBuilder.MigrationsAssembly("Shoootz.Store.Adapter.PostgreSQL")
                     );
                     break;
 
@@ -105,20 +106,20 @@ public class App : Application
                 default:
                     options.UseSqlite(
                         dbConnection.ConnectionString,
-                        o => o.MigrationsAssembly("Shoootz.Store.Adapter.SQLite")
+                        optionsBuilder => optionsBuilder.MigrationsAssembly("Shoootz.Store.Adapter.SQLite")
                     );
                     break;
             }
         });
 
-        services.AddSingleton<IDbService, DbService>();
+        services.AddSingleton<IStoreService, StoreService>();
     }
 
     private static void InitSingletons(ServiceCollection services)
     {
         services.AddSingleton<IDataProcessor, DataProcessor>();
-        services.AddSingleton<IDbConnectionTester, DbConnectionTester>();
-        services.AddSingleton<IGrafikService, GrafikService>();
+        services.AddSingleton<IConnectionTester, ConnectionTester>();
+        services.AddSingleton<IGraphicsService, GraphicsService>();
         services.AddSingleton<ILanguageService, LanguageService>();
         services.AddSingleton<ILicenseService, LicenseService>();
         services.AddSingleton<ILocalizationService, LocalizationService>();
