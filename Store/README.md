@@ -1,5 +1,7 @@
 # Shoootz.Store — Migrations
 
+> **Wichtig:** Bei jeder Schema-Änderung müssen **beide** Befehle ausgeführt werden — SQLite und PostgreSQL haben jeweils eine eigene, unabhängige Migrations-Historie.
+
 ## SQLite
 
 ```bash
@@ -19,5 +21,3 @@ dotnet ef migrations add <MigrationName> \
 ```
 
 > Befehle vom Solution-Root (`Shoootz/`) ausführen.
-
-> **Wichtig:** Bei jeder Schema-Änderung müssen **beide** Befehle ausgeführt werden — SQLite und PostgreSQL haben jeweils eine eigene, unabhängige Migrations-Historie.
