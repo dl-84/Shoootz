@@ -3,10 +3,10 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Result;
 using Result.Types;
-using Shoootz.Context;
-using Shoootz.Context.Entities;
 using Shoootz.Models.Error;
 using Shoootz.Models.Shot;
+using Shoootz.Store;
+using Shoootz.Store.Entities;
 
 namespace Shoootz.Services.Database;
 

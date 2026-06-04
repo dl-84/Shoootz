@@ -5,7 +5,6 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Shoootz.Context;
 using Shoootz.Models.Error;
 using Shoootz.Models.Settings;
 using Shoootz.Models.Settings.Database;
@@ -18,6 +17,7 @@ using Shoootz.Services.Localization;
 using Shoootz.Services.Parser;
 using Shoootz.Services.Settings;
 using Shoootz.Services.Udp;
+using Shoootz.Store;
 using Shoootz.ViewModels;
 using Shoootz.Views;
 using Themes.Disag;
@@ -95,12 +95,18 @@ public class App : Application
             switch (dbConnection.ProviderType)
             {
                 case ProviderType.PostgreSql:
-                    options.UseNpgsql(dbConnection.ConnectionString);
+                    options.UseNpgsql(
+                        dbConnection.ConnectionString,
+                        o => o.MigrationsAssembly("Shoootz.Store.Adapter.PostgreSQL")
+                    );
                     break;
 
                 case ProviderType.Sqlite:
                 default:
-                    options.UseSqlite(dbConnection.ConnectionString);
+                    options.UseSqlite(
+                        dbConnection.ConnectionString,
+                        o => o.MigrationsAssembly("Shoootz.Store.Adapter.SQLite")
+                    );
                     break;
             }
         });

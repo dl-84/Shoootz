@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Shoootz.Migrations
+namespace Shoootz.Store.Adapter.SQLite.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialShotSchema : Migration
+    public partial class InitialSchema : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,13 +15,13 @@ namespace Shoootz.Migrations
                 name: "Shooters",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "TEXT", nullable: false),
+                    Id = table.Column<string>(type: "TEXT", maxLength: 10, nullable: false),
                     Birthyear = table.Column<int>(type: "INTEGER", nullable: false),
-                    Club = table.Column<string>(type: "TEXT", nullable: true),
-                    Firstname = table.Column<string>(type: "TEXT", nullable: true),
-                    Lastname = table.Column<string>(type: "TEXT", nullable: true),
+                    Club = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true),
+                    Firstname = table.Column<string>(type: "TEXT", maxLength: 100, nullable: true),
+                    Lastname = table.Column<string>(type: "TEXT", maxLength: 100, nullable: true),
                     Startnumber = table.Column<int>(type: "INTEGER", nullable: false),
-                    Team = table.Column<string>(type: "TEXT", nullable: true),
+                    Team = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true),
                 },
                 constraints: table =>
                 {
@@ -33,9 +33,9 @@ namespace Shoootz.Migrations
                 name: "ShotInfos",
                 columns: table => new
                 {
-                    MenuId = table.Column<string>(type: "TEXT", nullable: false),
-                    MenuItemName = table.Column<string>(type: "TEXT", nullable: true),
-                    MenuPointName = table.Column<string>(type: "TEXT", nullable: true),
+                    MenuId = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
+                    MenuItemName = table.Column<string>(type: "TEXT", maxLength: 100, nullable: true),
+                    MenuPointName = table.Column<string>(type: "TEXT", maxLength: 100, nullable: true),
                 },
                 constraints: table =>
                 {
@@ -50,13 +50,13 @@ namespace Shoootz.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false).Annotation("Sqlite:Autoincrement", true),
                     Count = table.Column<int>(type: "INTEGER", nullable: false),
                     DecValue = table.Column<double>(type: "REAL", nullable: false),
-                    DiscType = table.Column<string>(type: "TEXT", nullable: true),
+                    DiscType = table.Column<string>(type: "TEXT", maxLength: 10, nullable: true),
                     Distance = table.Column<double>(type: "REAL", nullable: false),
                     IsHot = table.Column<bool>(type: "INTEGER", nullable: false),
                     IsValid = table.Column<bool>(type: "INTEGER", nullable: false),
                     ShotDateTime = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    ShooterId = table.Column<string>(type: "TEXT", nullable: true),
-                    ShotInfoMenuId = table.Column<string>(type: "TEXT", nullable: true),
+                    ShooterId = table.Column<string>(type: "TEXT", maxLength: 10, nullable: true),
+                    ShotInfoMenuId = table.Column<string>(type: "TEXT", maxLength: 50, nullable: true),
                 },
                 constraints: table =>
                 {

@@ -2,42 +2,50 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Shoootz.Context;
+using Shoootz.Store;
 
 #nullable disable
 
-namespace Shoootz.Migrations
+namespace Shoootz.Store.Adapter.SQLite.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260604150029_InitialSchema")]
+    partial class InitialSchema
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.5");
 
-            modelBuilder.Entity("Shoootz.Context.Entities.ShooterEntity", b =>
+            modelBuilder.Entity("Shoootz.Store.Entities.ShooterEntity", b =>
                 {
                     b.Property<string>("Id")
+                        .HasMaxLength(10)
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Birthyear")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Club")
+                        .HasMaxLength(255)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Firstname")
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Lastname")
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Startnumber")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Team")
+                        .HasMaxLength(255)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -45,7 +53,7 @@ namespace Shoootz.Migrations
                     b.ToTable("Shooters");
                 });
 
-            modelBuilder.Entity("Shoootz.Context.Entities.ShotEntity", b =>
+            modelBuilder.Entity("Shoootz.Store.Entities.ShotEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -58,6 +66,7 @@ namespace Shoootz.Migrations
                         .HasColumnType("REAL");
 
                     b.Property<string>("DiscType")
+                        .HasMaxLength(10)
                         .HasColumnType("TEXT");
 
                     b.Property<double>("Distance")
@@ -70,12 +79,14 @@ namespace Shoootz.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ShooterId")
+                        .HasMaxLength(10)
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("ShotDateTime")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ShotInfoMenuId")
+                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -87,15 +98,18 @@ namespace Shoootz.Migrations
                     b.ToTable("Shots");
                 });
 
-            modelBuilder.Entity("Shoootz.Context.Entities.ShotInfoEntity", b =>
+            modelBuilder.Entity("Shoootz.Store.Entities.ShotInfoEntity", b =>
                 {
                     b.Property<string>("MenuId")
+                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("MenuItemName")
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("MenuPointName")
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.HasKey("MenuId");
@@ -103,13 +117,13 @@ namespace Shoootz.Migrations
                     b.ToTable("ShotInfos");
                 });
 
-            modelBuilder.Entity("Shoootz.Context.Entities.ShotEntity", b =>
+            modelBuilder.Entity("Shoootz.Store.Entities.ShotEntity", b =>
                 {
-                    b.HasOne("Shoootz.Context.Entities.ShooterEntity", "Shooter")
+                    b.HasOne("Shoootz.Store.Entities.ShooterEntity", "Shooter")
                         .WithMany("Shots")
                         .HasForeignKey("ShooterId");
 
-                    b.HasOne("Shoootz.Context.Entities.ShotInfoEntity", "ShotInfo")
+                    b.HasOne("Shoootz.Store.Entities.ShotInfoEntity", "ShotInfo")
                         .WithMany("Shots")
                         .HasForeignKey("ShotInfoMenuId");
 
@@ -118,12 +132,12 @@ namespace Shoootz.Migrations
                     b.Navigation("ShotInfo");
                 });
 
-            modelBuilder.Entity("Shoootz.Context.Entities.ShooterEntity", b =>
+            modelBuilder.Entity("Shoootz.Store.Entities.ShooterEntity", b =>
                 {
                     b.Navigation("Shots");
                 });
 
-            modelBuilder.Entity("Shoootz.Context.Entities.ShotInfoEntity", b =>
+            modelBuilder.Entity("Shoootz.Store.Entities.ShotInfoEntity", b =>
                 {
                     b.Navigation("Shots");
                 });

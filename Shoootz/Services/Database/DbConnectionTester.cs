@@ -4,10 +4,10 @@ using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Result;
 using Result.Types;
-using Shoootz.Context;
 using Shoootz.Models.Error;
 using Shoootz.Models.Settings.Database;
 using Shoootz.Services.Localization;
+using Shoootz.Store;
 
 namespace Shoootz.Services.Database;
 

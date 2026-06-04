@@ -3,6 +3,13 @@
   <Folder Name="/Theme/">
     <Project Path="../Library/Avalonia/Themes/Disag/Disag.csproj" />
   </Folder>
+  <Folder Name="/Store/">
+    <Project Path="Store/Shoootz.Store/Shoootz.Store.csproj" />
+  </Folder>
+  <Folder Name="/Store/Adapter/">
+    <Project Path="Store/Shoootz.Store/Adapter/Shoootz.Store.Adapter.PostgreSQL/Shoootz.Store.Adapter.PostgreSQL.csproj" />
+    <Project Path="Store/Shoootz.Store/Adapter/Shoootz.Store.Adapter.SQLite/Shoootz.Store.Adapter.SQLite.csproj" />
+  </Folder>
   <Folder Name="/Libraries/">
     <Project Path="../Library/C#/Result/Result.csproj" />
   </Folder>

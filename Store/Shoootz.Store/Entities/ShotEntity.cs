@@ -1,9 +1,9 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Shoootz.Context.Entities;
+namespace Shoootz.Store.Entities;
 
-internal class ShotEntity
+public class ShotEntity
 {
     public int Count { get; set; }
 

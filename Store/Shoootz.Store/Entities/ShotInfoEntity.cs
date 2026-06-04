@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Shoootz.Context.Entities;
+namespace Shoootz.Store.Entities;
 
-internal class ShotInfoEntity
+public class ShotInfoEntity
 {
     [MaxLength(50)]
     public string MenuId { get; set; } = string.Empty;

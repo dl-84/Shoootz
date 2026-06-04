@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Shoootz.Context.Entities;
+namespace Shoootz.Store.Entities;
 
-internal class ShooterEntity
+public class ShooterEntity
 {
     public int Birthyear { get; set; }
 

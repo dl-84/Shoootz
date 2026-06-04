@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using Shoootz.Context.Entities;
+using Shoootz.Store.Entities;
 
-namespace Shoootz.Context;
+namespace Shoootz.Store;
 
-internal class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
+public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
     public DbSet<ShooterEntity> Shooters { get; set; }
 
