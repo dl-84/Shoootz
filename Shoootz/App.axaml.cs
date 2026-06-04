@@ -28,8 +28,6 @@ namespace Shoootz;
 /// <inheritdoc />
 public class App : Application
 {
-    private static readonly SettingsService _settingsService = new SettingsService();
-
     private IServiceProvider? _serviceProvider;
 
     /// <inheritdoc/>
@@ -42,10 +40,13 @@ public class App : Application
     /// <inheritdoc/>
     public override void OnFrameworkInitializationCompleted()
     {
-        SettingsModel? settings = ReadSettings(out List<SettingsError>? settingsErrors);
-        _serviceProvider = InitServiceProvider(settings);
+        SettingsService settingsService = new SettingsService();
+        SettingsModel? settings = ReadSettings(settingsService, out List<SettingsError>? settingsErrors);
+
+        _serviceProvider = InitServiceProvider(settings, settingsService);
 
         MainWindowViewModel mainWindowViewModel = _serviceProvider.GetRequiredService<MainWindowViewModel>();
+
         ILocalizationService localizationService = _serviceProvider.GetRequiredService<ILocalizationService>();
         LocalizationService.Register(localizationService);
         localizationService.SetLanguage(settings?.CurrentLanguageCode ?? "de");
@@ -77,10 +78,10 @@ public class App : Application
         base.OnFrameworkInitializationCompleted();
     }
 
-    private static ServiceProvider InitServiceProvider(SettingsModel? settings)
+    private static ServiceProvider InitServiceProvider(SettingsModel? settings, SettingsService settingsService)
     {
         ServiceCollection services = new ServiceCollection();
-        InitSingletons(services);
+        InitSingletons(services, settingsService);
 
         if (settings?.DbConnectionModel is not null)
         {
@@ -116,7 +117,7 @@ public class App : Application
         services.AddSingleton<IStoreService, StoreService>();
     }
 
-    private static void InitSingletons(ServiceCollection services)
+    private static void InitSingletons(ServiceCollection services, SettingsService settingsService)
     {
         services.AddSingleton<IDataProcessor, DataProcessor>();
         services.AddSingleton<IConnectionTester, ConnectionTester>();
@@ -124,16 +125,16 @@ public class App : Application
         services.AddSingleton<ILanguageService, LanguageService>();
         services.AddSingleton<ILicenseService, LicenseService>();
         services.AddSingleton<ILocalizationService, LocalizationService>();
-        services.AddSingleton<ISettingsService>(_settingsService);
+        services.AddSingleton<ISettingsService>(settingsService);
         services.AddSingleton<IShotDataParser, ShotDataParser>();
         services.AddSingleton<IUdpListenerService, UdpListenerService>();
         services.AddSingleton<MainWindowViewModel>();
     }
 
-    private static SettingsModel? ReadSettings(out List<SettingsError>? settingsErrors)
+    private static SettingsModel? ReadSettings(SettingsService settingsService, out List<SettingsError>? settingsErrors)
     {
         List<SettingsError>? errorList = null;
-        SettingsModel? settings = _settingsService
+        SettingsModel? settings = settingsService
             .Load()
             .Match<SettingsModel?>(
                 settings => settings,

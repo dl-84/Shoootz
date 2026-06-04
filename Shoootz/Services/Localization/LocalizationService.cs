@@ -17,12 +17,12 @@ internal class LocalizationService : ILocalizationService
 
     public static ILocalizationService Instance { get; private set; } = null!;
 
+    public string this[string key] => _resourceManager.GetString(key, _currentCulture) ?? key;
+
     public static void Register(ILocalizationService instance)
     {
         Instance = instance;
     }
-
-    public string this[string key] => _resourceManager.GetString(key, _currentCulture) ?? key;
 
     public void SetLanguage(string cultureCode)
     {
