@@ -42,7 +42,6 @@ public class App : Application
     {
         SettingsService settingsService = new SettingsService();
         SettingsModel? settings = ReadSettings(settingsService, out List<SettingsError>? settingsErrors);
-
         _serviceProvider = InitServiceProvider(settings, settingsService);
 
         MainWindowViewModel mainWindowViewModel = _serviceProvider.GetRequiredService<MainWindowViewModel>();
@@ -51,23 +50,22 @@ public class App : Application
         LocalizationService.Register(localizationService);
         localizationService.SetLanguage(settings?.CurrentLanguageCode ?? "de");
 
-        if (settings is not null)
+        if (settingsErrors is not null)
         {
-            mainWindowViewModel.InitSettings(settings);
+            mainWindowViewModel.RedirectToSettingsError(settingsErrors);
+        }
+        else
+        {
+            mainWindowViewModel.InitSettings(settings!);
             mainWindowViewModel.CheckDbConnection();
             _serviceProvider.GetRequiredService<IStoreService>().InitializeAsync().GetAwaiter().GetResult();
 
-            if (settings.UdpConnectionModel.AutoConnect)
+            if (settings!.UdpConnectionModel.AutoConnect)
             {
                 _serviceProvider
                     .GetRequiredService<IUdpListenerService>()
                     .Start(settings.UdpConnectionModel.IpAddress, settings.UdpConnectionModel.Port);
             }
-        }
-
-        if (settingsErrors is not null)
-        {
-            mainWindowViewModel.RedirectToSettingsError(settingsErrors);
         }
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
@@ -134,18 +132,14 @@ public class App : Application
     private static SettingsModel? ReadSettings(SettingsService settingsService, out List<SettingsError>? settingsErrors)
     {
         List<SettingsError>? errorList = null;
-        SettingsModel? settings = settingsService
-            .Load()
-            .Match<SettingsModel?>(
-                settings => settings,
-                errors =>
-                {
-                    errorList = errors.Value;
-                    return null;
-                }
-            );
+        SettingsModel? loadedSettings = null;
+
+        settingsService.Load().Match(
+            settings => loadedSettings = settings,
+            errors => errorList = errors.Value
+        );
 
         settingsErrors = errorList;
-        return settings;
+        return loadedSettings;
     }
 }
