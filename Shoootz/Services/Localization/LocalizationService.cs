@@ -13,14 +13,14 @@ internal class LocalizationService : ILocalizationService
 
     private CultureInfo _currentCulture = CultureInfo.CurrentUICulture;
 
-    public LocalizationService()
-    {
-        Instance = this;
-    }
-
     public event EventHandler? LanguageChanged;
 
-    public static LocalizationService Instance { get; private set; } = null!;
+    public static ILocalizationService Instance { get; private set; } = null!;
+
+    public static void Register(ILocalizationService instance)
+    {
+        Instance = instance;
+    }
 
     public string this[string key] => _resourceManager.GetString(key, _currentCulture) ?? key;
 

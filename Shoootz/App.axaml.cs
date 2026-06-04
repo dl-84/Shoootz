@@ -47,6 +47,7 @@ public class App : Application
 
         MainWindowViewModel mainWindowViewModel = _serviceProvider.GetRequiredService<MainWindowViewModel>();
         ILocalizationService localizationService = _serviceProvider.GetRequiredService<ILocalizationService>();
+        LocalizationService.Register(localizationService);
         localizationService.SetLanguage(settings?.CurrentLanguageCode ?? "de");
 
         if (settings is not null)
