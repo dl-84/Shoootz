@@ -9,6 +9,10 @@
     <DefaultItemExcludes>$(DefaultItemExcludes);Adapter/**</DefaultItemExcludes>
   </PropertyGroup>
 
+  <Target Name="FormatCode" AfterTargets="Build" Condition="'$(Configuration)' == 'Debug'">
+    <Exec Command="dotnet csharpier format ." WorkingDirectory="$(MSBuildProjectDirectory)" />
+  </Target>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.5">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

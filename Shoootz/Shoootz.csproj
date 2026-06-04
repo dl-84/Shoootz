@@ -32,7 +32,7 @@
     <EmbeddedResource Include="Resources\Licenses\licenses.json" />
     <EmbeddedResource Include="..\LICENSE" LogicalName="Shoootz.LICENSE" />
     <AdditionalFiles Include="..\stylecop.json" />
-    <Compile Update="Services\App\App.axaml.cs">
+    <Compile Update="App.axaml.cs">
       <DependentUpon>App.axaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>

@@ -6,6 +6,10 @@
     <RootNamespace>Shoootz.Store.Adapter.PostgreSQL</RootNamespace>
   </PropertyGroup>
 
+  <Target Name="FormatCode" AfterTargets="Build" Condition="'$(Configuration)' == 'Debug'">
+    <Exec Command="dotnet csharpier format ." WorkingDirectory="$(MSBuildProjectDirectory)" />
+  </Target>
+
   <ItemGroup>
     <ProjectReference Include="..\..\Shoootz.Store.csproj" />
   </ItemGroup>
