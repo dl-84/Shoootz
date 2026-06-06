@@ -6,10 +6,11 @@ using System.Reflection;
 using System.Text.Json;
 using Controls.LicenseTable.Models;
 using Shoootz.Services.Localization;
+using Shoootz.Services.Store;
 
 namespace Shoootz.Services.License;
 
-internal class LicenseService(ILocalizationService localizationService) : ILicenseService
+internal class LicenseService(ILocalizationService localizationService, IStoreService storeService) : ILicenseService
 {
     private const string CopyrightInternal = "© 2026 Daniel Lindner";
 
@@ -53,7 +54,7 @@ internal class LicenseService(ILocalizationService localizationService) : ILicen
             ),
             new PackageModel(
                 localizationService["Database"],
-                "0.0.1",
+                storeService.GetDbVersionAsync().ConfigureAwait(false).GetAwaiter().GetResult(),
                 LicenseTypeInternal,
                 null,
                 null,

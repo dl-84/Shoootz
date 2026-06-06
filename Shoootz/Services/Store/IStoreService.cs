@@ -12,6 +12,8 @@ internal interface IStoreService
 {
     Task<DbStatus> GetDbStatusAsync();
 
+    Task<string> GetDbVersionAsync();
+
     Task<Result<List<ShotModel>, StoreReadError>> GetShotsAsync();
 
     Task InitializeAsync();
