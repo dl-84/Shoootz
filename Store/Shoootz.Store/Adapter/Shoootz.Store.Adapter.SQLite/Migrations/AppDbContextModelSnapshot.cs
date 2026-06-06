@@ -47,7 +47,7 @@ namespace Shoootz.Store.Adapter.SQLite.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Shooters");
+                    b.ToTable("Shooters", (string)null);
                 });
 
             modelBuilder.Entity("Shoootz.Store.Entities.ShotEntity", b =>
@@ -92,7 +92,7 @@ namespace Shoootz.Store.Adapter.SQLite.Migrations
 
                     b.HasIndex("ShotInfoMenuId");
 
-                    b.ToTable("Shots");
+                    b.ToTable("Shots", (string)null);
                 });
 
             modelBuilder.Entity("Shoootz.Store.Entities.ShotInfoEntity", b =>
@@ -111,7 +111,7 @@ namespace Shoootz.Store.Adapter.SQLite.Migrations
 
                     b.HasKey("MenuId");
 
-                    b.ToTable("ShotInfos");
+                    b.ToTable("ShotInfos", (string)null);
                 });
 
             modelBuilder.Entity("Shoootz.Store.Entities.ShotEntity", b =>

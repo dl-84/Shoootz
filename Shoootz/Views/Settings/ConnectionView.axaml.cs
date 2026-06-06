@@ -65,6 +65,11 @@ public partial class ConnectionView : UserControl
         if (TopLevel.GetTopLevel(this) is Window { DataContext: MainWindowViewModel mainWindowViewModel })
         {
             mainWindowViewModel.IsDialogOpen = false;
+
+            if (success)
+            {
+                mainWindowViewModel.CheckDbConnection();
+            }
         }
 
         _waitingDialog?.Close();
