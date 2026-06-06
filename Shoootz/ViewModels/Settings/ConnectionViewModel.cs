@@ -161,8 +161,11 @@ internal partial class ConnectionViewModel : ViewModelBase
 
         try
         {
-            await Task.Delay(3000);
             await _storeService.InitializeAsync();
+
+            // Dont delete, its for the waiting dialog.
+            await Task.Delay(2000);
+
             DbInitializeCompleted?.Invoke(true, null);
         }
         catch (Exception exception)

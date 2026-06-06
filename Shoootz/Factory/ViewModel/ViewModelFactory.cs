@@ -1,10 +1,12 @@
 using System;
+using Microsoft.Extensions.DependencyInjection;
 using Shoootz.Models.Settings;
 using Shoootz.Services.Graphics;
 using Shoootz.Services.Language;
 using Shoootz.Services.License;
 using Shoootz.Services.Localization;
 using Shoootz.Services.Settings;
+using Shoootz.Services.Store;
 using Shoootz.Services.Udp;
 using Shoootz.Store.Services;
 using Shoootz.ViewModels;
@@ -20,11 +22,12 @@ internal class ViewModelFactory(
     ILanguageService languageService,
     ILicenseService licenseService,
     ILocalizationService localizationService,
+    IServiceProvider serviceProvider,
     ISettingsService settingsService,
     IUdpListenerService udpListenerService
 ) : IViewModelFactory
 {
-    public ViewModelBase? CreateView(int index) =>
+    public ViewModelBase CreateView(int index) =>
         index switch
         {
             1 => new EvaluationViewModel(),
@@ -39,6 +42,7 @@ internal class ViewModelFactory(
                 graphicsService,
                 settingsService.CurrentSettings ?? new SettingsModel(),
                 settingsService,
+                serviceProvider.GetRequiredService<IStoreService>(),
                 udpListenerService
             ),
             5 => new GroupsViewModel(),
