@@ -61,7 +61,7 @@
                             <Button Grid.Column="1"
                                     Classes="green"
                                     Command="{Binding InitializeDbCommand}"
-                                    Content="{loc:Localization InitializeDb}" />
+                                    Content="{Binding InitializeDbLabel}" />
                         </Grid>
 
                     </StackPanel>

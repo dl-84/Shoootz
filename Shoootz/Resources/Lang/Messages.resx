@@ -178,11 +178,23 @@
   <data name="DbInitializing" xml:space="preserve">
     <value>Initializing database...</value>
   </data>
+  <data name="DbPendingMigrations" xml:space="preserve">
+    <value>Pending database migrations were found. Please update the database.</value>
+  </data>
+  <data name="DbPendingMigrationsTitle" xml:space="preserve">
+    <value>Database update available</value>
+  </data>
+  <data name="DbUpToDate" xml:space="preserve">
+    <value>Up to date</value>
+  </data>
   <data name="DbInitializeSuccessful" xml:space="preserve">
     <value>Database initialized successfully</value>
   </data>
   <data name="InitializeDb" xml:space="preserve">
     <value>Initialize</value>
+  </data>
+  <data name="UpdateDb" xml:space="preserve">
+    <value>Update</value>
   </data>
   <data name="Provider" xml:space="preserve">
     <value>Provider</value>

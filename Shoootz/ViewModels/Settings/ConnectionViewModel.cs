@@ -5,10 +5,12 @@ using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Result;
+using Shoootz.Models.Database;
 using Shoootz.Models.Settings;
 using Shoootz.Models.Settings.Database;
 using Shoootz.Services.App;
 using Shoootz.Services.Graphics;
+using Shoootz.Services.Localization;
 using Shoootz.Services.Settings;
 using Shoootz.Services.Store;
 using Shoootz.Services.Udp;
@@ -53,6 +55,8 @@ internal partial class ConnectionViewModel : ViewModelBase
         HeartPulseIcon = grafikService.GetIcon(AppIcon.HeartPulse, AppBrush.PrimaryForeground);
 
         _udpListenerService.IsListeningChanged += (_, isListening) => IsUdpListening = isListening;
+
+        _ = RefreshDbStatusAsync();
     }
 
     public event Action<bool, string?>? ConnectionTestCompleted;
@@ -71,6 +75,10 @@ internal partial class ConnectionViewModel : ViewModelBase
     public partial string ConnectionString { get; set; }
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(InitializeDbLabel))]
+    public partial DbStatus DbStatus { get; set; }
+
+    [ObservableProperty]
     public partial bool AutoConnect { get; set; }
 
     [ObservableProperty]
@@ -83,6 +91,14 @@ internal partial class ConnectionViewModel : ViewModelBase
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsPortValid))]
     public partial string Port { get; set; }
+
+    public string InitializeDbLabel =>
+        DbStatus switch
+        {
+            DbStatus.UpdateAvailable => LocalizationService.Instance["UpdateDb"],
+            DbStatus.UpToDate => LocalizationService.Instance["DbUpToDate"],
+            _ => LocalizationService.Instance["InitializeDb"],
+        };
 
     public bool IsIpAddressValid => System.Net.IPAddress.TryParse(IpAddress, out _);
 
@@ -154,7 +170,7 @@ internal partial class ConnectionViewModel : ViewModelBase
             );
     }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(CanInitializeDb))]
     private async Task InitializeDb()
     {
         DbInitializeStarted?.Invoke();
@@ -166,12 +182,22 @@ internal partial class ConnectionViewModel : ViewModelBase
             // Dont delete, its for the waiting dialog.
             await Task.Delay(2000);
 
+            DbStatus = await _storeService.GetDbStatusAsync();
+            InitializeDbCommand.NotifyCanExecuteChanged();
             DbInitializeCompleted?.Invoke(true, null);
         }
         catch (Exception exception)
         {
             DbInitializeCompleted?.Invoke(false, exception.Message);
         }
+    }
+
+    private bool CanInitializeDb() => DbStatus != DbStatus.UpToDate;
+
+    private async Task RefreshDbStatusAsync()
+    {
+        DbStatus = await _storeService.GetDbStatusAsync();
+        InitializeDbCommand.NotifyCanExecuteChanged();
     }
 
     [RelayCommand]

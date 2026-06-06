@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Result;
 using Result.Types;
+using Shoootz.Models.Database;
 using Shoootz.Models.Error;
 using Shoootz.Models.Shot;
 using Shoootz.Store;
@@ -14,6 +15,34 @@ namespace Shoootz.Services.Store;
 
 internal class StoreService(IDbContextFactory<AppDbContext> contextFactory) : IStoreService
 {
+    public async Task<DbStatus> GetDbStatusAsync()
+    {
+        try
+        {
+            await using (AppDbContext context = await contextFactory.CreateDbContextAsync().ConfigureAwait(false))
+            {
+                bool canConnect = await context.Database.CanConnectAsync().ConfigureAwait(false);
+                if (!canConnect)
+                {
+                    return DbStatus.NotInitialized;
+                }
+
+                IEnumerable<string> applied = await context.Database.GetAppliedMigrationsAsync().ConfigureAwait(false);
+                if (!applied.Any())
+                {
+                    return DbStatus.NotInitialized;
+                }
+
+                IEnumerable<string> pending = await context.Database.GetPendingMigrationsAsync().ConfigureAwait(false);
+                return pending.Any() ? DbStatus.UpdateAvailable : DbStatus.UpToDate;
+            }
+        }
+        catch
+        {
+            return DbStatus.NotInitialized;
+        }
+    }
+
     public async Task<Result<List<ShotModel>, StoreReadError>> GetShotsAsync()
     {
         try

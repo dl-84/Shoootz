@@ -221,6 +221,33 @@ namespace Shoootz.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pending database migrations were found. Please update the database..
+        /// </summary>
+        internal static string DbPendingMigrations {
+            get {
+                return ResourceManager.GetString("DbPendingMigrations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database update available.
+        /// </summary>
+        internal static string DbPendingMigrationsTitle {
+            get {
+                return ResourceManager.GetString("DbPendingMigrationsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Up to date.
+        /// </summary>
+        internal static string DbUpToDate {
+            get {
+                return ResourceManager.GetString("DbUpToDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete.
         /// </summary>
         internal static string Delete {
@@ -568,6 +595,15 @@ namespace Shoootz.Resources.Lang {
         internal static string UdpBroadcast {
             get {
                 return ResourceManager.GetString("UdpBroadcast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update.
+        /// </summary>
+        internal static string UpdateDb {
+            get {
+                return ResourceManager.GetString("UpdateDb", resourceCulture);
             }
         }
         

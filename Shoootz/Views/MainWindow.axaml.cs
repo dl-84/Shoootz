@@ -1,6 +1,12 @@
+using System;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
+using Controls.InfoDialog;
+using Controls.InfoDialog.Enum;
+using Shoootz.Services.Localization;
+using Shoootz.ViewModels;
 
 namespace Shoootz.Views;
 
@@ -17,6 +23,50 @@ public partial class MainWindow : Window
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
         {
             RootBorder.CornerRadius = new CornerRadius(0);
+        }
+    }
+
+    /// <inheritdoc />
+    protected override async void OnOpened(EventArgs eventArgs)
+    {
+        base.OnOpened(eventArgs);
+
+        if (DataContext is not MainWindowViewModel vm)
+        {
+            return;
+        }
+
+        vm.PendingMigrationsDetected += OnPendingMigrationsDetected;
+        await vm.CheckPendingMigrationsAsync();
+    }
+
+    private void OnPendingMigrationsDetected()
+    {
+        _ = OpenPendingMigrationsDialogAsync();
+    }
+
+    private async Task OpenPendingMigrationsDialogAsync()
+    {
+        if (DataContext is not MainWindowViewModel vm)
+        {
+            return;
+        }
+
+        try
+        {
+            vm.IsDialogOpen = true;
+
+            await new InfoDialog
+            {
+                CloseText = LocalizationService.Instance["Close"],
+                DialogTitle = LocalizationService.Instance["DbPendingMigrationsTitle"],
+                IconType = IconType.Warning,
+                Message = LocalizationService.Instance["DbPendingMigrations"],
+            }.ShowDialog(this);
+        }
+        finally
+        {
+            vm.IsDialogOpen = false;
         }
     }
 }

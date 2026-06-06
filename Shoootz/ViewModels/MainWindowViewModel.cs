@@ -1,13 +1,17 @@
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Result;
 using Shoootz.Factory.ViewModel;
+using Shoootz.Models.Database;
 using Shoootz.Models.Error;
 using Shoootz.Models.Settings;
 using Shoootz.Models.Settings.Database;
 using Shoootz.Resources.Lang;
 using Shoootz.Services.Localization;
 using Shoootz.Services.Settings;
+using Shoootz.Services.Store;
 using Shoootz.Services.Udp;
 using Shoootz.Store;
 using Shoootz.Store.Services;
@@ -23,6 +27,8 @@ internal partial class MainWindowViewModel : ViewModelBase
 
     private readonly ISettingsService _settingsService;
 
+    private readonly IStoreService _storeService;
+
     private readonly IUdpListenerService _udpListenerService;
 
     private readonly IViewModelFactory _viewModelFactory;
@@ -31,6 +37,7 @@ internal partial class MainWindowViewModel : ViewModelBase
         IConnectionTester connectionTester,
         ILocalizationService localizationService,
         ISettingsService settingsService,
+        IStoreService storeService,
         IUdpListenerService udpListenerService,
         IViewModelFactory viewModelFactory
     )
@@ -41,12 +48,16 @@ internal partial class MainWindowViewModel : ViewModelBase
         _settingsService = settingsService;
         _settingsService.SettingsSaved += _ => CheckDbConnection();
 
+        _storeService = storeService;
+
         _udpListenerService = udpListenerService;
         _udpListenerService.IsListeningChanged += (_, isListening) => IsUdpConnected = isListening;
 
         _viewModelFactory = viewModelFactory;
         CurrentPage = _viewModelFactory.CreateView(ActiveIndex)!;
     }
+
+    public event Action? PendingMigrationsDetected;
 
     [ObservableProperty]
     public partial int ActiveIndex { get; set; } = 1;
@@ -95,6 +106,17 @@ internal partial class MainWindowViewModel : ViewModelBase
         }
     }
 
+    public async Task CheckPendingMigrationsAsync()
+    {
+        DbStatus status = await _storeService.GetDbStatusAsync();
+
+        if (status == DbStatus.UpdateAvailable)
+        {
+            ActiveIndex = 4;
+            PendingMigrationsDetected?.Invoke();
+        }
+    }
+
     public void CheckDbConnection()
     {
         SettingsModel? settings = _settingsService.CurrentSettings;
@@ -130,7 +152,7 @@ internal partial class MainWindowViewModel : ViewModelBase
 
         CurrentPage = next;
 
-        if (!ReferenceEquals(previous, CurrentPage) && previous is System.IDisposable disposable)
+        if (!ReferenceEquals(previous, CurrentPage) && previous is IDisposable disposable)
         {
             disposable.Dispose();
         }
