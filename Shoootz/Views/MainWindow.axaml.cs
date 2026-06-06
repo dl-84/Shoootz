@@ -27,17 +27,21 @@ public partial class MainWindow : Window
     }
 
     /// <inheritdoc />
-    protected override async void OnOpened(EventArgs eventArgs)
+    protected override void OnOpened(EventArgs eventArgs)
     {
         base.OnOpened(eventArgs);
+        _ = OnOpenedAsync();
+    }
 
-        if (DataContext is not MainWindowViewModel vm)
+    private async Task OnOpenedAsync()
+    {
+        if (DataContext is not MainWindowViewModel mainWindowViewModel)
         {
             return;
         }
 
-        vm.PendingMigrationsDetected += OnPendingMigrationsDetected;
-        await vm.CheckPendingMigrationsAsync();
+        mainWindowViewModel.PendingMigrationsDetected += OnPendingMigrationsDetected;
+        await mainWindowViewModel.CheckPendingMigrationsAsync();
     }
 
     private void OnPendingMigrationsDetected()
@@ -47,14 +51,14 @@ public partial class MainWindow : Window
 
     private async Task OpenPendingMigrationsDialogAsync()
     {
-        if (DataContext is not MainWindowViewModel vm)
+        if (DataContext is not MainWindowViewModel mainWindowViewModel)
         {
             return;
         }
 
         try
         {
-            vm.IsDialogOpen = true;
+            mainWindowViewModel.IsDialogOpen = true;
 
             await new InfoDialog
             {
@@ -66,7 +70,7 @@ public partial class MainWindow : Window
         }
         finally
         {
-            vm.IsDialogOpen = false;
+            mainWindowViewModel.IsDialogOpen = false;
         }
     }
 }
