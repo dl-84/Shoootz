@@ -140,10 +140,10 @@
     <value>Beim Start automatisch verbinden</value>
   </data>
   <data name="Start" xml:space="preserve">
-    <value>Start</value>
+    <value>Verbinden</value>
   </data>
   <data name="Stop" xml:space="preserve">
-    <value>Stop</value>
+    <value>Trennen</value>
   </data>
   <data name="IpAddress" xml:space="preserve">
     <value>IP-Adresse</value>
@@ -173,6 +173,15 @@
   </data>
   <data name="DbErrorUnknownProvider" xml:space="preserve">
     <value>Unbekannter Datenbankprovider</value>
+  </data>
+  <data name="DbInitializing" xml:space="preserve">
+    <value>Datenbank wird initialisiert...</value>
+  </data>
+  <data name="DbInitializeSuccessful" xml:space="preserve">
+    <value>Datenbank erfolgreich initialisiert</value>
+  </data>
+  <data name="InitializeDb" xml:space="preserve">
+    <value>Initialisieren</value>
   </data>
   <data name="Provider" xml:space="preserve">
     <value>Provider</value>

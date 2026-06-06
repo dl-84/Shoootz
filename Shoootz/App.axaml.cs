@@ -58,7 +58,6 @@ public class App : Application
         else
         {
             mainWindowViewModel.CheckDbConnection();
-            _serviceProvider.GetRequiredService<IStoreService>().InitializeAsync().GetAwaiter().GetResult();
 
             if (settings!.UdpConnectionModel.AutoConnect)
             {

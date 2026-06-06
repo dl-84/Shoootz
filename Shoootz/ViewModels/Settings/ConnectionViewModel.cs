@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -9,6 +10,7 @@ using Shoootz.Models.Settings.Database;
 using Shoootz.Services.App;
 using Shoootz.Services.Graphics;
 using Shoootz.Services.Settings;
+using Shoootz.Services.Store;
 using Shoootz.Services.Udp;
 using Shoootz.Store;
 using Shoootz.Store.Services;
@@ -19,9 +21,11 @@ internal partial class ConnectionViewModel : ViewModelBase
 {
     private readonly IConnectionTester _connectionTester;
 
+    private readonly SettingsModel _settings;
+
     private readonly ISettingsService _settingsService;
 
-    private readonly SettingsModel _settings;
+    private readonly IStoreService _storeService;
 
     private readonly IUdpListenerService _udpListenerService;
 
@@ -30,12 +34,14 @@ internal partial class ConnectionViewModel : ViewModelBase
         IGraphicsService grafikService,
         SettingsModel settings,
         ISettingsService settingsService,
+        IStoreService storeService,
         IUdpListenerService udpListenerService
     )
     {
         _connectionTester = connectionTester;
         _settings = settings;
         _settingsService = settingsService;
+        _storeService = storeService;
         _udpListenerService = udpListenerService;
 
         AutoConnect = settings.UdpConnectionModel.AutoConnect;
@@ -50,6 +56,10 @@ internal partial class ConnectionViewModel : ViewModelBase
     }
 
     public event Action<bool, string?>? ConnectionTestCompleted;
+
+    public event Action<bool, string?>? DbInitializeCompleted;
+
+    public event Action? DbInitializeStarted;
 
     public event Action<SettingsModel>? SettingsSaved;
 
@@ -142,6 +152,23 @@ internal partial class ConnectionViewModel : ViewModelBase
                 _ => ConnectionTestCompleted?.Invoke(true, null),
                 error => ConnectionTestCompleted?.Invoke(false, error.Value.Message)
             );
+    }
+
+    [RelayCommand]
+    private async Task InitializeDb()
+    {
+        DbInitializeStarted?.Invoke();
+
+        try
+        {
+            await Task.Delay(3000);
+            await _storeService.InitializeAsync();
+            DbInitializeCompleted?.Invoke(true, null);
+        }
+        catch (Exception exception)
+        {
+            DbInitializeCompleted?.Invoke(false, exception.Message);
+        }
     }
 
     [RelayCommand]

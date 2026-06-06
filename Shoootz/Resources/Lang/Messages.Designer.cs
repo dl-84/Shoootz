@@ -203,6 +203,24 @@ namespace Shoootz.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Database initialized successfully.
+        /// </summary>
+        internal static string DbInitializeSuccessful {
+            get {
+                return ResourceManager.GetString("DbInitializeSuccessful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Initializing database....
+        /// </summary>
+        internal static string DbInitializing {
+            get {
+                return ResourceManager.GetString("DbInitializing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete.
         /// </summary>
         internal static string Delete {
@@ -262,6 +280,15 @@ namespace Shoootz.Resources.Lang {
         internal static string Info {
             get {
                 return ResourceManager.GetString("Info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Initialize.
+        /// </summary>
+        internal static string InitializeDb {
+            get {
+                return ResourceManager.GetString("InitializeDb", resourceCulture);
             }
         }
         
@@ -473,7 +500,7 @@ namespace Shoootz.Resources.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Start.
+        ///   Looks up a localized string similar to Connect.
         /// </summary>
         internal static string Start {
             get {
@@ -500,7 +527,7 @@ namespace Shoootz.Resources.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Stop.
+        ///   Looks up a localized string similar to Disconnect.
         /// </summary>
         internal static string Stop {
             get {
