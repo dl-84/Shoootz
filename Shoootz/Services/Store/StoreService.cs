@@ -33,7 +33,7 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory) : IS
                     await context.Database.GetAppliedMigrationsAsync().ConfigureAwait(false)
                 ).ToList();
 
-                if (applied.Count > 0)
+                if (applied.Count == 0)
                 {
                     return DbStatus.NotInitialized;
                 }
