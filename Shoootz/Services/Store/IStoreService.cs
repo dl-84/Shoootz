@@ -10,9 +10,9 @@ namespace Shoootz.Services.Store;
 
 internal interface IStoreService
 {
-    Task<DbStatus> GetDbStatusAsync();
+    string DbVersion { get; }
 
-    Task<string> GetDbVersionAsync();
+    Task<DbStatus> GetDbStatusAsync();
 
     Task<Result<List<ShotModel>, StoreReadError>> GetShotsAsync();
 

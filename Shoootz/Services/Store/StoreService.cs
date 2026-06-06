@@ -15,6 +15,8 @@ namespace Shoootz.Services.Store;
 
 internal class StoreService(IDbContextFactory<AppDbContext> contextFactory) : IStoreService
 {
+    public string DbVersion { get; private set; } = "N/A";
+
     public async Task<DbStatus> GetDbStatusAsync()
     {
         try
@@ -27,35 +29,32 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory) : IS
                     return DbStatus.NotInitialized;
                 }
 
-                IEnumerable<string> applied = await context.Database.GetAppliedMigrationsAsync().ConfigureAwait(false);
-                if (!applied.Any())
+                List<string> applied = (
+                    await context.Database.GetAppliedMigrationsAsync().ConfigureAwait(false)
+                ).ToList();
+
+                if (applied.Count > 0)
                 {
                     return DbStatus.NotInitialized;
                 }
 
-                IEnumerable<string> pending = await context.Database.GetPendingMigrationsAsync().ConfigureAwait(false);
-                return pending.Any() ? DbStatus.UpdateAvailable : DbStatus.UpToDate;
+                DbVersion = applied.LastOrDefault() switch
+                {
+                    "20260604150038_InitialSchema" => "1.0.0",
+                    "20260604150029_InitialSchema" => "1.0.0",
+                    _ => "N/A",
+                };
+
+                List<string> pending = (
+                    await context.Database.GetPendingMigrationsAsync().ConfigureAwait(false)
+                ).ToList();
+
+                return pending.Count > 0 ? DbStatus.UpdateAvailable : DbStatus.UpToDate;
             }
         }
         catch
         {
             return DbStatus.NotInitialized;
-        }
-    }
-
-    public async Task<string> GetDbVersionAsync()
-    {
-        await using (AppDbContext context = await contextFactory.CreateDbContextAsync().ConfigureAwait(false))
-        {
-            IEnumerable<string> applied = await context.Database.GetAppliedMigrationsAsync().ConfigureAwait(false);
-            string? migrationName = applied.LastOrDefault();
-
-            return migrationName switch
-            {
-                "20260604150038_InitialSchema" => "1.0.0",
-                "20260604150029_InitialSchema" => "1.0.0",
-                _ => "N/A",
-            };
         }
     }
 

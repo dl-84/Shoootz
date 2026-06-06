@@ -54,7 +54,7 @@ internal class LicenseService(ILocalizationService localizationService, IStoreSe
             ),
             new PackageModel(
                 localizationService["Database"],
-                storeService.GetDbVersionAsync().ConfigureAwait(false).GetAwaiter().GetResult(),
+                storeService.DbVersion,
                 LicenseTypeInternal,
                 null,
                 null,
