@@ -48,7 +48,6 @@ internal partial class ConnectionViewModel : ViewModelBase
 
         AutoConnect = settings.UdpConnectionModel.AutoConnect;
         ConnectionString = settings.DbConnectionModel.ConnectionString;
-        IpAddress = settings.UdpConnectionModel.IpAddress;
         IsUdpListening = udpListenerService.IsListening;
         Port = settings.UdpConnectionModel.Port.ToString();
         SelectedProvider = settings.DbConnectionModel.ProviderType;
@@ -85,10 +84,6 @@ internal partial class ConnectionViewModel : ViewModelBase
     public partial bool IsUdpListening { get; set; }
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(IsIpAddressValid))]
-    public partial string IpAddress { get; set; }
-
-    [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsPortValid))]
     public partial string Port { get; set; }
 
@@ -99,8 +94,6 @@ internal partial class ConnectionViewModel : ViewModelBase
             DbStatus.UpToDate => LocalizationService.Instance["DbUpToDate"],
             _ => LocalizationService.Instance["InitializeDb"],
         };
-
-    public bool IsIpAddressValid => System.Net.IPAddress.TryParse(IpAddress, out _);
 
     public bool IsPortValid => int.TryParse(Port, out int port) && port is >= 1 and <= 65535;
 
@@ -113,7 +106,6 @@ internal partial class ConnectionViewModel : ViewModelBase
         _settings.DbConnectionModel.ConnectionString = ConnectionString;
         _settings.DbConnectionModel.ProviderType = SelectedProvider;
         _settings.UdpConnectionModel.AutoConnect = AutoConnect;
-        _settings.UdpConnectionModel.IpAddress = IpAddress;
         _settings.UdpConnectionModel.Port = int.Parse(Port);
         _settingsService.Save(_settings);
 
@@ -127,7 +119,6 @@ internal partial class ConnectionViewModel : ViewModelBase
         && (
             AutoConnect != _settings.UdpConnectionModel.AutoConnect
             || ConnectionString != _settings.DbConnectionModel.ConnectionString
-            || IpAddress != _settings.UdpConnectionModel.IpAddress
             || Port != _settings.UdpConnectionModel.Port.ToString()
             || SelectedProvider != _settings.DbConnectionModel.ProviderType
         );
@@ -135,8 +126,6 @@ internal partial class ConnectionViewModel : ViewModelBase
     partial void OnAutoConnectChanged(bool value) => SaveCommand.NotifyCanExecuteChanged();
 
     partial void OnConnectionStringChanged(string value) => SaveCommand.NotifyCanExecuteChanged();
-
-    partial void OnIpAddressChanged(string value) => SaveCommand.NotifyCanExecuteChanged();
 
     partial void OnPortChanged(string value) => SaveCommand.NotifyCanExecuteChanged();
 
@@ -147,7 +136,7 @@ internal partial class ConnectionViewModel : ViewModelBase
     {
         if (int.TryParse(Port, out int port))
         {
-            _udpListenerService.Start(IpAddress, port);
+            _udpListenerService.Start(port);
         }
     }
 

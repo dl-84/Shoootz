@@ -97,7 +97,7 @@ internal class SettingsService : ISettingsService
                 return result;
             }
         }
-        catch (JsonException exception)
+        catch (Exception exception)
         {
             return new Error<List<SettingsError>>([
                 new SettingsError(SettingsPropertyType.JsonExceptionOnValidate, exception.Message),
@@ -116,9 +116,11 @@ internal class SettingsService : ISettingsService
                 continue;
             }
 
-            string? value = jsonDocument.RootElement.TryGetProperty(error.Property!, out JsonElement element)
-                ? element.ToString()
-                : null;
+            string? value =
+                error.Property is not null
+                && jsonDocument.RootElement.TryGetProperty(error.Property, out JsonElement element)
+                    ? element.ToString()
+                    : null;
 
             string allowed = error is { Kind: ValidationErrorKind.NotInEnumeration, Schema.Enumeration.Count: > 0 }
                 ? $" — Valid: {string.Join(", ", error.Schema.Enumeration)}"

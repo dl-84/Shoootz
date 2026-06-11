@@ -320,24 +320,6 @@ namespace Shoootz.Resources.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to IP address.
-        /// </summary>
-        internal static string IpAddress {
-            get {
-                return ResourceManager.GetString("IpAddress", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Invalid IP address.
-        /// </summary>
-        internal static string IpAddressInvalid {
-            get {
-                return ResourceManager.GetString("IpAddressInvalid", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Language.
         /// </summary>
         internal static string Language {

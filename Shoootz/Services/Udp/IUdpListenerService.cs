@@ -12,7 +12,7 @@ internal interface IUdpListenerService : IDisposable
 
     bool IsListening { get; }
 
-    void Start(string ipAddress, int port);
+    void Start(int port);
 
     void Stop();
 

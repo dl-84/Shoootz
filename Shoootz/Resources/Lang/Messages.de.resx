@@ -145,12 +145,6 @@
   <data name="Stop" xml:space="preserve">
     <value>Trennen</value>
   </data>
-  <data name="IpAddress" xml:space="preserve">
-    <value>IP-Adresse</value>
-  </data>
-  <data name="IpAddressInvalid" xml:space="preserve">
-    <value>Ungültige IP-Adresse</value>
-  </data>
   <data name="Port" xml:space="preserve">
     <value>Port</value>
   </data>

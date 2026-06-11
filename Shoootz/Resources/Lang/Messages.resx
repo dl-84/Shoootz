@@ -146,14 +146,8 @@
   <data name="Stop" xml:space="preserve">
     <value>Disconnect</value>
   </data>
-  <data name="IpAddress" xml:space="preserve">
-    <value>IP address</value>
-  </data>
   <data name="Port" xml:space="preserve">
     <value>Port</value>
-  </data>
-  <data name="IpAddressInvalid" xml:space="preserve">
-    <value>Invalid IP address</value>
   </data>
   <data name="PortRangeHint" xml:space="preserve">
     <value>Min: 1, Max: 65535</value>

@@ -74,66 +74,25 @@
                         <TextBlock Classes="h4"
                                    Text="{loc:Localization UdpBroadcast}" />
 
-                        <Grid ColumnDefinitions="Auto,*"
-                              ColumnSpacing="8">
-
-                            <!--  Port  -->
-                            <StackPanel Grid.Column="0"
-                                        Spacing="2">
-                                <TextBlock Classes="label"
-                                           FontSize="13"
-                                           Text="{loc:Localization Port}" />
-                                <TextBox Classes.error="{Binding !IsPortValid}"
-                                         MaxLength="5"
-                                         Text="{Binding Port}"
-                                         Width="170"
-                                         loc:InputFilter.AllowedPattern="[0-9]"
-                                         IsEnabled="{Binding !IsUdpListening}" />
-                                <Border Height="20">
-                                    <TextBlock Classes="hint-error"
-                                               FontSize="12"
-                                               Margin="5,0,0,0"
-                                               Text="{loc:Localization PortRangeHint}"
-                                               IsVisible="{Binding !IsPortValid}" />
-                                </Border>
-                            </StackPanel>
-
-                            <!--  IP-Address + Test  -->
-                            <StackPanel Grid.Column="1"
-                                        Spacing="2">
-                                <TextBlock Classes="label"
-                                           FontSize="13"
-                                           Text="{loc:Localization IpAddress}" />
-                                <Grid ColumnDefinitions="*,Auto"
-                                      ColumnSpacing="8">
-                                    <TextBox Grid.Column="0"
-                                             Classes.error="{Binding !IsIpAddressValid}"
-                                             MaxLength="15"
-                                             Text="{Binding IpAddress}"
-                                             loc:InputFilter.AllowedPattern="[0-9.]"
-                                             IsEnabled="{Binding !IsUdpListening}" />
-                                    <Button Grid.Column="1"
-                                            Classes="green icon"
-                                            Command="{Binding TestUdpConnectionCommand}"
-                                            ToolTip.HorizontalOffset="0"
-                                            ToolTip.Placement="TopEdgeAlignedRight"
-                                            ToolTip.Tip="{loc:Localization TestConnection}"
-                                            ToolTip.VerticalOffset="-2">
-                                        <Image Height="24"
-                                               Source="{Binding HeartPulseIcon}"
-                                               Width="24" />
-                                    </Button>
-                                </Grid>
-                                <Border Height="20">
-                                    <TextBlock Classes="hint-error"
-                                               FontSize="12"
-                                               Margin="5,0,0,0"
-                                               Text="{loc:Localization IpAddressInvalid}"
-                                               IsVisible="{Binding !IsIpAddressValid}" />
-                                </Border>
-                            </StackPanel>
-
-                        </Grid>
+                        <StackPanel HorizontalAlignment="Left"
+                                    Spacing="2"
+                                    Width="170">
+                            <TextBlock Classes="label"
+                                       FontSize="13"
+                                       Text="{loc:Localization Port}" />
+                            <TextBox Classes.error="{Binding !IsPortValid}"
+                                     MaxLength="5"
+                                     Text="{Binding Port}"
+                                     loc:InputFilter.AllowedPattern="[0-9]"
+                                     IsEnabled="{Binding !IsUdpListening}" />
+                            <Border Height="20">
+                                <TextBlock Classes="hint-error"
+                                           FontSize="12"
+                                           Margin="5,0,0,0"
+                                           Text="{loc:Localization PortRangeHint}"
+                                           IsVisible="{Binding !IsPortValid}" />
+                            </Border>
+                        </StackPanel>
 
                         <Grid ColumnDefinitions="*,Auto">
                             <CheckBox Grid.Column="0"

@@ -27,7 +27,7 @@ internal class ViewModelFactory(
     IUdpListenerService udpListenerService
 ) : IViewModelFactory
 {
-    public ViewModelBase CreateView(int index) =>
+    public ViewModelBase? CreateView(int index) =>
         index switch
         {
             1 => new EvaluationViewModel(),
@@ -48,6 +48,6 @@ internal class ViewModelFactory(
             5 => new GroupsViewModel(),
             7 => new AboutViewModel(licenseService, localizationService),
             8 => new LicensesViewModel(licenseService, localizationService),
-            _ => throw new ArgumentOutOfRangeException(nameof(index), index, null),
+            _ => null,
         };
 }

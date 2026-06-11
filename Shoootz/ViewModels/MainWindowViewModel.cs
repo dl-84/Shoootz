@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Microsoft.Extensions.DependencyInjection;
 using Result;
 using Shoootz.Factory.ViewModel;
 using Shoootz.Models.Database;
@@ -25,9 +26,9 @@ internal partial class MainWindowViewModel : ViewModelBase
 
     private readonly ILocalizationService _localizationService;
 
-    private readonly ISettingsService _settingsService;
+    private readonly IServiceProvider _serviceProvider;
 
-    private readonly IStoreService _storeService;
+    private readonly ISettingsService _settingsService;
 
     private readonly IUdpListenerService _udpListenerService;
 
@@ -36,19 +37,18 @@ internal partial class MainWindowViewModel : ViewModelBase
     public MainWindowViewModel(
         IConnectionTester connectionTester,
         ILocalizationService localizationService,
+        IServiceProvider serviceProvider,
         ISettingsService settingsService,
-        IStoreService storeService,
         IUdpListenerService udpListenerService,
         IViewModelFactory viewModelFactory
     )
     {
         _connectionTester = connectionTester;
         _localizationService = localizationService;
+        _serviceProvider = serviceProvider;
 
         _settingsService = settingsService;
         _settingsService.SettingsSaved += _ => CheckDbConnection();
-
-        _storeService = storeService;
 
         _udpListenerService = udpListenerService;
         _udpListenerService.IsListeningChanged += (_, isListening) => IsUdpConnected = isListening;
@@ -108,7 +108,13 @@ internal partial class MainWindowViewModel : ViewModelBase
 
     public async Task CheckPendingMigrationsAsync()
     {
-        DbStatus status = await _storeService.GetDbStatusAsync();
+        IStoreService? storeService = _serviceProvider.GetService<IStoreService>();
+        if (storeService is null)
+        {
+            return;
+        }
+
+        DbStatus status = await storeService.GetDbStatusAsync();
 
         if (status == DbStatus.UpdateAvailable)
         {

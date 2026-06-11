@@ -30,18 +30,14 @@ public partial class MainWindow : Window
     protected override void OnOpened(EventArgs eventArgs)
     {
         base.OnOpened(eventArgs);
-        _ = OnOpenedAsync();
-    }
 
-    private async Task OnOpenedAsync()
-    {
         if (DataContext is not MainWindowViewModel mainWindowViewModel)
         {
             return;
         }
 
         mainWindowViewModel.PendingMigrationsDetected += OnPendingMigrationsDetected;
-        await mainWindowViewModel.CheckPendingMigrationsAsync();
+        _ = mainWindowViewModel.CheckPendingMigrationsAsync();
     }
 
     private void OnPendingMigrationsDetected()

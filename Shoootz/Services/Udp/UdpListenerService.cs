@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Result;
 using Result.Types;
 using Shoootz.Models.Error;
-using Shoootz.Models.Settings.Udp;
 
 namespace Shoootz.Services.Udp;
 
@@ -15,8 +14,6 @@ internal class UdpListenerService : IUdpListenerService
 
     private UdpClient? _client;
 
-    private string? _ipAddressFilter;
-
     public event EventHandler<bool>? IsListeningChanged;
 
     public event EventHandler<byte[]>? ShotRawDataReceived;
@@ -25,13 +22,12 @@ internal class UdpListenerService : IUdpListenerService
 
     public void Dispose() => Stop();
 
-    public void Start(string ipAddress, int port)
+    public void Start(int port)
     {
         Stop();
 
         try
         {
-            _ipAddressFilter = ipAddress;
             _client = new UdpClient(port);
             _cancellationTokenSource = new CancellationTokenSource();
 
@@ -86,10 +82,7 @@ internal class UdpListenerService : IUdpListenerService
             {
                 UdpReceiveResult result = await _client.ReceiveAsync(cancellationToken);
 
-                if (string.Equals(result.RemoteEndPoint.Address.ToString(), _ipAddressFilter))
-                {
-                    ShotRawDataReceived?.Invoke(this, result.Buffer);
-                }
+                ShotRawDataReceived?.Invoke(this, result.Buffer);
             }
             catch (OperationCanceledException)
             {
@@ -97,7 +90,7 @@ internal class UdpListenerService : IUdpListenerService
             }
             catch
             {
-                break;
+                // continue loop on transient errors (e.g. null RemoteEndPoint)
             }
         }
 

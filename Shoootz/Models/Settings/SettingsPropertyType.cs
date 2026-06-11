@@ -8,7 +8,6 @@ internal enum SettingsPropertyType
     ExceptionOnReadContent,
     JsonExceptionOnValidate,
     UdpAutoConnect,
-    UdpIpAddress,
     UdpPort,
     Unknown,
 }
@@ -23,7 +22,6 @@ internal static class StringExtensions
                 "AutoConnect" => SettingsPropertyType.UdpAutoConnect,
                 "ConnectionString" => SettingsPropertyType.DatabaseConnectionString,
                 "CurrentLanguageCode" => SettingsPropertyType.CurrentLanguageCode,
-                "IpAddress" => SettingsPropertyType.UdpIpAddress,
                 "Port" => SettingsPropertyType.UdpPort,
                 "Provider" => SettingsPropertyType.DatabaseProvider,
                 _ => SettingsPropertyType.Unknown,
