@@ -3,11 +3,10 @@ using Shoootz.Services.App;
 
 namespace Shoootz.Models.Settings.Database;
 
-internal class DbConnectionModel
+internal class DatabaseConnection
 {
     public string ConnectionString { get; set; } = $"Data Source={AppPath.DbFile}";
 
     [JsonConverter(typeof(JsonStringEnumConverter))]
-    [JsonPropertyName("Provider")]
-    public ProviderType ProviderType { get; set; } = ProviderType.Sqlite;
+    public ProviderType Provider { get; set; } = ProviderType.Sqlite;
 }

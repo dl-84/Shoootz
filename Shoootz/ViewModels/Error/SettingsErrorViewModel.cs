@@ -4,26 +4,19 @@ using System.Diagnostics;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Result;
 using Shoootz.Models.Error;
 using Shoootz.Services.Settings;
+using Shoootz.Services.Settings.Validation;
 
 namespace Shoootz.ViewModels.Error;
 
-internal partial class SettingsErrorViewModel : ViewModelBase
+internal partial class SettingsErrorViewModel(ISettingsWriter settingsWriter) : ViewModelBase
 {
-    private readonly ISettingsService _settingsService;
-
-    public SettingsErrorViewModel(List<SettingsError> settingsErrors, ISettingsService settingsService)
-    {
-        _settingsService = settingsService;
-        ErrorMessages = settingsErrors.Select(settingsError => settingsError.Message).ToList();
-        EditorContent = settingsService.LoadRaw();
-    }
+    public List<string> ErrorMessages { get; set; } = [];
 
     [ObservableProperty]
-    public partial string EditorContent { get; set; }
-
-    public IReadOnlyList<string> ErrorMessages { get; }
+    public partial string EditorContent { get; set; } = string.Empty;
 
     [ObservableProperty]
     public partial bool IsSaved { get; set; }
@@ -59,17 +52,25 @@ internal partial class SettingsErrorViewModel : ViewModelBase
     [RelayCommand]
     private void Save()
     {
-        _settingsService.SaveRaw(EditorContent);
+        settingsWriter.SaveRaw(EditorContent);
         IsSaved = true;
     }
 
     [RelayCommand]
     private void Validate()
     {
-        ValidationError = _settingsService
-            .Validate(EditorContent)
-            .Match(_ => null, settingsError => settingsError.Value.Count > 0 ? settingsError.Value[0].Message : null);
+        Result<string, List<SettingsError>> validationResult = SettingsValidation.Run(EditorContent);
 
-        IsValid = ValidationError == null;
+        validationResult.Match(
+            _ =>
+            {
+                IsValid = true;
+            },
+            error =>
+            {
+                ErrorMessages.Clear();
+                ErrorMessages = error.Value.Select(settingsError => settingsError.Message).ToList();
+            }
+        );
     }
 }

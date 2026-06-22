@@ -1,6 +1,6 @@
 namespace Shoootz.Models.Settings.Udp;
 
-internal class UdpConnectionModel
+internal class UdpConnection
 {
     public bool AutoConnect { get; set; } = false;
 

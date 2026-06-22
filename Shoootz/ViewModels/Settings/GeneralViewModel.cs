@@ -4,45 +4,49 @@ using System.Diagnostics;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Options;
 using Shoootz.Models.Settings;
 using Shoootz.Models.Settings.Language;
 using Shoootz.Services.App;
 using Shoootz.Services.Language;
 using Shoootz.Services.Localization;
 using Shoootz.Services.Settings;
+using Shoootz.Services.Settings.Read;
 
 namespace Shoootz.ViewModels.Settings;
 
 internal partial class GeneralViewModel : ViewModelBase
 {
+    private readonly bool _allowSave;
+
     private readonly ILocalizationService _localizationService;
 
     private readonly SettingsModel _settings;
 
-    private readonly ISettingsService _settingsService;
-
-    private bool _allowSave;
+    private readonly ISettingsWriter _settingsWriter;
 
     public GeneralViewModel(
         ILanguageService languageService,
         ILocalizationService localizationService,
-        SettingsModel settings,
-        ISettingsService settingsService
+        IOptions<SettingsModel> settings,
+        ISettingsWriter settingsWriter
     )
     {
         LanguageOptions = languageService.GetAvailableLanguages();
 
         _localizationService = localizationService;
-        _settings = settings;
-        _settingsService = settingsService;
+        _settings = settings.Value;
+        _settingsWriter = settingsWriter;
 
-        SelectedLanguageOption = GetLanguage(settings.CurrentLanguageCode);
+        SelectedLanguageOption = GetLanguage(_settings.CurrentLanguageCode);
         _allowSave = true;
     }
 
     public event Action? DeleteSettingsFolderRequested;
 
     public event Action? DeleteSettingsFileRequested;
+
+    public event Action<string>? ReadSettingsFileFailed;
 
     public event Action<string>? SettingsContentRequested;
 
@@ -55,12 +59,18 @@ internal partial class GeneralViewModel : ViewModelBase
 
     public void ExecuteDeleteSettingsFile()
     {
-        _settingsService.DeleteSettingsFile();
+        _settingsWriter.DeleteSettingsFile();
     }
 
     public void ExecuteDeleteSettingsFolder()
     {
-        _settingsService.DeleteSettingsFolder();
+        _settingsWriter.DeleteSettingsFolder();
+    }
+
+    [RelayCommand]
+    private static void OpenSettingsFolder()
+    {
+        Process.Start(new ProcessStartInfo { FileName = AppPath.AppDataBase, UseShellExecute = true });
     }
 
     [RelayCommand]
@@ -90,20 +100,17 @@ internal partial class GeneralViewModel : ViewModelBase
         }
 
         _settings.CurrentLanguageCode = value.CultureInfo.TwoLetterISOLanguageName;
-        _settingsService.Save(_settings);
+        _settingsWriter.Save(_settings);
         SettingsSaved?.Invoke(_settings);
         _localizationService.SetLanguage(value.CultureInfo.TwoLetterISOLanguageName);
     }
 
     [RelayCommand]
-    private void OpenSettingsFolder()
-    {
-        Process.Start(new ProcessStartInfo { FileName = AppPath.AppDataBase, UseShellExecute = true });
-    }
-
-    [RelayCommand]
     private void ShowSettingsContent()
     {
-        SettingsContentRequested?.Invoke(_settingsService.LoadRaw());
+        SettingsReader.Read.Match(
+            value => SettingsContentRequested?.Invoke(value),
+            error => ReadSettingsFileFailed?.Invoke(error.Value.Message)
+        );
     }
 }

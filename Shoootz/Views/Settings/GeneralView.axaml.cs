@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using Avalonia.Controls;
 using Controls.ConfirmDialog;
 using Controls.ContentDialog;
+using Controls.InfoDialog;
+using Controls.InfoDialog.Enum;
 using Controls.JsonEditor;
 using Shoootz.Services.Localization;
 using Shoootz.ViewModels;
@@ -45,6 +47,7 @@ public partial class GeneralView : UserControl
             viewModel.DeleteSettingsFileRequested += OnDeleteSettingsFileRequested;
             viewModel.DeleteSettingsFolderRequested += OnDeleteSettingsFolderRequested;
             viewModel.SettingsContentRequested += OnSettingsContentRequested;
+            viewModel.ReadSettingsFileFailed += OnReadSettingsFileFailed;
         }
     }
 
@@ -116,7 +119,12 @@ public partial class GeneralView : UserControl
         }
     }
 
-    private async Task OpenSettingsContentDialogAsync(string content)
+    private void OnReadSettingsFileFailed(string message)
+    {
+        _ = OpenReadSettingsFileFailedDialogAsync(message);
+    }
+
+    private async Task OpenReadSettingsFileFailedDialogAsync(string message)
     {
         if (TopLevel.GetTopLevel(this) is not Window window)
         {
@@ -132,6 +140,36 @@ public partial class GeneralView : UserControl
                 mainWindowViewModel.IsDialogOpen = true;
             }
 
+            await new InfoDialog
+            {
+                CloseText = LocalizationService.Instance["Close"],
+                DialogTitle = LocalizationService.Instance["Error"],
+                IconType = IconType.Error,
+                Message = message,
+            }.ShowDialog(window);
+        }
+        finally
+        {
+            if (mainWindowViewModel is not null)
+            {
+                mainWindowViewModel.IsDialogOpen = false;
+            }
+        }
+    }
+
+    private async Task OpenSettingsContentDialogAsync(string content)
+    {
+        if (TopLevel.GetTopLevel(this) is not Window window)
+        {
+            return;
+        }
+
+        MainWindowViewModel? mainWindowViewModel = window.DataContext as MainWindowViewModel;
+
+        try
+        {
+            mainWindowViewModel?.IsDialogOpen = true;
+
             await new ContentDialog
             {
                 CloseText = LocalizationService.Instance["Close"],
@@ -142,10 +180,7 @@ public partial class GeneralView : UserControl
         }
         finally
         {
-            if (mainWindowViewModel is not null)
-            {
-                mainWindowViewModel.IsDialogOpen = false;
-            }
+            mainWindowViewModel?.IsDialogOpen = false;
         }
     }
 }

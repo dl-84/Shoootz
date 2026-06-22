@@ -1,5 +1,4 @@
 using System.Globalization;
-using System.Text.Json.Serialization;
 using Shoootz.Models.Settings.Database;
 using Shoootz.Models.Settings.Udp;
 
@@ -9,9 +8,7 @@ internal class SettingsModel
 {
     public string CurrentLanguageCode { get; set; } = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
 
-    [JsonPropertyName("Database")]
-    public DbConnectionModel DbConnectionModel { get; init; } = new();
+    public DatabaseConnection DatabaseConnection { get; init; } = new();
 
-    [JsonPropertyName("UDP")]
-    public UdpConnectionModel UdpConnectionModel { get; init; } = new();
+    public UdpConnection UdpConnection { get; init; } = new();
 }

@@ -1,26 +1,34 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Shoootz.Factory.ViewModel;
+using Result;
 using Shoootz.Models.Error;
 using Shoootz.Models.Settings;
 using Shoootz.Models.Settings.Database;
+using Shoootz.Models.Settings.Udp;
 using Shoootz.Services.Data;
 using Shoootz.Services.Graphics;
 using Shoootz.Services.Language;
 using Shoootz.Services.License;
 using Shoootz.Services.Localization;
 using Shoootz.Services.Parser;
-using Shoootz.Services.Settings;
+using Shoootz.Services.Settings.Read;
+using Shoootz.Services.Settings.Validation;
 using Shoootz.Services.Store;
 using Shoootz.Services.Udp;
 using Shoootz.Store;
 using Shoootz.Store.Services;
 using Shoootz.ViewModels;
+using Shoootz.ViewModels.Competition;
+using Shoootz.ViewModels.Info;
+using Shoootz.ViewModels.Settings;
 using Shoootz.Views;
 using Themes.Disag;
 
@@ -29,7 +37,11 @@ namespace Shoootz;
 /// <inheritdoc />
 public class App : Application
 {
-    private IServiceProvider? _serviceProvider;
+    private readonly List<SettingsError> _errors = [];
+
+    private IConfigurationRoot _configurationRoot = new ConfigurationRoot(new List<IConfigurationProvider>());
+
+    private string _rawSettings = string.Empty;
 
     /// <inheritdoc/>
     public override void Initialize()
@@ -41,27 +53,22 @@ public class App : Application
     /// <inheritdoc/>
     public override void OnFrameworkInitializationCompleted()
     {
-        SettingsService settingsService = new SettingsService();
-        SettingsModel? settings = ReadSettings(settingsService, out List<SettingsError>? settingsErrors);
-        _serviceProvider = InitServiceProvider(settings, settingsService);
+        IServiceProvider serviceProvider = InitServiceProvider();
+        InitLocalization(serviceProvider);
+        MainWindowViewModel mainWindowViewModel = serviceProvider.GetRequiredService<MainWindowViewModel>();
 
-        MainWindowViewModel mainWindowViewModel = _serviceProvider.GetRequiredService<MainWindowViewModel>();
-
-        ILocalizationService localizationService = _serviceProvider.GetRequiredService<ILocalizationService>();
-        LocalizationService.Register(localizationService);
-        localizationService.SetLanguage(settings?.CurrentLanguageCode ?? "de");
-
-        if (settingsErrors is not null)
+        if (_errors.Count > 0)
         {
-            mainWindowViewModel.RedirectToSettingsError(settingsErrors);
+            mainWindowViewModel.RedirectToSettingsError(_errors, _rawSettings);
         }
         else
         {
             mainWindowViewModel.CheckDbConnection();
+            UdpConnection? udpConnection = _configurationRoot.Get<SettingsModel>()?.UdpConnection;
 
-            if (settings!.UdpConnectionModel.AutoConnect)
+            if (udpConnection is not null && udpConnection.AutoConnect)
             {
-                _serviceProvider.GetRequiredService<IUdpListenerService>().Start(settings.UdpConnectionModel.Port);
+                serviceProvider.GetRequiredService<IUdpListenerService>().Start(udpConnection.Port);
             }
         }
 
@@ -73,46 +80,7 @@ public class App : Application
         base.OnFrameworkInitializationCompleted();
     }
 
-    private static ServiceProvider InitServiceProvider(SettingsModel? settings, SettingsService settingsService)
-    {
-        ServiceCollection services = new ServiceCollection();
-        InitSingletons(services, settingsService);
-
-        if (settings?.DbConnectionModel is not null)
-        {
-            InitContext(services, settings.DbConnectionModel);
-        }
-
-        return services.BuildServiceProvider();
-    }
-
-    private static void InitContext(ServiceCollection services, DbConnectionModel dbConnection)
-    {
-        services.AddDbContextFactory<AppDbContext>(options =>
-        {
-            switch (dbConnection.ProviderType)
-            {
-                case ProviderType.PostgreSql:
-                    options.UseNpgsql(
-                        dbConnection.ConnectionString,
-                        optionsBuilder => optionsBuilder.MigrationsAssembly("Shoootz.Store.Adapter.PostgreSQL")
-                    );
-                    break;
-
-                case ProviderType.Sqlite:
-                default:
-                    options.UseSqlite(
-                        dbConnection.ConnectionString,
-                        optionsBuilder => optionsBuilder.MigrationsAssembly("Shoootz.Store.Adapter.SQLite")
-                    );
-                    break;
-            }
-        });
-
-        services.AddSingleton<IStoreService, StoreService>();
-    }
-
-    private static void InitSingletons(ServiceCollection services, SettingsService settingsService)
+    private static void InitSingletons(ServiceCollection services)
     {
         services.AddSingleton<IDataProcessor, DataProcessor>();
         services.AddSingleton<IConnectionTester, ConnectionTester>();
@@ -120,21 +88,95 @@ public class App : Application
         services.AddSingleton<ILanguageService, LanguageService>();
         services.AddSingleton<ILicenseService, LicenseService>();
         services.AddSingleton<ILocalizationService, LocalizationService>();
-        services.AddSingleton<ISettingsService>(settingsService);
         services.AddSingleton<IShotDataParser, ShotDataParser>();
         services.AddSingleton<IUdpListenerService, UdpListenerService>();
-        services.AddSingleton<IViewModelFactory, ViewModelFactory>();
         services.AddSingleton<MainWindowViewModel>();
     }
 
-    private static SettingsModel? ReadSettings(SettingsService settingsService, out List<SettingsError>? settingsErrors)
+    private static void InitTransient(ServiceCollection services)
     {
-        List<SettingsError>? errorList = null;
-        SettingsModel? loadedSettings = null;
+        services.AddTransient<AboutViewModel>();
+        services.AddTransient<ConnectionViewModel>();
+        services.AddTransient<EvaluationViewModel>();
+        services.AddTransient<GeneralViewModel>();
+        services.AddTransient<GroupsViewModel>();
+        services.AddTransient<LicensesViewModel>();
+    }
 
-        settingsService.Load().Match(settings => loadedSettings = settings, errors => errorList = errors.Value);
+    private void InitContext(ServiceCollection serviceCollection)
+    {
+        serviceCollection.AddDbContextFactory<AppDbContext>(options =>
+        {
+            DatabaseConnection? databaseConnection = _configurationRoot.Get<SettingsModel>()?.DatabaseConnection;
 
-        settingsErrors = errorList;
-        return loadedSettings;
+            switch (databaseConnection?.Provider)
+            {
+                case ProviderType.PostgreSql:
+                    options.UseNpgsql(
+                        databaseConnection.ConnectionString,
+                        optionsBuilder => optionsBuilder.MigrationsAssembly("Shoootz.Store.Adapter.PostgreSQL")
+                    );
+                    break;
+
+                case ProviderType.Sqlite:
+                default:
+                    options.UseSqlite(
+                        databaseConnection?.ConnectionString,
+                        optionsBuilder => optionsBuilder.MigrationsAssembly("Shoootz.Store.Adapter.SQLite")
+                    );
+                    break;
+            }
+        });
+
+        serviceCollection.AddSingleton<IStoreService, StoreService>();
+    }
+
+    private void InitLocalization(IServiceProvider serviceProvider)
+    {
+        ILocalizationService localizationService = serviceProvider.GetRequiredService<ILocalizationService>();
+        LocalizationService.Register(localizationService);
+        localizationService.SetLanguage(_configurationRoot.Get<SettingsModel>()?.CurrentLanguageCode ?? "de");
+    }
+
+    private ServiceProvider InitServiceProvider()
+    {
+        ServiceCollection serviceCollection = new ServiceCollection();
+        serviceCollection.AddOptions();
+
+        InitSettings(serviceCollection);
+        InitSingletons(serviceCollection);
+        InitTransient(serviceCollection);
+
+        if (_errors.Count == 0 && _configurationRoot.Get<SettingsModel>()?.DatabaseConnection is not null)
+        {
+            InitContext(serviceCollection);
+        }
+
+        return serviceCollection.BuildServiceProvider();
+    }
+
+    private void InitSettings(ServiceCollection serviceCollection)
+    {
+        SettingsReader.Read.Match(value => _rawSettings = value, error => _errors.Add(error.Value));
+
+        if (_errors.Count > 0)
+        {
+            return;
+        }
+
+        Result<string, List<SettingsError>> validationResult = SettingsValidation.Run(_rawSettings);
+
+        validationResult.Match(
+            value =>
+            {
+                _configurationRoot = new ConfigurationBuilder()
+                    .AddJsonStream(new MemoryStream(Encoding.UTF8.GetBytes(value)))
+                    .Build();
+
+                serviceCollection.AddSingleton<IConfigurationRoot>(_configurationRoot);
+                serviceCollection.Configure<SettingsModel>(_configurationRoot);
+            },
+            error => _errors.AddRange(error.Value)
+        );
     }
 }

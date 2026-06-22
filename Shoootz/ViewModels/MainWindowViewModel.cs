@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Result;
-using Shoootz.Factory.ViewModel;
 using Shoootz.Models.Database;
 using Shoootz.Models.Error;
 using Shoootz.Models.Settings;
@@ -16,7 +17,10 @@ using Shoootz.Services.Store;
 using Shoootz.Services.Udp;
 using Shoootz.Store;
 using Shoootz.Store.Services;
+using Shoootz.ViewModels.Competition;
 using Shoootz.ViewModels.Error;
+using Shoootz.ViewModels.Info;
+using Shoootz.ViewModels.Settings;
 
 namespace Shoootz.ViewModels;
 
@@ -28,33 +32,33 @@ internal partial class MainWindowViewModel : ViewModelBase
 
     private readonly IServiceProvider _serviceProvider;
 
-    private readonly ISettingsService _settingsService;
+    private readonly SettingsModel _settings;
+
+    private readonly ISettingsWriter _settingsWriter;
 
     private readonly IUdpListenerService _udpListenerService;
-
-    private readonly IViewModelFactory _viewModelFactory;
 
     public MainWindowViewModel(
         IConnectionTester connectionTester,
         ILocalizationService localizationService,
+        IOptionsMonitor<SettingsModel> settings,
         IServiceProvider serviceProvider,
-        ISettingsService settingsService,
-        IUdpListenerService udpListenerService,
-        IViewModelFactory viewModelFactory
+        ISettingsWriter settingsWriter,
+        IUdpListenerService udpListenerService
     )
     {
         _connectionTester = connectionTester;
         _localizationService = localizationService;
+        _settings = settings.CurrentValue;
         _serviceProvider = serviceProvider;
 
-        _settingsService = settingsService;
-        _settingsService.SettingsSaved += _ => CheckDbConnection();
+        _settingsWriter = settingsWriter;
+        _settingsWriter.SettingsSaved += _ => CheckDbConnection();
 
         _udpListenerService = udpListenerService;
         _udpListenerService.IsListeningChanged += (_, isListening) => IsUdpConnected = isListening;
 
-        _viewModelFactory = viewModelFactory;
-        CurrentPage = _viewModelFactory.CreateView(ActiveIndex)!;
+        CurrentPage = CreateView(ActiveIndex)!;
     }
 
     public event Action? PendingMigrationsDetected;
@@ -65,19 +69,6 @@ internal partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsNavbarEnabled))]
     public partial ViewModelBase CurrentPage { get; set; }
-
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(DbBadgeText))]
-    public partial bool IsDbConnected { get; set; }
-
-    [ObservableProperty]
-    public partial bool IsDialogOpen { get; set; }
-
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(UdpBadgeText))]
-    public partial bool IsUdpConnected { get; set; }
-
-    public bool IsNavbarEnabled => CurrentPage is not SettingsErrorViewModel;
 
     public string DbBadgeText
     {
@@ -92,6 +83,19 @@ internal partial class MainWindowViewModel : ViewModelBase
         }
     }
 
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(DbBadgeText))]
+    public partial bool IsDbConnected { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsDialogOpen { get; set; }
+
+    public bool IsNavbarEnabled => CurrentPage is not SettingsErrorViewModel;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(UdpBadgeText))]
+    public partial bool IsUdpConnected { get; set; }
+
     public string UdpBadgeText
     {
         get
@@ -104,6 +108,17 @@ internal partial class MainWindowViewModel : ViewModelBase
 
             return $"{connectionType} {connectionState}";
         }
+    }
+
+    public void CheckDbConnection()
+    {
+        Result<bool, DbConnectionError> result = _settings.DatabaseConnection.Provider switch
+        {
+            ProviderType.PostgreSql => _connectionTester.PostgreSql(_settings.DatabaseConnection.ConnectionString),
+            _ => _connectionTester.Sqlite(_settings.DatabaseConnection.ConnectionString),
+        };
+
+        result.Match(_ => IsDbConnected = true, _ => IsDbConnected = false);
     }
 
     public async Task CheckPendingMigrationsAsync()
@@ -123,33 +138,35 @@ internal partial class MainWindowViewModel : ViewModelBase
         }
     }
 
-    public void CheckDbConnection()
+    public void RedirectToSettingsError(List<SettingsError> settingsErrors, string settings)
     {
-        SettingsModel? settings = _settingsService.CurrentSettings;
+        CurrentPage = new SettingsErrorViewModel(_settingsWriter);
 
-        if (settings is null)
-        {
-            return;
-        }
+        (CurrentPage as SettingsErrorViewModel)?.ErrorMessages = settingsErrors
+            .Select(settingsError => settingsError.Message)
+            .ToList();
 
-        Result<bool, DbConnectionError> result = settings.DbConnectionModel.ProviderType switch
-        {
-            ProviderType.PostgreSql => _connectionTester.PostgreSql(settings.DbConnectionModel.ConnectionString),
-            _ => _connectionTester.Sqlite(settings.DbConnectionModel.ConnectionString),
-        };
-
-        result.Match(_ => IsDbConnected = true, _ => IsDbConnected = false);
+        (CurrentPage as SettingsErrorViewModel)?.EditorContent = settings;
     }
 
-    public void RedirectToSettingsError(List<SettingsError> settingsErrors)
+    private ViewModelBase? CreateView(int index)
     {
-        CurrentPage = new SettingsErrorViewModel(settingsErrors, _settingsService);
+        return index switch
+        {
+            1 => _serviceProvider.GetRequiredService<EvaluationViewModel>(),
+            3 => _serviceProvider.GetRequiredService<GeneralViewModel>(),
+            4 => _serviceProvider.GetRequiredService<ConnectionViewModel>(),
+            5 => _serviceProvider.GetRequiredService<GroupsViewModel>(),
+            7 => _serviceProvider.GetRequiredService<AboutViewModel>(),
+            8 => _serviceProvider.GetRequiredService<LicensesViewModel>(),
+            _ => null,
+        };
     }
 
     partial void OnActiveIndexChanged(int value)
     {
         ViewModelBase previous = CurrentPage;
-        ViewModelBase? next = _viewModelFactory.CreateView(value);
+        ViewModelBase? next = CreateView(value);
 
         if (next is null)
         {

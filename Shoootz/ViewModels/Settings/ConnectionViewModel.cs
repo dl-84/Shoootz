@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Options;
 using Result;
 using Shoootz.Models.Database;
 using Shoootz.Models.Settings;
@@ -25,7 +26,7 @@ internal partial class ConnectionViewModel : ViewModelBase
 
     private readonly SettingsModel _settings;
 
-    private readonly ISettingsService _settingsService;
+    private readonly ISettingsWriter _settingsWriter;
 
     private readonly IStoreService _storeService;
 
@@ -34,23 +35,23 @@ internal partial class ConnectionViewModel : ViewModelBase
     public ConnectionViewModel(
         IConnectionTester connectionTester,
         IGraphicsService grafikService,
-        SettingsModel settings,
-        ISettingsService settingsService,
+        IOptionsMonitor<SettingsModel> settings,
+        ISettingsWriter settingsWriter,
         IStoreService storeService,
         IUdpListenerService udpListenerService
     )
     {
         _connectionTester = connectionTester;
-        _settings = settings;
-        _settingsService = settingsService;
+        _settings = settings.CurrentValue;
+        _settingsWriter = settingsWriter;
         _storeService = storeService;
         _udpListenerService = udpListenerService;
 
-        AutoConnect = settings.UdpConnectionModel.AutoConnect;
-        ConnectionString = settings.DbConnectionModel.ConnectionString;
+        AutoConnect = _settings.UdpConnection.AutoConnect;
+        ConnectionString = _settings.DatabaseConnection.ConnectionString;
         IsUdpListening = udpListenerService.IsListening;
-        Port = settings.UdpConnectionModel.Port.ToString();
-        SelectedProvider = settings.DbConnectionModel.ProviderType;
+        Port = _settings.UdpConnection.Port.ToString();
+        SelectedProvider = _settings.DatabaseConnection.Provider;
         HeartPulseIcon = grafikService.GetIcon(AppIcon.HeartPulse, AppBrush.PrimaryForeground);
 
         _udpListenerService.IsListeningChanged += (_, isListening) => IsUdpListening = isListening;
@@ -63,8 +64,6 @@ internal partial class ConnectionViewModel : ViewModelBase
     public event Action<bool, string?>? DbInitializeCompleted;
 
     public event Action? DbInitializeStarted;
-
-    public event Action<SettingsModel>? SettingsSaved;
 
     public IImage HeartPulseIcon { get; }
 
@@ -103,13 +102,12 @@ internal partial class ConnectionViewModel : ViewModelBase
     [RelayCommand(CanExecute = nameof(CanSave))]
     private void Save()
     {
-        _settings.DbConnectionModel.ConnectionString = ConnectionString;
-        _settings.DbConnectionModel.ProviderType = SelectedProvider;
-        _settings.UdpConnectionModel.AutoConnect = AutoConnect;
-        _settings.UdpConnectionModel.Port = int.Parse(Port);
-        _settingsService.Save(_settings);
+        _settings.DatabaseConnection.ConnectionString = ConnectionString;
+        _settings.DatabaseConnection.Provider = SelectedProvider;
+        _settings.UdpConnection.AutoConnect = AutoConnect;
+        _settings.UdpConnection.Port = int.Parse(Port);
+        _settingsWriter.Save(_settings);
 
-        SettingsSaved?.Invoke(_settings);
         SaveCommand.NotifyCanExecuteChanged();
     }
 
@@ -117,10 +115,10 @@ internal partial class ConnectionViewModel : ViewModelBase
         int.TryParse(Port, out int port)
         && port is >= 1 and <= 65535
         && (
-            AutoConnect != _settings.UdpConnectionModel.AutoConnect
-            || ConnectionString != _settings.DbConnectionModel.ConnectionString
-            || Port != _settings.UdpConnectionModel.Port.ToString()
-            || SelectedProvider != _settings.DbConnectionModel.ProviderType
+            AutoConnect != _settings.UdpConnection.AutoConnect
+            || ConnectionString != _settings.DatabaseConnection.ConnectionString
+            || Port != _settings.UdpConnection.Port.ToString()
+            || SelectedProvider != _settings.DatabaseConnection.Provider
         );
 
     partial void OnAutoConnectChanged(bool value) => SaveCommand.NotifyCanExecuteChanged();
