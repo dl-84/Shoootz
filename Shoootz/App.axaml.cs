@@ -19,6 +19,7 @@ using Shoootz.Services.Language;
 using Shoootz.Services.License;
 using Shoootz.Services.Localization;
 using Shoootz.Services.Parser;
+using Shoootz.Services.Settings;
 using Shoootz.Services.Settings.Read;
 using Shoootz.Services.Settings.Validation;
 using Shoootz.Services.Store;
@@ -82,13 +83,14 @@ public class App : Application
 
     private static void InitSingletons(ServiceCollection services)
     {
-        services.AddSingleton<IDataProcessor, DataProcessor>();
         services.AddSingleton<IConnectionTester, ConnectionTester>();
+        services.AddSingleton<IDataProcessor, DataProcessor>();
         services.AddSingleton<IGraphicsService, GraphicsService>();
         services.AddSingleton<ILanguageService, LanguageService>();
         services.AddSingleton<ILicenseService, LicenseService>();
         services.AddSingleton<ILocalizationService, LocalizationService>();
         services.AddSingleton<IShotDataParser, ShotDataParser>();
+        services.AddSingleton<ISettingsWriter, SettingsWriter>();
         services.AddSingleton<IUdpListenerService, UdpListenerService>();
         services.AddSingleton<MainWindowViewModel>();
     }

@@ -50,8 +50,6 @@ internal partial class GeneralViewModel : ViewModelBase
 
     public event Action<string>? SettingsContentRequested;
 
-    public event Action<SettingsModel>? SettingsSaved;
-
     public List<LanguageOptionModel> LanguageOptions { get; }
 
     [ObservableProperty]
@@ -101,7 +99,6 @@ internal partial class GeneralViewModel : ViewModelBase
 
         _settings.CurrentLanguageCode = value.CultureInfo.TwoLetterISOLanguageName;
         _settingsWriter.Save(_settings);
-        SettingsSaved?.Invoke(_settings);
         _localizationService.SetLanguage(value.CultureInfo.TwoLetterISOLanguageName);
     }
 
