@@ -4,8 +4,10 @@
              xmlns:vm="using:Shoootz.ViewModels.Competition"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:DataType="vm:EvaluationViewModel">
-    <Border Padding="32,0,32,32">
-        <TextBlock Classes="h3"
-                   Text="{loc:Localization Evaluate}" />
-    </Border>
+    <ScrollViewer>
+        <StackPanel Classes="page-content">
+            <TextBlock Classes="h3"
+                       Text="{loc:Localization Evaluate}" />
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>

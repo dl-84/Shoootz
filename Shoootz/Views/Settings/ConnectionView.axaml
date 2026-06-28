@@ -12,19 +12,18 @@
 
                 <!--  Datenbank  -->
                 <Border Classes="card">
-                    <StackPanel Spacing="16">
+                    <StackPanel Spacing="{DynamicResource SpacingMedium}">
 
                         <TextBlock Classes="h4"
                                    Text="{loc:Localization Database}" />
 
                         <Grid ColumnDefinitions="Auto,*"
-                              ColumnSpacing="8">
+                              ColumnSpacing="{DynamicResource SpacingSmall}">
 
                             <!--  Provider  -->
                             <StackPanel Grid.Column="0"
-                                        Spacing="2">
+                                        Spacing="{DynamicResource SpacingXSmall}">
                                 <TextBlock Classes="label"
-                                           FontSize="13"
                                            Text="{loc:Localization Provider}" />
                                 <ComboBox ItemsSource="{Binding ProviderOptions}"
                                           SelectedItem="{Binding SelectedProvider}"
@@ -33,15 +32,15 @@
 
                             <!--  Connection String + Test  -->
                             <StackPanel Grid.Column="1"
-                                        Spacing="2">
+                                        Spacing="{DynamicResource SpacingXSmall}">
                                 <TextBlock Classes="label"
-                                           FontSize="13"
                                            Text="{loc:Localization ConnectionString}" />
                                 <Grid ColumnDefinitions="*,Auto"
-                                      ColumnSpacing="8">
+                                      ColumnSpacing="{DynamicResource SpacingSmall}">
                                     <TextBox Grid.Column="0"
                                              Text="{Binding ConnectionString}" />
                                     <Button Grid.Column="1"
+                                            AutomationProperties.Name="{loc:Localization TestConnection}"
                                             Classes="green icon"
                                             Command="{Binding TestDbConnectionCommand}"
                                             ToolTip.HorizontalOffset="0"
@@ -69,58 +68,63 @@
 
                 <!--  UDP Broadcast  -->
                 <Border Classes="card">
-                    <StackPanel Spacing="16">
+                    <StackPanel Spacing="{DynamicResource SpacingMedium}">
 
                         <TextBlock Classes="h4"
                                    Text="{loc:Localization UdpBroadcast}" />
 
                         <Grid ColumnDefinitions="*,170"
-                              RowDefinitions="Auto,Auto"
+                              RowDefinitions="Auto,20,Auto"
                               RowSpacing="0">
 
                             <!--  AutoConnect  -->
-                            <CheckBox Grid.Row="0"
-                                      Grid.Column="0"
-                                      Content="{loc:Localization AutoConnect}"
-                                      FontSize="16"
-                                      IsChecked="{Binding AutoConnect}"
-                                      VerticalAlignment="Center" />
+                            <StackPanel Grid.Row="0"
+                                        Grid.Column="0"
+                                        Spacing="{DynamicResource SpacingXSmall}"
+                                        VerticalAlignment="Top">
+                                <TextBlock Classes="label"
+                                           IsHitTestVisible="False"
+                                           Opacity="0"
+                                           Text="placeholder" />
+                                <CheckBox Content="{loc:Localization AutoConnect}"
+                                          FontSize="16"
+                                          IsChecked="{Binding AutoConnect}" />
+                            </StackPanel>
 
                             <!--  Port  -->
                             <StackPanel Grid.Row="0"
                                         Grid.Column="1"
-                                        Spacing="2">
+                                        Spacing="{DynamicResource SpacingXSmall}">
                                 <TextBlock Classes="label"
-                                           FontSize="13"
                                            Text="{loc:Localization Port}" />
-                                <TextBox Classes.error="{Binding !IsPortValid}"
+                                <TextBox AutomationProperties.HelpText="{loc:Localization PortRangeHint}"
+                                         Classes.error="{Binding !IsPortValid}"
                                          MaxLength="5"
                                          Text="{Binding Port}"
                                          loc:InputFilter.AllowedPattern="[0-9]"
                                          IsEnabled="{Binding !IsUdpListening}" />
-                                <Border Height="20">
-                                    <TextBlock Classes="hint-error"
-                                               FontSize="12"
-                                               Margin="5,0,0,0"
-                                               Text="{loc:Localization PortRangeHint}"
-                                               IsVisible="{Binding !IsPortValid}" />
-                                </Border>
                             </StackPanel>
 
+                            <!--  Port error hint  -->
+                            <TextBlock Grid.Row="1"
+                                       Grid.Column="1"
+                                       Classes="hint-error"
+                                       Margin="5,0,0,0"
+                                       Text="{loc:Localization PortRangeHint}"
+                                       IsVisible="{Binding !IsPortValid}" />
+
                             <!--  Start/Stop  -->
-                            <Button Grid.Row="1"
+                            <Button Grid.Row="2"
                                     Grid.Column="1"
                                     Classes="green"
                                     Command="{Binding StartUdpCommand}"
                                     Content="{loc:Localization Start}"
-                                    Margin="0,-4,0,0"
                                     IsVisible="{Binding !IsUdpListening}" />
-                            <Button Grid.Row="1"
+                            <Button Grid.Row="2"
                                     Grid.Column="1"
                                     Classes="danger"
                                     Command="{Binding StopUdpCommand}"
                                     Content="{loc:Localization Stop}"
-                                    Margin="0,-4,0,0"
                                     IsVisible="{Binding IsUdpListening}" />
 
                         </Grid>
