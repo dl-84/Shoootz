@@ -10,6 +10,7 @@ using Shoootz.Models.Database;
 using Shoootz.Models.Settings;
 using Shoootz.Models.Settings.Database;
 using Shoootz.Services.App;
+using Shoootz.Services.Data;
 using Shoootz.Services.Graphics;
 using Shoootz.Services.Localization;
 using Shoootz.Services.Settings;
@@ -24,6 +25,8 @@ internal partial class ConnectionViewModel : ViewModelBase
 {
     private readonly IConnectionTester _connectionTester;
 
+    private readonly IDataProcessor _dataProcessor;
+
     private readonly SettingsModel _settings;
 
     private readonly ISettingsWriter _settingsWriter;
@@ -34,6 +37,7 @@ internal partial class ConnectionViewModel : ViewModelBase
 
     public ConnectionViewModel(
         IConnectionTester connectionTester,
+        IDataProcessor dataProcessor,
         IGraphicsService grafikService,
         IOptionsMonitor<SettingsModel> settings,
         ISettingsWriter settingsWriter,
@@ -42,6 +46,7 @@ internal partial class ConnectionViewModel : ViewModelBase
     )
     {
         _connectionTester = connectionTester;
+        _dataProcessor = dataProcessor;
         _settings = settings.CurrentValue;
         _settingsWriter = settingsWriter;
         _storeService = storeService;
@@ -134,6 +139,7 @@ internal partial class ConnectionViewModel : ViewModelBase
     {
         if (int.TryParse(Port, out int port))
         {
+            _dataProcessor.Start();
             _udpListenerService.Start(port);
         }
     }

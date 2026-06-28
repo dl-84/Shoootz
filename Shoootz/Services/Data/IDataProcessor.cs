@@ -13,4 +13,6 @@ internal interface IDataProcessor
     int UdpRawShotCounter { get; }
 
     int WarmupShotCounter { get; }
+
+    void Start();
 }

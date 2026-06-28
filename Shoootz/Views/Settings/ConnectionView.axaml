@@ -74,41 +74,55 @@
                         <TextBlock Classes="h4"
                                    Text="{loc:Localization UdpBroadcast}" />
 
-                        <StackPanel HorizontalAlignment="Left"
-                                    Spacing="2"
-                                    Width="170">
-                            <TextBlock Classes="label"
-                                       FontSize="13"
-                                       Text="{loc:Localization Port}" />
-                            <TextBox Classes.error="{Binding !IsPortValid}"
-                                     MaxLength="5"
-                                     Text="{Binding Port}"
-                                     loc:InputFilter.AllowedPattern="[0-9]"
-                                     IsEnabled="{Binding !IsUdpListening}" />
-                            <Border Height="20">
-                                <TextBlock Classes="hint-error"
-                                           FontSize="12"
-                                           Margin="5,0,0,0"
-                                           Text="{loc:Localization PortRangeHint}"
-                                           IsVisible="{Binding !IsPortValid}" />
-                            </Border>
-                        </StackPanel>
+                        <Grid ColumnDefinitions="*,170"
+                              RowDefinitions="Auto,Auto"
+                              RowSpacing="0">
 
-                        <Grid ColumnDefinitions="*,Auto">
-                            <CheckBox Grid.Column="0"
+                            <!--  AutoConnect  -->
+                            <CheckBox Grid.Row="0"
+                                      Grid.Column="0"
                                       Content="{loc:Localization AutoConnect}"
                                       FontSize="16"
-                                      IsChecked="{Binding AutoConnect}" />
-                            <Button Grid.Column="1"
+                                      IsChecked="{Binding AutoConnect}"
+                                      VerticalAlignment="Center" />
+
+                            <!--  Port  -->
+                            <StackPanel Grid.Row="0"
+                                        Grid.Column="1"
+                                        Spacing="2">
+                                <TextBlock Classes="label"
+                                           FontSize="13"
+                                           Text="{loc:Localization Port}" />
+                                <TextBox Classes.error="{Binding !IsPortValid}"
+                                         MaxLength="5"
+                                         Text="{Binding Port}"
+                                         loc:InputFilter.AllowedPattern="[0-9]"
+                                         IsEnabled="{Binding !IsUdpListening}" />
+                                <Border Height="20">
+                                    <TextBlock Classes="hint-error"
+                                               FontSize="12"
+                                               Margin="5,0,0,0"
+                                               Text="{loc:Localization PortRangeHint}"
+                                               IsVisible="{Binding !IsPortValid}" />
+                                </Border>
+                            </StackPanel>
+
+                            <!--  Start/Stop  -->
+                            <Button Grid.Row="1"
+                                    Grid.Column="1"
                                     Classes="green"
                                     Command="{Binding StartUdpCommand}"
                                     Content="{loc:Localization Start}"
+                                    Margin="0,-4,0,0"
                                     IsVisible="{Binding !IsUdpListening}" />
-                            <Button Grid.Column="1"
+                            <Button Grid.Row="1"
+                                    Grid.Column="1"
                                     Classes="danger"
                                     Command="{Binding StopUdpCommand}"
                                     Content="{loc:Localization Stop}"
+                                    Margin="0,-4,0,0"
                                     IsVisible="{Binding IsUdpListening}" />
+
                         </Grid>
 
                     </StackPanel>

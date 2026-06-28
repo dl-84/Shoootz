@@ -12,19 +12,15 @@ using Shoootz.Services.Udp;
 
 namespace Shoootz.Services.Data;
 
-internal class DataProcessor : IDataProcessor, IDisposable
+internal class DataProcessor(IUdpListenerService udpListenerService, IShotDataParser parser, IStoreService dbService)
+    : IDataProcessor,
+        IDisposable
 {
     private readonly CancellationTokenSource _cancellationTokenSource = new();
-
-    private readonly IStoreService _dbService;
-
-    private readonly IShotDataParser _parser;
 
     private readonly Channel<ShotModel> _shotChannel = Channel.CreateUnbounded<ShotModel>();
 
     private readonly Channel<byte[]> _udpChannel = Channel.CreateUnbounded<byte[]>();
-
-    private readonly IUdpListenerService _udpListenerService;
 
     private int _errorParsedShotCounter;
 
@@ -32,23 +28,13 @@ internal class DataProcessor : IDataProcessor, IDisposable
 
     private int _successParsedShotCounter;
 
+    private bool _started;
+
     private int _successSavedShotToDbCounter;
 
     private int _udpRawShotCounter;
 
     private int _warmupShotCounter;
-
-    public DataProcessor(IUdpListenerService udpListenerService, IShotDataParser parser, IStoreService dbService)
-    {
-        _parser = parser;
-        _dbService = dbService;
-        _udpListenerService = udpListenerService;
-
-        _udpListenerService.ShotRawDataReceived += OnPacketReceived;
-
-        _ = ProcessUdpChannelReaderLoopAsync(_cancellationTokenSource.Token);
-        _ = ProcessShotChannelReaderLoopAsync(_cancellationTokenSource.Token);
-    }
 
     public int ErrorParsedShotCounter => _errorParsedShotCounter;
 
@@ -64,9 +50,23 @@ internal class DataProcessor : IDataProcessor, IDisposable
 
     public void Dispose()
     {
-        _udpListenerService.ShotRawDataReceived -= OnPacketReceived;
+        udpListenerService.ShotRawDataReceived -= OnPacketReceived;
         _cancellationTokenSource.Cancel();
         _cancellationTokenSource.Dispose();
+    }
+
+    public void Start()
+    {
+        if (_started)
+        {
+            return;
+        }
+
+        udpListenerService.ShotRawDataReceived += OnPacketReceived;
+
+        _ = ProcessUdpChannelReaderLoopAsync(_cancellationTokenSource.Token);
+        _ = ProcessShotChannelReaderLoopAsync(_cancellationTokenSource.Token);
+        _started = true;
     }
 
     private void OnPacketReceived(object? sender, byte[] data)
@@ -79,7 +79,7 @@ internal class DataProcessor : IDataProcessor, IDisposable
     {
         await foreach (byte[] data in _udpChannel.Reader.ReadAllAsync(cancellationToken))
         {
-            Result<ShotModel?, ShotParseError> result = _parser.Run(data);
+            Result<ShotModel?, ShotParseError> result = parser.Run(data);
 
             result.Match(
                 shot =>
@@ -108,7 +108,7 @@ internal class DataProcessor : IDataProcessor, IDisposable
     {
         await foreach (ShotModel shot in _shotChannel.Reader.ReadAllAsync(cancellationToken))
         {
-            Result<Unit, StoreSaveError> result = await _dbService.SaveShotAsync(shot).ConfigureAwait(false);
+            Result<Unit, StoreSaveError> result = await dbService.SaveShotAsync(shot).ConfigureAwait(false);
 
             result.Match(
                 _ =>
