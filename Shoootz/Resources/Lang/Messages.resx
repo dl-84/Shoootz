@@ -208,4 +208,31 @@
   <data name="Udp" xml:space="preserve">
     <value>UDP</value>
   </data>
+  <data name="ShotCounter" xml:space="preserve">
+    <value>Shots</value>
+  </data>
+  <data name="ShotCounterParsed" xml:space="preserve">
+    <value>Parsed Shots</value>
+  </data>
+  <data name="ShotCounterReceived" xml:space="preserve">
+    <value>Received Shots</value>
+  </data>
+  <data name="ShotCounterParsedError" xml:space="preserve">
+    <value>Parse Errors</value>
+  </data>
+  <data name="ShotCounterSaved" xml:space="preserve">
+    <value>Saved Shots</value>
+  </data>
+  <data name="ShotCounterSavedError" xml:space="preserve">
+    <value>Save Errors</value>
+  </data>
+  <data name="ShotCounterWarmup" xml:space="preserve">
+    <value>Warmup Shots</value>
+  </data>
+  <data name="Logging" xml:space="preserve">
+    <value>Logging</value>
+  </data>
+  <data name="LoggingRawTitle" xml:space="preserve">
+    <value>Raw data</value>
+  </data>
 </root>

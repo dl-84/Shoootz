@@ -159,6 +159,7 @@ internal partial class MainWindowViewModel : ViewModelBase
             5 => _serviceProvider.GetRequiredService<GroupsViewModel>(),
             7 => _serviceProvider.GetRequiredService<AboutViewModel>(),
             8 => _serviceProvider.GetRequiredService<LicensesViewModel>(),
+            9 => _serviceProvider.GetRequiredService<LoggingViewModel>(),
             _ => null,
         };
     }

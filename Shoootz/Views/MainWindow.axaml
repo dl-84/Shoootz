@@ -116,6 +116,9 @@
                                 <ListBoxItem>
                                     <TextBlock Text="{loc:Localization Licenses}" />
                                 </ListBoxItem>
+                                <ListBoxItem>
+                                    <TextBlock Text="{loc:Localization Logging}" />
+                                </ListBoxItem>
 
                             </ListBox>
                         </DockPanel>

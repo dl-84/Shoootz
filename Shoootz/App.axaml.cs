@@ -103,6 +103,7 @@ public class App : Application
         services.AddTransient<GeneralViewModel>();
         services.AddTransient<GroupsViewModel>();
         services.AddTransient<LicensesViewModel>();
+        services.AddTransient<LoggingViewModel>();
     }
 
     private void InitContext(ServiceCollection serviceCollection)

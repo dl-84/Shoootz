@@ -1,0 +1,182 @@
+﻿<UserControl x:Class="Shoootz.Views.Info.LoggingView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:loc="using:Shoootz.Extensions"
+             xmlns:vm="using:Shoootz.ViewModels.Info"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:DataType="vm:LoggingViewModel">
+
+    <Grid Margin="18,0,18,18"
+          RowDefinitions="Auto,Auto,Auto,*"
+          RowSpacing="{DynamicResource SpacingMedium}">
+
+        <TextBlock Grid.Row="0"
+                   Classes="h4"
+                   Text="{loc:Localization ShotCounter}" />
+
+        <Grid Grid.Row="1"
+              ColumnDefinitions="*,*,*"
+              ColumnSpacing="{DynamicResource SpacingMedium}"
+              RowDefinitions="Auto,Auto"
+              RowSpacing="{DynamicResource SpacingMedium}">
+
+            <!--  Received Shots  -->
+            <Border Grid.Row="0"
+                    Grid.Column="0"
+                    Classes="card">
+                <Grid ColumnDefinitions="Auto,*">
+                    <TextBlock Grid.Column="0"
+                               Classes="label"
+                               FontWeight="Normal"
+                               Text="{loc:Localization ShotCounterReceived}"
+                               TextWrapping="NoWrap"
+                               VerticalAlignment="Center" />
+                    <TextBlock Grid.Column="1"
+                               Classes="h2"
+                               FontSize="{DynamicResource FontSizeMedium}"
+                               FontWeight="Normal"
+                               HorizontalAlignment="Right"
+                               LineHeight="22"
+                               Text="{Binding ReceivedShots}"
+                               VerticalAlignment="Center" />
+                </Grid>
+            </Border>
+
+            <!--  Parsed Shots  -->
+            <Border Grid.Row="0"
+                    Grid.Column="1"
+                    Classes="card">
+                <Grid ColumnDefinitions="Auto,*">
+                    <TextBlock Grid.Column="0"
+                               Classes="label"
+                               FontWeight="Normal"
+                               Text="{loc:Localization ShotCounterParsed}"
+                               TextWrapping="NoWrap"
+                               VerticalAlignment="Center" />
+                    <TextBlock Grid.Column="1"
+                               Classes="h2"
+                               FontSize="{DynamicResource FontSizeMedium}"
+                               FontWeight="Normal"
+                               HorizontalAlignment="Right"
+                               LineHeight="22"
+                               Text="{Binding ParsedShots}"
+                               VerticalAlignment="Center" />
+                </Grid>
+            </Border>
+
+            <!--  Saved Shots  -->
+            <Border Grid.Row="0"
+                    Grid.Column="2"
+                    Classes="card">
+                <Grid ColumnDefinitions="Auto,*">
+                    <TextBlock Grid.Column="0"
+                               Classes="label"
+                               FontWeight="Normal"
+                               Text="{loc:Localization ShotCounterSaved}"
+                               TextWrapping="NoWrap"
+                               VerticalAlignment="Center" />
+                    <TextBlock Grid.Column="1"
+                               Classes="h2"
+                               FontSize="{DynamicResource FontSizeMedium}"
+                               FontWeight="Normal"
+                               HorizontalAlignment="Right"
+                               LineHeight="22"
+                               Text="{Binding SavedShots}"
+                               VerticalAlignment="Center" />
+                </Grid>
+            </Border>
+
+            <!--  Warmup Shots  -->
+            <Border Grid.Row="1"
+                    Grid.Column="0"
+                    Classes="card">
+                <Grid ColumnDefinitions="Auto,*">
+                    <TextBlock Grid.Column="0"
+                               Classes="label"
+                               FontWeight="Normal"
+                               Text="{loc:Localization ShotCounterWarmup}"
+                               TextWrapping="NoWrap"
+                               VerticalAlignment="Center" />
+                    <TextBlock Grid.Column="1"
+                               Classes="h2"
+                               FontSize="{DynamicResource FontSizeMedium}"
+                               FontWeight="Normal"
+                               HorizontalAlignment="Right"
+                               LineHeight="22"
+                               Text="{Binding WarmupShots}"
+                               VerticalAlignment="Center" />
+                </Grid>
+            </Border>
+
+            <!--  Parse Errors  -->
+            <Border Grid.Row="1"
+                    Grid.Column="1"
+                    Classes="card">
+                <Grid ColumnDefinitions="Auto,*">
+                    <TextBlock Grid.Column="0"
+                               Classes="label"
+                               FontWeight="Normal"
+                               Foreground="{DynamicResource ErrorBrush}"
+                               Text="{loc:Localization ShotCounterParsedError}"
+                               TextWrapping="NoWrap"
+                               VerticalAlignment="Center" />
+                    <TextBlock Grid.Column="1"
+                               Classes="h2"
+                               FontSize="{DynamicResource FontSizeMedium}"
+                               FontWeight="Normal"
+                               HorizontalAlignment="Right"
+                               LineHeight="22"
+                               Text="{Binding ParsedShotErrors}"
+                               VerticalAlignment="Center" />
+                </Grid>
+            </Border>
+
+            <!--  Save Errors  -->
+            <Border Grid.Row="1"
+                    Grid.Column="2"
+                    Classes="card">
+                <Grid ColumnDefinitions="Auto,*">
+                    <TextBlock Grid.Column="0"
+                               Classes="label"
+                               FontWeight="Normal"
+                               Foreground="{DynamicResource ErrorBrush}"
+                               Text="{loc:Localization ShotCounterSavedError}"
+                               TextWrapping="NoWrap"
+                               VerticalAlignment="Center" />
+                    <TextBlock Grid.Column="1"
+                               Classes="h2"
+                               FontSize="{DynamicResource FontSizeMedium}"
+                               FontWeight="Normal"
+                               HorizontalAlignment="Right"
+                               LineHeight="22"
+                               Text="{Binding SavedShotErrors}"
+                               VerticalAlignment="Center" />
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!--  Raw data viewer  -->
+        <TextBlock Grid.Row="2"
+                   Classes="h4"
+                   Text="{loc:Localization LoggingRawTitle}" />
+
+        <ListBox Grid.Row="3"
+                 CornerRadius="0"
+                 ItemsSource="{Binding Logs}"
+                 ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                 SelectionChanged="OnLogEntrySelected">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal"
+                                Spacing="{DynamicResource SpacingSmall}">
+                        <TextBlock FontFamily="{DynamicResource FontMono}"
+                                   Foreground="{DynamicResource TextSecondaryBrush}"
+                                   Text="{Binding Timestamp, StringFormat='HH:mm:ss.fff'}" />
+                        <TextBlock FontFamily="{DynamicResource FontMono}"
+                                   Text="{Binding RawData}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+    </Grid>
+</UserControl>

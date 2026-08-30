@@ -207,4 +207,31 @@
   <data name="Udp" xml:space="preserve">
     <value>UDP</value>
   </data>
+  <data name="Logging" xml:space="preserve">
+    <value>Logging</value>
+  </data>
+  <data name="ShotCounterParsed" xml:space="preserve">
+    <value>Analysierte Schüsse</value>
+  </data>
+  <data name="ShotCounterReceived" xml:space="preserve">
+    <value>Empfangene Schüsse</value>
+  </data>
+  <data name="ShotCounterParsedError" xml:space="preserve">
+    <value>Analysefehler</value>
+  </data>
+  <data name="ShotCounterSaved" xml:space="preserve">
+    <value>Gespeicherte Schüsse</value>
+  </data>
+  <data name="ShotCounterSavedError" xml:space="preserve">
+    <value>Speicherfehler</value>
+  </data>
+  <data name="ShotCounterWarmup" xml:space="preserve">
+    <value>Probeschüsse</value>
+  </data>
+  <data name="LoggingRawTitle" xml:space="preserve">
+    <value>Rohdaten</value>
+  </data>
+  <data name="ShotCounter" xml:space="preserve">
+    <value>Schüsse</value>
+  </data>
 </root>

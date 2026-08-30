@@ -365,6 +365,24 @@ namespace Shoootz.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Logging.
+        /// </summary>
+        internal static string Logging {
+            get {
+                return ResourceManager.GetString("Logging", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Raw data.
+        /// </summary>
+        internal static string LoggingRawTitle {
+            get {
+                return ResourceManager.GetString("LoggingRawTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to MIT License.
         /// </summary>
         internal static string MitLicense {
@@ -478,6 +496,69 @@ namespace Shoootz.Resources.Lang {
         internal static string SettingsValidSuccessHint {
             get {
                 return ResourceManager.GetString("SettingsValidSuccessHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shots.
+        /// </summary>
+        internal static string ShotCounter {
+            get {
+                return ResourceManager.GetString("ShotCounter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parsed Shots.
+        /// </summary>
+        internal static string ShotCounterParsed {
+            get {
+                return ResourceManager.GetString("ShotCounterParsed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parse Errors.
+        /// </summary>
+        internal static string ShotCounterParsedError {
+            get {
+                return ResourceManager.GetString("ShotCounterParsedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Received Shots.
+        /// </summary>
+        internal static string ShotCounterReceived {
+            get {
+                return ResourceManager.GetString("ShotCounterReceived", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saved Shots.
+        /// </summary>
+        internal static string ShotCounterSaved {
+            get {
+                return ResourceManager.GetString("ShotCounterSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save Errors.
+        /// </summary>
+        internal static string ShotCounterSavedError {
+            get {
+                return ResourceManager.GetString("ShotCounterSavedError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warmup Shots.
+        /// </summary>
+        internal static string ShotCounterWarmup {
+            get {
+                return ResourceManager.GetString("ShotCounterWarmup", resourceCulture);
             }
         }
         

@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
@@ -6,6 +9,7 @@ using Result;
 using Result.Types;
 using Shoootz.Models.Error;
 using Shoootz.Models.Shot;
+using Shoootz.Models.Udp;
 using Shoootz.Services.Parser;
 using Shoootz.Services.Store;
 using Shoootz.Services.Udp;
@@ -16,11 +20,17 @@ internal class DataProcessor(IUdpListenerService udpListenerService, IShotDataPa
     : IDataProcessor,
         IDisposable
 {
+    private const int MaxRawLogEntries = 300;
+
     private readonly CancellationTokenSource _cancellationTokenSource = new();
 
     private readonly Channel<ShotModel> _shotChannel = Channel.CreateUnbounded<ShotModel>();
 
     private readonly Channel<byte[]> _udpChannel = Channel.CreateUnbounded<byte[]>();
+
+    private readonly List<UdpRawModel> _rawLog = [];
+
+    private readonly Lock _rawLogLock = new();
 
     private int _errorParsedShotCounter;
 
@@ -36,9 +46,22 @@ internal class DataProcessor(IUdpListenerService udpListenerService, IShotDataPa
 
     private int _warmupShotCounter;
 
+    public event EventHandler<UdpRawModel>? RawDataLogged;
+
     public int ErrorParsedShotCounter => _errorParsedShotCounter;
 
     public int ErrorOnSaveShotToDbCounter => _errorOnSaveShotToDbCounter;
+
+    public IReadOnlyList<UdpRawModel> RawLogEntries
+    {
+        get
+        {
+            lock (_rawLogLock)
+            {
+                return _rawLog.ToList();
+            }
+        }
+    }
 
     public int SuccessParsedShotCounter => _successParsedShotCounter;
 
@@ -73,6 +96,20 @@ internal class DataProcessor(IUdpListenerService udpListenerService, IShotDataPa
     {
         Interlocked.Increment(ref _udpRawShotCounter);
         _udpChannel.Writer.TryWrite(data);
+
+        UdpRawModel entry = new(DateTime.Now, Encoding.UTF8.GetString(data));
+
+        lock (_rawLogLock)
+        {
+            _rawLog.Add(entry);
+
+            if (_rawLog.Count > MaxRawLogEntries)
+            {
+                _rawLog.RemoveAt(0);
+            }
+        }
+
+        RawDataLogged?.Invoke(this, entry);
     }
 
     private async Task ProcessUdpChannelReaderLoopAsync(CancellationToken cancellationToken)
