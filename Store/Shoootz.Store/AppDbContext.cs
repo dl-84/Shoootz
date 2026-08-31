@@ -5,6 +5,8 @@ namespace Shoootz.Store;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
+    public DbSet<ClubEntity> Clubs { get; set; }
+
     public DbSet<ShooterEntity> Shooters { get; set; }
 
     public DbSet<ShotEntity> Shots { get; set; }
@@ -13,6 +15,13 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<ClubEntity>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Name).IsUnique();
+            entity.HasMany(e => e.Shooters).WithOne(e => e.Club).HasForeignKey(e => e.ClubId);
+        });
+
         modelBuilder.Entity<ShooterEntity>(entity =>
         {
             entity.HasKey(e => e.Id);

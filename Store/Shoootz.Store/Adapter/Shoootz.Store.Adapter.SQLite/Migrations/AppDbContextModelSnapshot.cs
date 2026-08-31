@@ -15,7 +15,26 @@ namespace Shoootz.Store.Adapter.SQLite.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "9.0.5");
+            modelBuilder.HasAnnotation("ProductVersion", "10.0.9");
+
+            modelBuilder.Entity("Shoootz.Store.Entities.ClubEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Clubs");
+                });
 
             modelBuilder.Entity("Shoootz.Store.Entities.ShooterEntity", b =>
                 {
@@ -26,9 +45,8 @@ namespace Shoootz.Store.Adapter.SQLite.Migrations
                     b.Property<int>("Birthyear")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Club")
-                        .HasMaxLength(255)
-                        .HasColumnType("TEXT");
+                    b.Property<int?>("ClubId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Firstname")
                         .HasMaxLength(100)
@@ -47,7 +65,9 @@ namespace Shoootz.Store.Adapter.SQLite.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Shooters", (string)null);
+                    b.HasIndex("ClubId");
+
+                    b.ToTable("Shooters");
                 });
 
             modelBuilder.Entity("Shoootz.Store.Entities.ShotEntity", b =>
@@ -92,7 +112,7 @@ namespace Shoootz.Store.Adapter.SQLite.Migrations
 
                     b.HasIndex("ShotInfoMenuId");
 
-                    b.ToTable("Shots", (string)null);
+                    b.ToTable("Shots");
                 });
 
             modelBuilder.Entity("Shoootz.Store.Entities.ShotInfoEntity", b =>
@@ -111,7 +131,16 @@ namespace Shoootz.Store.Adapter.SQLite.Migrations
 
                     b.HasKey("MenuId");
 
-                    b.ToTable("ShotInfos", (string)null);
+                    b.ToTable("ShotInfos");
+                });
+
+            modelBuilder.Entity("Shoootz.Store.Entities.ShooterEntity", b =>
+                {
+                    b.HasOne("Shoootz.Store.Entities.ClubEntity", "Club")
+                        .WithMany("Shooters")
+                        .HasForeignKey("ClubId");
+
+                    b.Navigation("Club");
                 });
 
             modelBuilder.Entity("Shoootz.Store.Entities.ShotEntity", b =>
@@ -127,6 +156,11 @@ namespace Shoootz.Store.Adapter.SQLite.Migrations
                     b.Navigation("Shooter");
 
                     b.Navigation("ShotInfo");
+                });
+
+            modelBuilder.Entity("Shoootz.Store.Entities.ClubEntity", b =>
+                {
+                    b.Navigation("Shooters");
                 });
 
             modelBuilder.Entity("Shoootz.Store.Entities.ShooterEntity", b =>

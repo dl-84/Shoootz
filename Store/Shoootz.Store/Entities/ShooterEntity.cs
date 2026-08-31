@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Shoootz.Store.Entities;
@@ -7,8 +6,9 @@ public class ShooterEntity
 {
     public int Birthyear { get; set; }
 
-    [MaxLength(255)]
-    public string? Club { get; set; }
+    public ClubEntity? Club { get; set; }
+
+    public int? ClubId { get; set; }
 
     [MaxLength(100)]
     public string? Firstname { get; set; }

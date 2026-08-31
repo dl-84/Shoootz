@@ -127,7 +127,7 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory) : IS
                 : new ShooterModel
                 {
                     Birthyear = entity.Shooter.Birthyear,
-                    Club = entity.Shooter.Club,
+                    Club = entity.Shooter.Club?.Name,
                     Firstname = entity.Shooter.Firstname,
                     Id = entity.Shooter.Id,
                     Lastname = entity.Shooter.Lastname,
@@ -161,6 +161,26 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory) : IS
         };
     }
 
+    private static async Task<ClubEntity?> FindOrCreateClubAsync(AppDbContext context, string? clubName)
+    {
+        if (string.IsNullOrWhiteSpace(clubName))
+        {
+            return null;
+        }
+
+        ClubEntity? entity = await context
+            .Clubs.FirstOrDefaultAsync(club => club.Name == clubName)
+            .ConfigureAwait(false);
+
+        if (entity is null)
+        {
+            entity = new ClubEntity { Name = clubName };
+            context.Clubs.Add(entity);
+        }
+
+        return entity;
+    }
+
     private static async Task<ShooterEntity?> FindOrCreateShooterAsync(AppDbContext context, ShooterModel? shooter)
     {
         if (shooter?.Id is null)
@@ -172,10 +192,12 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory) : IS
 
         if (entity is null)
         {
+            ClubEntity? club = await FindOrCreateClubAsync(context, shooter.Club).ConfigureAwait(false);
+
             entity = new ShooterEntity
             {
                 Birthyear = shooter.Birthyear,
-                Club = shooter.Club,
+                Club = club,
                 Firstname = shooter.Firstname,
                 Id = shooter.Id,
                 Lastname = shooter.Lastname,

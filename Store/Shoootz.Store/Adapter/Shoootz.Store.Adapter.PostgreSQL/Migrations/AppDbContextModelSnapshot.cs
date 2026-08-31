@@ -17,10 +17,31 @@ namespace Shoootz.Store.Adapter.PostgreSQL.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.5")
+                .HasAnnotation("ProductVersion", "10.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("Shoootz.Store.Entities.ClubEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Clubs");
+                });
 
             modelBuilder.Entity("Shoootz.Store.Entities.ShooterEntity", b =>
                 {
@@ -31,9 +52,8 @@ namespace Shoootz.Store.Adapter.PostgreSQL.Migrations
                     b.Property<int>("Birthyear")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Club")
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
+                    b.Property<int?>("ClubId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Firstname")
                         .HasMaxLength(100)
@@ -51,6 +71,8 @@ namespace Shoootz.Store.Adapter.PostgreSQL.Migrations
                         .HasColumnType("character varying(255)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ClubId");
 
                     b.ToTable("Shooters");
                 });
@@ -121,6 +143,15 @@ namespace Shoootz.Store.Adapter.PostgreSQL.Migrations
                     b.ToTable("ShotInfos");
                 });
 
+            modelBuilder.Entity("Shoootz.Store.Entities.ShooterEntity", b =>
+                {
+                    b.HasOne("Shoootz.Store.Entities.ClubEntity", "Club")
+                        .WithMany("Shooters")
+                        .HasForeignKey("ClubId");
+
+                    b.Navigation("Club");
+                });
+
             modelBuilder.Entity("Shoootz.Store.Entities.ShotEntity", b =>
                 {
                     b.HasOne("Shoootz.Store.Entities.ShooterEntity", "Shooter")
@@ -134,6 +165,11 @@ namespace Shoootz.Store.Adapter.PostgreSQL.Migrations
                     b.Navigation("Shooter");
 
                     b.Navigation("ShotInfo");
+                });
+
+            modelBuilder.Entity("Shoootz.Store.Entities.ClubEntity", b =>
+                {
+                    b.Navigation("Shooters");
                 });
 
             modelBuilder.Entity("Shoootz.Store.Entities.ShooterEntity", b =>
