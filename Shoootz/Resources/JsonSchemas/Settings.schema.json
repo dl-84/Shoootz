@@ -12,7 +12,7 @@
     "CurrentLanguageCode": {
       "enum": ["de", "en"]
     },
-    "Database": {
+    "DatabaseConnection": {
       "type": "object",
       "properties": {
         "ConnectionString": {
@@ -25,7 +25,7 @@
       "required": ["ConnectionString", "Provider"],
       "additionalProperties": false
     },
-    "UDP": {
+    "UdpConnection": {
       "type": "object",
       "properties": {
         "AutoConnect": {
@@ -39,6 +39,6 @@
       "additionalProperties": false
     }
   },
-  "required": ["CurrentLanguageCode", "Database", "UDP"],
+  "required": ["CurrentLanguageCode", "DatabaseConnection", "UdpConnection"],
   "additionalProperties": false
 }
