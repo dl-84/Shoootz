@@ -1,4 +1,4 @@
-<Window x:Class="Shoootz.Views.MainWindow"
+﻿<Window x:Class="Shoootz.Views.MainWindow"
         xmlns="https://github.com/avaloniaui"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:loc="using:Shoootz.Extensions"
@@ -10,24 +10,17 @@
         Background="Transparent"
         ExtendClientAreaTitleBarHeightHint="-1"
         ExtendClientAreaToDecorationsHint="True"
+        Height="768"
         Icon="/Assets/Disag/Logo.png"
         MinHeight="768"
         MinWidth="1366"
         Title="Shoootz"
         TransparencyLevelHint="Transparent"
+        Width="1366"
         WindowDecorations="BorderOnly"
         d:DesignHeight="768"
         d:DesignWidth="1366"
         mc:Ignorable="d">
-
-    <Window.Styles>
-        <Style Selector="Border.status-pill">
-            <Setter Property="Background" Value="{DynamicResource ErrorBrush}" />
-        </Style>
-        <Style Selector="Border.status-pill.connected">
-            <Setter Property="Background" Value="{DynamicResource SuccessBrush}" />
-        </Style>
-    </Window.Styles>
 
     <Border x:Name="RootBorder"
             ClipToBounds="True"
@@ -43,30 +36,34 @@
                     <Border Grid.Column="0"
                             Background="{DynamicResource PrimaryBrush}">
                         <DockPanel>
-                            <StackPanel DockPanel.Dock="Bottom"
-                                        Margin="20,16,20,20"
-                                        Spacing="{DynamicResource SpacingSmall}">
-                                <Border Classes="status-pill"
-                                        Classes.connected="{Binding IsDbConnected}"
-                                        CornerRadius="{DynamicResource CornerRadiusSmall}"
-                                        Padding="{DynamicResource PaddingPill}">
-                                    <TextBlock FontSize="14"
-                                               Foreground="{DynamicResource TextWhiteBrush}"
-                                               HorizontalAlignment="Center"
-                                               Text="{Binding DbBadgeText}"
-                                               TextAlignment="Center" />
-                                </Border>
-                                <Border Classes="status-pill"
-                                        Classes.connected="{Binding IsUdpConnected}"
-                                        CornerRadius="{DynamicResource CornerRadiusSmall}"
-                                        Padding="{DynamicResource PaddingPill}">
-                                    <TextBlock FontSize="14"
-                                               Foreground="{DynamicResource TextWhiteBrush}"
-                                               HorizontalAlignment="Center"
-                                               Text="{Binding UdpBadgeText}"
-                                               TextAlignment="Center" />
-                                </Border>
-                            </StackPanel>
+                            <Grid ColumnDefinitions="*,Auto,*,Auto,*"
+                                  DockPanel.Dock="Bottom"
+                                  Margin="0,16,0,20">
+                                <Image Grid.Column="1"
+                                       Height="24"
+                                       Source="{Binding DatabaseConnectedIcon}"
+                                       ToolTip.Tip="{Binding DbBadgeText}"
+                                       Width="24"
+                                       IsVisible="{Binding IsDbConnected}" />
+                                <Image Grid.Column="1"
+                                       Height="24"
+                                       Source="{Binding DatabaseDisconnectedIcon}"
+                                       ToolTip.Tip="{Binding DbBadgeText}"
+                                       Width="24"
+                                       IsVisible="{Binding !IsDbConnected}" />
+                                <Image Grid.Column="3"
+                                       Height="24"
+                                       Source="{Binding NetworkWiredConnectedIcon}"
+                                       ToolTip.Tip="{Binding UdpBadgeText}"
+                                       Width="24"
+                                       IsVisible="{Binding IsUdpConnected}" />
+                                <Image Grid.Column="3"
+                                       Height="24"
+                                       Source="{Binding NetworkWiredDisconnectedIcon}"
+                                       ToolTip.Tip="{Binding UdpBadgeText}"
+                                       Width="24"
+                                       IsVisible="{Binding !IsUdpConnected}" />
+                            </Grid>
                             <ListBox x:Name="NavList"
                                      Classes="nav"
                                      ItemContainerTheme="{DynamicResource NavigationItem}"
