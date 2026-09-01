@@ -58,13 +58,14 @@ internal partial class MainWindowViewModel : ViewModelBase
         _udpListenerService = udpListenerService;
         _udpListenerService.IsListeningChanged += (_, isListening) => IsUdpConnected = isListening;
 
-        CurrentPage = CreateView(ActiveIndex)!;
+        CurrentPage = CreateView(NavigationPageType.Evaluate)!;
+        CurrentNavigationPageType = NavigationPageType.Evaluate;
     }
 
     public event Action? PendingMigrationsDetected;
 
     [ObservableProperty]
-    public partial int ActiveIndex { get; set; } = 1;
+    public partial NavigationPageType CurrentNavigationPageType { get; set; }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsNavbarEnabled))]
@@ -133,8 +134,27 @@ internal partial class MainWindowViewModel : ViewModelBase
 
         if (status == DbStatus.UpdateAvailable)
         {
-            ActiveIndex = 4;
+            NavigateTo(NavigationPageType.Connections);
             PendingMigrationsDetected?.Invoke();
+        }
+    }
+
+    public void NavigateTo(NavigationPageType pageType)
+    {
+        ViewModelBase? next = CreateView(pageType);
+
+        if (next is null)
+        {
+            return;
+        }
+
+        ViewModelBase previous = CurrentPage;
+        CurrentPage = next;
+        CurrentNavigationPageType = pageType;
+
+        if (!ReferenceEquals(previous, CurrentPage) && previous is IDisposable disposable)
+        {
+            disposable.Dispose();
         }
     }
 
@@ -149,36 +169,20 @@ internal partial class MainWindowViewModel : ViewModelBase
         (CurrentPage as SettingsErrorViewModel)?.EditorContent = settings;
     }
 
-    private ViewModelBase? CreateView(int index)
+    private ViewModelBase? CreateView(NavigationPageType pageType)
     {
-        return index switch
+        return pageType switch
         {
-            1 => _serviceProvider.GetRequiredService<EvaluationViewModel>(),
-            3 => _serviceProvider.GetRequiredService<GeneralViewModel>(),
-            4 => _serviceProvider.GetRequiredService<ConnectionViewModel>(),
-            5 => _serviceProvider.GetRequiredService<GroupsViewModel>(),
-            7 => _serviceProvider.GetRequiredService<AboutViewModel>(),
-            8 => _serviceProvider.GetRequiredService<LicensesViewModel>(),
-            9 => _serviceProvider.GetRequiredService<LoggingViewModel>(),
+            NavigationPageType.About => _serviceProvider.GetRequiredService<AboutViewModel>(),
+            NavigationPageType.Clubs => _serviceProvider.GetRequiredService<ClubsViewModel>(),
+            NavigationPageType.Connections => _serviceProvider.GetRequiredService<ConnectionViewModel>(),
+            NavigationPageType.Evaluate => _serviceProvider.GetRequiredService<EvaluationViewModel>(),
+            NavigationPageType.General => _serviceProvider.GetRequiredService<GeneralViewModel>(),
+            NavigationPageType.Groups => _serviceProvider.GetRequiredService<GroupsViewModel>(),
+            NavigationPageType.Licenses => _serviceProvider.GetRequiredService<LicensesViewModel>(),
+            NavigationPageType.Logging => _serviceProvider.GetRequiredService<LoggingViewModel>(),
+            NavigationPageType.Shooters => _serviceProvider.GetRequiredService<ShootersViewModel>(),
             _ => null,
         };
-    }
-
-    partial void OnActiveIndexChanged(int value)
-    {
-        ViewModelBase previous = CurrentPage;
-        ViewModelBase? next = CreateView(value);
-
-        if (next is null)
-        {
-            return;
-        }
-
-        CurrentPage = next;
-
-        if (!ReferenceEquals(previous, CurrentPage) && previous is IDisposable disposable)
-        {
-            disposable.Dispose();
-        }
     }
 }

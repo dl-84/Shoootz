@@ -103,6 +103,15 @@ namespace Shoootz.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Clubs.
+        /// </summary>
+        internal static string Clubs {
+            get {
+                return ResourceManager.GetString("Clubs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Competition.
         /// </summary>
         internal static string Competition {
@@ -496,6 +505,15 @@ namespace Shoootz.Resources.Lang {
         internal static string SettingsValidSuccessHint {
             get {
                 return ResourceManager.GetString("SettingsValidSuccessHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shooters.
+        /// </summary>
+        internal static string Shooters {
+            get {
+                return ResourceManager.GetString("Shooters", resourceCulture);
             }
         }
         

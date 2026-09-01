@@ -98,12 +98,14 @@ public class App : Application
     private static void InitTransient(ServiceCollection services)
     {
         services.AddTransient<AboutViewModel>();
+        services.AddTransient<ClubsViewModel>();
         services.AddTransient<ConnectionViewModel>();
         services.AddTransient<EvaluationViewModel>();
         services.AddTransient<GeneralViewModel>();
         services.AddTransient<GroupsViewModel>();
         services.AddTransient<LicensesViewModel>();
         services.AddTransient<LoggingViewModel>();
+        services.AddTransient<ShootersViewModel>();
     }
 
     private void InitContext(ServiceCollection serviceCollection)

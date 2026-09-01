@@ -14,6 +14,9 @@
   </resheader>
 
   <!-- Navigation -->
+  <data name="Clubs" xml:space="preserve">
+    <value>Clubs</value>
+  </data>
   <data name="Competition" xml:space="preserve">
     <value>Competition</value>
   </data>
@@ -37,6 +40,9 @@
   </data>
   <data name="Settings" xml:space="preserve">
     <value>Settings</value>
+  </data>
+  <data name="Shooters" xml:space="preserve">
+    <value>Shooters</value>
   </data>
   <data name="Version" xml:space="preserve">
     <value>Version</value>

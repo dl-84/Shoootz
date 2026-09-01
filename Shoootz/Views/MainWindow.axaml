@@ -1,4 +1,4 @@
-﻿<Window x:Class="Shoootz.Views.MainWindow"
+<Window x:Class="Shoootz.Views.MainWindow"
         xmlns="https://github.com/avaloniaui"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:loc="using:Shoootz.Extensions"
@@ -10,16 +10,14 @@
         Background="Transparent"
         ExtendClientAreaTitleBarHeightHint="-1"
         ExtendClientAreaToDecorationsHint="True"
-        Height="750"
         Icon="/Assets/Disag/Logo.png"
-        MinHeight="750"
-        MinWidth="1200"
+        MinHeight="768"
+        MinWidth="1366"
         Title="Shoootz"
         TransparencyLevelHint="Transparent"
-        Width="1200"
         WindowDecorations="BorderOnly"
-        d:DesignHeight="750"
-        d:DesignWidth="1200"
+        d:DesignHeight="768"
+        d:DesignWidth="1366"
         mc:Ignorable="d">
 
     <Window.Styles>
@@ -69,10 +67,11 @@
                                                TextAlignment="Center" />
                                 </Border>
                             </StackPanel>
-                            <ListBox Classes="nav"
+                            <ListBox x:Name="NavList"
+                                     Classes="nav"
                                      ItemContainerTheme="{DynamicResource NavigationItem}"
                                      Margin="{DynamicResource MarginTopMedium}"
-                                     SelectedIndex="{Binding ActiveIndex}"
+                                     SelectionChanged="OnNavSelectionChanged"
                                      IsEnabled="{Binding IsNavbarEnabled}">
 
                                 <!--  Competition  -->
@@ -82,8 +81,14 @@
                                                Text="{loc:Localization Competition,
                                                                        ToUpper=True}" />
                                 </ListBoxItem>
-                                <ListBoxItem>
+                                <ListBoxItem Tag="{x:Static vm:NavigationPageType.Evaluate}">
                                     <TextBlock Text="{loc:Localization Evaluate}" />
+                                </ListBoxItem>
+                                <ListBoxItem Tag="{x:Static vm:NavigationPageType.Shooters}">
+                                    <TextBlock Text="{loc:Localization Shooters}" />
+                                </ListBoxItem>
+                                <ListBoxItem Tag="{x:Static vm:NavigationPageType.Clubs}">
+                                    <TextBlock Text="{loc:Localization Clubs}" />
                                 </ListBoxItem>
 
                                 <!--  Settings  -->
@@ -93,13 +98,13 @@
                                                Text="{loc:Localization Settings,
                                                                        ToUpper=True}" />
                                 </ListBoxItem>
-                                <ListBoxItem>
+                                <ListBoxItem Tag="{x:Static vm:NavigationPageType.General}">
                                     <TextBlock Text="{loc:Localization General}" />
                                 </ListBoxItem>
-                                <ListBoxItem>
+                                <ListBoxItem Tag="{x:Static vm:NavigationPageType.Connections}">
                                     <TextBlock Text="{loc:Localization Connections}" />
                                 </ListBoxItem>
-                                <ListBoxItem>
+                                <ListBoxItem Tag="{x:Static vm:NavigationPageType.Groups}">
                                     <TextBlock Text="{loc:Localization Groups}" />
                                 </ListBoxItem>
 
@@ -110,13 +115,13 @@
                                                Text="{loc:Localization Info,
                                                                        ToUpper=True}" />
                                 </ListBoxItem>
-                                <ListBoxItem>
+                                <ListBoxItem Tag="{x:Static vm:NavigationPageType.About}">
                                     <TextBlock Text="{loc:Localization About}" />
                                 </ListBoxItem>
-                                <ListBoxItem>
+                                <ListBoxItem Tag="{x:Static vm:NavigationPageType.Licenses}">
                                     <TextBlock Text="{loc:Localization Licenses}" />
                                 </ListBoxItem>
-                                <ListBoxItem>
+                                <ListBoxItem Tag="{x:Static vm:NavigationPageType.Logging}">
                                     <TextBlock Text="{loc:Localization Logging}" />
                                 </ListBoxItem>
 
