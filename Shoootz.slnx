@@ -16,7 +16,6 @@
     <Project Path="../Library/C#/Result/Result.csproj" />
   </Folder>
   <Folder Name="/Controls/">
-    <Project Path="../Library/Avalonia/Controls/ConfirmDialog/ConfirmDialog.csproj" />
     <Project Path="../Library/Avalonia/Controls/ContentDialog/ContentDialog.csproj" />
     <Project Path="../Library/Avalonia/Controls/Icons/Icons.csproj" />
     <Project Path="../Library/Avalonia/Controls/InfoDialog/InfoDialog.csproj" />

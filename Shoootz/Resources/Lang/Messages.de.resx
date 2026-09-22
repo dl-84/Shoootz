@@ -102,6 +102,9 @@
   <data name="ConfirmDeleteAllMessage" xml:space="preserve">
     <value>Alle Einstellungen inklusive Datenbank wirklich löschen?</value>
   </data>
+  <data name="ConfirmDeleteClubMessage" xml:space="preserve">
+    <value>Verein "{0}" wirklich löschen?</value>
+  </data>
   <data name="ConfirmDeleteSettingsFileMessage" xml:space="preserve">
     <value>Die Datei mit allen Einstellungen wirklich löschen?</value>
   </data>

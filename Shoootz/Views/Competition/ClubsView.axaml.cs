@@ -23,9 +23,18 @@ public partial class ClubsView : UserControl
         DataContextChanged += OnDataContextChanged;
     }
 
-    private static TextBox BuildClubNameTextBox(string text)
+    private static TextBox BuildClubNameTextBox(string clubName)
     {
-        return new TextBox { Text = text, Width = 400 };
+        return new TextBox { Text = clubName, Width = 400 };
+    }
+
+    private static TextBlock BuildClubDeleteContent(string clubName)
+    {
+        return new TextBlock
+        {
+            Text = string.Format(LocalizationService.Instance[nameof(Messages.ConfirmDeleteClubMessage)], clubName),
+            TextWrapping = TextWrapping.Wrap,
+        };
     }
 
     private void OnAddIconPressed(object? sender, PointerPressedEventArgs e)
@@ -77,7 +86,7 @@ public partial class ClubsView : UserControl
 
             ContentDialog dialog = new()
             {
-                DialogContent = new TextBlock { Text = club.Name, TextWrapping = TextWrapping.Wrap },
+                DialogContent = BuildClubDeleteContent(club.Name),
                 DialogTitle = LocalizationService.Instance[nameof(Messages.Delete)],
                 IsDanger = true,
                 SizeToContent = SizeToContent.Height,
@@ -146,7 +155,6 @@ public partial class ClubsView : UserControl
 
             await new InfoDialog
             {
-                CloseText = LocalizationService.Instance[nameof(Messages.Close)],
                 DialogTitle = LocalizationService.Instance[nameof(Messages.Error)],
                 IconType = IconType.Error,
                 Message = message,

@@ -149,6 +149,15 @@ namespace Shoootz.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you really want to delete the club &quot;{0}&quot;?.
+        /// </summary>
+        internal static string ConfirmDeleteClubMessage {
+            get {
+                return ResourceManager.GetString("ConfirmDeleteClubMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete the file containing all settings?.
         /// </summary>
         internal static string ConfirmDeleteSettingsFileMessage {

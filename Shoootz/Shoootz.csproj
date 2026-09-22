@@ -52,7 +52,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Library\Avalonia\Controls\ConfirmDialog\ConfirmDialog.csproj" />
     <ProjectReference Include="..\..\Library\Avalonia\Controls\ContentDialog\ContentDialog.csproj" />
     <ProjectReference Include="..\..\Library\Avalonia\Controls\Icons\Icons.csproj" />
     <ProjectReference Include="..\..\Library\Avalonia\Controls\InfoDialog\InfoDialog.csproj" />

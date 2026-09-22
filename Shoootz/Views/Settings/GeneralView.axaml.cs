@@ -1,17 +1,19 @@
 using System;
 using System.Threading.Tasks;
 using Avalonia.Controls;
-using Controls.ConfirmDialog;
+using Avalonia.Media;
 using Controls.ContentDialog;
 using Controls.InfoDialog;
 using Controls.InfoDialog.Enum;
 using Controls.JsonEditor;
+using Shoootz.Resources.Lang;
 using Shoootz.Services.Localization;
 using Shoootz.ViewModels;
 using Shoootz.ViewModels.Settings;
 
 namespace Shoootz.Views.Settings;
 
+/// <inheritdoc/>
 public partial class GeneralView : UserControl
 {
     public GeneralView()
@@ -20,14 +22,16 @@ public partial class GeneralView : UserControl
         DataContextChanged += OnDataContextChanged;
     }
 
-    private static ConfirmDialog BuildConfirmDialog(string title, string message)
+    private static ContentDialog BuildConfirmDialog(string title, string message)
     {
-        return new ConfirmDialog
+        return new ContentDialog
         {
-            AcceptText = LocalizationService.Instance["Delete"],
-            CancelText = LocalizationService.Instance["Cancel"],
+            DialogContent = new TextBlock { Text = message, TextWrapping = TextWrapping.Wrap },
             DialogTitle = title,
-            Message = message,
+            IsDanger = true,
+            SizeToContent = SizeToContent.Height,
+            SubmitText = LocalizationService.Instance[Messages.Delete],
+            Width = 460,
         };
     }
 
@@ -50,8 +54,8 @@ public partial class GeneralView : UserControl
     private void OnDeleteSettingsFileRequested()
     {
         _ = OpenConfirmDialogAsync(
-            LocalizationService.Instance["DeleteSettingsFile"],
-            LocalizationService.Instance["ConfirmDeleteSettingsFileMessage"],
+            LocalizationService.Instance[Messages.DeleteSettingsFile],
+            LocalizationService.Instance[Messages.ConfirmDeleteSettingsFileMessage],
             () =>
             {
                 if (DataContext is GeneralViewModel viewModel)
@@ -65,8 +69,8 @@ public partial class GeneralView : UserControl
     private void OnDeleteSettingsFolderRequested()
     {
         _ = OpenConfirmDialogAsync(
-            LocalizationService.Instance["DeleteAll"],
-            LocalizationService.Instance["ConfirmDeleteAllMessage"],
+            LocalizationService.Instance[Messages.DeleteAll],
+            LocalizationService.Instance[Messages.ConfirmDeleteAllMessage],
             () =>
             {
                 if (DataContext is GeneralViewModel viewModel)
@@ -89,15 +93,12 @@ public partial class GeneralView : UserControl
             return;
         }
 
-        ConfirmDialog dialog = BuildConfirmDialog(title, message);
+        ContentDialog dialog = BuildConfirmDialog(title, message);
         MainWindowViewModel? mainWindowViewModel = window.DataContext as MainWindowViewModel;
 
         try
         {
-            if (mainWindowViewModel is not null)
-            {
-                mainWindowViewModel.IsDialogOpen = true;
-            }
+            mainWindowViewModel?.IsDialogOpen = true;
 
             bool? result = await dialog.ShowDialog<bool?>(window);
 
@@ -108,10 +109,7 @@ public partial class GeneralView : UserControl
         }
         finally
         {
-            if (mainWindowViewModel is not null)
-            {
-                mainWindowViewModel.IsDialogOpen = false;
-            }
+            mainWindowViewModel?.IsDialogOpen = false;
         }
     }
 
@@ -131,25 +129,18 @@ public partial class GeneralView : UserControl
 
         try
         {
-            if (mainWindowViewModel is not null)
-            {
-                mainWindowViewModel.IsDialogOpen = true;
-            }
+            mainWindowViewModel?.IsDialogOpen = true;
 
             await new InfoDialog
             {
-                CloseText = LocalizationService.Instance["Close"],
-                DialogTitle = LocalizationService.Instance["Error"],
+                DialogTitle = LocalizationService.Instance[Messages.Error],
                 IconType = IconType.Error,
                 Message = message,
             }.ShowDialog(window);
         }
         finally
         {
-            if (mainWindowViewModel is not null)
-            {
-                mainWindowViewModel.IsDialogOpen = false;
-            }
+            mainWindowViewModel?.IsDialogOpen = false;
         }
     }
 
@@ -168,9 +159,9 @@ public partial class GeneralView : UserControl
 
             await new ContentDialog
             {
-                CloseText = LocalizationService.Instance["Close"],
                 DialogContent = BuildTextEditor(content),
-                DialogTitle = LocalizationService.Instance["ShowSettings"],
+                DialogTitle = LocalizationService.Instance[Messages.Settings],
+                Height = 650,
                 Width = 1000,
             }.ShowDialog(window);
         }

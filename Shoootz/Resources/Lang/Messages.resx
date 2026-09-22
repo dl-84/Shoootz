@@ -103,6 +103,9 @@
     <value>Delete all settings including the database?
 </value>
   </data>
+  <data name="ConfirmDeleteClubMessage" xml:space="preserve">
+    <value>Do you really want to delete the club "{0}"?</value>
+  </data>
   <data name="ConfirmDeleteSettingsFileMessage" xml:space="preserve">
     <value>Delete the file containing all settings?</value>
   </data>
