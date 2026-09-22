@@ -9,10 +9,6 @@
           RowDefinitions="Auto,Auto,Auto,*"
           RowSpacing="{DynamicResource SpacingMedium}">
 
-        <TextBlock Grid.Row="0"
-                   Classes="h4"
-                   Text="{loc:Localization ShotCounter}" />
-
         <Grid Grid.Row="1"
               ColumnDefinitions="*,*,*"
               ColumnSpacing="{DynamicResource SpacingMedium}"

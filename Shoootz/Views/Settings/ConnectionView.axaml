@@ -47,9 +47,8 @@
                                             ToolTip.Placement="TopEdgeAlignedRight"
                                             ToolTip.Tip="{loc:Localization TestConnection}"
                                             ToolTip.VerticalOffset="-2">
-                                        <Image Height="24"
-                                               Source="{Binding HeartPulseIcon}"
-                                               Width="24" />
+                                        <PathIcon Data="{DynamicResource HeartPulseIcon}"
+                                                  Foreground="{DynamicResource PrimaryForegroundBrush}" />
                                     </Button>
                                 </Grid>
                             </StackPanel>

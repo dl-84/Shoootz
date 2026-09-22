@@ -12,10 +12,6 @@
             <!--  Language  -->
             <Border Classes="card">
                 <StackPanel Spacing="{DynamicResource SpacingMedium}">
-
-                    <TextBlock Classes="h4"
-                               Text="{loc:Localization General}" />
-
                     <StackPanel Spacing="{DynamicResource SpacingXSmall}">
                         <TextBlock Classes="label"
                                    Text="{loc:Localization Language}" />

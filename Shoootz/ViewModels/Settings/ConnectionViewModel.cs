@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Options;
@@ -9,9 +8,7 @@ using Result;
 using Shoootz.Models.Database;
 using Shoootz.Models.Settings;
 using Shoootz.Models.Settings.Database;
-using Shoootz.Services.App;
 using Shoootz.Services.Data;
-using Shoootz.Services.Graphics;
 using Shoootz.Services.Localization;
 using Shoootz.Services.Settings;
 using Shoootz.Services.Store;
@@ -38,7 +35,6 @@ internal partial class ConnectionViewModel : ViewModelBase
     public ConnectionViewModel(
         IConnectionTester connectionTester,
         IDataProcessor dataProcessor,
-        IGraphicsService grafikService,
         IOptionsMonitor<SettingsModel> settings,
         ISettingsWriter settingsWriter,
         IStoreService storeService,
@@ -57,7 +53,6 @@ internal partial class ConnectionViewModel : ViewModelBase
         IsUdpListening = udpListenerService.IsListening;
         Port = _settings.UdpConnection.Port.ToString();
         SelectedProvider = _settings.DatabaseConnection.Provider;
-        HeartPulseIcon = grafikService.GetIcon(AppIcon.HeartPulse, AppBrush.PrimaryForeground);
 
         _udpListenerService.IsListeningChanged += (_, isListening) => IsUdpListening = isListening;
 
@@ -69,8 +64,6 @@ internal partial class ConnectionViewModel : ViewModelBase
     public event Action<bool, string?>? DbInitializeCompleted;
 
     public event Action? DbInitializeStarted;
-
-    public IImage HeartPulseIcon { get; }
 
     public IEnumerable<ProviderType> ProviderOptions { get; } = Enum.GetValues<ProviderType>();
 

@@ -13,7 +13,6 @@ using Shoootz.Models.Settings;
 using Shoootz.Models.Settings.Database;
 using Shoootz.Resources.Lang;
 using Shoootz.Services.App;
-using Shoootz.Services.Graphics;
 using Shoootz.Services.Localization;
 using Shoootz.Services.Settings;
 using Shoootz.Services.Store;
@@ -43,7 +42,6 @@ internal partial class MainWindowViewModel : ViewModelBase
 
     public MainWindowViewModel(
         IConnectionTester connectionTester,
-        IGraphicsService graphicsService,
         ILocalizationService localizationService,
         IOptionsMonitor<SettingsModel> settings,
         IServiceProvider serviceProvider,
@@ -62,11 +60,6 @@ internal partial class MainWindowViewModel : ViewModelBase
         _udpListenerService = udpListenerService;
         _udpListenerService.IsListeningChanged += (_, isListening) => IsUdpConnected = isListening;
 
-        DatabaseConnectedIcon = graphicsService.GetIcon(AppIcon.Database, AppBrush.Success);
-        DatabaseDisconnectedIcon = graphicsService.GetIcon(AppIcon.Database, AppBrush.Error);
-        NetworkWiredConnectedIcon = graphicsService.GetIcon(AppIcon.NetworkWired, AppBrush.Success);
-        NetworkWiredDisconnectedIcon = graphicsService.GetIcon(AppIcon.NetworkWired, AppBrush.Error);
-
         CurrentPage = CreateView(NavigationPageType.Evaluate)!;
         CurrentNavigationPageType = NavigationPageType.Evaluate;
     }
@@ -80,9 +73,7 @@ internal partial class MainWindowViewModel : ViewModelBase
     [NotifyPropertyChangedFor(nameof(IsNavbarEnabled))]
     public partial ViewModelBase CurrentPage { get; set; }
 
-    public IImage DatabaseConnectedIcon { get; }
-
-    public IImage DatabaseDisconnectedIcon { get; }
+    public IBrush DatabaseStatusBrush => IsDbConnected ? AppBrush.Success : AppBrush.Error;
 
     public string DbBadgeText
     {
@@ -99,6 +90,7 @@ internal partial class MainWindowViewModel : ViewModelBase
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(DbBadgeText))]
+    [NotifyPropertyChangedFor(nameof(DatabaseStatusBrush))]
     public partial bool IsDbConnected { get; set; }
 
     [ObservableProperty]
@@ -108,11 +100,10 @@ internal partial class MainWindowViewModel : ViewModelBase
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(UdpBadgeText))]
+    [NotifyPropertyChangedFor(nameof(NetworkWiredStatusBrush))]
     public partial bool IsUdpConnected { get; set; }
 
-    public IImage NetworkWiredConnectedIcon { get; }
-
-    public IImage NetworkWiredDisconnectedIcon { get; }
+    public IBrush NetworkWiredStatusBrush => IsUdpConnected ? AppBrush.Success : AppBrush.Error;
 
     public string UdpBadgeText
     {

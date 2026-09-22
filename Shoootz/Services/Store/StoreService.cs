@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Result;
 using Result.Types;
+using Shoootz.Models.Club;
 using Shoootz.Models.Database;
 using Shoootz.Models.Error;
 using Shoootz.Models.Shot;
@@ -16,6 +17,55 @@ namespace Shoootz.Services.Store;
 internal class StoreService(IDbContextFactory<AppDbContext> contextFactory) : IStoreService
 {
     public string DbVersion { get; private set; } = "N/A";
+
+    public async Task<Result<Unit, StoreSaveError>> DeleteClubAsync(int id)
+    {
+        try
+        {
+            await using (AppDbContext context = await contextFactory.CreateDbContextAsync().ConfigureAwait(false))
+            {
+                ClubEntity? entity = await context.Clubs.FindAsync(id).ConfigureAwait(false);
+
+                if (entity is not null)
+                {
+                    context.Clubs.Remove(entity);
+                    await context.SaveChangesAsync().ConfigureAwait(false);
+                }
+
+                return Unit.Value;
+            }
+        }
+        catch (Exception exception)
+        {
+            return new Error<StoreSaveError>(new StoreSaveError(exception.Message));
+        }
+    }
+
+    public async Task<Result<List<ClubModel>, StoreReadError>> GetClubsAsync()
+    {
+        try
+        {
+            await using (AppDbContext context = await contextFactory.CreateDbContextAsync().ConfigureAwait(false))
+            {
+                List<ClubModel> clubs = await context
+                    .Clubs.OrderBy(club => club.Id)
+                    .Select(club => new ClubModel
+                    {
+                        Id = club.Id,
+                        Name = club.Name,
+                        ShooterCount = club.Shooters.Count,
+                    })
+                    .ToListAsync()
+                    .ConfigureAwait(false);
+
+                return clubs;
+            }
+        }
+        catch (Exception exception)
+        {
+            return new Error<StoreReadError>(new StoreReadError(exception.Message));
+        }
+    }
 
     public async Task<DbStatus> GetDbStatusAsync()
     {
@@ -84,6 +134,38 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory) : IS
         await using (AppDbContext context = await contextFactory.CreateDbContextAsync().ConfigureAwait(false))
         {
             await context.Database.MigrateAsync().ConfigureAwait(false);
+        }
+    }
+
+    public async Task<Result<Unit, StoreSaveError>> SaveClubAsync(ClubModel club)
+    {
+        try
+        {
+            await using (AppDbContext context = await contextFactory.CreateDbContextAsync().ConfigureAwait(false))
+            {
+                if (club.Id == 0)
+                {
+                    context.Clubs.Add(new ClubEntity { Name = club.Name });
+                }
+                else
+                {
+                    ClubEntity? entity = await context.Clubs.FindAsync(club.Id).ConfigureAwait(false);
+
+                    if (entity is null)
+                    {
+                        return new Error<StoreSaveError>(new StoreSaveError($"Club {club.Id} not found."));
+                    }
+
+                    entity.Name = club.Name;
+                }
+
+                await context.SaveChangesAsync().ConfigureAwait(false);
+                return Unit.Value;
+            }
+        }
+        catch (Exception exception)
+        {
+            return new Error<StoreSaveError>(new StoreSaveError(exception.Message));
         }
     }
 

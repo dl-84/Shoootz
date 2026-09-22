@@ -90,8 +90,14 @@
   <data name="AboutTitle" xml:space="preserve">
     <value>Über Shoootz</value>
   </data>
+  <data name="Add" xml:space="preserve">
+    <value>Hinzufügen</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Abbrechen</value>
+  </data>
+  <data name="ClubName" xml:space="preserve">
+    <value>Vereinsname</value>
   </data>
   <data name="ConfirmDeleteAllMessage" xml:space="preserve">
     <value>Alle Einstellungen inklusive Datenbank wirklich löschen?</value>
@@ -111,6 +117,9 @@
   <data name="DeleteSettingsFile" xml:space="preserve">
     <value>Einstellungsdatei löschen</value>
   </data>
+  <data name="Error" xml:space="preserve">
+    <value>Fehler</value>
+  </data>
   <data name="License" xml:space="preserve">
     <value>Lizenz</value>
   </data>
@@ -122,6 +131,9 @@
   </data>
   <data name="Link" xml:space="preserve">
     <value>Link</value>
+  </data>
+  <data name="Id" xml:space="preserve">
+    <value>ID</value>
   </data>
   <data name="MitLicense" xml:space="preserve">
     <value>MIT Lizenz</value>

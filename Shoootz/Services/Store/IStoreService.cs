@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Result;
 using Result.Types;
+using Shoootz.Models.Club;
 using Shoootz.Models.Database;
 using Shoootz.Models.Error;
 using Shoootz.Models.Shot;
@@ -12,11 +13,17 @@ internal interface IStoreService
 {
     string DbVersion { get; }
 
+    Task<Result<Unit, StoreSaveError>> DeleteClubAsync(int id);
+
+    Task<Result<List<ClubModel>, StoreReadError>> GetClubsAsync();
+
     Task<DbStatus> GetDbStatusAsync();
 
     Task<Result<List<ShotModel>, StoreReadError>> GetShotsAsync();
 
     Task InitializeAsync();
+
+    Task<Result<Unit, StoreSaveError>> SaveClubAsync(ClubModel club);
 
     Task<Result<Unit, StoreSaveError>> SaveShotAsync(ShotModel shot);
 }
