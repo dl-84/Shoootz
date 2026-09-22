@@ -94,7 +94,6 @@ public partial class MainWindow : Window
 
             await new InfoDialog
             {
-                CloseText = LocalizationService.Instance[Messages.Close],
                 DialogTitle = LocalizationService.Instance[Messages.DbPendingMigrationsTitle],
                 IconType = IconType.Warning,
                 Message = LocalizationService.Instance[Messages.DbPendingMigrations],

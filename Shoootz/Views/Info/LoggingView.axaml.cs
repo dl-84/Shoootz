@@ -10,6 +10,7 @@ using Shoootz.ViewModels;
 
 namespace Shoootz.Views.Info;
 
+/// <inheritdoc/>
 public partial class LoggingView : UserControl
 {
     public LoggingView()
@@ -61,10 +62,11 @@ public partial class LoggingView : UserControl
 
             await new ContentDialog
             {
-                CloseText = LocalizationService.Instance[nameof(Messages.Close)],
                 DialogContent = BuildTextEditor(PrettyPrintJson(entry.RawData)),
                 DialogTitle =
                     $"{LocalizationService.Instance[nameof(Messages.LoggingRawTitle)]} – {entry.Timestamp:HH:mm:ss.fff}",
+                Height = 650,
+                Width = 800,
             }.ShowDialog(window);
         }
         finally

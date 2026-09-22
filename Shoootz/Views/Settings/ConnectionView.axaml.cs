@@ -89,7 +89,6 @@ public partial class ConnectionView : UserControl
 
             await new InfoDialog
             {
-                CloseText = LocalizationService.Instance["Close"],
                 DialogTitle = LocalizationService.Instance["InitializeDb"],
                 IconType = success ? IconType.Info : IconType.Warning,
                 Message = success
@@ -118,7 +117,6 @@ public partial class ConnectionView : UserControl
 
             await new InfoDialog
             {
-                CloseText = LocalizationService.Instance["Close"],
                 DialogTitle = LocalizationService.Instance["TestConnection"],
                 IconType = success ? IconType.Info : IconType.Warning,
                 Message = success

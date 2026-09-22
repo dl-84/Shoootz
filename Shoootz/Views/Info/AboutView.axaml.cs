@@ -3,11 +3,13 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Controls.ContentDialog;
+using Shoootz.Resources.Lang;
 using Shoootz.Services.Localization;
 using Shoootz.ViewModels;
 
 namespace Shoootz.Views.Info;
 
+/// <inheritdoc/>
 public partial class AboutView : UserControl
 {
     public AboutView()
@@ -42,9 +44,10 @@ public partial class AboutView : UserControl
 
             await new ContentDialog
             {
-                CloseText = LocalizationService.Instance["Close"],
                 DialogContent = licenseText,
-                DialogTitle = LocalizationService.Instance["MitLicense"],
+                DialogTitle = LocalizationService.Instance[Messages.MitLicense],
+                Height = 650,
+                Width = 800,
             }.ShowDialog(window);
         }
         finally
