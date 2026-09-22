@@ -8,12 +8,8 @@ using Shoootz.ViewModels;
 
 namespace Shoootz.Views.Info;
 
-/// <inheritdoc />
 public partial class AboutView : UserControl
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="AboutView"/> class.
-    /// </summary>
     public AboutView()
     {
         InitializeComponent();

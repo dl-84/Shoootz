@@ -35,7 +35,6 @@ using Themes.Disag;
 
 namespace Shoootz;
 
-/// <inheritdoc />
 public class App : Application
 {
     private readonly List<SettingsError> _errors = [];
@@ -44,14 +43,12 @@ public class App : Application
 
     private string _rawSettings = string.Empty;
 
-    /// <inheritdoc/>
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
         Styles.Add(new Disag());
     }
 
-    /// <inheritdoc/>
     public override void OnFrameworkInitializationCompleted()
     {
         IServiceProvider serviceProvider = InitServiceProvider();

@@ -32,7 +32,6 @@
 
                 <Grid ColumnDefinitions="220,*">
 
-                    <!--  Sidebar  -->
                     <Border Grid.Column="0"
                             Background="{DynamicResource PrimaryBrush}">
                         <DockPanel>
@@ -59,7 +58,6 @@
                                      SelectionChanged="OnNavSelectionChanged"
                                      IsEnabled="{Binding IsNavbarEnabled}">
 
-                                <!--  Competition  -->
                                 <ListBoxItem Classes="navigation-header"
                                              IsEnabled="False">
                                     <TextBlock Margin="20,16,20,4"
@@ -76,7 +74,6 @@
                                     <TextBlock Text="{loc:Localization Clubs}" />
                                 </ListBoxItem>
 
-                                <!--  Settings  -->
                                 <ListBoxItem Classes="navigation-header"
                                              IsEnabled="False">
                                     <TextBlock Margin="20,28,20,4"
@@ -93,7 +90,6 @@
                                     <TextBlock Text="{loc:Localization Groups}" />
                                 </ListBoxItem>
 
-                                <!--  Info  -->
                                 <ListBoxItem Classes="navigation-header"
                                              IsEnabled="False">
                                     <TextBlock Margin="20,28,20,4"
@@ -114,7 +110,6 @@
                         </DockPanel>
                     </Border>
 
-                    <!--  Content Area  -->
                     <ContentControl Grid.Column="1"
                                     Background="{DynamicResource AppBackgroundAltBrush}"
                                     Content="{Binding CurrentPage}" />

@@ -20,11 +20,7 @@ internal class LicenseService(ILocalizationService localizationService, IService
 
     private const string LicenseTypeInternal = "MIT";
 
-    private static readonly HashSet<string> _excludedPackages =
-    [
-        "AvaloniaUI.DiagnosticsSupport", // Debug-only, no license in generated JSON
-        "StyleCop.Analyzers", // Build-time analyzer, Apache-2.0, PrivateAssets=all
-    ];
+    private static readonly HashSet<string> _excludedPackages = ["AvaloniaUI.DiagnosticsSupport", "StyleCop.Analyzers"];
 
     private readonly Assembly _assembly = Assembly.GetExecutingAssembly();
 

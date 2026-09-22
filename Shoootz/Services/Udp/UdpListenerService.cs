@@ -88,10 +88,7 @@ internal class UdpListenerService : IUdpListenerService
             {
                 break;
             }
-            catch
-            {
-                // continue loop on transient errors (e.g. null RemoteEndPoint)
-            }
+            catch { }
         }
 
         SetIsListening(false);

@@ -134,7 +134,6 @@ internal class DataProcessor(IUdpListenerService udpListenerService, IShotDataPa
                 },
                 error =>
                 {
-                    // Dont delete this, its for later
                     Interlocked.Increment(ref _errorParsedShotCounter);
                 }
             );
@@ -150,12 +149,10 @@ internal class DataProcessor(IUdpListenerService udpListenerService, IShotDataPa
             result.Match(
                 _ =>
                 {
-                    // Dont delete this, its for later
                     Interlocked.Increment(ref _successSavedShotToDbCounter);
                 },
                 _ =>
                 {
-                    // Dont delete this, its for later
                     Interlocked.Increment(ref _errorOnSaveShotToDbCounter);
                 }
             );

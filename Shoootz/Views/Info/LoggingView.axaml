@@ -15,7 +15,6 @@
               RowDefinitions="Auto,Auto"
               RowSpacing="{DynamicResource SpacingMedium}">
 
-            <!--  Received Shots  -->
             <Border Grid.Row="0"
                     Grid.Column="0"
                     Classes="card">
@@ -37,7 +36,6 @@
                 </Grid>
             </Border>
 
-            <!--  Parsed Shots  -->
             <Border Grid.Row="0"
                     Grid.Column="1"
                     Classes="card">
@@ -59,7 +57,6 @@
                 </Grid>
             </Border>
 
-            <!--  Saved Shots  -->
             <Border Grid.Row="0"
                     Grid.Column="2"
                     Classes="card">
@@ -81,7 +78,6 @@
                 </Grid>
             </Border>
 
-            <!--  Warmup Shots  -->
             <Border Grid.Row="1"
                     Grid.Column="0"
                     Classes="card">
@@ -103,7 +99,6 @@
                 </Grid>
             </Border>
 
-            <!--  Parse Errors  -->
             <Border Grid.Row="1"
                     Grid.Column="1"
                     Classes="card">
@@ -126,7 +121,6 @@
                 </Grid>
             </Border>
 
-            <!--  Save Errors  -->
             <Border Grid.Row="1"
                     Grid.Column="2"
                     Classes="card">
@@ -150,7 +144,6 @@
             </Border>
         </Grid>
 
-        <!--  Raw data viewer  -->
         <TextBlock Grid.Row="2"
                    Classes="h4"
                    Text="{loc:Localization LoggingRawTitle}" />

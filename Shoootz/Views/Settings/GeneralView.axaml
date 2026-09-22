@@ -9,7 +9,6 @@
     <ScrollViewer>
         <StackPanel Classes="page-content">
 
-            <!--  Language  -->
             <Border Classes="card">
                 <StackPanel Spacing="{DynamicResource SpacingMedium}">
                     <StackPanel Spacing="{DynamicResource SpacingXSmall}">
@@ -38,7 +37,6 @@
                 </StackPanel>
             </Border>
 
-            <!--  Settings Buttons  -->
             <Border Classes="card">
                 <StackPanel Spacing="{DynamicResource SpacingMedium}">
 
@@ -58,7 +56,6 @@
                 </StackPanel>
             </Border>
 
-            <!--  Danger Zone  -->
             <Border Classes="card">
                 <StackPanel Spacing="{DynamicResource SpacingMedium}">
 

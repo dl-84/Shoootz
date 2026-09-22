@@ -14,12 +14,8 @@ using Shoootz.ViewModels;
 
 namespace Shoootz.Views;
 
-/// <inheritdoc />
 public partial class MainWindow : Window
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="MainWindow"/> class.
-    /// </summary>
     public MainWindow()
     {
         InitializeComponent();
@@ -32,7 +28,6 @@ public partial class MainWindow : Window
         DataContextChanged += OnDataContextChanged;
     }
 
-    /// <inheritdoc />
     protected override void OnOpened(EventArgs eventArgs)
     {
         base.OnOpened(eventArgs);

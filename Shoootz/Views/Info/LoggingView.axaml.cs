@@ -10,7 +10,6 @@ using Shoootz.ViewModels;
 
 namespace Shoootz.Views.Info;
 
-/// <inheritdoc />
 public partial class LoggingView : UserControl
 {
     public LoggingView()

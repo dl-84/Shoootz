@@ -1,13 +1,80 @@
-<UserControl x:Class="Shoootz.Views.Competition.ClubsView"
+﻿<UserControl x:Class="Shoootz.Views.Competition.ClubsView"
+             x:Name="Root"
              xmlns="https://github.com/avaloniaui"
              xmlns:loc="using:Shoootz.Extensions"
+             xmlns:models="using:Shoootz.Models.Club"
              xmlns:vm="using:Shoootz.ViewModels.Competition"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:DataType="vm:ClubsViewModel">
+
     <ScrollViewer>
         <StackPanel Classes="page-content">
+
             <TextBlock Classes="h4"
                        Text="{loc:Localization Clubs}" />
+
+            <StackPanel HorizontalAlignment="Right"
+                        Margin="0,0,10,0"
+                        Orientation="Horizontal"
+                        Spacing="{DynamicResource SpacingMedium}">
+                <PathIcon Classes="icon-action"
+                          Data="{DynamicResource AddIcon}"
+                          PointerPressed="OnAddIconPressed"
+                          VerticalAlignment="Center" />
+                <PathIcon Classes="icon-action"
+                          Data="{DynamicResource EditIcon}"
+                          PointerPressed="OnEditIconPressed"
+                          VerticalAlignment="Center"
+                          IsEnabled="{Binding IsClubSelected}" />
+                <PathIcon Classes="icon-action"
+                          Data="{DynamicResource DeleteIcon}"
+                          PointerPressed="OnDeleteIconPressed"
+                          VerticalAlignment="Center"
+                          IsEnabled="{Binding IsClubSelected}" />
+            </StackPanel>
+
+            <Border Classes="card"
+                    Padding="0">
+                <StackPanel>
+                    <Border Background="{DynamicResource SecondaryBrush}"
+                            Padding="24,10">
+                        <Grid ColumnDefinitions="60,*,100">
+                            <TextBlock Grid.Column="0"
+                                       Classes="table-column-header"
+                                       Text="{loc:Localization Id}" />
+                            <TextBlock Grid.Column="1"
+                                       Classes="table-column-header"
+                                       Text="{loc:Localization Name}" />
+                            <TextBlock Grid.Column="2"
+                                       Classes="table-column-header"
+                                       Text="{loc:Localization Shooters}"
+                                       TextAlignment="Center" />
+                        </Grid>
+                    </Border>
+                    <ListBox Classes="table-rows"
+                             ItemsSource="{Binding Clubs}"
+                             Margin="24,0,24,4"
+                             SelectedItem="{Binding SelectedClub}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate x:DataType="models:ClubModel">
+                                <Grid ColumnDefinitions="60,*,100"
+                                      Height="40">
+                                    <TextBlock Grid.Column="0"
+                                               Text="{Binding Id}"
+                                               VerticalAlignment="Center" />
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding Name}"
+                                               VerticalAlignment="Center" />
+                                    <TextBlock Grid.Column="2"
+                                               Text="{Binding ShooterCount}"
+                                               TextAlignment="Center"
+                                               VerticalAlignment="Center" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+            </Border>
         </StackPanel>
     </ScrollViewer>
 </UserControl>

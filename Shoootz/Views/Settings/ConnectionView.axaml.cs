@@ -10,14 +10,10 @@ using Shoootz.ViewModels.Settings;
 
 namespace Shoootz.Views.Settings;
 
-/// <inheritdoc />
 public partial class ConnectionView : UserControl
 {
     private WaitingDialog? _waitingDialog;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="ConnectionView"/> class.
-    /// </summary>
     public ConnectionView()
     {
         InitializeComponent();
