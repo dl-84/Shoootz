@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
-using Controls.ConfirmDialog;
+using Avalonia.Media;
 using Controls.ContentDialog;
 using Controls.InfoDialog;
 using Controls.InfoDialog.Enum;
@@ -14,12 +14,18 @@ using Shoootz.ViewModels.Competition;
 
 namespace Shoootz.Views.Competition;
 
+/// <inheritdoc/>
 public partial class ClubsView : UserControl
 {
     public ClubsView()
     {
         InitializeComponent();
         DataContextChanged += OnDataContextChanged;
+    }
+
+    private static TextBox BuildClubNameTextBox(string text)
+    {
+        return new TextBox { Text = text, Width = 400 };
     }
 
     private void OnAddIconPressed(object? sender, PointerPressedEventArgs e)
@@ -67,17 +73,16 @@ public partial class ClubsView : UserControl
 
         try
         {
-            if (mainWindowViewModel is not null)
-            {
-                mainWindowViewModel.IsDialogOpen = true;
-            }
+            mainWindowViewModel?.IsDialogOpen = true;
 
-            ConfirmDialog dialog = new()
+            ContentDialog dialog = new()
             {
-                AcceptText = LocalizationService.Instance[nameof(Messages.Delete)],
-                CancelText = LocalizationService.Instance[nameof(Messages.Cancel)],
+                DialogContent = new TextBlock { Text = club.Name, TextWrapping = TextWrapping.Wrap },
                 DialogTitle = LocalizationService.Instance[nameof(Messages.Delete)],
-                Message = club.Name,
+                IsDanger = true,
+                SizeToContent = SizeToContent.Height,
+                SubmitText = LocalizationService.Instance[nameof(Messages.Delete)],
+                Width = 460,
             };
 
             bool? result = await dialog.ShowDialog<bool?>(window);
@@ -89,10 +94,7 @@ public partial class ClubsView : UserControl
         }
         finally
         {
-            if (mainWindowViewModel is not null)
-            {
-                mainWindowViewModel.IsDialogOpen = false;
-            }
+            mainWindowViewModel?.IsDialogOpen = false;
         }
     }
 
@@ -104,30 +106,28 @@ public partial class ClubsView : UserControl
         }
 
         MainWindowViewModel? mainWindowViewModel = window.DataContext as MainWindowViewModel;
-        TextBox nameTextBox = new();
+        TextBox dialogContent = BuildClubNameTextBox(string.Empty);
 
         try
         {
-            if (mainWindowViewModel is not null)
-            {
-                mainWindowViewModel.IsDialogOpen = true;
-            }
+            mainWindowViewModel?.IsDialogOpen = true;
 
-            await new ContentDialog
+            bool? result = await new ContentDialog
             {
-                CloseText = LocalizationService.Instance[nameof(Messages.Add)],
-                DialogContent = nameTextBox,
+                SubmitText = LocalizationService.Instance[nameof(Messages.Add)],
+                DialogContent = dialogContent,
                 DialogTitle = LocalizationService.Instance[nameof(Messages.ClubName)],
-            }.ShowDialog(window);
+                SizeToContent = SizeToContent.WidthAndHeight,
+            }.ShowDialog<bool?>(window);
 
-            await viewModel.ExecuteCreateClubAsync(nameTextBox.Text ?? string.Empty);
+            if (result is true)
+            {
+                await viewModel.ExecuteCreateClubAsync(dialogContent.Text ?? string.Empty);
+            }
         }
         finally
         {
-            if (mainWindowViewModel is not null)
-            {
-                mainWindowViewModel.IsDialogOpen = false;
-            }
+            mainWindowViewModel?.IsDialogOpen = false;
         }
     }
 
@@ -142,10 +142,7 @@ public partial class ClubsView : UserControl
 
         try
         {
-            if (mainWindowViewModel is not null)
-            {
-                mainWindowViewModel.IsDialogOpen = true;
-            }
+            mainWindowViewModel?.IsDialogOpen = true;
 
             await new InfoDialog
             {
@@ -157,10 +154,7 @@ public partial class ClubsView : UserControl
         }
         finally
         {
-            if (mainWindowViewModel is not null)
-            {
-                mainWindowViewModel.IsDialogOpen = false;
-            }
+            mainWindowViewModel?.IsDialogOpen = false;
         }
     }
 
@@ -172,30 +166,28 @@ public partial class ClubsView : UserControl
         }
 
         MainWindowViewModel? mainWindowViewModel = window.DataContext as MainWindowViewModel;
-        TextBox nameTextBox = new() { Text = club.Name };
+        TextBox dialogContent = BuildClubNameTextBox(club.Name);
 
         try
         {
-            if (mainWindowViewModel is not null)
-            {
-                mainWindowViewModel.IsDialogOpen = true;
-            }
+            mainWindowViewModel?.IsDialogOpen = true;
 
-            await new ContentDialog
+            bool? result = await new ContentDialog
             {
-                CloseText = LocalizationService.Instance[nameof(Messages.Save)],
-                DialogContent = nameTextBox,
+                SubmitText = LocalizationService.Instance[nameof(Messages.Save)],
+                DialogContent = dialogContent,
                 DialogTitle = LocalizationService.Instance[nameof(Messages.ClubName)],
-            }.ShowDialog(window);
+                SizeToContent = SizeToContent.WidthAndHeight,
+            }.ShowDialog<bool?>(window);
 
-            await viewModel.ExecuteRenameClubAsync(club, nameTextBox.Text ?? string.Empty);
+            if (result is true)
+            {
+                await viewModel.ExecuteRenameClubAsync(club, dialogContent.Text ?? string.Empty);
+            }
         }
         finally
         {
-            if (mainWindowViewModel is not null)
-            {
-                mainWindowViewModel.IsDialogOpen = false;
-            }
+            mainWindowViewModel?.IsDialogOpen = false;
         }
     }
 }
