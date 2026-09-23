@@ -145,6 +145,15 @@
   <data name="Name" xml:space="preserve">
     <value>Name</value>
   </data>
+  <data name="Leave" xml:space="preserve">
+    <value>Leave</value>
+  </data>
+  <data name="UnsavedChangesMessage" xml:space="preserve">
+    <value>There are unsaved changes on this page, really leave?</value>
+  </data>
+  <data name="UnsavedChangesTitle" xml:space="preserve">
+    <value>Unsaved changes</value>
+  </data>
 
   <!-- Connection Status -->
   <data name="StatusConnected" xml:space="preserve">

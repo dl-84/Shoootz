@@ -6,14 +6,17 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.LogicalTree;
+using Controls.ContentDialog;
 using Controls.InfoDialog;
 using Controls.InfoDialog.Enum;
 using Shoootz.Resources.Lang;
 using Shoootz.Services.Localization;
 using Shoootz.ViewModels;
+using Shoootz.ViewModels.Settings;
 
 namespace Shoootz.Views;
 
+/// <inheritdoc/>
 public partial class MainWindow : Window
 {
     public MainWindow()
@@ -41,6 +44,52 @@ public partial class MainWindow : Window
         _ = mainWindowViewModel.CheckPendingMigrationsAsync();
     }
 
+    private static TextBlock BuildUnsavedChangesContent()
+    {
+        return new TextBlock
+        {
+            Text = LocalizationService.Instance[Messages.UnsavedChangesMessage],
+            TextWrapping = Avalonia.Media.TextWrapping.NoWrap,
+        };
+    }
+
+    private async Task<bool> ConfirmLeaveUnsavedChangesAsync(MainWindowViewModel mainWindowViewModel)
+    {
+        try
+        {
+            mainWindowViewModel.IsDialogOpen = true;
+
+            bool? result = await new ContentDialog
+            {
+                DialogContent = BuildUnsavedChangesContent(),
+                DialogTitle = LocalizationService.Instance[Messages.UnsavedChangesTitle],
+                IsDanger = true,
+                SizeToContent = SizeToContent.WidthAndHeight,
+                SubmitText = LocalizationService.Instance[Messages.Leave],
+            }.ShowDialog<bool?>(this);
+
+            return result is true;
+        }
+        finally
+        {
+            mainWindowViewModel.IsDialogOpen = false;
+        }
+    }
+
+    private async Task HandleNavigationRequestAsync(MainWindowViewModel mainWindowViewModel, NavigationPageType page)
+    {
+        if (
+            mainWindowViewModel.CurrentPage is ConnectionViewModel { IsSaveEnabled: true }
+            && !await ConfirmLeaveUnsavedChangesAsync(mainWindowViewModel)
+        )
+        {
+            SyncSelectedNavItem(mainWindowViewModel.CurrentNavigationPageType);
+            return;
+        }
+
+        mainWindowViewModel.NavigateTo(page);
+    }
+
     private void OnDataContextChanged(object? sender, EventArgs e)
     {
         if (DataContext is not MainWindowViewModel mainWindowViewModel)
@@ -61,7 +110,7 @@ public partial class MainWindow : Window
             && page != mainWindowViewModel.CurrentNavigationPageType
         )
         {
-            mainWindowViewModel.NavigateTo(page);
+            _ = HandleNavigationRequestAsync(mainWindowViewModel, page);
         }
     }
 
