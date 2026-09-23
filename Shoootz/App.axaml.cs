@@ -8,6 +8,7 @@ using Avalonia.Markup.Xaml;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Result;
 using Shoootz.Models.Error;
 using Shoootz.Models.Settings;
@@ -107,28 +108,32 @@ public class App : Application
 
     private void InitContext(ServiceCollection serviceCollection)
     {
-        serviceCollection.AddDbContextFactory<AppDbContext>(options =>
-        {
-            DatabaseConnection? databaseConnection = _configurationRoot.Get<SettingsModel>()?.DatabaseConnection;
-
-            switch (databaseConnection?.Provider)
+        serviceCollection.AddDbContextFactory<AppDbContext>(
+            (serviceProvider, options) =>
             {
-                case ProviderType.PostgreSql:
-                    options.UseNpgsql(
-                        databaseConnection.ConnectionString,
-                        optionsBuilder => optionsBuilder.MigrationsAssembly("Shoootz.Store.Adapter.PostgreSQL")
-                    );
-                    break;
+                DatabaseConnection? databaseConnection = serviceProvider
+                    .GetRequiredService<IOptionsMonitor<SettingsModel>>()
+                    .CurrentValue.DatabaseConnection;
 
-                case ProviderType.Sqlite:
-                default:
-                    options.UseSqlite(
-                        databaseConnection?.ConnectionString,
-                        optionsBuilder => optionsBuilder.MigrationsAssembly("Shoootz.Store.Adapter.SQLite")
-                    );
-                    break;
+                switch (databaseConnection?.Provider)
+                {
+                    case ProviderType.PostgreSql:
+                        options.UseNpgsql(
+                            databaseConnection.ConnectionString,
+                            optionsBuilder => optionsBuilder.MigrationsAssembly("Shoootz.Store.Adapter.PostgreSQL")
+                        );
+                        break;
+
+                    case ProviderType.Sqlite:
+                    default:
+                        options.UseSqlite(
+                            databaseConnection?.ConnectionString,
+                            optionsBuilder => optionsBuilder.MigrationsAssembly("Shoootz.Store.Adapter.SQLite")
+                        );
+                        break;
+                }
             }
-        });
+        );
 
         serviceCollection.AddSingleton<IStoreService, StoreService>();
     }
