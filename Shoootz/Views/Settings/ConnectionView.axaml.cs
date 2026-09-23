@@ -1,15 +1,18 @@
 using System;
 using System.Threading.Tasks;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Controls.InfoDialog;
 using Controls.InfoDialog.Enum;
 using Controls.WaitingDialog;
+using Shoootz.Resources.Lang;
 using Shoootz.Services.Localization;
 using Shoootz.ViewModels;
 using Shoootz.ViewModels.Settings;
 
 namespace Shoootz.Views.Settings;
 
+/// <inheritdoc/>
 public partial class ConnectionView : UserControl
 {
     private WaitingDialog? _waitingDialog;
@@ -35,6 +38,46 @@ public partial class ConnectionView : UserControl
         _ = OpenConnectionTestDialogAsync(success, errorMessage);
     }
 
+    private void OnConnectDbIconPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (DataContext is ConnectionViewModel viewModel)
+        {
+            viewModel.ConnectDbCommand.Execute(null);
+        }
+    }
+
+    private void OnSaveIconPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (DataContext is ConnectionViewModel viewModel)
+        {
+            viewModel.SaveCommand.Execute(null);
+        }
+    }
+
+    private void OnDisconnectDbIconPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (DataContext is ConnectionViewModel viewModel)
+        {
+            viewModel.DisconnectDbCommand.Execute(null);
+        }
+    }
+
+    private void OnInitializeDbIconPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (DataContext is ConnectionViewModel viewModel)
+        {
+            viewModel.InitializeDbCommand.Execute(null);
+        }
+    }
+
+    private void OnTestDbConnectionIconPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (DataContext is ConnectionViewModel viewModel)
+        {
+            viewModel.TestDbConnectionCommand.Execute(null);
+        }
+    }
+
     private void OnDbInitializeStarted()
     {
         if (TopLevel.GetTopLevel(this) is not Window window)
@@ -49,8 +92,8 @@ public partial class ConnectionView : UserControl
 
         _waitingDialog = new WaitingDialog
         {
-            DialogTitle = LocalizationService.Instance["InitializeDb"],
-            Message = LocalizationService.Instance["DbInitializing"],
+            DialogTitle = LocalizationService.Instance[Messages.InitializeDb],
+            Message = LocalizationService.Instance[Messages.DbInitializing],
         };
 
         _ = _waitingDialog.ShowDialog(window);
@@ -89,11 +132,11 @@ public partial class ConnectionView : UserControl
 
             await new InfoDialog
             {
-                DialogTitle = LocalizationService.Instance["InitializeDb"],
+                DialogTitle = LocalizationService.Instance[Messages.InitializeDb],
                 IconType = success ? IconType.Info : IconType.Warning,
                 Message = success
-                    ? LocalizationService.Instance["DbInitializeSuccessful"]
-                    : errorMessage ?? LocalizationService.Instance["ConnectionFailed"],
+                    ? LocalizationService.Instance[Messages.DbInitializeSuccessful]
+                    : errorMessage ?? LocalizationService.Instance[Messages.ConnectionFailed],
             }.ShowDialog(window);
         }
         finally
@@ -117,11 +160,11 @@ public partial class ConnectionView : UserControl
 
             await new InfoDialog
             {
-                DialogTitle = LocalizationService.Instance["TestConnection"],
+                DialogTitle = LocalizationService.Instance[Messages.TestConnection],
                 IconType = success ? IconType.Info : IconType.Warning,
                 Message = success
-                    ? LocalizationService.Instance["ConnectionSuccessful"]
-                    : errorMessage ?? LocalizationService.Instance["ConnectionFailed"],
+                    ? LocalizationService.Instance[Messages.ConnectionSuccessful]
+                    : errorMessage ?? LocalizationService.Instance[Messages.ConnectionFailed],
             }.ShowDialog(window);
         }
         finally

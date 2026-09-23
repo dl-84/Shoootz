@@ -8,6 +8,8 @@ using Result;
 using Shoootz.Models.Database;
 using Shoootz.Models.Settings;
 using Shoootz.Models.Settings.Database;
+using Shoootz.Resources.Lang;
+using Shoootz.Services.App;
 using Shoootz.Services.Data;
 using Shoootz.Services.Localization;
 using Shoootz.Services.Settings;
@@ -49,12 +51,15 @@ internal partial class ConnectionViewModel : ViewModelBase
         _udpListenerService = udpListenerService;
 
         AutoConnect = _settings.UdpConnection.AutoConnect;
-        ConnectionString = _settings.DatabaseConnection.ConnectionString;
         IsUdpListening = udpListenerService.IsListening;
         Port = _settings.UdpConnection.Port.ToString();
         SelectedProvider = _settings.DatabaseConnection.Provider;
+        ConnectionString = _settings.DatabaseConnection.ConnectionString;
 
         _udpListenerService.IsListeningChanged += (_, isListening) => IsUdpListening = isListening;
+
+        IsDbConnected = _storeService.IsConnected;
+        _storeService.ConnectionChanged += (_, _) => IsDbConnected = _storeService.IsConnected;
 
         _ = RefreshDbStatusAsync();
     }
@@ -72,10 +77,16 @@ internal partial class ConnectionViewModel : ViewModelBase
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(InitializeDbLabel))]
+    [NotifyPropertyChangedFor(nameof(IsInitializeDbEnabled))]
     public partial DbStatus DbStatus { get; set; }
 
     [ObservableProperty]
     public partial bool AutoConnect { get; set; }
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(InitializeDbLabel))]
+    [NotifyPropertyChangedFor(nameof(IsInitializeDbEnabled))]
+    public partial bool IsDbConnected { get; set; }
 
     [ObservableProperty]
     public partial bool IsUdpListening { get; set; }
@@ -85,14 +96,20 @@ internal partial class ConnectionViewModel : ViewModelBase
     public partial string Port { get; set; }
 
     public string InitializeDbLabel =>
-        DbStatus switch
-        {
-            DbStatus.UpdateAvailable => LocalizationService.Instance["UpdateDb"],
-            DbStatus.UpToDate => LocalizationService.Instance["DbUpToDate"],
-            _ => LocalizationService.Instance["InitializeDb"],
-        };
+        !IsDbConnected
+            ? LocalizationService.Instance[Messages.DbNotConnected]
+            : DbStatus switch
+            {
+                DbStatus.UpdateAvailable => LocalizationService.Instance[Messages.UpdateDb],
+                DbStatus.UpToDate => LocalizationService.Instance[Messages.DbUpToDate],
+                _ => LocalizationService.Instance[Messages.InitializeDb],
+            };
+
+    public bool IsInitializeDbEnabled => DbStatus != DbStatus.UpToDate && IsDbConnected;
 
     public bool IsPortValid => int.TryParse(Port, out int port) && port is >= 1 and <= 65535;
+
+    public bool IsSaveEnabled => CanSave();
 
     [ObservableProperty]
     public partial ProviderType SelectedProvider { get; set; }
@@ -106,7 +123,7 @@ internal partial class ConnectionViewModel : ViewModelBase
         _settings.UdpConnection.Port = int.Parse(Port);
         _settingsWriter.Save(_settings);
 
-        SaveCommand.NotifyCanExecuteChanged();
+        NotifySaveStateChanged();
     }
 
     private bool CanSave() =>
@@ -119,13 +136,60 @@ internal partial class ConnectionViewModel : ViewModelBase
             || SelectedProvider != _settings.DatabaseConnection.Provider
         );
 
-    partial void OnAutoConnectChanged(bool value) => SaveCommand.NotifyCanExecuteChanged();
+    private void NotifySaveStateChanged()
+    {
+        SaveCommand.NotifyCanExecuteChanged();
+        OnPropertyChanged(nameof(IsSaveEnabled));
+    }
 
-    partial void OnConnectionStringChanged(string value) => SaveCommand.NotifyCanExecuteChanged();
+    partial void OnAutoConnectChanged(bool value) => NotifySaveStateChanged();
 
-    partial void OnPortChanged(string value) => SaveCommand.NotifyCanExecuteChanged();
+    partial void OnConnectionStringChanged(string value) => NotifySaveStateChanged();
 
-    partial void OnSelectedProviderChanged(ProviderType value) => SaveCommand.NotifyCanExecuteChanged();
+    partial void OnPortChanged(string value) => NotifySaveStateChanged();
+
+    partial void OnSelectedProviderChanged(ProviderType value)
+    {
+        ConnectionString = value switch
+        {
+#if DEBUG
+            ProviderType.PostgreSql =>
+                "Host=192.168.10.9;Port=5433;Database=Shoootz;Username=shoootz_user;Password=shoootz_passwort",
+#else
+            ProviderType.PostgreSql =>
+                "Host=<Host IP-Address>;Port=5432;Database=Shoootz;Username=<Username>;Password=<Password>",
+#endif
+            _ => $"Data Source={AppPath.DbFile}",
+        };
+
+        NotifySaveStateChanged();
+    }
+
+    [RelayCommand]
+    private async Task ConnectDb()
+    {
+        Result<bool, DbConnectionError> result = SelectedProvider switch
+        {
+            ProviderType.PostgreSql => _connectionTester.PostgreSql(ConnectionString),
+            _ => _connectionTester.Sqlite(ConnectionString),
+        };
+
+        await result.Match(
+            async _ =>
+            {
+                _storeService.Connect();
+                await RefreshDbStatusAsync();
+            },
+            error =>
+            {
+                ConnectionTestCompleted?.Invoke(false, error.Value.Message);
+                return Task.CompletedTask;
+            }
+        );
+    }
+
+    [RelayCommand]
+    private void DisconnectDb() => _storeService.Disconnect();
 
     [RelayCommand]
     private void StartUdp()

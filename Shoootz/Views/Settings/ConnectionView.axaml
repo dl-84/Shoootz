@@ -10,11 +10,91 @@
         <ScrollViewer>
             <StackPanel Classes="page-content">
 
+                <TextBlock Classes="h3"
+                           Text="{loc:Localization Connections}" />
+
+                <StackPanel HorizontalAlignment="Right"
+                            Margin="0,0,10,0"
+                            Orientation="Horizontal"
+                            Spacing="{DynamicResource SpacingMedium}">
+                    <PathIcon Classes="icon-action"
+                              Data="{DynamicResource SaveIcon}"
+                              PointerPressed="OnSaveIconPressed"
+                              ToolTip.HorizontalOffset="0"
+                              ToolTip.Placement="TopEdgeAlignedRight"
+                              ToolTip.Tip="{loc:Localization Save}"
+                              ToolTip.VerticalOffset="-2"
+                              VerticalAlignment="Center"
+                              IsEnabled="{Binding IsSaveEnabled}" />
+                </StackPanel>
+
                 <Border Classes="card">
                     <StackPanel Spacing="{DynamicResource SpacingMedium}">
 
                         <TextBlock Classes="h4"
                                    Text="{loc:Localization Database}" />
+
+                        <Grid ColumnDefinitions="*,Auto">
+                            <StackPanel Grid.Column="0"
+                                        Orientation="Horizontal"
+                                        Spacing="{DynamicResource SpacingSmall}">
+                                <PathIcon Data="{DynamicResource DatabaseDisconnectedIcon}"
+                                          Foreground="{DynamicResource ErrorBrush}"
+                                          Height="18"
+                                          VerticalAlignment="Center"
+                                          Width="18"
+                                          IsVisible="{Binding !IsDbConnected}" />
+                                <PathIcon Data="{DynamicResource DatabaseConnectedIcon}"
+                                          Foreground="{DynamicResource SuccessBrush}"
+                                          Height="18"
+                                          VerticalAlignment="Center"
+                                          Width="18"
+                                          IsVisible="{Binding IsDbConnected}" />
+                                <TextBlock Text="{Binding InitializeDbLabel}"
+                                           VerticalAlignment="Center" />
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1"
+                                        Orientation="Horizontal"
+                                        Spacing="{DynamicResource SpacingMedium}">
+                                <PathIcon Classes="icon-action"
+                                          Data="{DynamicResource HeartPulseIcon}"
+                                          PointerPressed="OnTestDbConnectionIconPressed"
+                                          ToolTip.HorizontalOffset="0"
+                                          ToolTip.Placement="TopEdgeAlignedRight"
+                                          ToolTip.Tip="{loc:Localization TestConnection}"
+                                          ToolTip.VerticalOffset="-2"
+                                          VerticalAlignment="Center" />
+                                <PathIcon Classes="icon-action"
+                                          Data="{DynamicResource InitializeDbIcon}"
+                                          PointerPressed="OnInitializeDbIconPressed"
+                                          ToolTip.HorizontalOffset="0"
+                                          ToolTip.Placement="TopEdgeAlignedRight"
+                                          ToolTip.Tip="{loc:Localization InitializeDb}"
+                                          ToolTip.VerticalOffset="-2"
+                                          VerticalAlignment="Center"
+                                          IsEnabled="{Binding IsInitializeDbEnabled}" />
+                                <PathIcon Classes="icon-action icon-danger"
+                                          Data="{DynamicResource DatabaseDisconnectIcon}"
+                                          PointerPressed="OnDisconnectDbIconPressed"
+                                          ToolTip.HorizontalOffset="0"
+                                          ToolTip.Placement="TopEdgeAlignedRight"
+                                          ToolTip.Tip="{loc:Localization Stop}"
+                                          ToolTip.VerticalOffset="-2"
+                                          VerticalAlignment="Center"
+                                          IsVisible="{Binding IsDbConnected}" />
+                                <PathIcon Classes="icon-action"
+                                          Data="{DynamicResource DatabaseConnectIcon}"
+                                          PointerPressed="OnConnectDbIconPressed"
+                                          ToolTip.HorizontalOffset="0"
+                                          ToolTip.Placement="TopEdgeAlignedRight"
+                                          ToolTip.Tip="{loc:Localization Start}"
+                                          ToolTip.VerticalOffset="-2"
+                                          VerticalAlignment="Center"
+                                          IsEnabled="{Binding !IsSaveEnabled}"
+                                          IsVisible="{Binding !IsDbConnected}" />
+                            </StackPanel>
+                        </Grid>
 
                         <Grid ColumnDefinitions="Auto,*"
                               ColumnSpacing="{DynamicResource SpacingSmall}">
@@ -25,38 +105,18 @@
                                            Text="{loc:Localization Provider}" />
                                 <ComboBox ItemsSource="{Binding ProviderOptions}"
                                           SelectedItem="{Binding SelectedProvider}"
-                                          Width="170" />
+                                          Width="170"
+                                          IsEnabled="{Binding !IsDbConnected}" />
                             </StackPanel>
 
                             <StackPanel Grid.Column="1"
                                         Spacing="{DynamicResource SpacingXSmall}">
                                 <TextBlock Classes="label"
                                            Text="{loc:Localization ConnectionString}" />
-                                <Grid ColumnDefinitions="*,Auto"
-                                      ColumnSpacing="{DynamicResource SpacingSmall}">
-                                    <TextBox Grid.Column="0"
-                                             Text="{Binding ConnectionString}" />
-                                    <Button Grid.Column="1"
-                                            AutomationProperties.Name="{loc:Localization TestConnection}"
-                                            Classes="green icon"
-                                            Command="{Binding TestDbConnectionCommand}"
-                                            ToolTip.HorizontalOffset="0"
-                                            ToolTip.Placement="TopEdgeAlignedRight"
-                                            ToolTip.Tip="{loc:Localization TestConnection}"
-                                            ToolTip.VerticalOffset="-2">
-                                        <PathIcon Data="{DynamicResource HeartPulseIcon}"
-                                                  Foreground="{DynamicResource PrimaryForegroundBrush}" />
-                                    </Button>
-                                </Grid>
+                                <TextBox Text="{Binding ConnectionString}"
+                                         IsEnabled="{Binding !IsDbConnected}" />
                             </StackPanel>
 
-                        </Grid>
-
-                        <Grid ColumnDefinitions="*,Auto">
-                            <Button Grid.Column="1"
-                                    Classes="green"
-                                    Command="{Binding InitializeDbCommand}"
-                                    Content="{Binding InitializeDbLabel}" />
                         </Grid>
 
                     </StackPanel>
@@ -125,12 +185,6 @@
 
             </StackPanel>
         </ScrollViewer>
-
-        <Button Command="{Binding SaveCommand}"
-                Content="{loc:Localization Save}"
-                HorizontalAlignment="Right"
-                Margin="0,0,20,20"
-                VerticalAlignment="Bottom" />
 
     </Panel>
 </UserControl>
