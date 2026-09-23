@@ -16,7 +16,23 @@ namespace Shoootz.Services.Store;
 
 internal class StoreService(IDbContextFactory<AppDbContext> contextFactory) : IStoreService
 {
+    public event EventHandler? ConnectionChanged;
+
     public string DbVersion { get; private set; } = "N/A";
+
+    public bool IsConnected { get; private set; } = true;
+
+    public void Connect()
+    {
+        IsConnected = true;
+        ConnectionChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void Disconnect()
+    {
+        IsConnected = false;
+        ConnectionChanged?.Invoke(this, EventArgs.Empty);
+    }
 
     public async Task<Result<Unit, StoreSaveError>> DeleteClubAsync(int id)
     {

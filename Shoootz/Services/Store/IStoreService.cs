@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Result;
@@ -11,7 +12,15 @@ namespace Shoootz.Services.Store;
 
 internal interface IStoreService
 {
+    event EventHandler? ConnectionChanged;
+
     string DbVersion { get; }
+
+    bool IsConnected { get; }
+
+    void Connect();
+
+    void Disconnect();
 
     Task<Result<Unit, StoreSaveError>> DeleteClubAsync(int id);
 
