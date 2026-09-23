@@ -257,6 +257,15 @@ namespace Shoootz.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not connected.
+        /// </summary>
+        internal static string DbNotConnected {
+            get {
+                return ResourceManager.GetString("DbNotConnected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pending database migrations were found. Please update the database..
         /// </summary>
         internal static string DbPendingMigrations {
@@ -275,7 +284,7 @@ namespace Shoootz.Resources.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Up to date.
+        ///   Looks up a localized string similar to Connected, schema up to date.
         /// </summary>
         internal static string DbUpToDate {
             get {

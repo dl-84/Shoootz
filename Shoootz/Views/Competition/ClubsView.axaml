@@ -36,7 +36,7 @@
             <Border Classes="card"
                     Padding="0">
                 <StackPanel>
-                    <Border Background="{DynamicResource SecondaryBrush}"
+                    <Border Background="{DynamicResource PrimaryBrush}"
                             Padding="24,10">
                         <Grid ColumnDefinitions="60,*,100">
                             <TextBlock Grid.Column="0"

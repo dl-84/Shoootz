@@ -193,6 +193,9 @@
   <data name="DbInitializing" xml:space="preserve">
     <value>Initializing database...</value>
   </data>
+  <data name="DbNotConnected" xml:space="preserve">
+    <value>Not connected</value>
+  </data>
   <data name="DbPendingMigrations" xml:space="preserve">
     <value>Pending database migrations were found. Please update the database.</value>
   </data>
@@ -200,7 +203,7 @@
     <value>Database update available</value>
   </data>
   <data name="DbUpToDate" xml:space="preserve">
-    <value>Up to date</value>
+    <value>Connected, schema up to date</value>
   </data>
   <data name="DbInitializeSuccessful" xml:space="preserve">
     <value>Database initialized successfully</value>

@@ -192,6 +192,9 @@
   <data name="DbInitializing" xml:space="preserve">
     <value>Datenbank wird initialisiert...</value>
   </data>
+  <data name="DbNotConnected" xml:space="preserve">
+    <value>Nicht verbunden</value>
+  </data>
   <data name="DbPendingMigrations" xml:space="preserve">
     <value>Es wurden ausstehende Datenbankmigrationen gefunden. Bitte aktualisiere die Datenbank.</value>
   </data>
@@ -199,7 +202,7 @@
     <value>Datenbankupdate verfügbar</value>
   </data>
   <data name="DbUpToDate" xml:space="preserve">
-    <value>Aktuell</value>
+    <value>Verbunden, Schema aktuell</value>
   </data>
   <data name="DbInitializeSuccessful" xml:space="preserve">
     <value>Datenbank erfolgreich initialisiert</value>
@@ -244,7 +247,7 @@
     <value>Gespeicherte Schüsse</value>
   </data>
   <data name="ShotCounterSavedError" xml:space="preserve">
-    <value>Speicherfehler</value>
+    <value>Fehler beim Speichern</value>
   </data>
   <data name="ShotCounterWarmup" xml:space="preserve">
     <value>Probeschüsse</value>
