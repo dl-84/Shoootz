@@ -16,7 +16,9 @@ public class ConnectionTester : IConnectionTester
 
             using (AppDbContext context = new AppDbContext(builder.Options))
             {
-                return context.Database.CanConnectAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                bool canConnect = context.Database.CanConnectAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+
+                return canConnect ? true : new Error<DbConnectionError>(new DbConnectionError("Connection failed."));
             }
         }
         catch (Exception exception)
