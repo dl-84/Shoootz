@@ -144,6 +144,12 @@ internal class DataProcessor(IUdpListenerService udpListenerService, IShotDataPa
     {
         await foreach (ShotModel shot in _shotChannel.Reader.ReadAllAsync(cancellationToken))
         {
+            if (!dbService.IsConnected)
+            {
+                Interlocked.Increment(ref _errorOnSaveShotToDbCounter);
+                continue;
+            }
+
             Result<Unit, StoreSaveError> result = await dbService.SaveShotAsync(shot).ConfigureAwait(false);
 
             result.Match(
