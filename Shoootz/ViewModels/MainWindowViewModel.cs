@@ -60,6 +60,13 @@ internal partial class MainWindowViewModel : ViewModelBase
         _udpListenerService = udpListenerService;
         _udpListenerService.IsListeningChanged += (_, isListening) => IsUdpConnected = isListening;
 
+        IStoreService? storeService = _serviceProvider.GetService<IStoreService>();
+        if (storeService is not null)
+        {
+            IsDbConnected = storeService.IsConnected;
+            storeService.ConnectionChanged += (_, _) => IsDbConnected = storeService.IsConnected;
+        }
+
         CurrentPage = CreateView(NavigationPageType.Evaluate)!;
         CurrentNavigationPageType = NavigationPageType.Evaluate;
     }
@@ -127,7 +134,28 @@ internal partial class MainWindowViewModel : ViewModelBase
             _ => _connectionTester.Sqlite(_settings.DatabaseConnection.ConnectionString),
         };
 
-        result.Match(_ => IsDbConnected = true, _ => IsDbConnected = false);
+        IStoreService? storeService = _serviceProvider.GetService<IStoreService>();
+
+        result.Match(
+            _ =>
+            {
+                if (storeService is null)
+                {
+                    IsDbConnected = true;
+                }
+            },
+            _ =>
+            {
+                if (storeService is not null)
+                {
+                    storeService.Disconnect();
+                }
+                else
+                {
+                    IsDbConnected = false;
+                }
+            }
+        );
     }
 
     public async Task CheckPendingMigrationsAsync()
