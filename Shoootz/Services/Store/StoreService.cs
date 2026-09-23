@@ -1,20 +1,26 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Result;
 using Result.Types;
 using Shoootz.Models.Club;
 using Shoootz.Models.Database;
 using Shoootz.Models.Error;
+using Shoootz.Models.Settings;
+using Shoootz.Models.Settings.Database;
 using Shoootz.Models.Shot;
 using Shoootz.Store;
 using Shoootz.Store.Entities;
 
 namespace Shoootz.Services.Store;
 
-internal class StoreService(IDbContextFactory<AppDbContext> contextFactory) : IStoreService
+internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOptionsMonitor<SettingsModel> settings)
+    : IStoreService
 {
     public event EventHandler? ConnectionChanged;
 
@@ -57,6 +63,28 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory) : IS
         }
     }
 
+    public async Task<Result<Unit, StoreSaveError>> DeleteDatabaseAsync()
+    {
+        try
+        {
+            await using (AppDbContext context = await contextFactory.CreateDbContextAsync().ConfigureAwait(false))
+            {
+                bool deleted = await context.Database.EnsureDeletedAsync().ConfigureAwait(false);
+
+                if (!deleted)
+                {
+                    return new Error<StoreSaveError>(new StoreSaveError("Database not found."));
+                }
+
+                return Unit.Value;
+            }
+        }
+        catch (Exception exception)
+        {
+            return new Error<StoreSaveError>(new StoreSaveError(exception.Message));
+        }
+    }
+
     public async Task<Result<List<ClubModel>, StoreReadError>> GetClubsAsync()
     {
         try
@@ -85,6 +113,18 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory) : IS
 
     public async Task<DbStatus> GetDbStatusAsync()
     {
+        DatabaseConnection? databaseConnection = settings.CurrentValue.DatabaseConnection;
+
+        if (databaseConnection?.Provider == ProviderType.Sqlite)
+        {
+            string dataSource = new SqliteConnectionStringBuilder(databaseConnection.ConnectionString).DataSource;
+
+            if (!File.Exists(dataSource))
+            {
+                return DbStatus.NotInitialized;
+            }
+        }
+
         try
         {
             await using (AppDbContext context = await contextFactory.CreateDbContextAsync().ConfigureAwait(false))

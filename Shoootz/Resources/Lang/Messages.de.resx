@@ -20,9 +20,6 @@
   <data name="Competition" xml:space="preserve">
     <value>Wettkampf</value>
   </data>
-  <data name="Connections" xml:space="preserve">
-    <value>Verbindungen</value>
-  </data>
   <data name="Database" xml:space="preserve">
     <value>Datenbank</value>
   </data>
@@ -56,7 +53,7 @@
     <value>Sprache</value>
   </data>
   <data name="OpenFolder" xml:space="preserve">
-    <value>Ordner öffnen</value>
+    <value>App-Ordner öffnen</value>
   </data>
   <data name="Restart" xml:space="preserve">
     <value>Neustart</value>
@@ -77,7 +74,7 @@
     <value>Datei speichern und Anwendung neu starten.</value>
   </data>
   <data name="ShowSettings" xml:space="preserve">
-    <value>Einstellungen anzeigen</value>
+    <value>Einstellungsdatei anzeigen</value>
   </data>
   <data name="Validate" xml:space="preserve">
     <value>Validieren</value>
@@ -95,6 +92,12 @@
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Abbrechen</value>
+  </data>
+  <data name="Connected" xml:space="preserve">
+    <value>Verbunden</value>
+  </data>
+  <data name="NotConnected" xml:space="preserve">
+    <value>Nicht verbunden</value>
   </data>
   <data name="ClubName" xml:space="preserve">
     <value>Vereinsname</value>
@@ -115,7 +118,7 @@
     <value>Löschen</value>
   </data>
   <data name="DeleteAll" xml:space="preserve">
-    <value>Alles löschen</value>
+    <value>Alle Daten der App löschen</value>
   </data>
   <data name="DeleteSettingsFile" xml:space="preserve">
     <value>Einstellungsdatei löschen</value>
@@ -198,6 +201,15 @@
   <data name="DbErrorUnknownProvider" xml:space="preserve">
     <value>Unbekannter Datenbankprovider</value>
   </data>
+  <data name="DeleteAllInProgress" xml:space="preserve">
+    <value>Daten werden gelöscht...</value>
+  </data>
+  <data name="DeleteAllSuccessful" xml:space="preserve">
+    <value>Alle Daten erfolgreich gelöscht</value>
+  </data>
+  <data name="DeleteDatabaseFailedHint" xml:space="preserve">
+    <value>Die Datenbank konnte nicht automatisch gelöscht werden. Bitte manuell auf dem Server löschen.</value>
+  </data>
   <data name="DbInitializing" xml:space="preserve">
     <value>Datenbank wird initialisiert...</value>
   </data>
@@ -215,6 +227,9 @@
   </data>
   <data name="DbInitializeSuccessful" xml:space="preserve">
     <value>Datenbank erfolgreich initialisiert</value>
+  </data>
+  <data name="CreateDb" xml:space="preserve">
+    <value>Erstellen</value>
   </data>
   <data name="InitializeDb" xml:space="preserve">
     <value>Initialisieren</value>

@@ -1,18 +1,25 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Options;
 using Result;
+using Result.Types;
 using Shoootz.Models.Database;
+using Shoootz.Models.Error;
 using Shoootz.Models.Settings;
 using Shoootz.Models.Settings.Database;
+using Shoootz.Models.Settings.Language;
 using Shoootz.Resources.Lang;
 using Shoootz.Services.App;
 using Shoootz.Services.Data;
+using Shoootz.Services.Language;
 using Shoootz.Services.Localization;
 using Shoootz.Services.Settings;
+using Shoootz.Services.Settings.Read;
 using Shoootz.Services.Store;
 using Shoootz.Services.Udp;
 using Shoootz.Store;
@@ -26,6 +33,8 @@ internal partial class ConnectionViewModel : ViewModelBase
 
     private readonly IDataProcessor _dataProcessor;
 
+    private readonly ILocalizationService _localizationService;
+
     private readonly SettingsModel _settings;
 
     private readonly ISettingsWriter _settingsWriter;
@@ -34,9 +43,13 @@ internal partial class ConnectionViewModel : ViewModelBase
 
     private readonly IUdpListenerService _udpListenerService;
 
+    private bool _allowSave;
+
     public ConnectionViewModel(
         IConnectionTester connectionTester,
         IDataProcessor dataProcessor,
+        ILanguageService languageService,
+        ILocalizationService localizationService,
         IOptionsMonitor<SettingsModel> settings,
         ISettingsWriter settingsWriter,
         IStoreService storeService,
@@ -45,16 +58,22 @@ internal partial class ConnectionViewModel : ViewModelBase
     {
         _connectionTester = connectionTester;
         _dataProcessor = dataProcessor;
+        _localizationService = localizationService;
         _settings = settings.CurrentValue;
         _settingsWriter = settingsWriter;
         _storeService = storeService;
         _udpListenerService = udpListenerService;
+
+        LanguageOptions = languageService.GetAvailableLanguages();
 
         AutoConnect = _settings.UdpConnection.AutoConnect;
         IsUdpListening = udpListenerService.IsListening;
         Port = _settings.UdpConnection.Port.ToString();
         SelectedProvider = _settings.DatabaseConnection.Provider;
         ConnectionString = _settings.DatabaseConnection.ConnectionString;
+        SelectedLanguageOption = GetLanguage(_settings.CurrentLanguageCode);
+
+        _allowSave = true;
 
         _udpListenerService.IsListeningChanged += (_, isListening) => IsUdpListening = isListening;
 
@@ -69,6 +88,20 @@ internal partial class ConnectionViewModel : ViewModelBase
     public event Action<bool, string?>? DbInitializeCompleted;
 
     public event Action? DbInitializeStarted;
+
+    public event Action<bool, string?>? DeleteAllCompleted;
+
+    public event Action? DeleteAllStarted;
+
+    public event Action? DeleteSettingsFileRequested;
+
+    public event Action? DeleteSettingsFolderRequested;
+
+    public event Action<string>? ReadSettingsFileFailed;
+
+    public event Action<string>? SettingsContentRequested;
+
+    public List<LanguageOptionModel> LanguageOptions { get; }
 
     public IEnumerable<ProviderType> ProviderOptions { get; } = Enum.GetValues<ProviderType>();
 
@@ -89,6 +122,7 @@ internal partial class ConnectionViewModel : ViewModelBase
     public partial bool IsDbConnected { get; set; }
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(UdpStatusLabel))]
     public partial bool IsUdpListening { get; set; }
 
     [ObservableProperty]
@@ -111,8 +145,43 @@ internal partial class ConnectionViewModel : ViewModelBase
 
     public bool IsSaveEnabled => CanSave();
 
+    public string UdpStatusLabel =>
+        LocalizationService.Instance[IsUdpListening ? nameof(Messages.Connected) : nameof(Messages.NotConnected)];
+
+    [ObservableProperty]
+    public partial LanguageOptionModel? SelectedLanguageOption { get; set; }
+
     [ObservableProperty]
     public partial ProviderType SelectedProvider { get; set; }
+
+    public void ExecuteDeleteSettingsFile()
+    {
+        _settingsWriter.DeleteSettingsFile();
+    }
+
+    public async Task ExecuteDeleteSettingsFolderAsync()
+    {
+        DeleteAllStarted?.Invoke();
+
+        Result<Unit, StoreSaveError> result = await _storeService.DeleteDatabaseAsync();
+
+        _settingsWriter.DeleteSettingsFolder();
+
+        result.Match(
+            _ => DeleteAllCompleted?.Invoke(true, null),
+            error =>
+                DeleteAllCompleted?.Invoke(
+                    false,
+                    $"{LocalizationService.Instance[Messages.DeleteDatabaseFailedHint]}\n\n{error.Value.Message}"
+                )
+        );
+    }
+
+    [RelayCommand]
+    private static void OpenSettingsFolder()
+    {
+        Process.Start(new ProcessStartInfo { FileName = AppPath.AppDataBase, UseShellExecute = true });
+    }
 
     [RelayCommand(CanExecute = nameof(CanSave))]
     private void Save()
@@ -147,6 +216,25 @@ internal partial class ConnectionViewModel : ViewModelBase
     partial void OnConnectionStringChanged(string value) => NotifySaveStateChanged();
 
     partial void OnPortChanged(string value) => NotifySaveStateChanged();
+
+    private LanguageOptionModel GetLanguage(string cultureCode)
+    {
+        return LanguageOptions.FirstOrDefault(languageModel =>
+                languageModel.CultureInfo.TwoLetterISOLanguageName == cultureCode
+            ) ?? LanguageOptions[0];
+    }
+
+    partial void OnSelectedLanguageOptionChanged(LanguageOptionModel? value)
+    {
+        if (value is null || !_allowSave)
+        {
+            return;
+        }
+
+        _settings.CurrentLanguageCode = value.CultureInfo.TwoLetterISOLanguageName;
+        _settingsWriter.Save(_settings);
+        _localizationService.SetLanguage(value.CultureInfo.TwoLetterISOLanguageName);
+    }
 
     partial void OnSelectedProviderChanged(ProviderType value)
     {
@@ -186,6 +274,34 @@ internal partial class ConnectionViewModel : ViewModelBase
                 return Task.CompletedTask;
             }
         );
+    }
+
+    [RelayCommand]
+    private async Task CreateDb()
+    {
+        DbInitializeStarted?.Invoke();
+
+        try
+        {
+            await _storeService.InitializeAsync();
+            await Task.Delay(2000);
+
+            DbStatus = await _storeService.GetDbStatusAsync();
+            InitializeDbCommand.NotifyCanExecuteChanged();
+
+            if (DbStatus == DbStatus.NotInitialized)
+            {
+                DbInitializeCompleted?.Invoke(false, LocalizationService.Instance[Messages.ConnectionFailed]);
+                return;
+            }
+
+            _storeService.Connect();
+            DbInitializeCompleted?.Invoke(true, null);
+        }
+        catch (Exception exception)
+        {
+            DbInitializeCompleted?.Invoke(false, exception.Message);
+        }
     }
 
     [RelayCommand]
@@ -261,6 +377,27 @@ internal partial class ConnectionViewModel : ViewModelBase
         result.Match(
             _ => ConnectionTestCompleted?.Invoke(true, null),
             error => ConnectionTestCompleted?.Invoke(false, error.Value.Message)
+        );
+    }
+
+    [RelayCommand]
+    private void DeleteSettingsFile()
+    {
+        DeleteSettingsFileRequested?.Invoke();
+    }
+
+    [RelayCommand]
+    private void DeleteSettingsFolder()
+    {
+        DeleteSettingsFolderRequested?.Invoke();
+    }
+
+    [RelayCommand]
+    private void ShowSettingsContent()
+    {
+        SettingsReader.Read.Match(
+            value => SettingsContentRequested?.Invoke(value),
+            error => ReadSettingsFileFailed?.Invoke(error.Value.Message)
         );
     }
 }

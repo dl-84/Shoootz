@@ -167,20 +167,20 @@ namespace Shoootz.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Connected.
+        /// </summary>
+        internal static string Connected {
+            get {
+                return ResourceManager.GetString("Connected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Connection failed.
         /// </summary>
         internal static string ConnectionFailed {
             get {
                 return ResourceManager.GetString("ConnectionFailed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Connections.
-        /// </summary>
-        internal static string Connections {
-            get {
-                return ResourceManager.GetString("Connections", resourceCulture);
             }
         }
         
@@ -199,6 +199,15 @@ namespace Shoootz.Resources.Lang {
         internal static string ConnectionSuccessful {
             get {
                 return ResourceManager.GetString("ConnectionSuccessful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create.
+        /// </summary>
+        internal static string CreateDb {
+            get {
+                return ResourceManager.GetString("CreateDb", resourceCulture);
             }
         }
         
@@ -302,11 +311,38 @@ namespace Shoootz.Resources.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delete all.
+        ///   Looks up a localized string similar to Delete all app data.
         /// </summary>
         internal static string DeleteAll {
             get {
                 return ResourceManager.GetString("DeleteAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deleting data....
+        /// </summary>
+        internal static string DeleteAllInProgress {
+            get {
+                return ResourceManager.GetString("DeleteAllInProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All data deleted successfully.
+        /// </summary>
+        internal static string DeleteAllSuccessful {
+            get {
+                return ResourceManager.GetString("DeleteAllSuccessful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The database could not be deleted automatically. Please delete it manually on the server..
+        /// </summary>
+        internal static string DeleteDatabaseFailedHint {
+            get {
+                return ResourceManager.GetString("DeleteDatabaseFailedHint", resourceCulture);
             }
         }
         
@@ -473,7 +509,16 @@ namespace Shoootz.Resources.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Open folder.
+        ///   Looks up a localized string similar to Not connected.
+        /// </summary>
+        internal static string NotConnected {
+            get {
+                return ResourceManager.GetString("NotConnected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open app folder.
         /// </summary>
         internal static string OpenFolder {
             get {
@@ -662,7 +707,7 @@ namespace Shoootz.Resources.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Show settings.
+        ///   Looks up a localized string similar to Show settings file.
         /// </summary>
         internal static string ShowSettings {
             get {

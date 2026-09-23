@@ -24,6 +24,8 @@ internal interface IStoreService
 
     Task<Result<Unit, StoreSaveError>> DeleteClubAsync(int id);
 
+    Task<Result<Unit, StoreSaveError>> DeleteDatabaseAsync();
+
     Task<Result<List<ClubModel>, StoreReadError>> GetClubsAsync();
 
     Task<DbStatus> GetDbStatusAsync();

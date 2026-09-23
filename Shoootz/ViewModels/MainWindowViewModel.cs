@@ -213,7 +213,6 @@ internal partial class MainWindowViewModel : ViewModelBase
             NavigationPageType.Clubs => _serviceProvider.GetRequiredService<ClubsViewModel>(),
             NavigationPageType.Connections => _serviceProvider.GetRequiredService<ConnectionViewModel>(),
             NavigationPageType.Evaluate => _serviceProvider.GetRequiredService<EvaluationViewModel>(),
-            NavigationPageType.General => _serviceProvider.GetRequiredService<GeneralViewModel>(),
             NavigationPageType.Groups => _serviceProvider.GetRequiredService<GroupsViewModel>(),
             NavigationPageType.Licenses => _serviceProvider.GetRequiredService<LicensesViewModel>(),
             NavigationPageType.Logging => _serviceProvider.GetRequiredService<LoggingViewModel>(),

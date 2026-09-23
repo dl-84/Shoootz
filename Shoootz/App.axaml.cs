@@ -14,6 +14,7 @@ using Shoootz.Models.Error;
 using Shoootz.Models.Settings;
 using Shoootz.Models.Settings.Database;
 using Shoootz.Models.Settings.Udp;
+using Shoootz.Services.App;
 using Shoootz.Services.Data;
 using Shoootz.Services.Graphics;
 using Shoootz.Services.Language;
@@ -99,7 +100,6 @@ public class App : Application
         services.AddTransient<ClubsViewModel>();
         services.AddTransient<ConnectionViewModel>();
         services.AddTransient<EvaluationViewModel>();
-        services.AddTransient<GeneralViewModel>();
         services.AddTransient<GroupsViewModel>();
         services.AddTransient<LicensesViewModel>();
         services.AddTransient<LoggingViewModel>();
@@ -164,6 +164,11 @@ public class App : Application
 
     private void InitSettings(ServiceCollection serviceCollection)
     {
+        if (!File.Exists(AppPath.SettingsFile))
+        {
+            new SettingsWriter().Save(new SettingsModel());
+        }
+
         SettingsReader.Read.Match(value => _rawSettings = value, error => _errors.Add(error.Value));
 
         if (_errors.Count > 0)

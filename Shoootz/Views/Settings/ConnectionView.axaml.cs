@@ -2,8 +2,11 @@ using System;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Media;
+using Controls.ContentDialog;
 using Controls.InfoDialog;
 using Controls.InfoDialog.Enum;
+using Controls.JsonEditor;
 using Controls.WaitingDialog;
 using Shoootz.Resources.Lang;
 using Shoootz.Services.Localization;
@@ -23,19 +26,22 @@ public partial class ConnectionView : UserControl
         DataContextChanged += OnDataContextChanged;
     }
 
-    private void OnDataContextChanged(object? sender, EventArgs e)
+    private static ContentDialog BuildConfirmDialog(string title, string message)
     {
-        if (DataContext is ConnectionViewModel viewModel)
+        return new ContentDialog
         {
-            viewModel.ConnectionTestCompleted += OnConnectionTestCompleted;
-            viewModel.DbInitializeCompleted += OnDbInitializeCompleted;
-            viewModel.DbInitializeStarted += OnDbInitializeStarted;
-        }
+            DialogContent = new TextBlock { Text = message, TextWrapping = TextWrapping.Wrap },
+            DialogTitle = title,
+            IsDanger = true,
+            SizeToContent = SizeToContent.Height,
+            SubmitText = LocalizationService.Instance[Messages.Delete],
+            Width = 460,
+        };
     }
 
-    private void OnConnectionTestCompleted(bool success, string? errorMessage)
+    private static JsonEditorControl BuildTextEditor(string content)
     {
-        _ = OpenConnectionTestDialogAsync(success, errorMessage);
+        return new JsonEditorControl { IsReadOnly = true, Text = content };
     }
 
     private void OnConnectDbIconPressed(object? sender, PointerPressedEventArgs e)
@@ -46,36 +52,51 @@ public partial class ConnectionView : UserControl
         }
     }
 
-    private void OnSaveIconPressed(object? sender, PointerPressedEventArgs e)
+    private void OnConnectionTestCompleted(bool success, string? errorMessage)
+    {
+        _ = OpenConnectionTestDialogAsync(success, errorMessage);
+    }
+
+    private void OnCreateDbIconPressed(object? sender, PointerPressedEventArgs e)
     {
         if (DataContext is ConnectionViewModel viewModel)
         {
-            viewModel.SaveCommand.Execute(null);
+            viewModel.CreateDbCommand.Execute(null);
         }
     }
 
-    private void OnDisconnectDbIconPressed(object? sender, PointerPressedEventArgs e)
+    private void OnDataContextChanged(object? sender, EventArgs e)
     {
         if (DataContext is ConnectionViewModel viewModel)
         {
-            viewModel.DisconnectDbCommand.Execute(null);
+            viewModel.ConnectionTestCompleted += OnConnectionTestCompleted;
+            viewModel.DbInitializeCompleted += OnDbInitializeCompleted;
+            viewModel.DbInitializeStarted += OnDbInitializeStarted;
+            viewModel.DeleteAllCompleted += OnDeleteAllCompleted;
+            viewModel.DeleteAllStarted += OnDeleteAllStarted;
+            viewModel.DeleteSettingsFileRequested += OnDeleteSettingsFileRequested;
+            viewModel.DeleteSettingsFolderRequested += OnDeleteSettingsFolderRequested;
+            viewModel.ReadSettingsFileFailed += OnReadSettingsFileFailed;
+            viewModel.SettingsContentRequested += OnSettingsContentRequested;
         }
     }
 
-    private void OnInitializeDbIconPressed(object? sender, PointerPressedEventArgs e)
+    private void OnDbInitializeCompleted(bool success, string? errorMessage)
     {
-        if (DataContext is ConnectionViewModel viewModel)
+        if (TopLevel.GetTopLevel(this) is Window { DataContext: MainWindowViewModel mainWindowViewModel })
         {
-            viewModel.InitializeDbCommand.Execute(null);
-        }
-    }
+            mainWindowViewModel.IsDialogOpen = false;
 
-    private void OnTestDbConnectionIconPressed(object? sender, PointerPressedEventArgs e)
-    {
-        if (DataContext is ConnectionViewModel viewModel)
-        {
-            viewModel.TestDbConnectionCommand.Execute(null);
+            if (success)
+            {
+                mainWindowViewModel.CheckDbConnection();
+            }
         }
+
+        _waitingDialog?.Close();
+        _waitingDialog = null;
+
+        _ = OpenDbInitializeDialogAsync(success, errorMessage);
     }
 
     private void OnDbInitializeStarted()
@@ -99,22 +120,212 @@ public partial class ConnectionView : UserControl
         _ = _waitingDialog.ShowDialog(window);
     }
 
-    private void OnDbInitializeCompleted(bool success, string? errorMessage)
+    private void OnDeleteAllCompleted(bool success, string? errorMessage)
     {
         if (TopLevel.GetTopLevel(this) is Window { DataContext: MainWindowViewModel mainWindowViewModel })
         {
             mainWindowViewModel.IsDialogOpen = false;
-
-            if (success)
-            {
-                mainWindowViewModel.CheckDbConnection();
-            }
         }
 
         _waitingDialog?.Close();
         _waitingDialog = null;
 
-        _ = OpenDbInitializeDialogAsync(success, errorMessage);
+        _ = OpenDeleteAllDialogAsync(success, errorMessage);
+    }
+
+    private void OnDeleteAllStarted()
+    {
+        if (TopLevel.GetTopLevel(this) is not Window window)
+        {
+            return;
+        }
+
+        if (window.DataContext is MainWindowViewModel mainWindowViewModel)
+        {
+            mainWindowViewModel.IsDialogOpen = true;
+        }
+
+        _waitingDialog = new WaitingDialog
+        {
+            DialogTitle = LocalizationService.Instance[Messages.DeleteAll],
+            Message = LocalizationService.Instance[Messages.DeleteAllInProgress],
+        };
+
+        _ = _waitingDialog.ShowDialog(window);
+    }
+
+    private void OnDeleteSettingsFileIconPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (DataContext is ConnectionViewModel viewModel)
+        {
+            viewModel.DeleteSettingsFileCommand.Execute(null);
+        }
+    }
+
+    private void OnDeleteSettingsFileRequested()
+    {
+        _ = OpenConfirmDialogAsync(
+            LocalizationService.Instance[Messages.DeleteSettingsFile],
+            LocalizationService.Instance[Messages.ConfirmDeleteSettingsFileMessage],
+            () =>
+            {
+                if (DataContext is ConnectionViewModel viewModel)
+                {
+                    viewModel.ExecuteDeleteSettingsFile();
+                }
+
+                return Task.CompletedTask;
+            }
+        );
+    }
+
+    private void OnDeleteSettingsFolderIconPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (DataContext is ConnectionViewModel viewModel)
+        {
+            viewModel.DeleteSettingsFolderCommand.Execute(null);
+        }
+    }
+
+    private void OnDeleteSettingsFolderRequested()
+    {
+        _ = OpenConfirmDialogAsync(
+            LocalizationService.Instance[Messages.DeleteAll],
+            LocalizationService.Instance[Messages.ConfirmDeleteAllMessage],
+            () =>
+                DataContext is ConnectionViewModel viewModel
+                    ? viewModel.ExecuteDeleteSettingsFolderAsync()
+                    : Task.CompletedTask
+        );
+    }
+
+    private void OnDisconnectDbIconPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (DataContext is ConnectionViewModel viewModel)
+        {
+            viewModel.DisconnectDbCommand.Execute(null);
+        }
+    }
+
+    private void OnInitializeDbIconPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (DataContext is ConnectionViewModel viewModel)
+        {
+            viewModel.InitializeDbCommand.Execute(null);
+        }
+    }
+
+    private void OnOpenSettingsFolderIconPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (DataContext is ConnectionViewModel viewModel)
+        {
+            viewModel.OpenSettingsFolderCommand.Execute(null);
+        }
+    }
+
+    private void OnReadSettingsFileFailed(string message)
+    {
+        _ = OpenReadSettingsFileFailedDialogAsync(message);
+    }
+
+    private void OnSaveIconPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (DataContext is ConnectionViewModel viewModel)
+        {
+            viewModel.SaveCommand.Execute(null);
+        }
+    }
+
+    private void OnSettingsContentRequested(string content)
+    {
+        _ = OpenSettingsContentDialogAsync(content);
+    }
+
+    private void OnShowSettingsContentIconPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (DataContext is ConnectionViewModel viewModel)
+        {
+            viewModel.ShowSettingsContentCommand.Execute(null);
+        }
+    }
+
+    private void OnStartUdpIconPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (DataContext is ConnectionViewModel viewModel)
+        {
+            viewModel.StartUdpCommand.Execute(null);
+        }
+    }
+
+    private void OnStopUdpIconPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (DataContext is ConnectionViewModel viewModel)
+        {
+            viewModel.StopUdpCommand.Execute(null);
+        }
+    }
+
+    private void OnTestDbConnectionIconPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (DataContext is ConnectionViewModel viewModel)
+        {
+            viewModel.TestDbConnectionCommand.Execute(null);
+        }
+    }
+
+    private async Task OpenConfirmDialogAsync(string title, string message, Func<Task> onConfirmed)
+    {
+        if (TopLevel.GetTopLevel(this) is not Window window)
+        {
+            return;
+        }
+
+        ContentDialog dialog = BuildConfirmDialog(title, message);
+        MainWindowViewModel? mainWindowViewModel = window.DataContext as MainWindowViewModel;
+        bool? result;
+
+        try
+        {
+            mainWindowViewModel?.IsDialogOpen = true;
+            result = await dialog.ShowDialog<bool?>(window);
+        }
+        finally
+        {
+            mainWindowViewModel?.IsDialogOpen = false;
+        }
+
+        if (result is true)
+        {
+            await onConfirmed();
+        }
+    }
+
+    private async Task OpenConnectionTestDialogAsync(bool success, string? errorMessage)
+    {
+        if (TopLevel.GetTopLevel(this) is not Window window)
+        {
+            return;
+        }
+
+        MainWindowViewModel? mainWindowViewModel = window.DataContext as MainWindowViewModel;
+
+        try
+        {
+            mainWindowViewModel?.IsDialogOpen = true;
+
+            await new InfoDialog
+            {
+                DialogTitle = LocalizationService.Instance[Messages.TestConnection],
+                IconType = success ? IconType.Info : IconType.Warning,
+                Message = success
+                    ? LocalizationService.Instance[Messages.ConnectionSuccessful]
+                    : errorMessage ?? LocalizationService.Instance[Messages.ConnectionFailed],
+            }.ShowDialog(window);
+        }
+        finally
+        {
+            mainWindowViewModel?.IsDialogOpen = false;
+        }
     }
 
     private async Task OpenDbInitializeDialogAsync(bool success, string? errorMessage)
@@ -145,7 +356,7 @@ public partial class ConnectionView : UserControl
         }
     }
 
-    private async Task OpenConnectionTestDialogAsync(bool success, string? errorMessage)
+    private async Task OpenDeleteAllDialogAsync(bool success, string? errorMessage)
     {
         if (TopLevel.GetTopLevel(this) is not Window window)
         {
@@ -160,11 +371,64 @@ public partial class ConnectionView : UserControl
 
             await new InfoDialog
             {
-                DialogTitle = LocalizationService.Instance[Messages.TestConnection],
+                DialogTitle = LocalizationService.Instance[Messages.DeleteAll],
                 IconType = success ? IconType.Info : IconType.Warning,
                 Message = success
-                    ? LocalizationService.Instance[Messages.ConnectionSuccessful]
+                    ? LocalizationService.Instance[Messages.DeleteAllSuccessful]
                     : errorMessage ?? LocalizationService.Instance[Messages.ConnectionFailed],
+            }.ShowDialog(window);
+        }
+        finally
+        {
+            mainWindowViewModel?.IsDialogOpen = false;
+        }
+    }
+
+    private async Task OpenReadSettingsFileFailedDialogAsync(string message)
+    {
+        if (TopLevel.GetTopLevel(this) is not Window window)
+        {
+            return;
+        }
+
+        MainWindowViewModel? mainWindowViewModel = window.DataContext as MainWindowViewModel;
+
+        try
+        {
+            mainWindowViewModel?.IsDialogOpen = true;
+
+            await new InfoDialog
+            {
+                DialogTitle = LocalizationService.Instance[Messages.Error],
+                IconType = IconType.Error,
+                Message = message,
+            }.ShowDialog(window);
+        }
+        finally
+        {
+            mainWindowViewModel?.IsDialogOpen = false;
+        }
+    }
+
+    private async Task OpenSettingsContentDialogAsync(string content)
+    {
+        if (TopLevel.GetTopLevel(this) is not Window window)
+        {
+            return;
+        }
+
+        MainWindowViewModel? mainWindowViewModel = window.DataContext as MainWindowViewModel;
+
+        try
+        {
+            mainWindowViewModel?.IsDialogOpen = true;
+
+            await new ContentDialog
+            {
+                DialogContent = BuildTextEditor(content),
+                DialogTitle = LocalizationService.Instance[Messages.Settings],
+                Height = 650,
+                Width = 1000,
             }.ShowDialog(window);
         }
         finally

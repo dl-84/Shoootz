@@ -1,6 +1,7 @@
 ﻿<UserControl x:Class="Shoootz.Views.Settings.ConnectionView"
              xmlns="https://github.com/avaloniaui"
              xmlns:loc="using:Shoootz.Extensions"
+             xmlns:models="using:Shoootz.Models.Settings.Language"
              xmlns:vm="using:Shoootz.ViewModels.Settings"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:DataType="vm:ConnectionViewModel">
@@ -11,7 +12,7 @@
             <StackPanel Classes="page-content">
 
                 <TextBlock Classes="h3"
-                           Text="{loc:Localization Connections}" />
+                           Text="{loc:Localization Settings}" />
 
                 <StackPanel HorizontalAlignment="Right"
                             Margin="0,0,10,0"
@@ -27,6 +28,167 @@
                               VerticalAlignment="Center"
                               IsEnabled="{Binding IsSaveEnabled}" />
                 </StackPanel>
+
+                <Border Classes="card">
+                    <StackPanel Spacing="{DynamicResource SpacingMedium}">
+
+                        <TextBlock Classes="h4"
+                                   Text="{loc:Localization General}" />
+
+                        <Grid ColumnDefinitions="Auto,*">
+                            <ComboBox Grid.Column="0"
+                                      ItemsSource="{Binding LanguageOptions}"
+                                      SelectedItem="{Binding SelectedLanguageOption}"
+                                      Width="170">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate x:DataType="models:LanguageOptionModel">
+                                        <StackPanel Orientation="Horizontal"
+                                                    Spacing="{DynamicResource SpacingSmall}"
+                                                    VerticalAlignment="Center">
+                                            <Image AutomationProperties.AccessibilityView="Raw"
+                                                   Height="24"
+                                                   Source="{Binding Flag}"
+                                                   VerticalAlignment="Center"
+                                                   Width="40" />
+                                            <TextBlock Text="{Binding CultureInfo.NativeName}"
+                                                       VerticalAlignment="Center" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+
+                            <StackPanel Grid.Column="1"
+                                        HorizontalAlignment="Right"
+                                        Orientation="Horizontal"
+                                        Spacing="{DynamicResource SpacingMedium}">
+                                <PathIcon Classes="icon-action"
+                                          Data="{DynamicResource FolderOpenIcon}"
+                                          PointerPressed="OnOpenSettingsFolderIconPressed"
+                                          ToolTip.HorizontalOffset="0"
+                                          ToolTip.Placement="TopEdgeAlignedRight"
+                                          ToolTip.Tip="{loc:Localization OpenFolder}"
+                                          ToolTip.VerticalOffset="-2"
+                                          VerticalAlignment="Center" />
+                                <PathIcon Classes="icon-action"
+                                          Data="{DynamicResource FileLinesIcon}"
+                                          PointerPressed="OnShowSettingsContentIconPressed"
+                                          ToolTip.HorizontalOffset="0"
+                                          ToolTip.Placement="TopEdgeAlignedRight"
+                                          ToolTip.Tip="{loc:Localization ShowSettings}"
+                                          ToolTip.VerticalOffset="-2"
+                                          VerticalAlignment="Center" />
+                                <PathIcon Classes="icon-action icon-danger"
+                                          Data="{DynamicResource FileCircleXmarkIcon}"
+                                          PointerPressed="OnDeleteSettingsFileIconPressed"
+                                          ToolTip.HorizontalOffset="0"
+                                          ToolTip.Placement="TopEdgeAlignedRight"
+                                          ToolTip.Tip="{loc:Localization DeleteSettingsFile}"
+                                          ToolTip.VerticalOffset="-2"
+                                          VerticalAlignment="Center" />
+                                <PathIcon Classes="icon-action icon-danger"
+                                          Data="{DynamicResource DeleteIcon}"
+                                          PointerPressed="OnDeleteSettingsFolderIconPressed"
+                                          ToolTip.HorizontalOffset="0"
+                                          ToolTip.Placement="TopEdgeAlignedRight"
+                                          ToolTip.Tip="{loc:Localization DeleteAll}"
+                                          ToolTip.VerticalOffset="-2"
+                                          VerticalAlignment="Center" />
+                            </StackPanel>
+                        </Grid>
+
+                    </StackPanel>
+                </Border>
+
+                <Border Classes="card">
+                    <StackPanel Spacing="{DynamicResource SpacingMedium}">
+
+                        <TextBlock Classes="h4"
+                                   Text="{loc:Localization UdpBroadcast}" />
+
+                        <Grid ColumnDefinitions="*,Auto">
+                            <StackPanel Grid.Column="0"
+                                        Orientation="Horizontal"
+                                        Spacing="{DynamicResource SpacingSmall}">
+                                <PathIcon Data="{DynamicResource DatabaseDisconnectedIcon}"
+                                          Foreground="{DynamicResource ErrorBrush}"
+                                          Height="18"
+                                          VerticalAlignment="Center"
+                                          Width="18"
+                                          IsVisible="{Binding !IsUdpListening}" />
+                                <PathIcon Data="{DynamicResource DatabaseConnectedIcon}"
+                                          Foreground="{DynamicResource SuccessBrush}"
+                                          Height="18"
+                                          VerticalAlignment="Center"
+                                          Width="18"
+                                          IsVisible="{Binding IsUdpListening}" />
+                                <TextBlock Text="{Binding UdpStatusLabel}"
+                                           VerticalAlignment="Center" />
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1"
+                                        Orientation="Horizontal"
+                                        Spacing="{DynamicResource SpacingMedium}">
+                                <PathIcon Classes="icon-action icon-danger"
+                                          Data="{DynamicResource DatabaseDisconnectIcon}"
+                                          PointerPressed="OnStopUdpIconPressed"
+                                          ToolTip.HorizontalOffset="0"
+                                          ToolTip.Placement="TopEdgeAlignedRight"
+                                          ToolTip.Tip="{loc:Localization Stop}"
+                                          ToolTip.VerticalOffset="-2"
+                                          VerticalAlignment="Center"
+                                          IsVisible="{Binding IsUdpListening}" />
+                                <PathIcon Classes="icon-action"
+                                          Data="{DynamicResource DatabaseConnectIcon}"
+                                          PointerPressed="OnStartUdpIconPressed"
+                                          ToolTip.HorizontalOffset="0"
+                                          ToolTip.Placement="TopEdgeAlignedRight"
+                                          ToolTip.Tip="{loc:Localization Start}"
+                                          ToolTip.VerticalOffset="-2"
+                                          VerticalAlignment="Center"
+                                          IsEnabled="{Binding IsPortValid}"
+                                          IsVisible="{Binding !IsUdpListening}" />
+                            </StackPanel>
+                        </Grid>
+
+                        <Grid ColumnDefinitions="170,*"
+                              ColumnSpacing="{DynamicResource SpacingSmall}">
+
+                            <StackPanel Grid.Column="0"
+                                        Spacing="{DynamicResource SpacingXSmall}">
+                                <TextBlock Classes="label"
+                                           Text="{loc:Localization Port}" />
+                                <TextBox AutomationProperties.HelpText="{loc:Localization PortRangeHint}"
+                                         Classes.error="{Binding !IsPortValid}"
+                                         MaxLength="5"
+                                         Text="{Binding Port}"
+                                         loc:InputFilter.AllowedPattern="[0-9]"
+                                         IsEnabled="{Binding !IsUdpListening}" />
+                            </StackPanel>
+
+                            <Grid Grid.Column="1"
+                                  RowDefinitions="Auto,*"
+                                  RowSpacing="{DynamicResource SpacingXSmall}">
+                                <TextBlock Grid.Row="0"
+                                           Classes="label"
+                                           IsHitTestVisible="False"
+                                           Opacity="0"
+                                           Text="placeholder" />
+                                <CheckBox Grid.Row="1"
+                                          Content="{loc:Localization AutoConnect}"
+                                          FontSize="16"
+                                          HorizontalAlignment="Right"
+                                          IsChecked="{Binding AutoConnect}"
+                                          VerticalAlignment="Center" />
+                            </Grid>
+
+                        </Grid>
+
+                        <TextBlock Classes="hint-error"
+                                   Text="{loc:Localization PortRangeHint}"
+                                   IsVisible="{Binding !IsPortValid}" />
+
+                    </StackPanel>
+                </Border>
 
                 <Border Classes="card">
                     <StackPanel Spacing="{DynamicResource SpacingMedium}">
@@ -57,6 +219,16 @@
                             <StackPanel Grid.Column="1"
                                         Orientation="Horizontal"
                                         Spacing="{DynamicResource SpacingMedium}">
+                                <PathIcon Classes="icon-action"
+                                          Data="{DynamicResource AddIcon}"
+                                          PointerPressed="OnCreateDbIconPressed"
+                                          ToolTip.HorizontalOffset="0"
+                                          ToolTip.Placement="TopEdgeAlignedRight"
+                                          ToolTip.Tip="{loc:Localization CreateDb}"
+                                          ToolTip.VerticalOffset="-2"
+                                          VerticalAlignment="Center"
+                                          IsEnabled="{Binding !IsSaveEnabled}"
+                                          IsVisible="{Binding !IsDbConnected}" />
                                 <PathIcon Classes="icon-action"
                                           Data="{DynamicResource HeartPulseIcon}"
                                           PointerPressed="OnTestDbConnectionIconPressed"
@@ -116,67 +288,6 @@
                                 <TextBox Text="{Binding ConnectionString}"
                                          IsEnabled="{Binding !IsDbConnected}" />
                             </StackPanel>
-
-                        </Grid>
-
-                    </StackPanel>
-                </Border>
-
-                <Border Classes="card">
-                    <StackPanel Spacing="{DynamicResource SpacingMedium}">
-
-                        <TextBlock Classes="h4"
-                                   Text="{loc:Localization UdpBroadcast}" />
-
-                        <Grid ColumnDefinitions="*,170"
-                              RowDefinitions="Auto,20,Auto"
-                              RowSpacing="0">
-
-                            <StackPanel Grid.Row="0"
-                                        Grid.Column="0"
-                                        Spacing="{DynamicResource SpacingXSmall}"
-                                        VerticalAlignment="Top">
-                                <TextBlock Classes="label"
-                                           IsHitTestVisible="False"
-                                           Opacity="0"
-                                           Text="placeholder" />
-                                <CheckBox Content="{loc:Localization AutoConnect}"
-                                          FontSize="16"
-                                          IsChecked="{Binding AutoConnect}" />
-                            </StackPanel>
-
-                            <StackPanel Grid.Row="0"
-                                        Grid.Column="1"
-                                        Spacing="{DynamicResource SpacingXSmall}">
-                                <TextBlock Classes="label"
-                                           Text="{loc:Localization Port}" />
-                                <TextBox AutomationProperties.HelpText="{loc:Localization PortRangeHint}"
-                                         Classes.error="{Binding !IsPortValid}"
-                                         MaxLength="5"
-                                         Text="{Binding Port}"
-                                         loc:InputFilter.AllowedPattern="[0-9]"
-                                         IsEnabled="{Binding !IsUdpListening}" />
-                            </StackPanel>
-
-                            <TextBlock Grid.Row="1"
-                                       Grid.Column="1"
-                                       Classes="hint-error"
-                                       Margin="5,0,0,0"
-                                       Text="{loc:Localization PortRangeHint}"
-                                       IsVisible="{Binding !IsPortValid}" />
-
-                            <Button Grid.Row="2"
-                                    Grid.Column="1"
-                                    Classes="green"
-                                    Command="{Binding StartUdpCommand}"
-                                    Content="{loc:Localization Start}"
-                                    IsVisible="{Binding !IsUdpListening}" />
-                            <Button Grid.Row="2"
-                                    Grid.Column="1"
-                                    Classes="danger"
-                                    Command="{Binding StopUdpCommand}"
-                                    Content="{loc:Localization Stop}"
-                                    IsVisible="{Binding IsUdpListening}" />
 
                         </Grid>
 

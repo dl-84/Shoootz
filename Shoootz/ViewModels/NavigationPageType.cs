@@ -6,7 +6,6 @@ internal enum NavigationPageType
     Clubs,
     Connections,
     Evaluate,
-    General,
     Groups,
     Licenses,
     Logging,
