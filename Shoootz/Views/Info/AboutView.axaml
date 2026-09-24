@@ -8,7 +8,7 @@
 
     <StackPanel Classes="page-content">
 
-        <TextBlock Classes="h4"
+        <TextBlock Classes="h3"
                    Text="{loc:Localization AboutTitle}" />
 
         <controls:LicenseTableControl Headers="{Binding ColumnHeaders}"

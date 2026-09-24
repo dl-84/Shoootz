@@ -10,7 +10,7 @@
     <ScrollViewer>
         <StackPanel Classes="page-content">
 
-            <TextBlock Classes="h4"
+            <TextBlock Classes="h3"
                        Text="{loc:Localization LicensesTitle}" />
 
             <controls:LicenseTableControl Headers="{Binding ColumnHeaders}"
