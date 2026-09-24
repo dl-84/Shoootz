@@ -1,97 +1,102 @@
 using System;
-using System.Linq;
 using System.Text;
 using System.Text.Json;
 using Result;
 using Result.Types;
+using Shoootz.DisagOriginUpdMessage;
 using Shoootz.Models.Error;
 using Shoootz.Models.Shot;
-using Shoootz.Models.Udp;
-using Shoootz.Resources.Lang;
-using Shoootz.Services.Localization;
 
 namespace Shoootz.Services.Parser;
 
-internal class ShotDataParser(ILocalizationService localizationService) : IShotDataParser
+internal class ShotDataParser : IShotDataParser
 {
     private static readonly JsonSerializerOptions _options = new() { PropertyNameCaseInsensitive = true };
 
-    public Result<ShotModel?, ShotParseError> Run(byte[] data)
+    public Result<ShotModel, ShotFilterType> Run(byte[] data)
     {
         try
         {
             string rawData = Encoding.UTF8.GetString(data);
-            UdpShotModel? udpShot = JsonSerializer.Deserialize<UdpShotModel>(rawData, _options);
+            DisagUdpMessageDto? message = JsonSerializer.Deserialize<DisagUdpMessageDto>(rawData, _options);
 
-            if (udpShot is null)
+            if (message is null)
             {
-                return new Error<ShotParseError>(
-                    new ShotParseError(localizationService[nameof(Messages.ShotParseErrorNull)], rawData)
-                );
+                return new Error<ShotFilterType>(ShotFilterType.MessageIsNull);
             }
 
-            if (udpShot.Objects.Count is not 1)
+            if (message.Objects?.Count is not 1)
             {
-                string errorMessage = string.Format(
-                    localizationService[nameof(Messages.ShotParseErrorObjectCount)],
-                    udpShot.Objects.Count
-                );
-
-                return new Error<ShotParseError>(new ShotParseError(errorMessage, rawData));
+                return new Error<ShotFilterType>(ShotFilterType.IncorrectNumberOfObjects);
             }
 
-            return udpShot.Objects[0].IsHot ? MapToShotModel(udpShot.Objects[0]) : null;
+            if (message.Objects[0] is not DisagShotDto disagShot)
+            {
+                return new Error<ShotFilterType>(ShotFilterType.IsNotTypeOfShot);
+            }
+
+            if (string.IsNullOrEmpty(disagShot.Shooter?.Firstname) || string.IsNullOrEmpty(disagShot.Shooter?.Lastname))
+            {
+                return new Error<ShotFilterType>(ShotFilterType.HasMissingShooterData);
+            }
+
+            if (disagShot.IsWarmup)
+            {
+                return new Error<ShotFilterType>(ShotFilterType.IsWarmup);
+            }
+
+            return MapToShotModel(disagShot);
         }
-        catch (Exception exception)
+        catch (Exception)
         {
-            return new Error<ShotParseError>(new ShotParseError(exception.Message, Convert.ToBase64String(data)));
+            return new Error<ShotFilterType>(ShotFilterType.Exception);
         }
     }
 
-    private static ShooterModel? MapToShooter(UdpShooterModel? udpShooter)
+    private static ShooterModel? MapToShooter(DisagShooterDto? disagShooter)
     {
-        if (udpShooter is null)
+        if (disagShooter is null)
         {
             return null;
         }
 
         return new ShooterModel
         {
-            Birthyear = udpShooter.Birthyear,
-            Club = udpShooter.Club,
-            Firstname = udpShooter.Firstname,
-            Id = udpShooter.Identification,
-            Lastname = udpShooter.Lastname,
-            Startnumber = udpShooter.Startnumber,
-            Team = udpShooter.Team,
+            Birthyear = disagShooter.Birthyear,
+            Club = disagShooter.Club?.Name,
+            Firstname = disagShooter.Firstname,
+            Id = disagShooter.Identification,
+            Lastname = disagShooter.Lastname,
+            Startnumber = disagShooter.Startnumber,
+            Team = disagShooter.Team?.Name,
         };
     }
 
-    private static ShotInfoModel? MapToShotInfo(UdpMenuItemModel? udpMenuItem)
+    private static ShotInfoModel? MapToShotInfo(DisagMenuItemDto? disagMenuItem)
     {
-        return udpMenuItem is null
+        return disagMenuItem is null
             ? null
             : new ShotInfoModel
             {
-                MenuId = udpMenuItem.MenuID,
-                MenuItemName = udpMenuItem.MenuItemName,
-                MenuPointName = udpMenuItem.MenuPointName,
+                MenuId = disagMenuItem.MenuID,
+                MenuItemName = disagMenuItem.MenuItemName,
+                MenuPointName = disagMenuItem.MenuPointName,
             };
     }
 
-    private static ShotModel MapToShotModel(UdpShotDetailModel udpShotDetail)
+    private static ShotModel MapToShotModel(DisagShotDto disagShot)
     {
         return new ShotModel
         {
-            Count = udpShotDetail.Count,
-            DecValue = udpShotDetail.DecValue,
-            DiscType = udpShotDetail.DiscType,
-            Distance = udpShotDetail.Distance,
-            IsHot = udpShotDetail.IsHot,
-            IsValid = udpShotDetail.IsValid,
+            Count = disagShot.Count,
+            DecValue = (double)disagShot.DecValue,
+            DiscType = disagShot.DiscType.ToString(),
+            Distance = (double)disagShot.Distance,
+            IsHot = disagShot.IsHot,
+            IsValid = disagShot.IsValid,
             ShotDateTime = DateTime.Now,
-            ShotInfo = MapToShotInfo(udpShotDetail.MenuItem),
-            Shooter = MapToShooter(udpShotDetail.Shooter),
+            ShotInfo = MapToShotInfo(disagShot.MenuItem),
+            Shooter = MapToShooter(disagShot.Shooter),
         };
     }
 }

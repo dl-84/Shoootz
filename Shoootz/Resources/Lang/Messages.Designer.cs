@@ -698,24 +698,6 @@ namespace Shoootz.Resources.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deserialization returned null..
-        /// </summary>
-        internal static string ShotParseErrorNull {
-            get {
-                return ResourceManager.GetString("ShotParseErrorNull", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Expected exactly one shot object, but received {0}..
-        /// </summary>
-        internal static string ShotParseErrorObjectCount {
-            get {
-                return ResourceManager.GetString("ShotParseErrorObjectCount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Show settings file.
         /// </summary>
         internal static string ShowSettings {

@@ -36,6 +36,12 @@ internal class DataProcessor(IUdpListenerService udpListenerService, IShotDataPa
 
     private int _errorOnSaveShotToDbCounter;
 
+    private int _incorrectNumberOfObjectsCounter;
+
+    private int _missingShooterDataCounter;
+
+    private int _notTypeOfShotCounter;
+
     private int _successParsedShotCounter;
 
     private bool _started;
@@ -51,6 +57,12 @@ internal class DataProcessor(IUdpListenerService udpListenerService, IShotDataPa
     public int ErrorParsedShotCounter => _errorParsedShotCounter;
 
     public int ErrorOnSaveShotToDbCounter => _errorOnSaveShotToDbCounter;
+
+    public int IncorrectNumberOfObjectsCounter => _incorrectNumberOfObjectsCounter;
+
+    public int MissingShooterDataCounter => _missingShooterDataCounter;
+
+    public int NotTypeOfShotCounter => _notTypeOfShotCounter;
 
     public IReadOnlyList<UdpRawModel> RawLogEntries
     {
@@ -116,25 +128,41 @@ internal class DataProcessor(IUdpListenerService udpListenerService, IShotDataPa
     {
         await foreach (byte[] data in _udpChannel.Reader.ReadAllAsync(cancellationToken))
         {
-            Result<ShotModel?, ShotParseError> result = parser.Run(data);
+            Result<ShotModel, ShotFilterType> result = parser.Run(data);
 
             result.Match(
                 shot =>
                 {
                     Interlocked.Increment(ref _successParsedShotCounter);
-
-                    if (shot is null)
-                    {
-                        Interlocked.Increment(ref _warmupShotCounter);
-                    }
-                    else
-                    {
-                        _shotChannel.Writer.TryWrite(shot);
-                    }
+                    _shotChannel.Writer.TryWrite(shot);
                 },
                 error =>
                 {
-                    Interlocked.Increment(ref _errorParsedShotCounter);
+                    switch (error.Value)
+                    {
+                        case ShotFilterType.IsWarmup:
+                            Interlocked.Increment(ref _warmupShotCounter);
+                            break;
+
+                        case ShotFilterType.HasMissingShooterData:
+                            Interlocked.Increment(ref _missingShooterDataCounter);
+                            break;
+                        
+
+                        case ShotFilterType.IncorrectNumberOfObjects:
+                            Interlocked.Increment(ref _incorrectNumberOfObjectsCounter);
+                            break;
+
+                        case ShotFilterType.IsNotTypeOfShot:
+                            Interlocked.Increment(ref _notTypeOfShotCounter);
+                            break;
+
+                        case ShotFilterType.Exception:
+                        case ShotFilterType.MessageIsNull:
+                        default:
+                            Interlocked.Increment(ref _errorParsedShotCounter);
+                            break;
+                    }
                 }
             );
         }
