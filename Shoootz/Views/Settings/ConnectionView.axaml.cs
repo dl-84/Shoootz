@@ -425,6 +425,7 @@ public partial class ConnectionView : UserControl
 
             await new ContentDialog
             {
+                CopyText = content,
                 DialogContent = BuildTextEditor(content),
                 DialogTitle = LocalizationService.Instance[Messages.Settings],
                 Height = 650,

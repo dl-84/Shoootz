@@ -55,6 +55,7 @@ public partial class LoggingView : UserControl
         }
 
         MainWindowViewModel? mainWindowViewModel = window.DataContext as MainWindowViewModel;
+        string prettyJson = PrettyPrintJson(entry.RawData);
 
         try
         {
@@ -62,7 +63,8 @@ public partial class LoggingView : UserControl
 
             await new ContentDialog
             {
-                DialogContent = BuildTextEditor(PrettyPrintJson(entry.RawData)),
+                CopyText = prettyJson,
+                DialogContent = BuildTextEditor(prettyJson),
                 DialogTitle =
                     $"{LocalizationService.Instance[nameof(Messages.LoggingRawTitle)]} – {entry.Timestamp:HH:mm:ss.fff}",
                 Height = 650,

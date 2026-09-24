@@ -6,8 +6,12 @@
              x:DataType="vm:LoggingViewModel">
 
     <Grid Margin="18,0,18,18"
-          RowDefinitions="Auto,Auto,Auto,*"
+          RowDefinitions="Auto,Auto,*"
           RowSpacing="{DynamicResource SpacingMedium}">
+
+        <TextBlock Grid.Row="0"
+                   Classes="h3"
+                   Text="{loc:Localization Logging}" />
 
         <Grid Grid.Row="1"
               ColumnDefinitions="*,*,*"
@@ -144,28 +148,39 @@
             </Border>
         </Grid>
 
-        <TextBlock Grid.Row="2"
-                   Classes="h4"
-                   Text="{loc:Localization LoggingRawTitle}" />
+        <Border Grid.Row="2"
+                Classes="card">
+            <Grid RowDefinitions="Auto,*"
+                  RowSpacing="{DynamicResource SpacingMedium}">
 
-        <ListBox Grid.Row="3"
-                 CornerRadius="0"
-                 ItemsSource="{Binding Logs}"
-                 ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                 SelectionChanged="OnLogEntrySelected">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal"
-                                Spacing="{DynamicResource SpacingSmall}">
-                        <TextBlock FontFamily="{DynamicResource FontMono}"
-                                   Foreground="{DynamicResource TextSecondaryBrush}"
-                                   Text="{Binding Timestamp, StringFormat='HH:mm:ss.fff'}" />
-                        <TextBlock FontFamily="{DynamicResource FontMono}"
-                                   Text="{Binding RawData}" />
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+                <TextBlock Grid.Row="0"
+                           Classes="h4"
+                           Text="{loc:Localization LoggingRawTitle}" />
+
+                <ListBox Grid.Row="1"
+                         Background="Transparent"
+                         BorderThickness="0"
+                         CornerRadius="0"
+                         ItemsSource="{Binding Logs}"
+                         Padding="0"
+                         ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                         SelectionChanged="OnLogEntrySelected">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal"
+                                        Spacing="{DynamicResource SpacingSmall}">
+                                <TextBlock FontFamily="{DynamicResource FontMono}"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"
+                                           Text="{Binding Timestamp, StringFormat='HH:mm:ss.fff'}" />
+                                <TextBlock FontFamily="{DynamicResource FontMono}"
+                                           Text="{Binding RawData}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+            </Grid>
+        </Border>
 
     </Grid>
 </UserControl>
