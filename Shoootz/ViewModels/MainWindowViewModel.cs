@@ -170,7 +170,7 @@ internal partial class MainWindowViewModel : ViewModelBase
 
         if (status == DbStatus.UpdateAvailable)
         {
-            NavigateTo(NavigationPageType.Connections);
+            NavigateTo(NavigationPageType.App);
             PendingMigrationsDetected?.Invoke();
         }
     }
@@ -210,8 +210,8 @@ internal partial class MainWindowViewModel : ViewModelBase
         return pageType switch
         {
             NavigationPageType.About => _serviceProvider.GetRequiredService<AboutViewModel>(),
+            NavigationPageType.App => _serviceProvider.GetRequiredService<ConnectionViewModel>(),
             NavigationPageType.Clubs => _serviceProvider.GetRequiredService<ClubsViewModel>(),
-            NavigationPageType.Connections => _serviceProvider.GetRequiredService<ConnectionViewModel>(),
             NavigationPageType.Evaluate => _serviceProvider.GetRequiredService<EvaluationViewModel>(),
             NavigationPageType.Groups => _serviceProvider.GetRequiredService<GroupsViewModel>(),
             NavigationPageType.Licenses => _serviceProvider.GetRequiredService<LicensesViewModel>(),

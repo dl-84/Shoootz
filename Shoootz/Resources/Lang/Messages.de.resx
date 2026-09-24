@@ -14,6 +14,9 @@
   </resheader>
 
   <!-- Navigation -->
+  <data name="App" xml:space="preserve">
+    <value>App</value>
+  </data>
   <data name="Clubs" xml:space="preserve">
     <value>Vereine</value>
   </data>

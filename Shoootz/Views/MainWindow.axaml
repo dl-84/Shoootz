@@ -80,8 +80,8 @@
                                                Text="{loc:Localization Settings,
                                                                        ToUpper=True}" />
                                 </ListBoxItem>
-                                <ListBoxItem Tag="{x:Static vm:NavigationPageType.Connections}">
-                                    <TextBlock Text="{loc:Localization Settings}" />
+                                <ListBoxItem Tag="{x:Static vm:NavigationPageType.App}">
+                                    <TextBlock Text="{loc:Localization App}" />
                                 </ListBoxItem>
                                 <ListBoxItem Tag="{x:Static vm:NavigationPageType.Groups}">
                                     <TextBlock Text="{loc:Localization Groups}" />

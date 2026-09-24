@@ -3,8 +3,8 @@ namespace Shoootz.ViewModels;
 internal enum NavigationPageType
 {
     About,
+    App,
     Clubs,
-    Connections,
     Evaluate,
     Groups,
     Licenses,
