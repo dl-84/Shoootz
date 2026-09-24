@@ -16,6 +16,15 @@ internal partial class LoggingViewModel : ViewModelBase, IDisposable
     private readonly DispatcherTimer _refreshTimer;
 
     [ObservableProperty]
+    private int _incorrectNumberOfObjects;
+
+    [ObservableProperty]
+    private int _missingShooterData;
+
+    [ObservableProperty]
+    private int _notTypeOfShot;
+
+    [ObservableProperty]
     private int _parsedShots;
 
     [ObservableProperty]
@@ -65,6 +74,9 @@ internal partial class LoggingViewModel : ViewModelBase, IDisposable
 
     private void OnTimerTick(object? sender, EventArgs e)
     {
+        IncorrectNumberOfObjects = _dataProcessor.IncorrectNumberOfObjectsCounter;
+        MissingShooterData = _dataProcessor.MissingShooterDataCounter;
+        NotTypeOfShot = _dataProcessor.NotTypeOfShotCounter;
         ParsedShots = _dataProcessor.SuccessParsedShotCounter;
         ParsedShotErrors = _dataProcessor.ErrorParsedShotCounter;
         ReceivedShots = _dataProcessor.UdpRawShotCounter;

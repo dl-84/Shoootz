@@ -12,6 +12,12 @@ internal interface IDataProcessor
 
     int ErrorOnSaveShotToDbCounter { get; }
 
+    int IncorrectNumberOfObjectsCounter { get; }
+
+    int MissingShooterDataCounter { get; }
+
+    int NotTypeOfShotCounter { get; }
+
     IReadOnlyList<UdpRawModel> RawLogEntries { get; }
 
     int SuccessParsedShotCounter { get; }

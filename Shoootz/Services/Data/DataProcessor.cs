@@ -147,7 +147,6 @@ internal class DataProcessor(IUdpListenerService udpListenerService, IShotDataPa
                         case ShotFilterType.HasMissingShooterData:
                             Interlocked.Increment(ref _missingShooterDataCounter);
                             break;
-                        
 
                         case ShotFilterType.IncorrectNumberOfObjects:
                             Interlocked.Increment(ref _incorrectNumberOfObjectsCounter);

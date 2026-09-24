@@ -270,6 +270,15 @@
   <data name="ShotCounterSavedError" xml:space="preserve">
     <value>Fehler beim Speichern</value>
   </data>
+  <data name="ShotCounterIncorrectNumberOfObjects" xml:space="preserve">
+    <value>Anzahl Datensatz falsch</value>
+  </data>
+  <data name="ShotCounterMissingShooterData" xml:space="preserve">
+    <value>Fehlende Schützendaten</value>
+  </data>
+  <data name="ShotCounterNotTypeOfShot" xml:space="preserve">
+    <value>Datensatztyp falsch</value>
+  </data>
   <data name="ShotCounterWarmup" xml:space="preserve">
     <value>Probeschüsse</value>
   </data>

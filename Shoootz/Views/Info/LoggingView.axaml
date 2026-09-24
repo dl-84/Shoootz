@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Shoootz.Views.Info.LoggingView"
+<UserControl x:Class="Shoootz.Views.Info.LoggingView"
              xmlns="https://github.com/avaloniaui"
              xmlns:loc="using:Shoootz.Extensions"
              xmlns:vm="using:Shoootz.ViewModels.Info"
@@ -16,19 +16,27 @@
         <Grid Grid.Row="1"
               ColumnDefinitions="*,*,*"
               ColumnSpacing="{DynamicResource SpacingMedium}"
-              RowDefinitions="Auto,Auto"
+              RowDefinitions="Auto,Auto,Auto"
               RowSpacing="{DynamicResource SpacingMedium}">
 
             <Border Grid.Row="0"
                     Grid.Column="0"
                     Classes="card">
                 <Grid ColumnDefinitions="Auto,*">
-                    <TextBlock Grid.Column="0"
-                               Classes="label"
-                               FontWeight="Normal"
-                               Text="{loc:Localization ShotCounterReceived}"
-                               TextWrapping="NoWrap"
-                               VerticalAlignment="Center" />
+                    <StackPanel Grid.Column="0"
+                                Orientation="Horizontal"
+                                Spacing="{DynamicResource SpacingSmall}">
+                        <PathIcon Classes="icon-action"
+                                  Data="{DynamicResource InfoIcon}"
+                                  Height="18"
+                                  VerticalAlignment="Center"
+                                  Width="18" />
+                        <TextBlock Classes="label"
+                                   FontWeight="Normal"
+                                   Text="{loc:Localization ShotCounterReceived}"
+                                   TextWrapping="NoWrap"
+                                   VerticalAlignment="Center" />
+                    </StackPanel>
                     <TextBlock Grid.Column="1"
                                Classes="h2"
                                FontSize="{DynamicResource FontSizeMedium}"
@@ -44,12 +52,20 @@
                     Grid.Column="1"
                     Classes="card">
                 <Grid ColumnDefinitions="Auto,*">
-                    <TextBlock Grid.Column="0"
-                               Classes="label"
-                               FontWeight="Normal"
-                               Text="{loc:Localization ShotCounterParsed}"
-                               TextWrapping="NoWrap"
-                               VerticalAlignment="Center" />
+                    <StackPanel Grid.Column="0"
+                                Orientation="Horizontal"
+                                Spacing="{DynamicResource SpacingSmall}">
+                        <PathIcon Classes="icon-action"
+                                  Data="{DynamicResource InfoIcon}"
+                                  Height="18"
+                                  VerticalAlignment="Center"
+                                  Width="18" />
+                        <TextBlock Classes="label"
+                                   FontWeight="Normal"
+                                   Text="{loc:Localization ShotCounterParsed}"
+                                   TextWrapping="NoWrap"
+                                   VerticalAlignment="Center" />
+                    </StackPanel>
                     <TextBlock Grid.Column="1"
                                Classes="h2"
                                FontSize="{DynamicResource FontSizeMedium}"
@@ -65,12 +81,20 @@
                     Grid.Column="2"
                     Classes="card">
                 <Grid ColumnDefinitions="Auto,*">
-                    <TextBlock Grid.Column="0"
-                               Classes="label"
-                               FontWeight="Normal"
-                               Text="{loc:Localization ShotCounterSaved}"
-                               TextWrapping="NoWrap"
-                               VerticalAlignment="Center" />
+                    <StackPanel Grid.Column="0"
+                                Orientation="Horizontal"
+                                Spacing="{DynamicResource SpacingSmall}">
+                        <PathIcon Classes="icon-action"
+                                  Data="{DynamicResource InfoIcon}"
+                                  Height="18"
+                                  VerticalAlignment="Center"
+                                  Width="18" />
+                        <TextBlock Classes="label"
+                                   FontWeight="Normal"
+                                   Text="{loc:Localization ShotCounterSaved}"
+                                   TextWrapping="NoWrap"
+                                   VerticalAlignment="Center" />
+                    </StackPanel>
                     <TextBlock Grid.Column="1"
                                Classes="h2"
                                FontSize="{DynamicResource FontSizeMedium}"
@@ -86,12 +110,20 @@
                     Grid.Column="0"
                     Classes="card">
                 <Grid ColumnDefinitions="Auto,*">
-                    <TextBlock Grid.Column="0"
-                               Classes="label"
-                               FontWeight="Normal"
-                               Text="{loc:Localization ShotCounterWarmup}"
-                               TextWrapping="NoWrap"
-                               VerticalAlignment="Center" />
+                    <StackPanel Grid.Column="0"
+                                Orientation="Horizontal"
+                                Spacing="{DynamicResource SpacingSmall}">
+                        <PathIcon Classes="icon-action"
+                                  Data="{DynamicResource InfoIcon}"
+                                  Height="18"
+                                  VerticalAlignment="Center"
+                                  Width="18" />
+                        <TextBlock Classes="label"
+                                   FontWeight="Normal"
+                                   Text="{loc:Localization ShotCounterWarmup}"
+                                   TextWrapping="NoWrap"
+                                   VerticalAlignment="Center" />
+                    </StackPanel>
                     <TextBlock Grid.Column="1"
                                Classes="h2"
                                FontSize="{DynamicResource FontSizeMedium}"
@@ -107,13 +139,111 @@
                     Grid.Column="1"
                     Classes="card">
                 <Grid ColumnDefinitions="Auto,*">
-                    <TextBlock Grid.Column="0"
-                               Classes="label"
+                    <StackPanel Grid.Column="0"
+                                Orientation="Horizontal"
+                                Spacing="{DynamicResource SpacingSmall}">
+                        <PathIcon Classes="icon-action"
+                                  Data="{DynamicResource InfoIcon}"
+                                  Height="18"
+                                  VerticalAlignment="Center"
+                                  Width="18" />
+                        <TextBlock Classes="label"
+                                   FontWeight="Normal"
+                                   Foreground="{DynamicResource ErrorBrush}"
+                                   Text="{loc:Localization ShotCounterIncorrectNumberOfObjects}"
+                                   TextWrapping="NoWrap"
+                                   VerticalAlignment="Center" />
+                    </StackPanel>
+                    <TextBlock Grid.Column="1"
+                               Classes="h2"
+                               FontSize="{DynamicResource FontSizeMedium}"
                                FontWeight="Normal"
-                               Foreground="{DynamicResource ErrorBrush}"
-                               Text="{loc:Localization ShotCounterParsedError}"
-                               TextWrapping="NoWrap"
+                               HorizontalAlignment="Right"
+                               LineHeight="22"
+                               Text="{Binding IncorrectNumberOfObjects}"
                                VerticalAlignment="Center" />
+                </Grid>
+            </Border>
+
+            <Border Grid.Row="1"
+                    Grid.Column="2"
+                    Classes="card">
+                <Grid ColumnDefinitions="Auto,*">
+                    <StackPanel Grid.Column="0"
+                                Orientation="Horizontal"
+                                Spacing="{DynamicResource SpacingSmall}">
+                        <PathIcon Classes="icon-action"
+                                  Data="{DynamicResource InfoIcon}"
+                                  Height="18"
+                                  VerticalAlignment="Center"
+                                  Width="18" />
+                        <TextBlock Classes="label"
+                                   FontWeight="Normal"
+                                   Foreground="{DynamicResource ErrorBrush}"
+                                   Text="{loc:Localization ShotCounterNotTypeOfShot}"
+                                   TextWrapping="NoWrap"
+                                   VerticalAlignment="Center" />
+                    </StackPanel>
+                    <TextBlock Grid.Column="1"
+                               Classes="h2"
+                               FontSize="{DynamicResource FontSizeMedium}"
+                               FontWeight="Normal"
+                               HorizontalAlignment="Right"
+                               LineHeight="22"
+                               Text="{Binding NotTypeOfShot}"
+                               VerticalAlignment="Center" />
+                </Grid>
+            </Border>
+
+            <Border Grid.Row="2"
+                    Grid.Column="0"
+                    Classes="card">
+                <Grid ColumnDefinitions="Auto,*">
+                    <StackPanel Grid.Column="0"
+                                Orientation="Horizontal"
+                                Spacing="{DynamicResource SpacingSmall}">
+                        <PathIcon Classes="icon-action"
+                                  Data="{DynamicResource InfoIcon}"
+                                  Height="18"
+                                  VerticalAlignment="Center"
+                                  Width="18" />
+                        <TextBlock Classes="label"
+                                   FontWeight="Normal"
+                                   Foreground="{DynamicResource ErrorBrush}"
+                                   Text="{loc:Localization ShotCounterMissingShooterData}"
+                                   TextWrapping="NoWrap"
+                                   VerticalAlignment="Center" />
+                    </StackPanel>
+                    <TextBlock Grid.Column="1"
+                               Classes="h2"
+                               FontSize="{DynamicResource FontSizeMedium}"
+                               FontWeight="Normal"
+                               HorizontalAlignment="Right"
+                               LineHeight="22"
+                               Text="{Binding MissingShooterData}"
+                               VerticalAlignment="Center" />
+                </Grid>
+            </Border>
+
+            <Border Grid.Row="2"
+                    Grid.Column="1"
+                    Classes="card">
+                <Grid ColumnDefinitions="Auto,*">
+                    <StackPanel Grid.Column="0"
+                                Orientation="Horizontal"
+                                Spacing="{DynamicResource SpacingSmall}">
+                        <PathIcon Classes="icon-action"
+                                  Data="{DynamicResource InfoIcon}"
+                                  Height="18"
+                                  VerticalAlignment="Center"
+                                  Width="18" />
+                        <TextBlock Classes="label"
+                                   FontWeight="Normal"
+                                   Foreground="{DynamicResource ErrorBrush}"
+                                   Text="{loc:Localization ShotCounterParsedError}"
+                                   TextWrapping="NoWrap"
+                                   VerticalAlignment="Center" />
+                    </StackPanel>
                     <TextBlock Grid.Column="1"
                                Classes="h2"
                                FontSize="{DynamicResource FontSizeMedium}"
@@ -125,17 +255,25 @@
                 </Grid>
             </Border>
 
-            <Border Grid.Row="1"
+            <Border Grid.Row="2"
                     Grid.Column="2"
                     Classes="card">
                 <Grid ColumnDefinitions="Auto,*">
-                    <TextBlock Grid.Column="0"
-                               Classes="label"
-                               FontWeight="Normal"
-                               Foreground="{DynamicResource ErrorBrush}"
-                               Text="{loc:Localization ShotCounterSavedError}"
-                               TextWrapping="NoWrap"
-                               VerticalAlignment="Center" />
+                    <StackPanel Grid.Column="0"
+                                Orientation="Horizontal"
+                                Spacing="{DynamicResource SpacingSmall}">
+                        <PathIcon Classes="icon-action"
+                                  Data="{DynamicResource InfoIcon}"
+                                  Height="18"
+                                  VerticalAlignment="Center"
+                                  Width="18" />
+                        <TextBlock Classes="label"
+                                   FontWeight="Normal"
+                                   Foreground="{DynamicResource ErrorBrush}"
+                                   Text="{loc:Localization ShotCounterSavedError}"
+                                   TextWrapping="NoWrap"
+                                   VerticalAlignment="Center" />
+                    </StackPanel>
                     <TextBlock Grid.Column="1"
                                Classes="h2"
                                FontSize="{DynamicResource FontSizeMedium}"

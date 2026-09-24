@@ -644,6 +644,33 @@ namespace Shoootz.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Wrong Object Count.
+        /// </summary>
+        internal static string ShotCounterIncorrectNumberOfObjects {
+            get {
+                return ResourceManager.GetString("ShotCounterIncorrectNumberOfObjects", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Missing Shooter Data.
+        /// </summary>
+        internal static string ShotCounterMissingShooterData {
+            get {
+                return ResourceManager.GetString("ShotCounterMissingShooterData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not A Shot.
+        /// </summary>
+        internal static string ShotCounterNotTypeOfShot {
+            get {
+                return ResourceManager.GetString("ShotCounterNotTypeOfShot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Parsed Shots.
         /// </summary>
         internal static string ShotCounterParsed {
