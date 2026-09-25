@@ -168,10 +168,12 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
 
         Result<Unit, StoreSaveError> result = await _storeService.DeleteDatabaseAsync();
 
-        _settingsWriter.DeleteSettingsFolder();
-
         result.Match(
-            _ => DeleteAllCompleted?.Invoke(true, null),
+            _ =>
+            {
+                _settingsWriter.DeleteSettingsFolder();
+                DeleteAllCompleted?.Invoke(true, null);
+            },
             error =>
                 DeleteAllCompleted?.Invoke(
                     false,
