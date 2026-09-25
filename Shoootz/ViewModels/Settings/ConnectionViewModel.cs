@@ -24,6 +24,7 @@ using Shoootz.Services.Store;
 using Shoootz.Services.Udp;
 using Shoootz.Store;
 using Shoootz.Store.Services;
+using Shoootz.Store.Types;
 using Shoootz.ViewModels;
 
 namespace Shoootz.ViewModels.Settings;
@@ -265,7 +266,8 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
     [RelayCommand]
     private async Task ConnectDb()
     {
-        await TestConnectionResult()
+        await _connectionTester
+            .Run(SelectedProvider, ConnectionString)
             .Match(
                 async _ =>
                 {
@@ -313,13 +315,6 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
             DbInitializeCompleted?.Invoke(false, exception.Message);
         }
     }
-
-    private Result<bool, DbConnectionError> TestConnectionResult() =>
-        SelectedProvider switch
-        {
-            ProviderType.PostgreSql => _connectionTester.PostgreSql(ConnectionString),
-            _ => _connectionTester.Sqlite(ConnectionString),
-        };
 
     [RelayCommand]
     private void DisconnectDb() => _storeService.Disconnect();
@@ -372,7 +367,8 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
     [RelayCommand]
     private void TestDbConnection()
     {
-        TestConnectionResult()
+        _connectionTester
+            .Run(SelectedProvider, ConnectionString)
             .Match(
                 _ => ConnectionTestCompleted?.Invoke(true, null),
                 error => ConnectionTestCompleted?.Invoke(false, error.Value.Message)

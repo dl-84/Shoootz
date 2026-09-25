@@ -128,13 +128,9 @@ internal partial class MainWindowViewModel : ViewModelBase
 
     public void CheckDbConnection()
     {
-        Result<bool, DbConnectionError> result = _settings.DatabaseConnection.Provider switch
-        {
-            ProviderType.PostgreSql => _connectionTester.PostgreSql(_settings.DatabaseConnection.ConnectionString),
-            _ => _connectionTester.Sqlite(_settings.DatabaseConnection.ConnectionString),
-        };
-
-        result.Match(_ => { }, _ => _storeService.Disconnect());
+        _connectionTester
+            .Run(_settings.DatabaseConnection.Provider, _settings.DatabaseConnection.ConnectionString)
+            .Match(_ => { }, _ => _storeService.Disconnect());
     }
 
     public async Task CheckPendingMigrationsAsync()

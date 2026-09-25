@@ -28,6 +28,7 @@ using Shoootz.Services.Store;
 using Shoootz.Services.Udp;
 using Shoootz.Store;
 using Shoootz.Store.Services;
+using Shoootz.Store.Types;
 using Shoootz.ViewModels;
 using Shoootz.ViewModels.Competition;
 using Shoootz.ViewModels.Info;

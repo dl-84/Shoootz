@@ -16,6 +16,7 @@ using Shoootz.Models.Settings.Database;
 using Shoootz.Models.Shot;
 using Shoootz.Store;
 using Shoootz.Store.Entities;
+using Shoootz.Store.Types;
 
 namespace Shoootz.Services.Store;
 

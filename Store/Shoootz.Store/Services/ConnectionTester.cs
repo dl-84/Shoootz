@@ -2,12 +2,22 @@ using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Result;
 using Result.Types;
+using Shoootz.Store.Types;
 
 namespace Shoootz.Store.Services;
 
 public class ConnectionTester : IConnectionTester
 {
-    public Result<bool, DbConnectionError> PostgreSql(string connectionString)
+    public Result<bool, DbConnectionError> Run(ProviderType provider, string connectionString)
+    {
+        return provider switch
+        {
+            ProviderType.PostgreSql => PostgreSql(connectionString),
+            _ => Sqlite(connectionString),
+        };
+    }
+
+    private static Result<bool, DbConnectionError> PostgreSql(string connectionString)
     {
         try
         {
@@ -27,7 +37,7 @@ public class ConnectionTester : IConnectionTester
         }
     }
 
-    public Result<bool, DbConnectionError> Sqlite(string connectionString)
+    private static Result<bool, DbConnectionError> Sqlite(string connectionString)
     {
         try
         {
@@ -42,6 +52,8 @@ public class ConnectionTester : IConnectionTester
             {
                 connection.Open();
                 using SqliteCommand command = connection.CreateCommand();
+                
+                // Language=SQLite
                 command.CommandText = "SELECT 1";
                 command.ExecuteScalar();
                 return true;
