@@ -266,20 +266,20 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
     [RelayCommand]
     private async Task ConnectDb()
     {
-        await _connectionTester
-            .Run(SelectedProvider, ConnectionString)
-            .Match(
-                async _ =>
-                {
-                    _storeService.Connect();
-                    await RefreshDbStatusAsync();
-                },
-                error =>
-                {
-                    ConnectionTestCompleted?.Invoke(false, error.Value.Message);
-                    return Task.CompletedTask;
-                }
-            );
+        Result<bool, DbConnectionError> result = await _connectionTester.Run(SelectedProvider, ConnectionString);
+
+        await result.Match(
+            async _ =>
+            {
+                _storeService.Connect();
+                await RefreshDbStatusAsync();
+            },
+            error =>
+            {
+                ConnectionTestCompleted?.Invoke(false, error.Value.Message);
+                return Task.CompletedTask;
+            }
+        );
     }
 
     [RelayCommand]
@@ -365,14 +365,14 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
     }
 
     [RelayCommand]
-    private void TestDbConnection()
+    private async Task TestDbConnection()
     {
-        _connectionTester
-            .Run(SelectedProvider, ConnectionString)
-            .Match(
-                _ => ConnectionTestCompleted?.Invoke(true, null),
-                error => ConnectionTestCompleted?.Invoke(false, error.Value.Message)
-            );
+        Result<bool, DbConnectionError> result = await _connectionTester.Run(SelectedProvider, ConnectionString);
+
+        result.Match(
+            _ => ConnectionTestCompleted?.Invoke(true, null),
+            error => ConnectionTestCompleted?.Invoke(false, error.Value.Message)
+        );
     }
 
     [RelayCommand]

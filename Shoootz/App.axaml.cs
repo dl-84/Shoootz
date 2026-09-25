@@ -64,7 +64,7 @@ public class App : Application
         }
         else
         {
-            mainWindowViewModel.CheckDbConnection();
+            _ = mainWindowViewModel.CheckDbConnectionAsync();
             UdpConnection? udpConnection = _configurationRoot.Get<SettingsModel>()?.UdpConnection;
 
             if (udpConnection is not null && udpConnection.AutoConnect)

@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Result;
@@ -8,7 +9,7 @@ namespace Shoootz.Store.Services;
 
 public class ConnectionTester : IConnectionTester
 {
-    public Result<bool, DbConnectionError> Run(ProviderType provider, string connectionString)
+    public Task<Result<bool, DbConnectionError>> Run(ProviderType provider, string connectionString)
     {
         return provider switch
         {
@@ -17,16 +18,16 @@ public class ConnectionTester : IConnectionTester
         };
     }
 
-    private static Result<bool, DbConnectionError> PostgreSql(string connectionString)
+    private static async Task<Result<bool, DbConnectionError>> PostgreSql(string connectionString)
     {
         try
         {
             DbContextOptionsBuilder<AppDbContext> builder = new DbContextOptionsBuilder<AppDbContext>();
             builder.UseNpgsql(connectionString);
 
-            using (AppDbContext context = new AppDbContext(builder.Options))
+            await using (AppDbContext context = new AppDbContext(builder.Options))
             {
-                bool canConnect = context.Database.CanConnectAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                bool canConnect = await context.Database.CanConnectAsync().ConfigureAwait(false);
 
                 return canConnect ? true : new Error<DbConnectionError>(new DbConnectionError("Connection failed."));
             }
@@ -37,7 +38,7 @@ public class ConnectionTester : IConnectionTester
         }
     }
 
-    private static Result<bool, DbConnectionError> Sqlite(string connectionString)
+    private static Task<Result<bool, DbConnectionError>> Sqlite(string connectionString)
     {
         try
         {
@@ -45,7 +46,9 @@ public class ConnectionTester : IConnectionTester
 
             if (!File.Exists(dataSource))
             {
-                return new Error<DbConnectionError>(new DbConnectionError($"Database file not found: {dataSource}"));
+                return Task.FromResult<Result<bool, DbConnectionError>>(
+                    new Error<DbConnectionError>(new DbConnectionError($"Database file not found: {dataSource}"))
+                );
             }
 
             using (SqliteConnection connection = new SqliteConnection(connectionString))
@@ -56,12 +59,14 @@ public class ConnectionTester : IConnectionTester
                 // Language=SQLite
                 command.CommandText = "SELECT 1";
                 command.ExecuteScalar();
-                return true;
+                return Task.FromResult<Result<bool, DbConnectionError>>(true);
             }
         }
         catch (Exception exception)
         {
-            return new Error<DbConnectionError>(new DbConnectionError(exception.Message));
+            return Task.FromResult<Result<bool, DbConnectionError>>(
+                new Error<DbConnectionError>(new DbConnectionError(exception.Message))
+            );
         }
     }
 }

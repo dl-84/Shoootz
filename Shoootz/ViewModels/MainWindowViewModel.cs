@@ -58,7 +58,7 @@ internal partial class MainWindowViewModel : ViewModelBase
         _serviceProvider = serviceProvider;
 
         _settingsWriter = settingsWriter;
-        _settingsWriter.SettingsSaved += _ => CheckDbConnection();
+        _settingsWriter.SettingsSaved += settings => _ = CheckDbConnectionAsync();
 
         _udpListenerService = udpListenerService;
         _udpListenerService.IsListeningChanged += (_, isListening) => IsUdpConnected = isListening;
@@ -126,11 +126,14 @@ internal partial class MainWindowViewModel : ViewModelBase
         }
     }
 
-    public void CheckDbConnection()
+    public async Task CheckDbConnectionAsync()
     {
-        _connectionTester
-            .Run(_settings.DatabaseConnection.Provider, _settings.DatabaseConnection.ConnectionString)
-            .Match(_ => { }, _ => _storeService.Disconnect());
+        Result<bool, DbConnectionError> result = await _connectionTester.Run(
+            _settings.DatabaseConnection.Provider,
+            _settings.DatabaseConnection.ConnectionString
+        );
+
+        result.Match(_ => { }, _ => _storeService.Disconnect());
     }
 
     public async Task CheckPendingMigrationsAsync()

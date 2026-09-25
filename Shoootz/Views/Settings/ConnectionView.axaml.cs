@@ -83,7 +83,7 @@ public partial class ConnectionView : UserControl
 
             if (success)
             {
-                mainWindowViewModel.CheckDbConnection();
+                _ = mainWindowViewModel.CheckDbConnectionAsync();
             }
         }
 
