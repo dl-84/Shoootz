@@ -8,7 +8,6 @@ using Shoootz.Models.Club;
 using Shoootz.Resources.Lang;
 using Shoootz.Services.Dialog;
 using Shoootz.Services.Localization;
-using Shoootz.ViewModels;
 using Shoootz.ViewModels.Competition;
 
 namespace Shoootz.Views.Competition;
@@ -72,70 +71,52 @@ public partial class ClubsView : UserControl
 
     private async Task OpenConfirmDeleteDialogAsync(ClubModel club)
     {
-        if (TopLevel.GetTopLevel(this) is not Window window || DataContext is not ClubsViewModel viewModel)
+        if (DataContext is not ClubsViewModel viewModel)
         {
             return;
         }
 
-        MainWindowViewModel? mainWindowViewModel = window.DataContext as MainWindowViewModel;
-
-        try
+        ContentDialog dialog = new()
         {
-            mainWindowViewModel?.IsDialogOpen = true;
+            DialogContent = BuildClubDeleteContent(club.Name),
+            DialogTitle = LocalizationService.Instance[nameof(Messages.Delete)],
+            IsDanger = true,
+            SizeToContent = SizeToContent.Height,
+            SubmitText = LocalizationService.Instance[nameof(Messages.Delete)],
+            Width = 460,
+        };
 
-            ContentDialog dialog = new()
-            {
-                DialogContent = BuildClubDeleteContent(club.Name),
-                DialogTitle = LocalizationService.Instance[nameof(Messages.Delete)],
-                IsDanger = true,
-                SizeToContent = SizeToContent.Height,
-                SubmitText = LocalizationService.Instance[nameof(Messages.Delete)],
-                Width = 460,
-            };
+        bool? result = await DialogService.ShowAsync(this, window => dialog.ShowDialog<bool?>(window));
 
-            bool? result = await dialog.ShowDialog<bool?>(window);
-
-            if (result is true)
-            {
-                await viewModel.ExecuteDeleteClubAsync(club);
-            }
-        }
-        finally
+        if (result is true)
         {
-            mainWindowViewModel?.IsDialogOpen = false;
+            await viewModel.ExecuteDeleteClubAsync(club);
         }
     }
 
     private async Task OpenCreateDialogAsync()
     {
-        if (TopLevel.GetTopLevel(this) is not Window window || DataContext is not ClubsViewModel viewModel)
+        if (DataContext is not ClubsViewModel viewModel)
         {
             return;
         }
 
-        MainWindowViewModel? mainWindowViewModel = window.DataContext as MainWindowViewModel;
         TextBox dialogContent = BuildClubNameTextBox(string.Empty);
+        bool? result = await DialogService.ShowAsync(
+            this,
+            window =>
+                new ContentDialog
+                {
+                    SubmitText = LocalizationService.Instance[nameof(Messages.Add)],
+                    DialogContent = dialogContent,
+                    DialogTitle = LocalizationService.Instance[nameof(Messages.ClubName)],
+                    SizeToContent = SizeToContent.WidthAndHeight,
+                }.ShowDialog<bool?>(window)
+        );
 
-        try
+        if (result is true)
         {
-            mainWindowViewModel?.IsDialogOpen = true;
-
-            bool? result = await new ContentDialog
-            {
-                SubmitText = LocalizationService.Instance[nameof(Messages.Add)],
-                DialogContent = dialogContent,
-                DialogTitle = LocalizationService.Instance[nameof(Messages.ClubName)],
-                SizeToContent = SizeToContent.WidthAndHeight,
-            }.ShowDialog<bool?>(window);
-
-            if (result is true)
-            {
-                await viewModel.ExecuteCreateClubAsync(dialogContent.Text ?? string.Empty);
-            }
-        }
-        finally
-        {
-            mainWindowViewModel?.IsDialogOpen = false;
+            await viewModel.ExecuteCreateClubAsync(dialogContent.Text ?? string.Empty);
         }
     }
 
@@ -146,34 +127,27 @@ public partial class ClubsView : UserControl
 
     private async Task OpenRenameDialogAsync(ClubModel club)
     {
-        if (TopLevel.GetTopLevel(this) is not Window window || DataContext is not ClubsViewModel viewModel)
+        if (DataContext is not ClubsViewModel viewModel)
         {
             return;
         }
 
-        MainWindowViewModel? mainWindowViewModel = window.DataContext as MainWindowViewModel;
         TextBox dialogContent = BuildClubNameTextBox(club.Name);
+        bool? result = await DialogService.ShowAsync(
+            this,
+            window =>
+                new ContentDialog
+                {
+                    SubmitText = LocalizationService.Instance[nameof(Messages.Save)],
+                    DialogContent = dialogContent,
+                    DialogTitle = LocalizationService.Instance[nameof(Messages.ClubName)],
+                    SizeToContent = SizeToContent.WidthAndHeight,
+                }.ShowDialog<bool?>(window)
+        );
 
-        try
+        if (result is true)
         {
-            mainWindowViewModel?.IsDialogOpen = true;
-
-            bool? result = await new ContentDialog
-            {
-                SubmitText = LocalizationService.Instance[nameof(Messages.Save)],
-                DialogContent = dialogContent,
-                DialogTitle = LocalizationService.Instance[nameof(Messages.ClubName)],
-                SizeToContent = SizeToContent.WidthAndHeight,
-            }.ShowDialog<bool?>(window);
-
-            if (result is true)
-            {
-                await viewModel.ExecuteRenameClubAsync(club, dialogContent.Text ?? string.Empty);
-            }
-        }
-        finally
-        {
-            mainWindowViewModel?.IsDialogOpen = false;
+            await viewModel.ExecuteRenameClubAsync(club, dialogContent.Text ?? string.Empty);
         }
     }
 }

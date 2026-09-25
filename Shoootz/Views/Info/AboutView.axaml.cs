@@ -4,8 +4,8 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Controls.ContentDialog;
 using Shoootz.Resources.Lang;
+using Shoootz.Services.Dialog;
 using Shoootz.Services.Localization;
-using Shoootz.ViewModels;
 
 namespace Shoootz.Views.Info;
 
@@ -24,35 +24,23 @@ public partial class AboutView : UserControl
 
     private async Task OpenLicenseDialogAsync(string content)
     {
-        if (TopLevel.GetTopLevel(this) is not Window window)
+        TextBlock licenseText = new()
         {
-            return;
-        }
+            Margin = new Thickness(24, 16, 24, 0),
+            Text = content,
+            TextWrapping = TextWrapping.Wrap,
+        };
 
-        MainWindowViewModel? vm = window.DataContext as MainWindowViewModel;
-
-        try
-        {
-            vm?.IsDialogOpen = true;
-
-            TextBlock licenseText = new TextBlock
-            {
-                Margin = new Thickness(24, 16, 24, 0),
-                Text = content,
-                TextWrapping = TextWrapping.Wrap,
-            };
-
-            await new ContentDialog
-            {
-                DialogContent = licenseText,
-                DialogTitle = LocalizationService.Instance[Messages.MitLicense],
-                Height = 650,
-                Width = 800,
-            }.ShowDialog(window);
-        }
-        finally
-        {
-            vm?.IsDialogOpen = false;
-        }
+        await DialogService.ShowAsync(
+            this,
+            window =>
+                new ContentDialog
+                {
+                    DialogContent = licenseText,
+                    DialogTitle = LocalizationService.Instance[Messages.MitLicense],
+                    Height = 650,
+                    Width = 800,
+                }.ShowDialog(window)
+        );
     }
 }

@@ -10,6 +10,7 @@ using Controls.ContentDialog;
 using Controls.InfoDialog;
 using Controls.InfoDialog.Enum;
 using Shoootz.Resources.Lang;
+using Shoootz.Services.Dialog;
 using Shoootz.Services.Localization;
 using Shoootz.ViewModels;
 using Shoootz.ViewModels.Settings;
@@ -53,34 +54,29 @@ public partial class MainWindow : Window
         };
     }
 
-    private async Task<bool> ConfirmLeaveUnsavedChangesAsync(MainWindowViewModel mainWindowViewModel)
+    private async Task<bool> ConfirmLeaveUnsavedChangesAsync()
     {
-        try
-        {
-            mainWindowViewModel.IsDialogOpen = true;
+        bool? result = await DialogService.ShowAsync(
+            this,
+            window =>
+                new ContentDialog
+                {
+                    DialogContent = BuildUnsavedChangesContent(),
+                    DialogTitle = LocalizationService.Instance[Messages.UnsavedChangesTitle],
+                    IsDanger = true,
+                    SizeToContent = SizeToContent.WidthAndHeight,
+                    SubmitText = LocalizationService.Instance[Messages.Leave],
+                }.ShowDialog<bool?>(window)
+        );
 
-            bool? result = await new ContentDialog
-            {
-                DialogContent = BuildUnsavedChangesContent(),
-                DialogTitle = LocalizationService.Instance[Messages.UnsavedChangesTitle],
-                IsDanger = true,
-                SizeToContent = SizeToContent.WidthAndHeight,
-                SubmitText = LocalizationService.Instance[Messages.Leave],
-            }.ShowDialog<bool?>(this);
-
-            return result is true;
-        }
-        finally
-        {
-            mainWindowViewModel.IsDialogOpen = false;
-        }
+        return result is true;
     }
 
     private async Task HandleNavigationRequestAsync(MainWindowViewModel mainWindowViewModel, NavigationPageType page)
     {
         if (
             mainWindowViewModel.CurrentPage is ConnectionViewModel { IsSaveEnabled: true }
-            && !await ConfirmLeaveUnsavedChangesAsync(mainWindowViewModel)
+            && !await ConfirmLeaveUnsavedChangesAsync()
         )
         {
             SyncSelectedNavItem(mainWindowViewModel.CurrentNavigationPageType);
@@ -132,26 +128,16 @@ public partial class MainWindow : Window
 
     private async Task OpenPendingMigrationsDialogAsync()
     {
-        if (DataContext is not MainWindowViewModel mainWindowViewModel)
-        {
-            return;
-        }
-
-        try
-        {
-            mainWindowViewModel.IsDialogOpen = true;
-
-            await new InfoDialog
-            {
-                DialogTitle = LocalizationService.Instance[Messages.DbPendingMigrationsTitle],
-                IconType = IconType.Warning,
-                Message = LocalizationService.Instance[Messages.DbPendingMigrations],
-            }.ShowDialog(this);
-        }
-        finally
-        {
-            mainWindowViewModel.IsDialogOpen = false;
-        }
+        await DialogService.ShowAsync(
+            this,
+            window =>
+                new InfoDialog
+                {
+                    DialogTitle = LocalizationService.Instance[Messages.DbPendingMigrationsTitle],
+                    IconType = IconType.Warning,
+                    Message = LocalizationService.Instance[Messages.DbPendingMigrations],
+                }.ShowDialog(window)
+        );
     }
 
     private void SyncSelectedNavItem(NavigationPageType pageType)

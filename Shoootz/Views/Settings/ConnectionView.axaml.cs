@@ -190,7 +190,7 @@ public partial class ConnectionView : UserControl
     private async Task OpenConfirmDialogAsync(string title, string message, Func<Task> onConfirmed)
     {
         ContentDialog dialog = BuildConfirmDialog(title, message);
-        bool? result = await ShowOverlayDialogAsync(window => dialog.ShowDialog<bool?>(window));
+        bool? result = await DialogService.ShowAsync(this, window => dialog.ShowDialog<bool?>(window));
 
         if (result is true)
         {
@@ -200,43 +200,49 @@ public partial class ConnectionView : UserControl
 
     private async Task OpenConnectionTestDialogAsync(bool success, string? errorMessage)
     {
-        await ShowOverlayDialogAsync(window =>
-            new InfoDialog
-            {
-                DialogTitle = LocalizationService.Instance[Messages.TestConnection],
-                IconType = success ? IconType.Info : IconType.Warning,
-                Message = success
-                    ? LocalizationService.Instance[Messages.ConnectionSuccessful]
-                    : errorMessage ?? LocalizationService.Instance[Messages.ConnectionFailed],
-            }.ShowDialog(window)
+        await DialogService.ShowAsync(
+            this,
+            window =>
+                new InfoDialog
+                {
+                    DialogTitle = LocalizationService.Instance[Messages.TestConnection],
+                    IconType = success ? IconType.Info : IconType.Warning,
+                    Message = success
+                        ? LocalizationService.Instance[Messages.ConnectionSuccessful]
+                        : errorMessage ?? LocalizationService.Instance[Messages.ConnectionFailed],
+                }.ShowDialog(window)
         );
     }
 
     private async Task OpenDbInitializeDialogAsync(bool success, string? errorMessage)
     {
-        await ShowOverlayDialogAsync(window =>
-            new InfoDialog
-            {
-                DialogTitle = LocalizationService.Instance[Messages.InitializeDb],
-                IconType = success ? IconType.Info : IconType.Warning,
-                Message = success
-                    ? LocalizationService.Instance[Messages.DbInitializeSuccessful]
-                    : errorMessage ?? LocalizationService.Instance[Messages.ConnectionFailed],
-            }.ShowDialog(window)
+        await DialogService.ShowAsync(
+            this,
+            window =>
+                new InfoDialog
+                {
+                    DialogTitle = LocalizationService.Instance[Messages.InitializeDb],
+                    IconType = success ? IconType.Info : IconType.Warning,
+                    Message = success
+                        ? LocalizationService.Instance[Messages.DbInitializeSuccessful]
+                        : errorMessage ?? LocalizationService.Instance[Messages.ConnectionFailed],
+                }.ShowDialog(window)
         );
     }
 
     private async Task OpenDeleteAllDialogAsync(bool success, string? errorMessage)
     {
-        await ShowOverlayDialogAsync(window =>
-            new InfoDialog
-            {
-                DialogTitle = LocalizationService.Instance[Messages.DeleteAll],
-                IconType = success ? IconType.Info : IconType.Warning,
-                Message = success
-                    ? LocalizationService.Instance[Messages.DeleteAllSuccessful]
-                    : errorMessage ?? LocalizationService.Instance[Messages.ConnectionFailed],
-            }.ShowDialog(window)
+        await DialogService.ShowAsync(
+            this,
+            window =>
+                new InfoDialog
+                {
+                    DialogTitle = LocalizationService.Instance[Messages.DeleteAll],
+                    IconType = success ? IconType.Info : IconType.Warning,
+                    Message = success
+                        ? LocalizationService.Instance[Messages.DeleteAllSuccessful]
+                        : errorMessage ?? LocalizationService.Instance[Messages.ConnectionFailed],
+                }.ShowDialog(window)
         );
     }
 
@@ -247,58 +253,17 @@ public partial class ConnectionView : UserControl
 
     private async Task OpenSettingsContentDialogAsync(string content)
     {
-        if (TopLevel.GetTopLevel(this) is not Window window)
-        {
-            return;
-        }
-
-        MainWindowViewModel? mainWindowViewModel = window.DataContext as MainWindowViewModel;
-
-        try
-        {
-            mainWindowViewModel?.IsDialogOpen = true;
-
-            await new ContentDialog
-            {
-                CopyText = content,
-                DialogContent = BuildTextEditor(content),
-                DialogTitle = LocalizationService.Instance[Messages.Settings],
-                Height = 650,
-                Width = 1000,
-            }.ShowDialog(window);
-        }
-        finally
-        {
-            mainWindowViewModel?.IsDialogOpen = false;
-        }
-    }
-
-    private async Task ShowOverlayDialogAsync(Func<Window, Task> showDialog)
-    {
-        await ShowOverlayDialogAsync<object?>(async window =>
-        {
-            await showDialog(window);
-            return null;
-        });
-    }
-
-    private async Task<TResult?> ShowOverlayDialogAsync<TResult>(Func<Window, Task<TResult>> showDialog)
-    {
-        if (TopLevel.GetTopLevel(this) is not Window window)
-        {
-            return default;
-        }
-
-        MainWindowViewModel? mainWindowViewModel = window.DataContext as MainWindowViewModel;
-
-        try
-        {
-            mainWindowViewModel?.IsDialogOpen = true;
-            return await showDialog(window);
-        }
-        finally
-        {
-            mainWindowViewModel?.IsDialogOpen = false;
-        }
+        await DialogService.ShowAsync(
+            this,
+            window =>
+                new ContentDialog
+                {
+                    CopyText = content,
+                    DialogContent = BuildTextEditor(content),
+                    DialogTitle = LocalizationService.Instance[Messages.Settings],
+                    Height = 650,
+                    Width = 1000,
+                }.ShowDialog(window)
+        );
     }
 }

@@ -5,8 +5,8 @@ using Controls.ContentDialog;
 using Controls.JsonEditor;
 using Shoootz.Models.Udp;
 using Shoootz.Resources.Lang;
+using Shoootz.Services.Dialog;
 using Shoootz.Services.Localization;
-using Shoootz.ViewModels;
 
 namespace Shoootz.Views.Info;
 
@@ -49,31 +49,20 @@ public partial class LoggingView : UserControl
 
     private async Task OpenRawDataDialogAsync(UdpRawModel entry)
     {
-        if (TopLevel.GetTopLevel(this) is not Window window)
-        {
-            return;
-        }
-
-        MainWindowViewModel? mainWindowViewModel = window.DataContext as MainWindowViewModel;
         string prettyJson = PrettyPrintJson(entry.RawData);
 
-        try
-        {
-            mainWindowViewModel?.IsDialogOpen = true;
-
-            await new ContentDialog
-            {
-                CopyText = prettyJson,
-                DialogContent = BuildTextEditor(prettyJson),
-                DialogTitle =
-                    $"{LocalizationService.Instance[nameof(Messages.LoggingRawTitle)]} – {entry.Timestamp:HH:mm:ss.fff}",
-                Height = 650,
-                Width = 800,
-            }.ShowDialog(window);
-        }
-        finally
-        {
-            mainWindowViewModel?.IsDialogOpen = false;
-        }
+        await DialogService.ShowAsync(
+            this,
+            window =>
+                new ContentDialog
+                {
+                    CopyText = prettyJson,
+                    DialogContent = BuildTextEditor(prettyJson),
+                    DialogTitle =
+                        $"{LocalizationService.Instance[nameof(Messages.LoggingRawTitle)]} – {entry.Timestamp:HH:mm:ss.fff}",
+                    Height = 650,
+                    Width = 800,
+                }.ShowDialog(window)
+        );
     }
 }
