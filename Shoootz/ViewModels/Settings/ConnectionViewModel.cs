@@ -221,6 +221,8 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
 
     partial void OnConnectionStringChanged(string value) => NotifySaveStateChanged();
 
+    partial void OnIsDbConnectedChanged(bool value) => InitializeDbCommand.NotifyCanExecuteChanged();
+
     partial void OnPortChanged(string value) => NotifySaveStateChanged();
 
     private LanguageOptionModel GetLanguage(string cultureCode)
@@ -356,7 +358,7 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
     [RelayCommand(CanExecute = nameof(CanInitializeDb))]
     private async Task InitializeDb() => await InitializeDatabaseAsync(connectAfterSuccess: false);
 
-    private bool CanInitializeDb() => DbStatus != DbStatus.UpToDate;
+    private bool CanInitializeDb() => IsInitializeDbEnabled;
 
     private async Task RefreshDbStatusAsync()
     {
