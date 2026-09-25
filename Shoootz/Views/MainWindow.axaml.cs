@@ -13,7 +13,6 @@ using Shoootz.Resources.Lang;
 using Shoootz.Services.Dialog;
 using Shoootz.Services.Localization;
 using Shoootz.ViewModels;
-using Shoootz.ViewModels.Settings;
 
 namespace Shoootz.Views;
 
@@ -75,7 +74,7 @@ public partial class MainWindow : Window
     private async Task HandleNavigationRequestAsync(MainWindowViewModel mainWindowViewModel, NavigationPageType page)
     {
         if (
-            mainWindowViewModel.CurrentPage is ConnectionViewModel { IsSaveEnabled: true }
+            mainWindowViewModel.CurrentPage is IHasUnsavedChanges { IsSaveEnabled: true }
             && !await ConfirmLeaveUnsavedChangesAsync()
         )
         {

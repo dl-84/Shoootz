@@ -24,10 +24,11 @@ using Shoootz.Services.Store;
 using Shoootz.Services.Udp;
 using Shoootz.Store;
 using Shoootz.Store.Services;
+using Shoootz.ViewModels;
 
 namespace Shoootz.ViewModels.Settings;
 
-internal partial class ConnectionViewModel : ViewModelBase, IDisposable
+internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUnsavedChanges
 {
     private readonly IConnectionTester _connectionTester;
 
@@ -42,8 +43,6 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable
     private readonly IStoreService _storeService;
 
     private readonly IUdpListenerService _udpListenerService;
-
-    private bool _allowSave;
 
     public ConnectionViewModel(
         IConnectionTester connectionTester,
@@ -72,8 +71,6 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable
         SelectedProvider = _settings.DatabaseConnection.Provider;
         ConnectionString = _settings.DatabaseConnection.ConnectionString;
         SelectedLanguageOption = GetLanguage(_settings.CurrentLanguageCode);
-
-        _allowSave = true;
 
         _udpListenerService.IsListeningChanged += OnUdpListeningChanged;
 
@@ -232,7 +229,7 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable
 
     partial void OnSelectedLanguageOptionChanged(LanguageOptionModel? value)
     {
-        if (value is null || !_allowSave)
+        if (value is null || value.CultureInfo.TwoLetterISOLanguageName == _settings.CurrentLanguageCode)
         {
             return;
         }
