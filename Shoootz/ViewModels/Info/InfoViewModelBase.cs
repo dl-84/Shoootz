@@ -21,16 +21,22 @@ internal abstract class InfoViewModelBase : ViewModelBase, IDisposable
 
     public IReadOnlyList<string> ColumnHeaders { get; private set; }
 
-    public List<PackageModel> Packages { get; }
+    public List<PackageModel> Packages { get; private set; }
 
     public void Dispose()
     {
         _localizationService.LanguageChanged -= OnLanguageChanged;
     }
 
+    protected void SetPackages(List<PackageModel> packages)
+    {
+        Packages = packages;
+        OnPropertyChanged(nameof(Packages));
+    }
+
     private IReadOnlyList<string> BuildColumnHeaders() =>
         [
-            _localizationService[nameof(Messages.Database)],
+            _localizationService[nameof(Messages.Name)],
             _localizationService[nameof(Messages.Version)],
             _localizationService[nameof(Messages.License)],
             _localizationService[nameof(Messages.Link)],
