@@ -87,6 +87,14 @@ internal class UdpListenerService : IUdpListenerService
 
                 ShotRawDataReceived?.Invoke(this, result.Buffer);
             }
+            catch (OperationCanceledException)
+            {
+                break;
+            }
+            catch (SocketException)
+            {
+                // Transient network errors (e.g. ICMP port-unreachable) are expected on UDP — keep listening.
+            }
             catch (Exception)
             {
                 break;

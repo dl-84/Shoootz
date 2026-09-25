@@ -23,6 +23,9 @@
   <data name="Competition" xml:space="preserve">
     <value>Competition</value>
   </data>
+  <data name="Data" xml:space="preserve">
+    <value>Data</value>
+  </data>
   <data name="Database" xml:space="preserve">
     <value>Database</value>
   </data>
@@ -43,6 +46,9 @@
   </data>
   <data name="Shooters" xml:space="preserve">
     <value>Shooters</value>
+  </data>
+  <data name="Shots" xml:space="preserve">
+    <value>Shots</value>
   </data>
   <data name="Version" xml:space="preserve">
     <value>Version</value>
@@ -259,29 +265,56 @@
   <data name="ShotCounterParsed" xml:space="preserve">
     <value>Parsed Shots</value>
   </data>
+  <data name="ShotCounterParsedTooltip" xml:space="preserve">
+    <value>Number of records successfully recognized and processed as a shot.</value>
+  </data>
   <data name="ShotCounterReceived" xml:space="preserve">
     <value>Received Shots</value>
+  </data>
+  <data name="ShotCounterReceivedTooltip" xml:space="preserve">
+    <value>Number of packets received.</value>
   </data>
   <data name="ShotCounterParsedError" xml:space="preserve">
     <value>Parse Errors</value>
   </data>
+  <data name="ShotCounterParsedErrorTooltip" xml:space="preserve">
+    <value>Records that could not be processed due to an error.</value>
+  </data>
   <data name="ShotCounterSaved" xml:space="preserve">
     <value>Saved Shots</value>
+  </data>
+  <data name="ShotCounterSavedTooltip" xml:space="preserve">
+    <value>Number of shots successfully saved to the database.</value>
   </data>
   <data name="ShotCounterSavedError" xml:space="preserve">
     <value>Save Errors</value>
   </data>
+  <data name="ShotCounterSavedErrorTooltip" xml:space="preserve">
+    <value>Shots that could not be saved to the database.</value>
+  </data>
   <data name="ShotCounterIncorrectNumberOfObjects" xml:space="preserve">
     <value>Wrong Object Count</value>
+  </data>
+  <data name="ShotCounterIncorrectNumberOfObjectsTooltip" xml:space="preserve">
+    <value>Records discarded because they didn't contain exactly one object.</value>
   </data>
   <data name="ShotCounterMissingShooterData" xml:space="preserve">
     <value>Missing Shooter Data</value>
   </data>
+  <data name="ShotCounterMissingShooterDataTooltip" xml:space="preserve">
+    <value>Shots with incomplete shooter data (first/last name).</value>
+  </data>
   <data name="ShotCounterNotTypeOfShot" xml:space="preserve">
     <value>Not A Shot</value>
   </data>
+  <data name="ShotCounterNotTypeOfShotTooltip" xml:space="preserve">
+    <value>Records discarded because their object wasn't a shot.</value>
+  </data>
   <data name="ShotCounterWarmup" xml:space="preserve">
     <value>Warmup Shots</value>
+  </data>
+  <data name="ShotCounterWarmupTooltip" xml:space="preserve">
+    <value>Shots flagged as warmup and therefore not saved.</value>
   </data>
   <data name="Logging" xml:space="preserve">
     <value>Logging</value>

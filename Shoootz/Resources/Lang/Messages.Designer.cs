@@ -230,6 +230,15 @@ namespace Shoootz.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Data.
+        /// </summary>
+        internal static string Data {
+            get {
+                return ResourceManager.GetString("Data", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Database.
         /// </summary>
         internal static string Database {
@@ -653,6 +662,15 @@ namespace Shoootz.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Records discarded because they didn&apos;t contain exactly one object..
+        /// </summary>
+        internal static string ShotCounterIncorrectNumberOfObjectsTooltip {
+            get {
+                return ResourceManager.GetString("ShotCounterIncorrectNumberOfObjectsTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Missing Shooter Data.
         /// </summary>
         internal static string ShotCounterMissingShooterData {
@@ -662,11 +680,29 @@ namespace Shoootz.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Shots with incomplete shooter data (first/last name)..
+        /// </summary>
+        internal static string ShotCounterMissingShooterDataTooltip {
+            get {
+                return ResourceManager.GetString("ShotCounterMissingShooterDataTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Not A Shot.
         /// </summary>
         internal static string ShotCounterNotTypeOfShot {
             get {
                 return ResourceManager.GetString("ShotCounterNotTypeOfShot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Records discarded because their object wasn&apos;t a shot..
+        /// </summary>
+        internal static string ShotCounterNotTypeOfShotTooltip {
+            get {
+                return ResourceManager.GetString("ShotCounterNotTypeOfShotTooltip", resourceCulture);
             }
         }
         
@@ -689,11 +725,38 @@ namespace Shoootz.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Records that could not be processed due to an error..
+        /// </summary>
+        internal static string ShotCounterParsedErrorTooltip {
+            get {
+                return ResourceManager.GetString("ShotCounterParsedErrorTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of records successfully recognized and processed as a shot..
+        /// </summary>
+        internal static string ShotCounterParsedTooltip {
+            get {
+                return ResourceManager.GetString("ShotCounterParsedTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Received Shots.
         /// </summary>
         internal static string ShotCounterReceived {
             get {
                 return ResourceManager.GetString("ShotCounterReceived", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of packets received..
+        /// </summary>
+        internal static string ShotCounterReceivedTooltip {
+            get {
+                return ResourceManager.GetString("ShotCounterReceivedTooltip", resourceCulture);
             }
         }
         
@@ -716,11 +779,47 @@ namespace Shoootz.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Shots that could not be saved to the database..
+        /// </summary>
+        internal static string ShotCounterSavedErrorTooltip {
+            get {
+                return ResourceManager.GetString("ShotCounterSavedErrorTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of shots successfully saved to the database..
+        /// </summary>
+        internal static string ShotCounterSavedTooltip {
+            get {
+                return ResourceManager.GetString("ShotCounterSavedTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Warmup Shots.
         /// </summary>
         internal static string ShotCounterWarmup {
             get {
                 return ResourceManager.GetString("ShotCounterWarmup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shots flagged as warmup and therefore not saved..
+        /// </summary>
+        internal static string ShotCounterWarmupTooltip {
+            get {
+                return ResourceManager.GetString("ShotCounterWarmupTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shots.
+        /// </summary>
+        internal static string Shots {
+            get {
+                return ResourceManager.GetString("Shots", resourceCulture);
             }
         }
         

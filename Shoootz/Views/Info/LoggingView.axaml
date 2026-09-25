@@ -22,50 +22,59 @@
 
             <sc:CounterCardControl Grid.Row="0"
                                    Grid.Column="0"
+                                   InfoText="{loc:Localization ShotCounterReceivedTooltip}"
                                    Label="{loc:Localization ShotCounterReceived}"
                                    Value="{Binding ReceivedShots}" />
 
             <sc:CounterCardControl Grid.Row="0"
                                    Grid.Column="1"
+                                   InfoText="{loc:Localization ShotCounterParsedTooltip}"
                                    Label="{loc:Localization ShotCounterParsed}"
                                    Value="{Binding ParsedShots}" />
 
             <sc:CounterCardControl Grid.Row="0"
                                    Grid.Column="2"
+                                   InfoText="{loc:Localization ShotCounterSavedTooltip}"
                                    Label="{loc:Localization ShotCounterSaved}"
                                    Value="{Binding SavedShots}" />
 
             <sc:CounterCardControl Grid.Row="1"
                                    Grid.Column="0"
+                                   InfoText="{loc:Localization ShotCounterWarmupTooltip}"
                                    Label="{loc:Localization ShotCounterWarmup}"
                                    Value="{Binding WarmupShots}" />
 
             <sc:CounterCardControl Grid.Row="1"
                                    Grid.Column="1"
+                                   InfoText="{loc:Localization ShotCounterIncorrectNumberOfObjectsTooltip}"
                                    IsDanger="True"
                                    Label="{loc:Localization ShotCounterIncorrectNumberOfObjects}"
                                    Value="{Binding IncorrectNumberOfObjects}" />
 
             <sc:CounterCardControl Grid.Row="1"
                                    Grid.Column="2"
+                                   InfoText="{loc:Localization ShotCounterNotTypeOfShotTooltip}"
                                    IsDanger="True"
                                    Label="{loc:Localization ShotCounterNotTypeOfShot}"
                                    Value="{Binding NotTypeOfShot}" />
 
             <sc:CounterCardControl Grid.Row="2"
                                    Grid.Column="0"
+                                   InfoText="{loc:Localization ShotCounterMissingShooterDataTooltip}"
                                    IsDanger="True"
                                    Label="{loc:Localization ShotCounterMissingShooterData}"
                                    Value="{Binding MissingShooterData}" />
 
             <sc:CounterCardControl Grid.Row="2"
                                    Grid.Column="1"
+                                   InfoText="{loc:Localization ShotCounterParsedErrorTooltip}"
                                    IsDanger="True"
                                    Label="{loc:Localization ShotCounterParsedError}"
                                    Value="{Binding ParsedShotErrors}" />
 
             <sc:CounterCardControl Grid.Row="2"
                                    Grid.Column="2"
+                                   InfoText="{loc:Localization ShotCounterSavedErrorTooltip}"
                                    IsDanger="True"
                                    Label="{loc:Localization ShotCounterSavedError}"
                                    Value="{Binding SavedShotErrors}" />

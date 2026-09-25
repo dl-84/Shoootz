@@ -53,6 +53,8 @@ internal partial class LoggingViewModel : ViewModelBase, IDisposable
 
         _dataProcessor.RawDataLogged += OnRawDataLogged;
 
+        OnTimerTick(this, EventArgs.Empty);
+
         _refreshTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
         _refreshTimer.Tick += OnTimerTick;
         _refreshTimer.Start();
