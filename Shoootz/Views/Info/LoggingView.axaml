@@ -1,6 +1,7 @@
-<UserControl x:Class="Shoootz.Views.Info.LoggingView"
+﻿<UserControl x:Class="Shoootz.Views.Info.LoggingView"
              xmlns="https://github.com/avaloniaui"
              xmlns:loc="using:Shoootz.Extensions"
+             xmlns:sc="using:Controls.CounterCard"
              xmlns:vm="using:Shoootz.ViewModels.Info"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:DataType="vm:LoggingViewModel">
@@ -19,271 +20,55 @@
               RowDefinitions="Auto,Auto,Auto"
               RowSpacing="{DynamicResource SpacingMedium}">
 
-            <Border Grid.Row="0"
-                    Grid.Column="0"
-                    Classes="card">
-                <Grid ColumnDefinitions="Auto,*">
-                    <StackPanel Grid.Column="0"
-                                Orientation="Horizontal"
-                                Spacing="{DynamicResource SpacingSmall}">
-                        <PathIcon Classes="icon-action"
-                                  Data="{DynamicResource InfoIcon}"
-                                  Height="18"
-                                  VerticalAlignment="Center"
-                                  Width="18" />
-                        <TextBlock Classes="label"
-                                   FontWeight="Normal"
-                                   Text="{loc:Localization ShotCounterReceived}"
-                                   TextWrapping="NoWrap"
-                                   VerticalAlignment="Center" />
-                    </StackPanel>
-                    <TextBlock Grid.Column="1"
-                               Classes="h2"
-                               FontSize="{DynamicResource FontSizeMedium}"
-                               FontWeight="Normal"
-                               HorizontalAlignment="Right"
-                               LineHeight="22"
-                               Text="{Binding ReceivedShots}"
-                               VerticalAlignment="Center" />
-                </Grid>
-            </Border>
+            <sc:CounterCardControl Grid.Row="0"
+                                   Grid.Column="0"
+                                   Label="{loc:Localization ShotCounterReceived}"
+                                   Value="{Binding ReceivedShots}" />
 
-            <Border Grid.Row="0"
-                    Grid.Column="1"
-                    Classes="card">
-                <Grid ColumnDefinitions="Auto,*">
-                    <StackPanel Grid.Column="0"
-                                Orientation="Horizontal"
-                                Spacing="{DynamicResource SpacingSmall}">
-                        <PathIcon Classes="icon-action"
-                                  Data="{DynamicResource InfoIcon}"
-                                  Height="18"
-                                  VerticalAlignment="Center"
-                                  Width="18" />
-                        <TextBlock Classes="label"
-                                   FontWeight="Normal"
-                                   Text="{loc:Localization ShotCounterParsed}"
-                                   TextWrapping="NoWrap"
-                                   VerticalAlignment="Center" />
-                    </StackPanel>
-                    <TextBlock Grid.Column="1"
-                               Classes="h2"
-                               FontSize="{DynamicResource FontSizeMedium}"
-                               FontWeight="Normal"
-                               HorizontalAlignment="Right"
-                               LineHeight="22"
-                               Text="{Binding ParsedShots}"
-                               VerticalAlignment="Center" />
-                </Grid>
-            </Border>
+            <sc:CounterCardControl Grid.Row="0"
+                                   Grid.Column="1"
+                                   Label="{loc:Localization ShotCounterParsed}"
+                                   Value="{Binding ParsedShots}" />
 
-            <Border Grid.Row="0"
-                    Grid.Column="2"
-                    Classes="card">
-                <Grid ColumnDefinitions="Auto,*">
-                    <StackPanel Grid.Column="0"
-                                Orientation="Horizontal"
-                                Spacing="{DynamicResource SpacingSmall}">
-                        <PathIcon Classes="icon-action"
-                                  Data="{DynamicResource InfoIcon}"
-                                  Height="18"
-                                  VerticalAlignment="Center"
-                                  Width="18" />
-                        <TextBlock Classes="label"
-                                   FontWeight="Normal"
-                                   Text="{loc:Localization ShotCounterSaved}"
-                                   TextWrapping="NoWrap"
-                                   VerticalAlignment="Center" />
-                    </StackPanel>
-                    <TextBlock Grid.Column="1"
-                               Classes="h2"
-                               FontSize="{DynamicResource FontSizeMedium}"
-                               FontWeight="Normal"
-                               HorizontalAlignment="Right"
-                               LineHeight="22"
-                               Text="{Binding SavedShots}"
-                               VerticalAlignment="Center" />
-                </Grid>
-            </Border>
+            <sc:CounterCardControl Grid.Row="0"
+                                   Grid.Column="2"
+                                   Label="{loc:Localization ShotCounterSaved}"
+                                   Value="{Binding SavedShots}" />
 
-            <Border Grid.Row="1"
-                    Grid.Column="0"
-                    Classes="card">
-                <Grid ColumnDefinitions="Auto,*">
-                    <StackPanel Grid.Column="0"
-                                Orientation="Horizontal"
-                                Spacing="{DynamicResource SpacingSmall}">
-                        <PathIcon Classes="icon-action"
-                                  Data="{DynamicResource InfoIcon}"
-                                  Height="18"
-                                  VerticalAlignment="Center"
-                                  Width="18" />
-                        <TextBlock Classes="label"
-                                   FontWeight="Normal"
-                                   Text="{loc:Localization ShotCounterWarmup}"
-                                   TextWrapping="NoWrap"
-                                   VerticalAlignment="Center" />
-                    </StackPanel>
-                    <TextBlock Grid.Column="1"
-                               Classes="h2"
-                               FontSize="{DynamicResource FontSizeMedium}"
-                               FontWeight="Normal"
-                               HorizontalAlignment="Right"
-                               LineHeight="22"
-                               Text="{Binding WarmupShots}"
-                               VerticalAlignment="Center" />
-                </Grid>
-            </Border>
+            <sc:CounterCardControl Grid.Row="1"
+                                   Grid.Column="0"
+                                   Label="{loc:Localization ShotCounterWarmup}"
+                                   Value="{Binding WarmupShots}" />
 
-            <Border Grid.Row="1"
-                    Grid.Column="1"
-                    Classes="card">
-                <Grid ColumnDefinitions="Auto,*">
-                    <StackPanel Grid.Column="0"
-                                Orientation="Horizontal"
-                                Spacing="{DynamicResource SpacingSmall}">
-                        <PathIcon Classes="icon-action"
-                                  Data="{DynamicResource InfoIcon}"
-                                  Height="18"
-                                  VerticalAlignment="Center"
-                                  Width="18" />
-                        <TextBlock Classes="label"
-                                   FontWeight="Normal"
-                                   Foreground="{DynamicResource ErrorBrush}"
-                                   Text="{loc:Localization ShotCounterIncorrectNumberOfObjects}"
-                                   TextWrapping="NoWrap"
-                                   VerticalAlignment="Center" />
-                    </StackPanel>
-                    <TextBlock Grid.Column="1"
-                               Classes="h2"
-                               FontSize="{DynamicResource FontSizeMedium}"
-                               FontWeight="Normal"
-                               HorizontalAlignment="Right"
-                               LineHeight="22"
-                               Text="{Binding IncorrectNumberOfObjects}"
-                               VerticalAlignment="Center" />
-                </Grid>
-            </Border>
+            <sc:CounterCardControl Grid.Row="1"
+                                   Grid.Column="1"
+                                   IsDanger="True"
+                                   Label="{loc:Localization ShotCounterIncorrectNumberOfObjects}"
+                                   Value="{Binding IncorrectNumberOfObjects}" />
 
-            <Border Grid.Row="1"
-                    Grid.Column="2"
-                    Classes="card">
-                <Grid ColumnDefinitions="Auto,*">
-                    <StackPanel Grid.Column="0"
-                                Orientation="Horizontal"
-                                Spacing="{DynamicResource SpacingSmall}">
-                        <PathIcon Classes="icon-action"
-                                  Data="{DynamicResource InfoIcon}"
-                                  Height="18"
-                                  VerticalAlignment="Center"
-                                  Width="18" />
-                        <TextBlock Classes="label"
-                                   FontWeight="Normal"
-                                   Foreground="{DynamicResource ErrorBrush}"
-                                   Text="{loc:Localization ShotCounterNotTypeOfShot}"
-                                   TextWrapping="NoWrap"
-                                   VerticalAlignment="Center" />
-                    </StackPanel>
-                    <TextBlock Grid.Column="1"
-                               Classes="h2"
-                               FontSize="{DynamicResource FontSizeMedium}"
-                               FontWeight="Normal"
-                               HorizontalAlignment="Right"
-                               LineHeight="22"
-                               Text="{Binding NotTypeOfShot}"
-                               VerticalAlignment="Center" />
-                </Grid>
-            </Border>
+            <sc:CounterCardControl Grid.Row="1"
+                                   Grid.Column="2"
+                                   IsDanger="True"
+                                   Label="{loc:Localization ShotCounterNotTypeOfShot}"
+                                   Value="{Binding NotTypeOfShot}" />
 
-            <Border Grid.Row="2"
-                    Grid.Column="0"
-                    Classes="card">
-                <Grid ColumnDefinitions="Auto,*">
-                    <StackPanel Grid.Column="0"
-                                Orientation="Horizontal"
-                                Spacing="{DynamicResource SpacingSmall}">
-                        <PathIcon Classes="icon-action"
-                                  Data="{DynamicResource InfoIcon}"
-                                  Height="18"
-                                  VerticalAlignment="Center"
-                                  Width="18" />
-                        <TextBlock Classes="label"
-                                   FontWeight="Normal"
-                                   Foreground="{DynamicResource ErrorBrush}"
-                                   Text="{loc:Localization ShotCounterMissingShooterData}"
-                                   TextWrapping="NoWrap"
-                                   VerticalAlignment="Center" />
-                    </StackPanel>
-                    <TextBlock Grid.Column="1"
-                               Classes="h2"
-                               FontSize="{DynamicResource FontSizeMedium}"
-                               FontWeight="Normal"
-                               HorizontalAlignment="Right"
-                               LineHeight="22"
-                               Text="{Binding MissingShooterData}"
-                               VerticalAlignment="Center" />
-                </Grid>
-            </Border>
+            <sc:CounterCardControl Grid.Row="2"
+                                   Grid.Column="0"
+                                   IsDanger="True"
+                                   Label="{loc:Localization ShotCounterMissingShooterData}"
+                                   Value="{Binding MissingShooterData}" />
 
-            <Border Grid.Row="2"
-                    Grid.Column="1"
-                    Classes="card">
-                <Grid ColumnDefinitions="Auto,*">
-                    <StackPanel Grid.Column="0"
-                                Orientation="Horizontal"
-                                Spacing="{DynamicResource SpacingSmall}">
-                        <PathIcon Classes="icon-action"
-                                  Data="{DynamicResource InfoIcon}"
-                                  Height="18"
-                                  VerticalAlignment="Center"
-                                  Width="18" />
-                        <TextBlock Classes="label"
-                                   FontWeight="Normal"
-                                   Foreground="{DynamicResource ErrorBrush}"
-                                   Text="{loc:Localization ShotCounterParsedError}"
-                                   TextWrapping="NoWrap"
-                                   VerticalAlignment="Center" />
-                    </StackPanel>
-                    <TextBlock Grid.Column="1"
-                               Classes="h2"
-                               FontSize="{DynamicResource FontSizeMedium}"
-                               FontWeight="Normal"
-                               HorizontalAlignment="Right"
-                               LineHeight="22"
-                               Text="{Binding ParsedShotErrors}"
-                               VerticalAlignment="Center" />
-                </Grid>
-            </Border>
+            <sc:CounterCardControl Grid.Row="2"
+                                   Grid.Column="1"
+                                   IsDanger="True"
+                                   Label="{loc:Localization ShotCounterParsedError}"
+                                   Value="{Binding ParsedShotErrors}" />
 
-            <Border Grid.Row="2"
-                    Grid.Column="2"
-                    Classes="card">
-                <Grid ColumnDefinitions="Auto,*">
-                    <StackPanel Grid.Column="0"
-                                Orientation="Horizontal"
-                                Spacing="{DynamicResource SpacingSmall}">
-                        <PathIcon Classes="icon-action"
-                                  Data="{DynamicResource InfoIcon}"
-                                  Height="18"
-                                  VerticalAlignment="Center"
-                                  Width="18" />
-                        <TextBlock Classes="label"
-                                   FontWeight="Normal"
-                                   Foreground="{DynamicResource ErrorBrush}"
-                                   Text="{loc:Localization ShotCounterSavedError}"
-                                   TextWrapping="NoWrap"
-                                   VerticalAlignment="Center" />
-                    </StackPanel>
-                    <TextBlock Grid.Column="1"
-                               Classes="h2"
-                               FontSize="{DynamicResource FontSizeMedium}"
-                               FontWeight="Normal"
-                               HorizontalAlignment="Right"
-                               LineHeight="22"
-                               Text="{Binding SavedShotErrors}"
-                               VerticalAlignment="Center" />
-                </Grid>
-            </Border>
+            <sc:CounterCardControl Grid.Row="2"
+                                   Grid.Column="2"
+                                   IsDanger="True"
+                                   Label="{loc:Localization ShotCounterSavedError}"
+                                   Value="{Binding SavedShotErrors}" />
         </Grid>
 
         <Border Grid.Row="2"
