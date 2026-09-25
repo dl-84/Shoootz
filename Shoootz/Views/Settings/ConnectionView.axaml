@@ -20,7 +20,8 @@
                             Spacing="{DynamicResource SpacingMedium}">
                     <PathIcon Classes="icon-action"
                               Data="{DynamicResource SaveIcon}"
-                              PointerPressed="OnSaveIconPressed"
+                              PointerPressed="OnCommandIconPressed"
+                              Tag="{Binding SaveCommand}"
                               ToolTip.HorizontalOffset="0"
                               ToolTip.Placement="TopEdgeAlignedRight"
                               ToolTip.Tip="{loc:Localization Save}"
@@ -63,7 +64,8 @@
                                         Spacing="{DynamicResource SpacingMedium}">
                                 <PathIcon Classes="icon-action"
                                           Data="{DynamicResource FolderOpenIcon}"
-                                          PointerPressed="OnOpenSettingsFolderIconPressed"
+                                          PointerPressed="OnCommandIconPressed"
+                                          Tag="{Binding OpenSettingsFolderCommand}"
                                           ToolTip.HorizontalOffset="0"
                                           ToolTip.Placement="TopEdgeAlignedRight"
                                           ToolTip.Tip="{loc:Localization OpenFolder}"
@@ -71,7 +73,8 @@
                                           VerticalAlignment="Center" />
                                 <PathIcon Classes="icon-action"
                                           Data="{DynamicResource FileLinesIcon}"
-                                          PointerPressed="OnShowSettingsContentIconPressed"
+                                          PointerPressed="OnCommandIconPressed"
+                                          Tag="{Binding ShowSettingsContentCommand}"
                                           ToolTip.HorizontalOffset="0"
                                           ToolTip.Placement="TopEdgeAlignedRight"
                                           ToolTip.Tip="{loc:Localization ShowSettings}"
@@ -79,7 +82,8 @@
                                           VerticalAlignment="Center" />
                                 <PathIcon Classes="icon-action icon-danger"
                                           Data="{DynamicResource FileCircleXmarkIcon}"
-                                          PointerPressed="OnDeleteSettingsFileIconPressed"
+                                          PointerPressed="OnCommandIconPressed"
+                                          Tag="{Binding DeleteSettingsFileCommand}"
                                           ToolTip.HorizontalOffset="0"
                                           ToolTip.Placement="TopEdgeAlignedRight"
                                           ToolTip.Tip="{loc:Localization DeleteSettingsFile}"
@@ -87,7 +91,8 @@
                                           VerticalAlignment="Center" />
                                 <PathIcon Classes="icon-action icon-danger"
                                           Data="{DynamicResource DeleteIcon}"
-                                          PointerPressed="OnDeleteSettingsFolderIconPressed"
+                                          PointerPressed="OnCommandIconPressed"
+                                          Tag="{Binding DeleteSettingsFolderCommand}"
                                           ToolTip.HorizontalOffset="0"
                                           ToolTip.Placement="TopEdgeAlignedRight"
                                           ToolTip.Tip="{loc:Localization DeleteAll}"
@@ -130,7 +135,8 @@
                                         Spacing="{DynamicResource SpacingMedium}">
                                 <PathIcon Classes="icon-action icon-danger"
                                           Data="{DynamicResource DatabaseDisconnectIcon}"
-                                          PointerPressed="OnStopUdpIconPressed"
+                                          PointerPressed="OnCommandIconPressed"
+                                          Tag="{Binding StopUdpCommand}"
                                           ToolTip.HorizontalOffset="0"
                                           ToolTip.Placement="TopEdgeAlignedRight"
                                           ToolTip.Tip="{loc:Localization Stop}"
@@ -139,7 +145,8 @@
                                           IsVisible="{Binding IsUdpListening}" />
                                 <PathIcon Classes="icon-action"
                                           Data="{DynamicResource DatabaseConnectIcon}"
-                                          PointerPressed="OnStartUdpIconPressed"
+                                          PointerPressed="OnCommandIconPressed"
+                                          Tag="{Binding StartUdpCommand}"
                                           ToolTip.HorizontalOffset="0"
                                           ToolTip.Placement="TopEdgeAlignedRight"
                                           ToolTip.Tip="{loc:Localization Start}"
@@ -221,7 +228,8 @@
                                         Spacing="{DynamicResource SpacingMedium}">
                                 <PathIcon Classes="icon-action"
                                           Data="{DynamicResource AddIcon}"
-                                          PointerPressed="OnCreateDbIconPressed"
+                                          PointerPressed="OnCommandIconPressed"
+                                          Tag="{Binding CreateDbCommand}"
                                           ToolTip.HorizontalOffset="0"
                                           ToolTip.Placement="TopEdgeAlignedRight"
                                           ToolTip.Tip="{loc:Localization CreateDb}"
@@ -231,7 +239,8 @@
                                           IsVisible="{Binding !IsDbConnected}" />
                                 <PathIcon Classes="icon-action"
                                           Data="{DynamicResource HeartPulseIcon}"
-                                          PointerPressed="OnTestDbConnectionIconPressed"
+                                          PointerPressed="OnCommandIconPressed"
+                                          Tag="{Binding TestDbConnectionCommand}"
                                           ToolTip.HorizontalOffset="0"
                                           ToolTip.Placement="TopEdgeAlignedRight"
                                           ToolTip.Tip="{loc:Localization TestConnection}"
@@ -239,7 +248,8 @@
                                           VerticalAlignment="Center" />
                                 <PathIcon Classes="icon-action"
                                           Data="{DynamicResource InitializeDbIcon}"
-                                          PointerPressed="OnInitializeDbIconPressed"
+                                          PointerPressed="OnCommandIconPressed"
+                                          Tag="{Binding InitializeDbCommand}"
                                           ToolTip.HorizontalOffset="0"
                                           ToolTip.Placement="TopEdgeAlignedRight"
                                           ToolTip.Tip="{loc:Localization InitializeDb}"
@@ -248,7 +258,8 @@
                                           IsEnabled="{Binding IsInitializeDbEnabled}" />
                                 <PathIcon Classes="icon-action icon-danger"
                                           Data="{DynamicResource DatabaseDisconnectIcon}"
-                                          PointerPressed="OnDisconnectDbIconPressed"
+                                          PointerPressed="OnCommandIconPressed"
+                                          Tag="{Binding DisconnectDbCommand}"
                                           ToolTip.HorizontalOffset="0"
                                           ToolTip.Placement="TopEdgeAlignedRight"
                                           ToolTip.Tip="{loc:Localization Stop}"
@@ -257,7 +268,8 @@
                                           IsVisible="{Binding IsDbConnected}" />
                                 <PathIcon Classes="icon-action"
                                           Data="{DynamicResource DatabaseConnectIcon}"
-                                          PointerPressed="OnConnectDbIconPressed"
+                                          PointerPressed="OnCommandIconPressed"
+                                          Tag="{Binding ConnectDbCommand}"
                                           ToolTip.HorizontalOffset="0"
                                           ToolTip.Placement="TopEdgeAlignedRight"
                                           ToolTip.Tip="{loc:Localization Start}"
