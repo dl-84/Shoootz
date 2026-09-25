@@ -10,6 +10,7 @@ using Controls.InfoDialog.Enum;
 using Controls.JsonEditor;
 using Controls.WaitingDialog;
 using Shoootz.Resources.Lang;
+using Shoootz.Services.Dialog;
 using Shoootz.Services.Localization;
 using Shoootz.ViewModels;
 using Shoootz.ViewModels.Settings;
@@ -241,14 +242,7 @@ public partial class ConnectionView : UserControl
 
     private async Task OpenReadSettingsFileFailedDialogAsync(string message)
     {
-        await ShowOverlayDialogAsync(window =>
-            new InfoDialog
-            {
-                DialogTitle = LocalizationService.Instance[Messages.Error],
-                IconType = IconType.Error,
-                Message = message,
-            }.ShowDialog(window)
-        );
+        await DialogService.ShowErrorDialogAsync(this, message);
     }
 
     private async Task OpenSettingsContentDialogAsync(string content)

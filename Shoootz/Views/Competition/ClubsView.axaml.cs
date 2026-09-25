@@ -4,10 +4,9 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media;
 using Controls.ContentDialog;
-using Controls.InfoDialog;
-using Controls.InfoDialog.Enum;
 using Shoootz.Models.Club;
 using Shoootz.Resources.Lang;
+using Shoootz.Services.Dialog;
 using Shoootz.Services.Localization;
 using Shoootz.ViewModels;
 using Shoootz.ViewModels.Competition;
@@ -142,28 +141,7 @@ public partial class ClubsView : UserControl
 
     private async Task OpenErrorDialogAsync(string message)
     {
-        if (TopLevel.GetTopLevel(this) is not Window window)
-        {
-            return;
-        }
-
-        MainWindowViewModel? mainWindowViewModel = window.DataContext as MainWindowViewModel;
-
-        try
-        {
-            mainWindowViewModel?.IsDialogOpen = true;
-
-            await new InfoDialog
-            {
-                DialogTitle = LocalizationService.Instance[nameof(Messages.Error)],
-                IconType = IconType.Error,
-                Message = message,
-            }.ShowDialog(window);
-        }
-        finally
-        {
-            mainWindowViewModel?.IsDialogOpen = false;
-        }
+        await DialogService.ShowErrorDialogAsync(this, message);
     }
 
     private async Task OpenRenameDialogAsync(ClubModel club)
