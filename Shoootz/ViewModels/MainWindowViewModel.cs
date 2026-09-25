@@ -38,6 +38,8 @@ internal partial class MainWindowViewModel : ViewModelBase
 
     private readonly ISettingsWriter _settingsWriter;
 
+    private readonly IStoreService _storeService;
+
     private readonly IUdpListenerService _udpListenerService;
 
     public MainWindowViewModel(
@@ -46,6 +48,7 @@ internal partial class MainWindowViewModel : ViewModelBase
         IOptionsMonitor<SettingsModel> settings,
         IServiceProvider serviceProvider,
         ISettingsWriter settingsWriter,
+        IStoreService storeService,
         IUdpListenerService udpListenerService
     )
     {
@@ -60,12 +63,9 @@ internal partial class MainWindowViewModel : ViewModelBase
         _udpListenerService = udpListenerService;
         _udpListenerService.IsListeningChanged += (_, isListening) => IsUdpConnected = isListening;
 
-        IStoreService? storeService = _serviceProvider.GetService<IStoreService>();
-        if (storeService is not null)
-        {
-            IsDbConnected = storeService.IsConnected;
-            storeService.ConnectionChanged += (_, _) => IsDbConnected = storeService.IsConnected;
-        }
+        _storeService = storeService;
+        IsDbConnected = _storeService.IsConnected;
+        _storeService.ConnectionChanged += (_, _) => IsDbConnected = _storeService.IsConnected;
 
         CurrentPage = CreateView(NavigationPageType.Evaluate)!;
         CurrentNavigationPageType = NavigationPageType.Evaluate;
@@ -134,39 +134,12 @@ internal partial class MainWindowViewModel : ViewModelBase
             _ => _connectionTester.Sqlite(_settings.DatabaseConnection.ConnectionString),
         };
 
-        IStoreService? storeService = _serviceProvider.GetService<IStoreService>();
-
-        result.Match(
-            _ =>
-            {
-                if (storeService is null)
-                {
-                    IsDbConnected = true;
-                }
-            },
-            _ =>
-            {
-                if (storeService is not null)
-                {
-                    storeService.Disconnect();
-                }
-                else
-                {
-                    IsDbConnected = false;
-                }
-            }
-        );
+        result.Match(_ => { }, _ => _storeService.Disconnect());
     }
 
     public async Task CheckPendingMigrationsAsync()
     {
-        IStoreService? storeService = _serviceProvider.GetService<IStoreService>();
-        if (storeService is null)
-        {
-            return;
-        }
-
-        DbStatus status = await storeService.GetDbStatusAsync();
+        DbStatus status = await _storeService.GetDbStatusAsync();
 
         if (status == DbStatus.UpdateAvailable)
         {
