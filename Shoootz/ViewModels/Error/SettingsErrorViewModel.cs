@@ -13,10 +13,11 @@ namespace Shoootz.ViewModels.Error;
 
 internal partial class SettingsErrorViewModel(ISettingsWriter settingsWriter) : ViewModelBase
 {
-    public List<string> ErrorMessages { get; set; } = [];
-
     [ObservableProperty]
     public partial string EditorContent { get; set; } = string.Empty;
+
+    [ObservableProperty]
+    public partial List<string> ErrorMessages { get; set; } = [];
 
     [ObservableProperty]
     public partial bool IsSaved { get; set; }
@@ -68,7 +69,6 @@ internal partial class SettingsErrorViewModel(ISettingsWriter settingsWriter) : 
             },
             error =>
             {
-                ErrorMessages.Clear();
                 ErrorMessages = error.Value.Select(settingsError => settingsError.Message).ToList();
             }
         );
