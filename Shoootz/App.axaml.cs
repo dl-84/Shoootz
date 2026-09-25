@@ -155,10 +155,7 @@ public class App : Application
         InitSingletons(serviceCollection);
         InitTransient(serviceCollection);
 
-        if (_errors.Count == 0 && _configurationRoot.Get<SettingsModel>()?.DatabaseConnection is not null)
-        {
-            InitContext(serviceCollection);
-        }
+        InitContext(serviceCollection);
 
         return serviceCollection.BuildServiceProvider();
     }
