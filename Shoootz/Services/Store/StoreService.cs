@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -145,12 +146,7 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
                     return DbStatus.NotInitialized;
                 }
 
-                DbVersion = applied.LastOrDefault() switch
-                {
-                    "20260604150038_InitialSchema" => "1.0.0",
-                    "20260604150029_InitialSchema" => "1.0.0",
-                    _ => "N/A",
-                };
+                DbVersion = GetSchemaDate(applied.LastOrDefault());
 
                 List<string> pending = (
                     await context.Database.GetPendingMigrationsAsync().ConfigureAwait(false)
@@ -368,5 +364,23 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
         }
 
         return entity;
+    }
+
+    private static string GetSchemaDate(string? migrationName)
+    {
+        if (migrationName is null || migrationName.Length < 14)
+        {
+            return "N/A";
+        }
+
+        return DateTime.TryParseExact(
+            migrationName[..14],
+            "yyyyMMddHHmmss",
+            CultureInfo.InvariantCulture,
+            DateTimeStyles.None,
+            out DateTime timestamp
+        )
+            ? timestamp.ToString("yyMMdd", CultureInfo.InvariantCulture)
+            : "N/A";
     }
 }
