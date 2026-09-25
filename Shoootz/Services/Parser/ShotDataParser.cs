@@ -1,5 +1,4 @@
 using System;
-using System.Text;
 using System.Text.Json;
 using Result;
 using Result.Types;
@@ -13,11 +12,10 @@ internal class ShotDataParser : IShotDataParser
 {
     private static readonly JsonSerializerOptions _options = new() { PropertyNameCaseInsensitive = true };
 
-    public Result<ShotModel, ShotCategoryType> Run(byte[] data)
+    public Result<ShotModel, ShotCategoryType> Run(string rawData)
     {
         try
         {
-            string rawData = Encoding.UTF8.GetString(data);
             DisagUdpMessageDto? message = JsonSerializer.Deserialize<DisagUdpMessageDto>(rawData, _options);
 
             if (message is null)

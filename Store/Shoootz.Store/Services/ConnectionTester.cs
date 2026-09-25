@@ -52,7 +52,7 @@ public class ConnectionTester : IConnectionTester
             {
                 connection.Open();
                 using SqliteCommand command = connection.CreateCommand();
-                
+
                 // Language=SQLite
                 command.CommandText = "SELECT 1";
                 command.ExecuteScalar();

@@ -28,7 +28,7 @@ internal class DataProcessor(IUdpListenerService udpListenerService, IShotDataPa
 
     private readonly Channel<ShotModel> _shotChannel = Channel.CreateUnbounded<ShotModel>();
 
-    private readonly Channel<byte[]> _udpChannel = Channel.CreateUnbounded<byte[]>();
+    private readonly Channel<string> _udpChannel = Channel.CreateUnbounded<string>();
 
     private readonly List<UdpRawModel> _rawLog = [];
 
@@ -99,9 +99,11 @@ internal class DataProcessor(IUdpListenerService udpListenerService, IShotDataPa
     private void OnPacketReceived(object? sender, byte[] data)
     {
         IncrementCount(ShotCategoryType.Received);
-        _udpChannel.Writer.TryWrite(data);
 
-        UdpRawModel entry = new(DateTime.Now, Encoding.UTF8.GetString(data));
+        string rawData = Encoding.UTF8.GetString(data);
+        _udpChannel.Writer.TryWrite(rawData);
+
+        UdpRawModel entry = new(DateTime.Now, rawData);
 
         lock (_rawLogLock)
         {
@@ -118,9 +120,9 @@ internal class DataProcessor(IUdpListenerService udpListenerService, IShotDataPa
 
     private async Task ProcessUdpChannelReaderLoopAsync(CancellationToken cancellationToken)
     {
-        await foreach (byte[] data in _udpChannel.Reader.ReadAllAsync(cancellationToken))
+        await foreach (string rawData in _udpChannel.Reader.ReadAllAsync(cancellationToken))
         {
-            Result<ShotModel, ShotCategoryType> result = parser.Run(data);
+            Result<ShotModel, ShotCategoryType> result = parser.Run(rawData);
 
             result.Match(
                 shot =>
