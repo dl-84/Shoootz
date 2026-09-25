@@ -99,9 +99,8 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
 
     public event Action<string>? SettingsContentRequested;
 
-    public List<LanguageOptionModel> LanguageOptions { get; }
-
-    public IEnumerable<ProviderType> ProviderOptions { get; } = Enum.GetValues<ProviderType>();
+    [ObservableProperty]
+    public partial bool AutoConnect { get; set; }
 
     [ObservableProperty]
     public partial string ConnectionString { get; set; }
@@ -110,22 +109,6 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
     [NotifyPropertyChangedFor(nameof(InitializeDbLabel))]
     [NotifyPropertyChangedFor(nameof(IsInitializeDbEnabled))]
     public partial DbStatus DbStatus { get; set; }
-
-    [ObservableProperty]
-    public partial bool AutoConnect { get; set; }
-
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(InitializeDbLabel))]
-    [NotifyPropertyChangedFor(nameof(IsInitializeDbEnabled))]
-    public partial bool IsDbConnected { get; set; }
-
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(UdpStatusLabel))]
-    public partial bool IsUdpListening { get; set; }
-
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(IsPortValid))]
-    public partial string Port { get; set; }
 
     public string InitializeDbLabel =>
         !IsDbConnected
@@ -137,20 +120,37 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
                 _ => LocalizationService.Instance[Messages.InitializeDb],
             };
 
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(InitializeDbLabel))]
+    [NotifyPropertyChangedFor(nameof(IsInitializeDbEnabled))]
+    public partial bool IsDbConnected { get; set; }
+
     public bool IsInitializeDbEnabled => DbStatus != DbStatus.UpToDate && IsDbConnected;
 
     public bool IsPortValid => int.TryParse(Port, out int port) && port is >= 1 and <= 65535;
 
     public bool IsSaveEnabled => CanSave();
 
-    public string UdpStatusLabel =>
-        LocalizationService.Instance[IsUdpListening ? nameof(Messages.Connected) : nameof(Messages.NotConnected)];
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(UdpStatusLabel))]
+    public partial bool IsUdpListening { get; set; }
+
+    public List<LanguageOptionModel> LanguageOptions { get; }
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsPortValid))]
+    public partial string Port { get; set; }
+
+    public IEnumerable<ProviderType> ProviderOptions { get; } = Enum.GetValues<ProviderType>();
 
     [ObservableProperty]
     public partial LanguageOptionModel? SelectedLanguageOption { get; set; }
 
     [ObservableProperty]
     public partial ProviderType SelectedProvider { get; set; }
+
+    public string UdpStatusLabel =>
+        LocalizationService.Instance[IsUdpListening ? nameof(Messages.Connected) : nameof(Messages.NotConnected)];
 
     public void Dispose()
     {

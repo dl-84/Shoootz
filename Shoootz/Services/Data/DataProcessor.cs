@@ -26,23 +26,23 @@ internal class DataProcessor(IUdpListenerService udpListenerService, IShotDataPa
 
     private readonly ConcurrentDictionary<ShotCategoryType, int> _counters = new();
 
-    private readonly Channel<ShotModel> _shotChannel = Channel.CreateUnbounded<ShotModel>();
-
-    private readonly Channel<string> _udpChannel = Channel.CreateUnbounded<string>();
-
     private readonly List<UdpRawModel> _rawLog = [];
 
     private readonly Lock _rawLogLock = new();
+
+    private readonly Channel<ShotModel> _shotChannel = Channel.CreateUnbounded<ShotModel>();
+
+    private readonly Channel<string> _udpChannel = Channel.CreateUnbounded<string>();
 
     private bool _started;
 
     public event EventHandler<UdpRawModel>? RawDataLogged;
 
+    public int ErrorOnSaveShotToDbCounter => _counters.GetValueOrDefault(ShotCategoryType.SavedError);
+
     public int ErrorParsedShotCounter =>
         _counters.GetValueOrDefault(ShotCategoryType.Exception)
         + _counters.GetValueOrDefault(ShotCategoryType.MessageIsNull);
-
-    public int ErrorOnSaveShotToDbCounter => _counters.GetValueOrDefault(ShotCategoryType.SavedError);
 
     public int IncorrectNumberOfObjectsCounter =>
         _counters.GetValueOrDefault(ShotCategoryType.IncorrectNumberOfObjects);
