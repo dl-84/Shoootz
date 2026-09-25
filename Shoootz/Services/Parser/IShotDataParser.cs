@@ -6,5 +6,5 @@ namespace Shoootz.Services.Parser;
 
 internal interface IShotDataParser
 {
-    Result<ShotModel, ShotFilterType> Run(byte[] data);
+    Result<ShotModel, ShotCategoryType> Run(byte[] data);
 }

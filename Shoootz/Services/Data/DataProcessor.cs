@@ -1,6 +1,6 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Channels;
@@ -24,6 +24,8 @@ internal class DataProcessor(IUdpListenerService udpListenerService, IShotDataPa
 
     private readonly CancellationTokenSource _cancellationTokenSource = new();
 
+    private readonly ConcurrentDictionary<ShotCategoryType, int> _counters = new();
+
     private readonly Channel<ShotModel> _shotChannel = Channel.CreateUnbounded<ShotModel>();
 
     private readonly Channel<byte[]> _udpChannel = Channel.CreateUnbounded<byte[]>();
@@ -32,37 +34,22 @@ internal class DataProcessor(IUdpListenerService udpListenerService, IShotDataPa
 
     private readonly Lock _rawLogLock = new();
 
-    private int _errorParsedShotCounter;
-
-    private int _errorOnSaveShotToDbCounter;
-
-    private int _incorrectNumberOfObjectsCounter;
-
-    private int _missingShooterDataCounter;
-
-    private int _notTypeOfShotCounter;
-
-    private int _successParsedShotCounter;
-
     private bool _started;
-
-    private int _successSavedShotToDbCounter;
-
-    private int _udpRawShotCounter;
-
-    private int _warmupShotCounter;
 
     public event EventHandler<UdpRawModel>? RawDataLogged;
 
-    public int ErrorParsedShotCounter => _errorParsedShotCounter;
+    public int ErrorParsedShotCounter =>
+        _counters.GetValueOrDefault(ShotCategoryType.Exception)
+        + _counters.GetValueOrDefault(ShotCategoryType.MessageIsNull);
 
-    public int ErrorOnSaveShotToDbCounter => _errorOnSaveShotToDbCounter;
+    public int ErrorOnSaveShotToDbCounter => _counters.GetValueOrDefault(ShotCategoryType.SavedError);
 
-    public int IncorrectNumberOfObjectsCounter => _incorrectNumberOfObjectsCounter;
+    public int IncorrectNumberOfObjectsCounter =>
+        _counters.GetValueOrDefault(ShotCategoryType.IncorrectNumberOfObjects);
 
-    public int MissingShooterDataCounter => _missingShooterDataCounter;
+    public int MissingShooterDataCounter => _counters.GetValueOrDefault(ShotCategoryType.HasMissingShooterData);
 
-    public int NotTypeOfShotCounter => _notTypeOfShotCounter;
+    public int NotTypeOfShotCounter => _counters.GetValueOrDefault(ShotCategoryType.IsNotTypeOfShot);
 
     public IReadOnlyList<UdpRawModel> RawLogEntries
     {
@@ -70,18 +57,18 @@ internal class DataProcessor(IUdpListenerService udpListenerService, IShotDataPa
         {
             lock (_rawLogLock)
             {
-                return _rawLog.ToList();
+                return [.. _rawLog];
             }
         }
     }
 
-    public int SuccessParsedShotCounter => _successParsedShotCounter;
+    public int SuccessParsedShotCounter => _counters.GetValueOrDefault(ShotCategoryType.ParsedSuccess);
 
-    public int SuccessSavedShotToDbCounter => _successSavedShotToDbCounter;
+    public int SuccessSavedShotToDbCounter => _counters.GetValueOrDefault(ShotCategoryType.SavedSuccess);
 
-    public int UdpRawShotCounter => _udpRawShotCounter;
+    public int UdpRawShotCounter => _counters.GetValueOrDefault(ShotCategoryType.Received);
 
-    public int WarmupShotCounter => _warmupShotCounter;
+    public int WarmupShotCounter => _counters.GetValueOrDefault(ShotCategoryType.IsWarmup);
 
     public void Dispose()
     {
@@ -104,9 +91,14 @@ internal class DataProcessor(IUdpListenerService udpListenerService, IShotDataPa
         _started = true;
     }
 
+    private void IncrementCount(ShotCategoryType category)
+    {
+        _counters.AddOrUpdate(category, 1, static (_, count) => count + 1);
+    }
+
     private void OnPacketReceived(object? sender, byte[] data)
     {
-        Interlocked.Increment(ref _udpRawShotCounter);
+        IncrementCount(ShotCategoryType.Received);
         _udpChannel.Writer.TryWrite(data);
 
         UdpRawModel entry = new(DateTime.Now, Encoding.UTF8.GetString(data));
@@ -128,41 +120,15 @@ internal class DataProcessor(IUdpListenerService udpListenerService, IShotDataPa
     {
         await foreach (byte[] data in _udpChannel.Reader.ReadAllAsync(cancellationToken))
         {
-            Result<ShotModel, ShotFilterType> result = parser.Run(data);
+            Result<ShotModel, ShotCategoryType> result = parser.Run(data);
 
             result.Match(
                 shot =>
                 {
-                    Interlocked.Increment(ref _successParsedShotCounter);
+                    IncrementCount(ShotCategoryType.ParsedSuccess);
                     _shotChannel.Writer.TryWrite(shot);
                 },
-                error =>
-                {
-                    switch (error.Value)
-                    {
-                        case ShotFilterType.IsWarmup:
-                            Interlocked.Increment(ref _warmupShotCounter);
-                            break;
-
-                        case ShotFilterType.HasMissingShooterData:
-                            Interlocked.Increment(ref _missingShooterDataCounter);
-                            break;
-
-                        case ShotFilterType.IncorrectNumberOfObjects:
-                            Interlocked.Increment(ref _incorrectNumberOfObjectsCounter);
-                            break;
-
-                        case ShotFilterType.IsNotTypeOfShot:
-                            Interlocked.Increment(ref _notTypeOfShotCounter);
-                            break;
-
-                        case ShotFilterType.Exception:
-                        case ShotFilterType.MessageIsNull:
-                        default:
-                            Interlocked.Increment(ref _errorParsedShotCounter);
-                            break;
-                    }
-                }
+                error => IncrementCount(error.Value)
             );
         }
     }
@@ -173,21 +139,15 @@ internal class DataProcessor(IUdpListenerService udpListenerService, IShotDataPa
         {
             if (!dbService.IsConnected)
             {
-                Interlocked.Increment(ref _errorOnSaveShotToDbCounter);
+                IncrementCount(ShotCategoryType.SavedError);
                 continue;
             }
 
             Result<Unit, StoreSaveError> result = await dbService.SaveShotAsync(shot).ConfigureAwait(false);
 
             result.Match(
-                _ =>
-                {
-                    Interlocked.Increment(ref _successSavedShotToDbCounter);
-                },
-                _ =>
-                {
-                    Interlocked.Increment(ref _errorOnSaveShotToDbCounter);
-                }
+                _ => IncrementCount(ShotCategoryType.SavedSuccess),
+                _ => IncrementCount(ShotCategoryType.SavedError)
             );
         }
     }

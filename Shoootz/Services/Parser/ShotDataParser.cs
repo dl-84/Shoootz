@@ -13,7 +13,7 @@ internal class ShotDataParser : IShotDataParser
 {
     private static readonly JsonSerializerOptions _options = new() { PropertyNameCaseInsensitive = true };
 
-    public Result<ShotModel, ShotFilterType> Run(byte[] data)
+    public Result<ShotModel, ShotCategoryType> Run(byte[] data)
     {
         try
         {
@@ -22,34 +22,34 @@ internal class ShotDataParser : IShotDataParser
 
             if (message is null)
             {
-                return new Error<ShotFilterType>(ShotFilterType.MessageIsNull);
+                return new Error<ShotCategoryType>(ShotCategoryType.MessageIsNull);
             }
 
             if (message.Objects?.Count is not 1)
             {
-                return new Error<ShotFilterType>(ShotFilterType.IncorrectNumberOfObjects);
+                return new Error<ShotCategoryType>(ShotCategoryType.IncorrectNumberOfObjects);
             }
 
             if (message.Objects[0] is not DisagShotDto disagShot)
             {
-                return new Error<ShotFilterType>(ShotFilterType.IsNotTypeOfShot);
+                return new Error<ShotCategoryType>(ShotCategoryType.IsNotTypeOfShot);
             }
 
             if (string.IsNullOrEmpty(disagShot.Shooter?.Firstname) || string.IsNullOrEmpty(disagShot.Shooter?.Lastname))
             {
-                return new Error<ShotFilterType>(ShotFilterType.HasMissingShooterData);
+                return new Error<ShotCategoryType>(ShotCategoryType.HasMissingShooterData);
             }
 
             if (disagShot.IsWarmup)
             {
-                return new Error<ShotFilterType>(ShotFilterType.IsWarmup);
+                return new Error<ShotCategoryType>(ShotCategoryType.IsWarmup);
             }
 
             return MapToShotModel(disagShot);
         }
         catch (Exception)
         {
-            return new Error<ShotFilterType>(ShotFilterType.Exception);
+            return new Error<ShotCategoryType>(ShotCategoryType.Exception);
         }
     }
 

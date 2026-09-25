@@ -1,6 +1,6 @@
 namespace Shoootz.Models.Error;
 
-internal enum ShotFilterType
+internal enum ShotCategoryType
 {
     Exception,
     HasMissingShooterData,
@@ -8,4 +8,8 @@ internal enum ShotFilterType
     IsNotTypeOfShot,
     IsWarmup,
     MessageIsNull,
+    ParsedSuccess,
+    Received,
+    SavedError,
+    SavedSuccess,
 }
