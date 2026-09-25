@@ -327,11 +327,16 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
     [RelayCommand]
     private void StartUdp()
     {
-        if (int.TryParse(Port, out int port))
+        if (!int.TryParse(Port, out int port))
         {
-            _dataProcessor.Start();
-            _udpListenerService.Start(port);
+            return;
         }
+
+        _dataProcessor.Start();
+
+        _udpListenerService
+            .Start(port)
+            .Match(_ => { }, error => ConnectionTestCompleted?.Invoke(false, error.Value.Message));
     }
 
     [RelayCommand]

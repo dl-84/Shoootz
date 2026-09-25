@@ -22,7 +22,7 @@ internal class UdpListenerService : IUdpListenerService
 
     public void Dispose() => Stop();
 
-    public void Start(int port)
+    public Result<Unit, UdpConnectionError> Start(int port)
     {
         Stop();
 
@@ -33,10 +33,13 @@ internal class UdpListenerService : IUdpListenerService
 
             SetIsListening(true);
             _ = ReceiveLoopAsync(_cancellationTokenSource.Token);
+
+            return Unit.Value;
         }
-        catch
+        catch (Exception exception)
         {
             SetIsListening(false);
+            return new Error<UdpConnectionError>(new UdpConnectionError(exception.Message));
         }
     }
 

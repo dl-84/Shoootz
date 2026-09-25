@@ -69,7 +69,7 @@ public class App : Application
             if (udpConnection is not null && udpConnection.AutoConnect)
             {
                 serviceProvider.GetRequiredService<IDataProcessor>().Start();
-                serviceProvider.GetRequiredService<IUdpListenerService>().Start(udpConnection.Port);
+                _ = serviceProvider.GetRequiredService<IUdpListenerService>().Start(udpConnection.Port);
             }
         }
 
