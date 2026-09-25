@@ -327,24 +327,20 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
         }
 
         ShooterEntity? entity = await context.Shooters.FindAsync(shooter.Id).ConfigureAwait(false);
+        ClubEntity? club = await FindOrCreateClubAsync(context, shooter.Club).ConfigureAwait(false);
 
         if (entity is null)
         {
-            ClubEntity? club = await FindOrCreateClubAsync(context, shooter.Club).ConfigureAwait(false);
-
-            entity = new ShooterEntity
-            {
-                Birthyear = shooter.Birthyear,
-                Club = club,
-                Firstname = shooter.Firstname,
-                Id = shooter.Id,
-                Lastname = shooter.Lastname,
-                Startnumber = shooter.Startnumber,
-                Team = shooter.Team,
-            };
-
+            entity = new ShooterEntity { Id = shooter.Id };
             context.Shooters.Add(entity);
         }
+
+        entity.Birthyear = shooter.Birthyear;
+        entity.Club = club;
+        entity.Firstname = shooter.Firstname;
+        entity.Lastname = shooter.Lastname;
+        entity.Startnumber = shooter.Startnumber;
+        entity.Team = shooter.Team;
 
         return entity;
     }
