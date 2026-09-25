@@ -84,11 +84,10 @@ internal class UdpListenerService : IUdpListenerService
 
                 ShotRawDataReceived?.Invoke(this, result.Buffer);
             }
-            catch (OperationCanceledException)
+            catch (Exception)
             {
                 break;
             }
-            catch { }
         }
 
         SetIsListening(false);
