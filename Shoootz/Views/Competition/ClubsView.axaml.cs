@@ -37,7 +37,14 @@ public partial class ClubsView : UserControl
 
     private void OnAddIconPressed(object? sender, PointerPressedEventArgs e)
     {
-        _ = OpenCreateDialogAsync();
+        if (DataContext is ClubsViewModel viewModel)
+        {
+            _ = OpenClubNameDialogAsync(
+                string.Empty,
+                nameof(Messages.Add),
+                name => viewModel.ExecuteCreateClubAsync(name)
+            );
+        }
     }
 
     private void OnDataContextChanged(object? sender, EventArgs e)
@@ -58,9 +65,13 @@ public partial class ClubsView : UserControl
 
     private void OnEditIconPressed(object? sender, PointerPressedEventArgs e)
     {
-        if (DataContext is ClubsViewModel { SelectedClub: { } club })
+        if (DataContext is ClubsViewModel { SelectedClub: { } club } viewModel)
         {
-            _ = OpenRenameDialogAsync(club);
+            _ = OpenClubNameDialogAsync(
+                club.Name,
+                nameof(Messages.Save),
+                name => viewModel.ExecuteRenameClubAsync(club, name)
+            );
         }
     }
 
@@ -94,20 +105,15 @@ public partial class ClubsView : UserControl
         }
     }
 
-    private async Task OpenCreateDialogAsync()
+    private async Task OpenClubNameDialogAsync(string initialName, string submitTextKey, Func<string, Task> onConfirmed)
     {
-        if (DataContext is not ClubsViewModel viewModel)
-        {
-            return;
-        }
-
-        TextBox dialogContent = BuildClubNameTextBox(string.Empty);
+        TextBox dialogContent = BuildClubNameTextBox(initialName);
         bool? result = await DialogService.ShowAsync(
             this,
             window =>
                 new ContentDialog
                 {
-                    SubmitText = LocalizationService.Instance[nameof(Messages.Add)],
+                    SubmitText = LocalizationService.Instance[submitTextKey],
                     DialogContent = dialogContent,
                     DialogTitle = LocalizationService.Instance[nameof(Messages.ClubName)],
                     SizeToContent = SizeToContent.WidthAndHeight,
@@ -116,38 +122,12 @@ public partial class ClubsView : UserControl
 
         if (result is true)
         {
-            await viewModel.ExecuteCreateClubAsync(dialogContent.Text ?? string.Empty);
+            await onConfirmed(dialogContent.Text ?? string.Empty);
         }
     }
 
     private async Task OpenErrorDialogAsync(string message)
     {
         await DialogService.ShowErrorDialogAsync(this, message);
-    }
-
-    private async Task OpenRenameDialogAsync(ClubModel club)
-    {
-        if (DataContext is not ClubsViewModel viewModel)
-        {
-            return;
-        }
-
-        TextBox dialogContent = BuildClubNameTextBox(club.Name);
-        bool? result = await DialogService.ShowAsync(
-            this,
-            window =>
-                new ContentDialog
-                {
-                    SubmitText = LocalizationService.Instance[nameof(Messages.Save)],
-                    DialogContent = dialogContent,
-                    DialogTitle = LocalizationService.Instance[nameof(Messages.ClubName)],
-                    SizeToContent = SizeToContent.WidthAndHeight,
-                }.ShowDialog<bool?>(window)
-        );
-
-        if (result is true)
-        {
-            await viewModel.ExecuteRenameClubAsync(club, dialogContent.Text ?? string.Empty);
-        }
     }
 }

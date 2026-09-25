@@ -198,57 +198,49 @@ public partial class ConnectionView : UserControl
         }
     }
 
-    private async Task OpenConnectionTestDialogAsync(bool success, string? errorMessage)
-    {
-        await DialogService.ShowAsync(
-            this,
-            window =>
-                new InfoDialog
-                {
-                    DialogTitle = LocalizationService.Instance[Messages.TestConnection],
-                    IconType = success ? IconType.Info : IconType.Warning,
-                    Message = success
-                        ? LocalizationService.Instance[Messages.ConnectionSuccessful]
-                        : errorMessage ?? LocalizationService.Instance[Messages.ConnectionFailed],
-                }.ShowDialog(window)
+    private async Task OpenConnectionTestDialogAsync(bool success, string? errorMessage) =>
+        await OpenResultDialogAsync(
+            LocalizationService.Instance[Messages.TestConnection],
+            success,
+            LocalizationService.Instance[Messages.ConnectionSuccessful],
+            errorMessage
         );
-    }
 
-    private async Task OpenDbInitializeDialogAsync(bool success, string? errorMessage)
-    {
-        await DialogService.ShowAsync(
-            this,
-            window =>
-                new InfoDialog
-                {
-                    DialogTitle = LocalizationService.Instance[Messages.InitializeDb],
-                    IconType = success ? IconType.Info : IconType.Warning,
-                    Message = success
-                        ? LocalizationService.Instance[Messages.DbInitializeSuccessful]
-                        : errorMessage ?? LocalizationService.Instance[Messages.ConnectionFailed],
-                }.ShowDialog(window)
+    private async Task OpenDbInitializeDialogAsync(bool success, string? errorMessage) =>
+        await OpenResultDialogAsync(
+            LocalizationService.Instance[Messages.InitializeDb],
+            success,
+            LocalizationService.Instance[Messages.DbInitializeSuccessful],
+            errorMessage
         );
-    }
 
-    private async Task OpenDeleteAllDialogAsync(bool success, string? errorMessage)
-    {
-        await DialogService.ShowAsync(
-            this,
-            window =>
-                new InfoDialog
-                {
-                    DialogTitle = LocalizationService.Instance[Messages.DeleteAll],
-                    IconType = success ? IconType.Info : IconType.Warning,
-                    Message = success
-                        ? LocalizationService.Instance[Messages.DeleteAllSuccessful]
-                        : errorMessage ?? LocalizationService.Instance[Messages.ConnectionFailed],
-                }.ShowDialog(window)
+    private async Task OpenDeleteAllDialogAsync(bool success, string? errorMessage) =>
+        await OpenResultDialogAsync(
+            LocalizationService.Instance[Messages.DeleteAll],
+            success,
+            LocalizationService.Instance[Messages.DeleteAllSuccessful],
+            errorMessage
         );
-    }
 
     private async Task OpenReadSettingsFileFailedDialogAsync(string message)
     {
         await DialogService.ShowErrorDialogAsync(this, message);
+    }
+
+    private async Task OpenResultDialogAsync(string title, bool success, string successMessage, string? errorMessage)
+    {
+        await DialogService.ShowAsync(
+            this,
+            window =>
+                new InfoDialog
+                {
+                    DialogTitle = title,
+                    IconType = success ? IconType.Info : IconType.Warning,
+                    Message = success
+                        ? successMessage
+                        : errorMessage ?? LocalizationService.Instance[Messages.ConnectionFailed],
+                }.ShowDialog(window)
+        );
     }
 
     private async Task OpenSettingsContentDialogAsync(string content)
