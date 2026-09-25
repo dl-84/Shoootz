@@ -266,28 +266,25 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable
     [RelayCommand]
     private async Task ConnectDb()
     {
-        Result<bool, DbConnectionError> result = SelectedProvider switch
-        {
-            ProviderType.PostgreSql => _connectionTester.PostgreSql(ConnectionString),
-            _ => _connectionTester.Sqlite(ConnectionString),
-        };
-
-        await result.Match(
-            async _ =>
-            {
-                _storeService.Connect();
-                await RefreshDbStatusAsync();
-            },
-            error =>
-            {
-                ConnectionTestCompleted?.Invoke(false, error.Value.Message);
-                return Task.CompletedTask;
-            }
-        );
+        await TestConnectionResult()
+            .Match(
+                async _ =>
+                {
+                    _storeService.Connect();
+                    await RefreshDbStatusAsync();
+                },
+                error =>
+                {
+                    ConnectionTestCompleted?.Invoke(false, error.Value.Message);
+                    return Task.CompletedTask;
+                }
+            );
     }
 
     [RelayCommand]
-    private async Task CreateDb()
+    private async Task CreateDb() => await InitializeDatabaseAsync(connectAfterSuccess: true);
+
+    private async Task InitializeDatabaseAsync(bool connectAfterSuccess)
     {
         DbInitializeStarted?.Invoke();
 
@@ -299,13 +296,17 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable
             DbStatus = await _storeService.GetDbStatusAsync();
             InitializeDbCommand.NotifyCanExecuteChanged();
 
-            if (DbStatus == DbStatus.NotInitialized)
+            switch (connectAfterSuccess)
             {
-                DbInitializeCompleted?.Invoke(false, LocalizationService.Instance[Messages.ConnectionFailed]);
-                return;
+                case true when DbStatus == DbStatus.NotInitialized:
+                    DbInitializeCompleted?.Invoke(false, LocalizationService.Instance[Messages.ConnectionFailed]);
+                    return;
+
+                case true:
+                    _storeService.Connect();
+                    break;
             }
 
-            _storeService.Connect();
             DbInitializeCompleted?.Invoke(true, null);
         }
         catch (Exception exception)
@@ -313,6 +314,13 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable
             DbInitializeCompleted?.Invoke(false, exception.Message);
         }
     }
+
+    private Result<bool, DbConnectionError> TestConnectionResult() =>
+        SelectedProvider switch
+        {
+            ProviderType.PostgreSql => _connectionTester.PostgreSql(ConnectionString),
+            _ => _connectionTester.Sqlite(ConnectionString),
+        };
 
     [RelayCommand]
     private void DisconnectDb() => _storeService.Disconnect();
@@ -347,25 +355,7 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable
     }
 
     [RelayCommand(CanExecute = nameof(CanInitializeDb))]
-    private async Task InitializeDb()
-    {
-        DbInitializeStarted?.Invoke();
-
-        try
-        {
-            await _storeService.InitializeAsync();
-
-            await Task.Delay(2000);
-
-            DbStatus = await _storeService.GetDbStatusAsync();
-            InitializeDbCommand.NotifyCanExecuteChanged();
-            DbInitializeCompleted?.Invoke(true, null);
-        }
-        catch (Exception exception)
-        {
-            DbInitializeCompleted?.Invoke(false, exception.Message);
-        }
-    }
+    private async Task InitializeDb() => await InitializeDatabaseAsync(connectAfterSuccess: false);
 
     private bool CanInitializeDb() => DbStatus != DbStatus.UpToDate;
 
@@ -378,16 +368,11 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable
     [RelayCommand]
     private void TestDbConnection()
     {
-        Result<bool, DbConnectionError> result = SelectedProvider switch
-        {
-            ProviderType.PostgreSql => _connectionTester.PostgreSql(ConnectionString),
-            _ => _connectionTester.Sqlite(ConnectionString),
-        };
-
-        result.Match(
-            _ => ConnectionTestCompleted?.Invoke(true, null),
-            error => ConnectionTestCompleted?.Invoke(false, error.Value.Message)
-        );
+        TestConnectionResult()
+            .Match(
+                _ => ConnectionTestCompleted?.Invoke(true, null),
+                error => ConnectionTestCompleted?.Invoke(false, error.Value.Message)
+            );
     }
 
     [RelayCommand]
