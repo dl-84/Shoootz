@@ -11,7 +11,12 @@ public class CaseInsensitiveEnumConverter<TEnum> : JsonConverter<TEnum>
     {
         string? value = reader.GetString();
 
-        return value is not null && Enum.TryParse(value, true, out TEnum result) ? result : default;
+        if (value is not null && Enum.TryParse(value, true, out TEnum result))
+        {
+            return result;
+        }
+
+        throw new JsonException($"'{value}' is not a valid value for {typeof(TEnum).Name}.");
     }
 
     public override void Write(Utf8JsonWriter writer, TEnum value, JsonSerializerOptions options)

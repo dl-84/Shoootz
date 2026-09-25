@@ -42,19 +42,17 @@ public class DisagStructureBaseListConverter : JsonConverter<List<DisagStructure
             ? objectTypeElement.GetString()
             : null;
 
-        string rawText = element.GetRawText();
-
-        return typeName switch
+        return typeName?.ToUpperInvariant() switch
         {
-            "Shot" => JsonSerializer.Deserialize<DisagShotDto>(rawText, options)!,
-            "Series" => JsonSerializer.Deserialize<DisagSeriesDto>(rawText, options)!,
-            "Result" => JsonSerializer.Deserialize<DisagResultDto>(rawText, options)!,
-            "LeagueStatsMode1v1" => JsonSerializer.Deserialize<DisagLeagueStatsMode1v1Dto>(rawText, options)!,
-            "LeagueStats" => JsonSerializer.Deserialize<DisagLeagueStatsDto>(rawText, options)!,
-            "Club" => JsonSerializer.Deserialize<DisagClubDto>(rawText, options)!,
-            "Team" => JsonSerializer.Deserialize<DisagTeamDto>(rawText, options)!,
-            "Competition" => JsonSerializer.Deserialize<DisagCompetitionDto>(rawText, options)!,
-            "MenuItem" => JsonSerializer.Deserialize<DisagMenuItemDto>(rawText, options)!,
+            "SHOT" => element.Deserialize<DisagShotDto>(options)!,
+            "SERIES" => element.Deserialize<DisagSeriesDto>(options)!,
+            "RESULT" => element.Deserialize<DisagResultDto>(options)!,
+            "LEAGUESTATSMODE1V1" => element.Deserialize<DisagLeagueStatsMode1v1Dto>(options)!,
+            "LEAGUESTATS" => element.Deserialize<DisagLeagueStatsDto>(options)!,
+            "CLUB" => element.Deserialize<DisagClubDto>(options)!,
+            "TEAM" => element.Deserialize<DisagTeamDto>(options)!,
+            "COMPETITION" => element.Deserialize<DisagCompetitionDto>(options)!,
+            "MENUITEM" => element.Deserialize<DisagMenuItemDto>(options)!,
             _ => new DisagUnknownStructureDto { ObjectType = typeName, Raw = element.Clone() },
         };
     }

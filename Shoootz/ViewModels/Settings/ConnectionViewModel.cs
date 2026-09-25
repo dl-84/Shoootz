@@ -27,7 +27,7 @@ using Shoootz.Store.Services;
 
 namespace Shoootz.ViewModels.Settings;
 
-internal partial class ConnectionViewModel : ViewModelBase
+internal partial class ConnectionViewModel : ViewModelBase, IDisposable
 {
     private readonly IConnectionTester _connectionTester;
 
@@ -75,10 +75,10 @@ internal partial class ConnectionViewModel : ViewModelBase
 
         _allowSave = true;
 
-        _udpListenerService.IsListeningChanged += (_, isListening) => IsUdpListening = isListening;
+        _udpListenerService.IsListeningChanged += OnUdpListeningChanged;
 
         IsDbConnected = _storeService.IsConnected;
-        _storeService.ConnectionChanged += (_, _) => IsDbConnected = _storeService.IsConnected;
+        _storeService.ConnectionChanged += OnStoreConnectionChanged;
 
         _ = RefreshDbStatusAsync();
     }
@@ -153,6 +153,12 @@ internal partial class ConnectionViewModel : ViewModelBase
 
     [ObservableProperty]
     public partial ProviderType SelectedProvider { get; set; }
+
+    public void Dispose()
+    {
+        _udpListenerService.IsListeningChanged -= OnUdpListeningChanged;
+        _storeService.ConnectionChanged -= OnStoreConnectionChanged;
+    }
 
     public void ExecuteDeleteSettingsFile()
     {
@@ -252,6 +258,10 @@ internal partial class ConnectionViewModel : ViewModelBase
 
         NotifySaveStateChanged();
     }
+
+    private void OnStoreConnectionChanged(object? sender, EventArgs e) => IsDbConnected = _storeService.IsConnected;
+
+    private void OnUdpListeningChanged(object? sender, bool isListening) => IsUdpListening = isListening;
 
     [RelayCommand]
     private async Task ConnectDb()
