@@ -4,7 +4,9 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Documents;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Media;
+using Avalonia.VisualTree;
 using Controls.ContentDialog;
 using Shoootz.Models.Shooter;
 using Shoootz.Resources.Lang;
@@ -21,6 +23,7 @@ public partial class ShootersView : UserControl
     {
         InitializeComponent();
         DataContextChanged += OnDataContextChanged;
+        ShootersListBox.AddHandler(PointerPressedEvent, OnShooterRowPointerPressed, RoutingStrategies.Tunnel);
     }
 
     private static TextBlock BuildShooterDeleteContent(string shooterName)
@@ -88,6 +91,31 @@ public partial class ShootersView : UserControl
         _ = OpenErrorDialogAsync(message);
     }
 
+    private void OnShooterRowDoubleTapped(object? sender, TappedEventArgs e)
+    {
+        if (
+            DataContext is ShootersViewModel viewModel
+            && (e.Source as Visual)?.FindAncestorOfType<ListBoxItem>() is { DataContext: ShooterModel shooter }
+        )
+        {
+            _ = OpenShooterDialogAsync(shooter, viewModel);
+        }
+    }
+
+    private void OnShooterRowPointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (
+            e.ClickCount == 1
+            && DataContext is ShootersViewModel viewModel
+            && (e.Source as Visual)?.FindAncestorOfType<ListBoxItem>() is { DataContext: ShooterModel shooter }
+            && ReferenceEquals(shooter, viewModel.SelectedShooter)
+        )
+        {
+            viewModel.SelectedShooter = null;
+            e.Handled = true;
+        }
+    }
+
     private async Task OpenConfirmDeleteDialogAsync(ShooterModel shooter)
     {
         if (DataContext is not ShootersViewModel viewModel)
@@ -147,7 +175,12 @@ public partial class ShootersView : UserControl
                     SubmitText = LocalizationService.Instance[isEdit ? nameof(Messages.Save) : nameof(Messages.Add)],
                     SubmitValidator = editView.Validate,
                     DialogContent = editView,
-                    DialogTitle = $"{LocalizationService.Instance[nameof(Messages.Id)]} - {editingShooter.Id}",
+                    DialogTitle = string.Format(
+                        LocalizationService.Instance[
+                            isEdit ? nameof(Messages.EditShooterTitle) : nameof(Messages.AddShooterTitle)
+                        ],
+                        editingShooter.Id
+                    ),
                     SizeToContent = SizeToContent.WidthAndHeight,
                 }.ShowDialog<bool?>(window)
         );

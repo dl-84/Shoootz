@@ -187,6 +187,12 @@
   <data name="Link" xml:space="preserve">
     <value>Link</value>
   </data>
+  <data name="AddShooterTitle" xml:space="preserve">
+    <value>Add shooter (ID - {0})</value>
+  </data>
+  <data name="EditShooterTitle" xml:space="preserve">
+    <value>Edit shooter (ID - {0})</value>
+  </data>
   <data name="Id" xml:space="preserve">
     <value>ID</value>
   </data>

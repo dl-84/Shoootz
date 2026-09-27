@@ -1,4 +1,4 @@
-<UserControl x:Class="Shoootz.Views.Competition.ShootersView"
+﻿<UserControl x:Class="Shoootz.Views.Competition.ShootersView"
              x:Name="Root"
              xmlns="https://github.com/avaloniaui"
              xmlns:loc="using:Shoootz.Extensions"
@@ -35,60 +35,76 @@
 
             <Border Classes="card"
                     Padding="0">
-                <StackPanel>
+                <StackPanel Grid.IsSharedSizeScope="True">
                     <Border Background="{DynamicResource PrimaryBrush}"
                             Padding="24,10">
-                        <Grid ColumnDefinitions="60,*,*,100,100,*">
+                        <Grid ColumnSpacing="{DynamicResource SpacingMedium}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition SharedSizeGroup="Birthyear"
+                                                  Width="Auto" />
+                                <ColumnDefinition Width="24" />
+                                <ColumnDefinition SharedSizeGroup="Gender"
+                                                  Width="Auto" />
+                            </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0"
                                        Classes="table-column-header"
-                                       Text="{loc:Localization Id}" />
+                                       Text="{loc:Localization Lastname}" />
                             <TextBlock Grid.Column="1"
                                        Classes="table-column-header"
-                                       Text="{loc:Localization Lastname}" />
+                                       Text="{loc:Localization Firstname}" />
                             <TextBlock Grid.Column="2"
                                        Classes="table-column-header"
-                                       Text="{loc:Localization Firstname}" />
+                                       Text="{loc:Localization Club}" />
                             <TextBlock Grid.Column="3"
                                        Classes="table-column-header"
                                        Text="{loc:Localization Birthyear}"
                                        TextAlignment="Center" />
-                            <TextBlock Grid.Column="4"
+                            <TextBlock Grid.Column="5"
                                        Classes="table-column-header"
                                        Text="{loc:Localization Gender}"
                                        TextAlignment="Center" />
-                            <TextBlock Grid.Column="5"
-                                       Classes="table-column-header"
-                                       Text="{loc:Localization Club}" />
                         </Grid>
                     </Border>
-                    <ListBox Classes="table-rows"
+                    <ListBox x:Name="ShootersListBox"
+                             Classes="table-rows"
+                             DoubleTapped="OnShooterRowDoubleTapped"
                              ItemsSource="{Binding Shooters}"
                              Margin="0"
                              SelectedItem="{Binding SelectedShooter}">
                         <ListBox.ItemTemplate>
                             <DataTemplate x:DataType="models:ShooterModel">
-                                <Grid ColumnDefinitions="60,*,*,100,100,*"
+                                <Grid ColumnSpacing="{DynamicResource SpacingMedium}"
                                       Height="40"
                                       Margin="24,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition SharedSizeGroup="Birthyear"
+                                                          Width="Auto" />
+                                        <ColumnDefinition Width="24" />
+                                        <ColumnDefinition SharedSizeGroup="Gender"
+                                                          Width="Auto" />
+                                    </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Column="0"
-                                               Text="{Binding Id}"
-                                               VerticalAlignment="Center" />
-                                    <TextBlock Grid.Column="1"
                                                Text="{Binding Lastname}"
                                                VerticalAlignment="Center" />
-                                    <TextBlock Grid.Column="2"
+                                    <TextBlock Grid.Column="1"
                                                Text="{Binding Firstname}"
+                                               VerticalAlignment="Center" />
+                                    <TextBlock Grid.Column="2"
+                                               Text="{Binding Club}"
                                                VerticalAlignment="Center" />
                                     <TextBlock Grid.Column="3"
                                                Text="{Binding Birthyear}"
                                                TextAlignment="Center"
                                                VerticalAlignment="Center" />
-                                    <TextBlock Grid.Column="4"
+                                    <TextBlock Grid.Column="5"
                                                Text="{Binding Gender}"
                                                TextAlignment="Center"
-                                               VerticalAlignment="Center" />
-                                    <TextBlock Grid.Column="5"
-                                               Text="{Binding Club}"
                                                VerticalAlignment="Center" />
                                 </Grid>
                             </DataTemplate>

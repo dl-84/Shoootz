@@ -85,6 +85,15 @@ namespace Shoootz.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add shooter (ID - {0}).
+        /// </summary>
+        internal static string AddShooterTitle {
+            get {
+                return ResourceManager.GetString("AddShooterTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to App.
         /// </summary>
         internal static string App {
@@ -424,6 +433,15 @@ namespace Shoootz.Resources.Lang {
         internal static string DeleteShooterShotsToo {
             get {
                 return ResourceManager.GetString("DeleteShooterShotsToo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit shooter (ID - {0}).
+        /// </summary>
+        internal static string EditShooterTitle {
+            get {
+                return ResourceManager.GetString("EditShooterTitle", resourceCulture);
             }
         }
         
