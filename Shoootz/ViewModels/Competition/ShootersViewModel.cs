@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Result;
 using Result.Types;
+using Shoootz.Extensions;
 using Shoootz.Models.Club;
 using Shoootz.Models.Error;
 using Shoootz.Models.Shooter;
@@ -114,7 +115,7 @@ internal partial class ShootersViewModel : ViewModelBase
                 || shooter
                     .Birthyear.ToString(CultureInfo.InvariantCulture)
                     .Contains(SearchText, StringComparison.OrdinalIgnoreCase)
-                || (shooter.Gender?.ToString().Contains(SearchText, StringComparison.OrdinalIgnoreCase) ?? false)
+                || EnumConverter.ToDisplayText(shooter.Gender).Contains(SearchText, StringComparison.OrdinalIgnoreCase)
             );
 
         Shooters.Clear();
