@@ -11,6 +11,8 @@ namespace Shoootz.Views.Competition;
 /// <inheritdoc/>
 public partial class ShooterEditView : UserControl
 {
+    private string? _shooterId;
+
     public ShooterEditView()
     {
         InitializeComponent();
@@ -25,19 +27,24 @@ public partial class ShooterEditView : UserControl
             Birthyear = birthyear,
             Club = ClubComboBox.SelectedItem as string,
             Firstname = FirstnameField.Text,
-            Id = IdField.Text,
+            Gender = GetSelectedGender(),
+            Id = _shooterId,
             Lastname = LastnameField.Text,
         };
     }
 
     internal void LoadShooter(ShooterModel shooter)
     {
-        IdField.Text = shooter.Id;
-        IdField.IsInputEnabled = false;
+        _shooterId = shooter.Id;
         LastnameField.Text = shooter.Lastname;
         FirstnameField.Text = shooter.Firstname;
         BirthyearField.Text = shooter.Birthyear == 0 ? null : shooter.Birthyear.ToString();
         ClubComboBox.SelectedItem = shooter.Club;
+
+        GenderType gender = shooter.Gender ?? GenderType.Male;
+        MaleRadioButton.IsChecked = gender == GenderType.Male;
+        FemaleRadioButton.IsChecked = gender == GenderType.Female;
+        DiverseRadioButton.IsChecked = gender == GenderType.Diverse;
     }
 
     internal void SetClubOptions(IEnumerable<string> clubNames)
@@ -93,5 +100,20 @@ public partial class ShooterEditView : UserControl
         field.ErrorMessage = isValid ? null : LocalizationService.Instance[messageKey];
 
         return isValid;
+    }
+
+    private GenderType GetSelectedGender()
+    {
+        if (FemaleRadioButton.IsChecked == true)
+        {
+            return GenderType.Female;
+        }
+
+        if (DiverseRadioButton.IsChecked == true)
+        {
+            return GenderType.Diverse;
+        }
+
+        return GenderType.Male;
     }
 }

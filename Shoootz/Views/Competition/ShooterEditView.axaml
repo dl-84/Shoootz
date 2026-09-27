@@ -8,9 +8,21 @@
                 Width="720">
         <Grid ColumnDefinitions="*,*"
               ColumnSpacing="12">
-            <ff:FormFieldControl x:Name="IdField"
-                                 Grid.Column="0"
-                                 Label="{loc:Localization Id}" />
+            <Grid Grid.Column="0"
+                  ColumnDefinitions="*,*,*">
+                <RadioButton x:Name="MaleRadioButton"
+                             Grid.Column="0"
+                             Content="{loc:Localization GenderMale}"
+                             GroupName="Gender" />
+                <RadioButton x:Name="FemaleRadioButton"
+                             Grid.Column="1"
+                             Content="{loc:Localization GenderFemale}"
+                             GroupName="Gender" />
+                <RadioButton x:Name="DiverseRadioButton"
+                             Grid.Column="2"
+                             Content="{loc:Localization GenderDiverse}"
+                             GroupName="Gender" />
+            </Grid>
         </Grid>
 
         <Grid ColumnDefinitions="*,*"
