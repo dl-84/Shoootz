@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Documents;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
@@ -39,11 +40,30 @@ public partial class ClubsView : UserControl
 
     private static TextBlock BuildClubDeleteContent(string clubName)
     {
-        return new TextBlock
+        string template = LocalizationService.Instance[nameof(Messages.ConfirmDeleteClubMessage)];
+        string[] parts = template.Split("{0}", 2);
+
+        TextBlock textBlock = new() { FontSize = 16, TextWrapping = TextWrapping.Wrap };
+
+        if (parts.Length == 2)
         {
-            Text = string.Format(LocalizationService.Instance[nameof(Messages.ConfirmDeleteClubMessage)], clubName),
-            TextWrapping = TextWrapping.Wrap,
-        };
+            textBlock.Inlines =
+            [
+                new Run(parts[0]),
+                new Bold
+                {
+                    FontWeight = FontWeight.Bold,
+                    Inlines = [new Run(clubName) { FontSize = 16, FontWeight = FontWeight.Bold }],
+                },
+                new Run(parts[1]),
+            ];
+        }
+        else
+        {
+            textBlock.Inlines = [new Run(template)];
+        }
+
+        return textBlock;
     }
 
     private static bool ValidateClubName(FormFieldControl field)
@@ -142,7 +162,7 @@ public partial class ClubsView : UserControl
         ContentDialog dialog = new()
         {
             DialogContent = BuildClubDeleteContent(club.Name),
-            DialogTitle = LocalizationService.Instance[nameof(Messages.Delete)],
+            DialogTitle = LocalizationService.Instance[nameof(Messages.DeleteClubTitle)],
             IsDanger = true,
             SizeToContent = SizeToContent.Height,
             SubmitText = LocalizationService.Instance[nameof(Messages.Delete)],

@@ -166,6 +166,15 @@ namespace Shoootz.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This club still has members and cannot be deleted..
+        /// </summary>
+        internal static string ClubHasShootersMessage {
+            get {
+                return ResourceManager.GetString("ClubHasShootersMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Club name.
         /// </summary>
         internal static string ClubName {
@@ -221,7 +230,7 @@ namespace Shoootz.Resources.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Do you really want to delete the club &quot;{0}&quot;?.
+        ///   Looks up a localized string similar to Do you really want to delete the club {0}?.
         /// </summary>
         internal static string ConfirmDeleteClubMessage {
             get {
@@ -428,6 +437,15 @@ namespace Shoootz.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete club.
+        /// </summary>
+        internal static string DeleteClubTitle {
+            get {
+                return ResourceManager.GetString("DeleteClubTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The database could not be deleted automatically. Please delete it manually on the server..
         /// </summary>
         internal static string DeleteDatabaseFailedHint {
@@ -451,6 +469,15 @@ namespace Shoootz.Resources.Lang {
         internal static string DeleteShooterShotsToo {
             get {
                 return ResourceManager.GetString("DeleteShooterShotsToo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete shooter.
+        /// </summary>
+        internal static string DeleteShooterTitle {
+            get {
+                return ResourceManager.GetString("DeleteShooterTitle", resourceCulture);
             }
         }
         

@@ -133,8 +133,11 @@
     <value>Delete all settings including the database?
 </value>
   </data>
+  <data name="ClubHasShootersMessage" xml:space="preserve">
+    <value>This club still has members and cannot be deleted.</value>
+  </data>
   <data name="ConfirmDeleteClubMessage" xml:space="preserve">
-    <value>Do you really want to delete the club "{0}"?</value>
+    <value>Do you really want to delete the club {0}?</value>
   </data>
   <data name="ConfirmDeleteShooterMessage" xml:space="preserve">
     <value>Do you really want to delete the shooter {0}?</value>
@@ -178,11 +181,17 @@
   <data name="DeleteAll" xml:space="preserve">
     <value>Delete all app data</value>
   </data>
+  <data name="DeleteClubTitle" xml:space="preserve">
+    <value>Delete club</value>
+  </data>
   <data name="DeleteSettingsFile" xml:space="preserve">
     <value>Delete settings file</value>
   </data>
   <data name="DeleteShooterShotsToo" xml:space="preserve">
     <value>Also delete this shooter's shots</value>
+  </data>
+  <data name="DeleteShooterTitle" xml:space="preserve">
+    <value>Delete shooter</value>
   </data>
   <data name="Error" xml:space="preserve">
     <value>Error</value>

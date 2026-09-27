@@ -138,7 +138,7 @@ public partial class ShootersView : UserControl
         ContentDialog dialog = new()
         {
             DialogContent = dialogContent,
-            DialogTitle = LocalizationService.Instance[nameof(Messages.Delete)],
+            DialogTitle = LocalizationService.Instance[nameof(Messages.DeleteShooterTitle)],
             IsDanger = true,
             SizeToContent = SizeToContent.Height,
             SubmitText = LocalizationService.Instance[nameof(Messages.Delete)],

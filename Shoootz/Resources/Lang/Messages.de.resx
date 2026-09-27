@@ -132,8 +132,11 @@
   <data name="ConfirmDeleteAllMessage" xml:space="preserve">
     <value>Alle Einstellungen inklusive Datenbank wirklich löschen?</value>
   </data>
+  <data name="ClubHasShootersMessage" xml:space="preserve">
+    <value>Dieser Verein hat noch Mitglieder und kann nicht gelöscht werden.</value>
+  </data>
   <data name="ConfirmDeleteClubMessage" xml:space="preserve">
-    <value>Verein "{0}" wirklich löschen?</value>
+    <value>Wollen Sie den Verein {0} wirklich löschen?</value>
   </data>
   <data name="ConfirmDeleteShooterMessage" xml:space="preserve">
     <value>Wollen Sie den Schützen {0} wirklich löschen?</value>
@@ -177,11 +180,17 @@
   <data name="DeleteAll" xml:space="preserve">
     <value>Alle Daten der App löschen</value>
   </data>
+  <data name="DeleteClubTitle" xml:space="preserve">
+    <value>Verein löschen</value>
+  </data>
   <data name="DeleteSettingsFile" xml:space="preserve">
     <value>Einstellungsdatei löschen</value>
   </data>
   <data name="DeleteShooterShotsToo" xml:space="preserve">
     <value>Die Schüsse dieses Schützen löschen</value>
+  </data>
+  <data name="DeleteShooterTitle" xml:space="preserve">
+    <value>Schütze löschen</value>
   </data>
   <data name="Error" xml:space="preserve">
     <value>Fehler</value>

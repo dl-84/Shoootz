@@ -9,6 +9,8 @@ using Result;
 using Result.Types;
 using Shoootz.Models.Club;
 using Shoootz.Models.Error;
+using Shoootz.Resources.Lang;
+using Shoootz.Services.Localization;
 using Shoootz.Services.Store;
 
 namespace Shoootz.ViewModels.Competition;
@@ -63,6 +65,12 @@ internal partial class ClubsViewModel : ViewModelBase
 
     public async Task ExecuteDeleteClubAsync(ClubModel club)
     {
+        if (club.ShooterCount > 0)
+        {
+            SaveClubFailed?.Invoke(LocalizationService.Instance[nameof(Messages.ClubHasShootersMessage)]);
+            return;
+        }
+
         Result<Unit, StoreSaveError> result = await _storeService.DeleteClubAsync(club.Id);
 
         await result.Match(
