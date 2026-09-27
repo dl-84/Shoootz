@@ -1,13 +1,93 @@
 <UserControl x:Class="Shoootz.Views.Competition.ShootersView"
+             x:Name="Root"
              xmlns="https://github.com/avaloniaui"
              xmlns:loc="using:Shoootz.Extensions"
+             xmlns:models="using:Shoootz.Models.Shooter"
              xmlns:vm="using:Shoootz.ViewModels.Competition"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:DataType="vm:ShootersViewModel">
+
     <ScrollViewer>
         <StackPanel Classes="page-content">
-            <TextBlock Classes="h4"
+
+            <TextBlock Classes="h3"
                        Text="{loc:Localization Shooters}" />
+
+            <StackPanel HorizontalAlignment="Right"
+                        Margin="0,0,10,0"
+                        Orientation="Horizontal"
+                        Spacing="{DynamicResource SpacingMedium}">
+                <PathIcon Classes="icon-action"
+                          Data="{DynamicResource AddIcon}"
+                          PointerPressed="OnAddIconPressed"
+                          VerticalAlignment="Center" />
+                <PathIcon Classes="icon-action"
+                          Data="{DynamicResource EditIcon}"
+                          PointerPressed="OnEditIconPressed"
+                          VerticalAlignment="Center"
+                          IsEnabled="{Binding IsShooterSelected}" />
+                <PathIcon Classes="icon-action icon-danger"
+                          Data="{DynamicResource DeleteIcon}"
+                          PointerPressed="OnDeleteIconPressed"
+                          VerticalAlignment="Center"
+                          IsEnabled="{Binding IsShooterSelected}" />
+            </StackPanel>
+
+            <Border Classes="card"
+                    Padding="0">
+                <StackPanel>
+                    <Border Background="{DynamicResource PrimaryBrush}"
+                            Padding="24,10">
+                        <Grid ColumnDefinitions="60,*,*,100,*">
+                            <TextBlock Grid.Column="0"
+                                       Classes="table-column-header"
+                                       Text="{loc:Localization Id}" />
+                            <TextBlock Grid.Column="1"
+                                       Classes="table-column-header"
+                                       Text="{loc:Localization Lastname}" />
+                            <TextBlock Grid.Column="2"
+                                       Classes="table-column-header"
+                                       Text="{loc:Localization Firstname}" />
+                            <TextBlock Grid.Column="3"
+                                       Classes="table-column-header"
+                                       Text="{loc:Localization Birthyear}"
+                                       TextAlignment="Center" />
+                            <TextBlock Grid.Column="4"
+                                       Classes="table-column-header"
+                                       Text="{loc:Localization Club}" />
+                        </Grid>
+                    </Border>
+                    <ListBox Classes="table-rows"
+                             ItemsSource="{Binding Shooters}"
+                             Margin="0"
+                             SelectedItem="{Binding SelectedShooter}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate x:DataType="models:ShooterListModel">
+                                <Grid ColumnDefinitions="60,*,*,100,*"
+                                      Height="40"
+                                      Margin="24,0">
+                                    <TextBlock Grid.Column="0"
+                                               Text="{Binding Id}"
+                                               VerticalAlignment="Center" />
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding Lastname}"
+                                               VerticalAlignment="Center" />
+                                    <TextBlock Grid.Column="2"
+                                               Text="{Binding Firstname}"
+                                               VerticalAlignment="Center" />
+                                    <TextBlock Grid.Column="3"
+                                               Text="{Binding Birthyear}"
+                                               TextAlignment="Center"
+                                               VerticalAlignment="Center" />
+                                    <TextBlock Grid.Column="4"
+                                               Text="{Binding Club}"
+                                               VerticalAlignment="Center" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+            </Border>
         </StackPanel>
     </ScrollViewer>
 </UserControl>

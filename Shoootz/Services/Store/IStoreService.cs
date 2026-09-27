@@ -6,6 +6,7 @@ using Result.Types;
 using Shoootz.Models.Club;
 using Shoootz.Models.Database;
 using Shoootz.Models.Error;
+using Shoootz.Models.Shooter;
 using Shoootz.Models.Shot;
 
 namespace Shoootz.Services.Store;
@@ -26,15 +27,23 @@ internal interface IStoreService
 
     Task<Result<Unit, StoreSaveError>> DeleteDatabaseAsync();
 
+    Task<Result<Unit, StoreSaveError>> DeleteShooterAsync(string id, bool deleteShots);
+
+    Task<string> GenerateShooterIdAsync();
+
     Task<Result<List<ClubModel>, StoreReadError>> GetClubsAsync();
 
     Task<DbStatus> GetDbStatusAsync();
+
+    Task<Result<List<ShooterListModel>, StoreReadError>> GetShootersAsync();
 
     Task<Result<List<ShotModel>, StoreReadError>> GetShotsAsync();
 
     Task InitializeAsync();
 
     Task<Result<Unit, StoreSaveError>> SaveClubAsync(ClubModel club);
+
+    Task<Result<Unit, StoreSaveError>> SaveShooterAsync(ShooterListModel shooter);
 
     Task<Result<Unit, StoreSaveError>> SaveShotAsync(ShotModel shot);
 }

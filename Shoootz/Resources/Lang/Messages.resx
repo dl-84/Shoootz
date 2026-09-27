@@ -108,6 +108,12 @@
   <data name="NotConnected" xml:space="preserve">
     <value>Not connected</value>
   </data>
+  <data name="Birthyear" xml:space="preserve">
+    <value>Birth year</value>
+  </data>
+  <data name="Club" xml:space="preserve">
+    <value>Club</value>
+  </data>
   <data name="ClubName" xml:space="preserve">
     <value>Club name</value>
   </data>
@@ -118,8 +124,14 @@
   <data name="ConfirmDeleteClubMessage" xml:space="preserve">
     <value>Do you really want to delete the club "{0}"?</value>
   </data>
+  <data name="ConfirmDeleteShooterMessage" xml:space="preserve">
+    <value>Do you really want to delete the shooter {0}?</value>
+  </data>
   <data name="ConfirmDeleteSettingsFileMessage" xml:space="preserve">
     <value>Delete the file containing all settings?</value>
+  </data>
+  <data name="Firstname" xml:space="preserve">
+    <value>First name</value>
   </data>
   <data name="DangerZone" xml:space="preserve">
     <value>Danger zone</value>
@@ -132,6 +144,9 @@
   </data>
   <data name="DeleteSettingsFile" xml:space="preserve">
     <value>Delete settings file</value>
+  </data>
+  <data name="DeleteShooterShotsToo" xml:space="preserve">
+    <value>Also delete this shooter's shots</value>
   </data>
   <data name="Error" xml:space="preserve">
     <value>Error</value>
@@ -150,6 +165,9 @@
   </data>
   <data name="Id" xml:space="preserve">
     <value>ID</value>
+  </data>
+  <data name="Lastname" xml:space="preserve">
+    <value>Last name</value>
   </data>
   <data name="MitLicense" xml:space="preserve">
     <value>MIT License</value>

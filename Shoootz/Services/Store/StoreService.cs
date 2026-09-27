@@ -14,6 +14,7 @@ using Shoootz.Models.Database;
 using Shoootz.Models.Error;
 using Shoootz.Models.Settings;
 using Shoootz.Models.Settings.Database;
+using Shoootz.Models.Shooter;
 using Shoootz.Models.Shot;
 using Shoootz.Store;
 using Shoootz.Store.Entities;
@@ -61,7 +62,7 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
         }
         catch (Exception exception)
         {
-            return new Error<StoreSaveError>(new StoreSaveError(exception.Message));
+            return new Error<StoreSaveError>(new StoreSaveError(GetFullMessage(exception)));
         }
     }
 
@@ -83,7 +84,75 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
         }
         catch (Exception exception)
         {
-            return new Error<StoreSaveError>(new StoreSaveError(exception.Message));
+            return new Error<StoreSaveError>(new StoreSaveError(GetFullMessage(exception)));
+        }
+    }
+
+    public async Task<Result<Unit, StoreSaveError>> DeleteShooterAsync(string id, bool deleteShots)
+    {
+        try
+        {
+            await using (AppDbContext context = await contextFactory.CreateDbContextAsync().ConfigureAwait(false))
+            {
+                ShooterEntity? entity = await context.Shooters.FindAsync(id).ConfigureAwait(false);
+
+                if (entity is not null)
+                {
+                    List<ShotEntity> shots = await context
+                        .Shots.Where(shot => shot.ShooterId == id)
+                        .ToListAsync()
+                        .ConfigureAwait(false);
+
+                    if (deleteShots)
+                    {
+                        context.Shots.RemoveRange(shots);
+                    }
+                    else
+                    {
+                        foreach (ShotEntity shot in shots)
+                        {
+                            shot.ShooterId = null;
+                        }
+                    }
+
+                    context.Shooters.Remove(entity);
+                    await context.SaveChangesAsync().ConfigureAwait(false);
+                }
+
+                return Unit.Value;
+            }
+        }
+        catch (Exception exception)
+        {
+            return new Error<StoreSaveError>(new StoreSaveError(GetFullMessage(exception)));
+        }
+    }
+
+    public async Task<string> GenerateShooterIdAsync()
+    {
+        await using (AppDbContext context = await contextFactory.CreateDbContextAsync().ConfigureAwait(false))
+        {
+            List<string> existingIds = await context
+                .Shooters.Where(shooter => shooter.Id.StartsWith("M"))
+                .Select(shooter => shooter.Id)
+                .ToListAsync()
+                .ConfigureAwait(false);
+
+            int nextNumber =
+                existingIds
+                    .Select(id => int.TryParse(id.AsSpan(1), out int number) ? number : 0)
+                    .DefaultIfEmpty(0)
+                    .Max() + 1;
+
+            string generatedId = $"M{nextNumber}";
+
+            while (await context.Shooters.FindAsync(generatedId).ConfigureAwait(false) is not null)
+            {
+                nextNumber++;
+                generatedId = $"M{nextNumber}";
+            }
+
+            return generatedId;
         }
     }
 
@@ -109,15 +178,15 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
         }
         catch (Exception exception)
         {
-            return new Error<StoreReadError>(new StoreReadError(exception.Message));
+            return new Error<StoreReadError>(new StoreReadError(GetFullMessage(exception)));
         }
     }
 
     public async Task<DbStatus> GetDbStatusAsync()
     {
-        DatabaseConnection? databaseConnection = settings.CurrentValue.DatabaseConnection;
+        DatabaseConnection databaseConnection = settings.CurrentValue.DatabaseConnection;
 
-        if (databaseConnection?.Provider == ProviderType.Sqlite)
+        if (databaseConnection is { Provider: ProviderType.Sqlite })
         {
             string dataSource = new SqliteConnectionStringBuilder(databaseConnection.ConnectionString).DataSource;
 
@@ -161,6 +230,36 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
         }
     }
 
+    public async Task<Result<List<ShooterListModel>, StoreReadError>> GetShootersAsync()
+    {
+        try
+        {
+            await using (AppDbContext context = await contextFactory.CreateDbContextAsync().ConfigureAwait(false))
+            {
+                List<ShooterListModel> shooters = await context
+                    .Shooters.Include(shooter => shooter.Club)
+                    .OrderBy(shooter => shooter.Lastname)
+                    .ThenBy(shooter => shooter.Firstname)
+                    .Select(shooter => new ShooterListModel
+                    {
+                        Birthyear = shooter.Birthyear,
+                        Club = shooter.Club!.Name,
+                        Firstname = shooter.Firstname ?? string.Empty,
+                        Id = shooter.Id,
+                        Lastname = shooter.Lastname ?? string.Empty,
+                    })
+                    .ToListAsync()
+                    .ConfigureAwait(false);
+
+                return shooters;
+            }
+        }
+        catch (Exception exception)
+        {
+            return new Error<StoreReadError>(new StoreReadError(GetFullMessage(exception)));
+        }
+    }
+
     public async Task<Result<List<ShotModel>, StoreReadError>> GetShotsAsync()
     {
         try
@@ -178,7 +277,7 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
         }
         catch (Exception exception)
         {
-            return new Error<StoreReadError>(new StoreReadError(exception.Message));
+            return new Error<StoreReadError>(new StoreReadError(GetFullMessage(exception)));
         }
     }
 
@@ -218,7 +317,37 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
         }
         catch (Exception exception)
         {
-            return new Error<StoreSaveError>(new StoreSaveError(exception.Message));
+            return new Error<StoreSaveError>(new StoreSaveError(GetFullMessage(exception)));
+        }
+    }
+
+    public async Task<Result<Unit, StoreSaveError>> SaveShooterAsync(ShooterListModel shooter)
+    {
+        try
+        {
+            await using (AppDbContext context = await contextFactory.CreateDbContextAsync().ConfigureAwait(false))
+            {
+                ClubEntity? club = await FindOrCreateClubAsync(context, shooter.Club).ConfigureAwait(false);
+                ShooterEntity? entity = await context.Shooters.FindAsync(shooter.Id).ConfigureAwait(false);
+
+                if (entity is null)
+                {
+                    entity = new ShooterEntity { Id = shooter.Id };
+                    context.Shooters.Add(entity);
+                }
+
+                entity.Birthyear = shooter.Birthyear;
+                entity.Club = club;
+                entity.Firstname = shooter.Firstname;
+                entity.Lastname = shooter.Lastname;
+
+                await context.SaveChangesAsync().ConfigureAwait(false);
+                return Unit.Value;
+            }
+        }
+        catch (Exception exception)
+        {
+            return new Error<StoreSaveError>(new StoreSaveError(GetFullMessage(exception)));
         }
     }
 
@@ -242,7 +371,7 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
         }
         catch (Exception exception)
         {
-            return new Error<StoreSaveError>(new StoreSaveError(exception.Message));
+            return new Error<StoreSaveError>(new StoreSaveError(GetFullMessage(exception)));
         }
     }
 
@@ -364,6 +493,20 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
         }
 
         return entity;
+    }
+
+    private static string GetFullMessage(Exception exception)
+    {
+        List<string> messages = [];
+        Exception? current = exception;
+
+        while (current is not null)
+        {
+            messages.Add(current.Message);
+            current = current.InnerException;
+        }
+
+        return string.Join(" -> ", messages);
     }
 
     private static string GetSchemaDate(string? migrationName)

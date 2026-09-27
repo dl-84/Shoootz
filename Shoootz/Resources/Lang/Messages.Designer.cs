@@ -103,6 +103,15 @@ namespace Shoootz.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Birth year.
+        /// </summary>
+        internal static string Birthyear {
+            get {
+                return ResourceManager.GetString("Birthyear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         internal static string Cancel {
@@ -117,6 +126,15 @@ namespace Shoootz.Resources.Lang {
         internal static string Close {
             get {
                 return ResourceManager.GetString("Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Club.
+        /// </summary>
+        internal static string Club {
+            get {
+                return ResourceManager.GetString("Club", resourceCulture);
             }
         }
         
@@ -172,6 +190,15 @@ namespace Shoootz.Resources.Lang {
         internal static string ConfirmDeleteSettingsFileMessage {
             get {
                 return ResourceManager.GetString("ConfirmDeleteSettingsFileMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you really want to delete the shooter {0}?.
+        /// </summary>
+        internal static string ConfirmDeleteShooterMessage {
+            get {
+                return ResourceManager.GetString("ConfirmDeleteShooterMessage", resourceCulture);
             }
         }
         
@@ -374,6 +401,15 @@ namespace Shoootz.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Also delete this shooter&apos;s shots.
+        /// </summary>
+        internal static string DeleteShooterShotsToo {
+            get {
+                return ResourceManager.GetString("DeleteShooterShotsToo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
         internal static string Error {
@@ -388,6 +424,15 @@ namespace Shoootz.Resources.Lang {
         internal static string Evaluate {
             get {
                 return ResourceManager.GetString("Evaluate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to First name.
+        /// </summary>
+        internal static string Firstname {
+            get {
+                return ResourceManager.GetString("Firstname", resourceCulture);
             }
         }
         
@@ -442,6 +487,15 @@ namespace Shoootz.Resources.Lang {
         internal static string Language {
             get {
                 return ResourceManager.GetString("Language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last name.
+        /// </summary>
+        internal static string Lastname {
+            get {
+                return ResourceManager.GetString("Lastname", resourceCulture);
             }
         }
         
