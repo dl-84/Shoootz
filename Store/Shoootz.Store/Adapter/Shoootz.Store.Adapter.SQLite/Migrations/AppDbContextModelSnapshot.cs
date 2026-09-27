@@ -15,7 +15,7 @@ namespace Shoootz.Store.Adapter.SQLite.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "10.0.9");
+            modelBuilder.HasAnnotation("ProductVersion", "10.0.11");
 
             modelBuilder.Entity("Shoootz.Store.Entities.ClubEntity", b =>
                 {
@@ -51,6 +51,9 @@ namespace Shoootz.Store.Adapter.SQLite.Migrations
                     b.Property<string>("Firstname")
                         .HasMaxLength(100)
                         .HasColumnType("TEXT");
+
+                    b.Property<int?>("Gender")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Lastname")
                         .HasMaxLength(100)

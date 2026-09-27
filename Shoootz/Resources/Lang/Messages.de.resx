@@ -132,6 +132,18 @@
   <data name="Firstname" xml:space="preserve">
     <value>Vorname</value>
   </data>
+  <data name="Gender" xml:space="preserve">
+    <value>Geschlecht</value>
+  </data>
+  <data name="GenderDiverse" xml:space="preserve">
+    <value>Divers</value>
+  </data>
+  <data name="GenderFemale" xml:space="preserve">
+    <value>Weiblich</value>
+  </data>
+  <data name="GenderMale" xml:space="preserve">
+    <value>Männlich</value>
+  </data>
   <data name="DangerZone" xml:space="preserve">
     <value>Danger Zone</value>
   </data>

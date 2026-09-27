@@ -1,4 +1,4 @@
-namespace Shoootz.Models.Shot;
+namespace Shoootz.Models.Shooter;
 
 internal class ShooterModel
 {
@@ -7,6 +7,8 @@ internal class ShooterModel
     public string? Club { get; set; }
 
     public string? Firstname { get; set; }
+
+    public GenderType? Gender { get; set; }
 
     public string? Id { get; set; }
 

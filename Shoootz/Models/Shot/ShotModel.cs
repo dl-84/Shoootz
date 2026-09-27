@@ -1,4 +1,5 @@
 using System;
+using Shoootz.Models.Shooter;
 
 namespace Shoootz.Models.Shot;
 

@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Shoootz.Store.Types;
 
 namespace Shoootz.Store.Entities;
 
@@ -12,6 +13,8 @@ public class ShooterEntity
 
     [MaxLength(100)]
     public string? Firstname { get; set; }
+
+    public GenderType? Gender { get; set; }
 
     [MaxLength(10)]
     public string Id { get; set; } = string.Empty;

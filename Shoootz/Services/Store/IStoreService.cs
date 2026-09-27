@@ -35,7 +35,7 @@ internal interface IStoreService
 
     Task<DbStatus> GetDbStatusAsync();
 
-    Task<Result<List<ShooterListModel>, StoreReadError>> GetShootersAsync();
+    Task<Result<List<ShooterModel>, StoreReadError>> GetShootersAsync();
 
     Task<Result<List<ShotModel>, StoreReadError>> GetShotsAsync();
 
@@ -43,7 +43,7 @@ internal interface IStoreService
 
     Task<Result<Unit, StoreSaveError>> SaveClubAsync(ClubModel club);
 
-    Task<Result<Unit, StoreSaveError>> SaveShooterAsync(ShooterListModel shooter);
+    Task<Result<Unit, StoreSaveError>> SaveShooterAsync(ShooterModel shooter);
 
     Task<Result<Unit, StoreSaveError>> SaveShotAsync(ShotModel shot);
 }

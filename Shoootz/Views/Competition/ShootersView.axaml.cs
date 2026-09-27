@@ -88,7 +88,7 @@ public partial class ShootersView : UserControl
         _ = OpenErrorDialogAsync(message);
     }
 
-    private async Task OpenConfirmDeleteDialogAsync(ShooterListModel shooter)
+    private async Task OpenConfirmDeleteDialogAsync(ShooterModel shooter)
     {
         if (DataContext is not ShootersViewModel viewModel)
         {
@@ -130,11 +130,10 @@ public partial class ShootersView : UserControl
         await DialogService.ShowErrorDialogAsync(this, message);
     }
 
-    private async Task OpenShooterDialogAsync(ShooterListModel? shooter, ShootersViewModel viewModel)
+    private async Task OpenShooterDialogAsync(ShooterModel? shooter, ShootersViewModel viewModel)
     {
         bool isEdit = shooter is not null;
-        ShooterListModel editingShooter =
-            shooter ?? new ShooterListModel { Id = await viewModel.GenerateShooterIdAsync() };
+        ShooterModel editingShooter = shooter ?? new ShooterModel { Id = await viewModel.GenerateShooterIdAsync() };
 
         ShooterEditView editView = new();
         editView.LoadShooter(editingShooter);

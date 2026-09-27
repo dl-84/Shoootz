@@ -4,6 +4,7 @@ using Result;
 using Result.Types;
 using Shoootz.DisagOriginUpdMessage;
 using Shoootz.Models.Error;
+using Shoootz.Models.Shooter;
 using Shoootz.Models.Shot;
 
 namespace Shoootz.Services.Parser;
@@ -64,6 +65,7 @@ internal class ShotDataParser : IShotDataParser
             Club = disagShooter.Club?.Name,
             Firstname = disagShooter.Firstname,
             Id = disagShooter.Identification,
+            Gender = GenderType.Male, // Hardcoded because the UDP data don't contain this data field.
             Lastname = disagShooter.Lastname,
             Startnumber = disagShooter.Startnumber,
             Team = disagShooter.Team?.Name,

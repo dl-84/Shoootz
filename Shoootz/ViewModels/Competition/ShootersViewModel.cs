@@ -29,13 +29,13 @@ internal partial class ShootersViewModel : ViewModelBase
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsShooterSelected))]
-    public partial ShooterListModel? SelectedShooter { get; set; }
+    public partial ShooterModel? SelectedShooter { get; set; }
 
-    public ObservableCollection<ShooterListModel> Shooters { get; } = [];
+    public ObservableCollection<ShooterModel> Shooters { get; } = [];
 
-    public async Task ExecuteDeleteShooterAsync(ShooterListModel shooter, bool deleteShots)
+    public async Task ExecuteDeleteShooterAsync(ShooterModel shooter, bool deleteShots)
     {
-        Result<Unit, StoreSaveError> result = await _storeService.DeleteShooterAsync(shooter.Id, deleteShots);
+        Result<Unit, StoreSaveError> result = await _storeService.DeleteShooterAsync(shooter.Id!, deleteShots);
 
         await result.Match(
             async _ =>
@@ -51,7 +51,7 @@ internal partial class ShootersViewModel : ViewModelBase
         );
     }
 
-    public async Task ExecuteSaveShooterAsync(ShooterListModel shooter)
+    public async Task ExecuteSaveShooterAsync(ShooterModel shooter)
     {
         if (string.IsNullOrWhiteSpace(shooter.Id) || string.IsNullOrWhiteSpace(shooter.Lastname))
         {
@@ -78,14 +78,14 @@ internal partial class ShootersViewModel : ViewModelBase
 
     private async Task LoadShootersAsync()
     {
-        Result<List<ShooterListModel>, StoreReadError> result = await _storeService.GetShootersAsync();
+        Result<List<ShooterModel>, StoreReadError> result = await _storeService.GetShootersAsync();
 
         result.Match(
             shooters =>
             {
                 Shooters.Clear();
 
-                foreach (ShooterListModel shooter in shooters)
+                foreach (ShooterModel shooter in shooters)
                 {
                     Shooters.Add(shooter);
                 }

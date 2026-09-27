@@ -38,7 +38,7 @@
                 <StackPanel>
                     <Border Background="{DynamicResource PrimaryBrush}"
                             Padding="24,10">
-                        <Grid ColumnDefinitions="60,*,*,100,*">
+                        <Grid ColumnDefinitions="60,*,*,100,100,*">
                             <TextBlock Grid.Column="0"
                                        Classes="table-column-header"
                                        Text="{loc:Localization Id}" />
@@ -54,6 +54,10 @@
                                        TextAlignment="Center" />
                             <TextBlock Grid.Column="4"
                                        Classes="table-column-header"
+                                       Text="{loc:Localization Gender}"
+                                       TextAlignment="Center" />
+                            <TextBlock Grid.Column="5"
+                                       Classes="table-column-header"
                                        Text="{loc:Localization Club}" />
                         </Grid>
                     </Border>
@@ -62,8 +66,8 @@
                              Margin="0"
                              SelectedItem="{Binding SelectedShooter}">
                         <ListBox.ItemTemplate>
-                            <DataTemplate x:DataType="models:ShooterListModel">
-                                <Grid ColumnDefinitions="60,*,*,100,*"
+                            <DataTemplate x:DataType="models:ShooterModel">
+                                <Grid ColumnDefinitions="60,*,*,100,100,*"
                                       Height="40"
                                       Margin="24,0">
                                     <TextBlock Grid.Column="0"
@@ -80,6 +84,10 @@
                                                TextAlignment="Center"
                                                VerticalAlignment="Center" />
                                     <TextBlock Grid.Column="4"
+                                               Text="{Binding Gender}"
+                                               TextAlignment="Center"
+                                               VerticalAlignment="Center" />
+                                    <TextBlock Grid.Column="5"
                                                Text="{Binding Club}"
                                                VerticalAlignment="Center" />
                                 </Grid>

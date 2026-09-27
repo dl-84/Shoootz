@@ -59,6 +59,9 @@ namespace Shoootz.Store.Adapter.PostgreSQL.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
+                    b.Property<int?>("Gender")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Lastname")
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");

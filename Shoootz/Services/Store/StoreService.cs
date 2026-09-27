@@ -230,23 +230,26 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
         }
     }
 
-    public async Task<Result<List<ShooterListModel>, StoreReadError>> GetShootersAsync()
+    public async Task<Result<List<ShooterModel>, StoreReadError>> GetShootersAsync()
     {
         try
         {
             await using (AppDbContext context = await contextFactory.CreateDbContextAsync().ConfigureAwait(false))
             {
-                List<ShooterListModel> shooters = await context
+                List<ShooterModel> shooters = await context
                     .Shooters.Include(shooter => shooter.Club)
                     .OrderBy(shooter => shooter.Lastname)
                     .ThenBy(shooter => shooter.Firstname)
-                    .Select(shooter => new ShooterListModel
+                    .Select(shooter => new ShooterModel
                     {
                         Birthyear = shooter.Birthyear,
                         Club = shooter.Club!.Name,
-                        Firstname = shooter.Firstname ?? string.Empty,
+                        Firstname = shooter.Firstname,
+                        Gender = MapToGenderModel(shooter.Gender),
                         Id = shooter.Id,
-                        Lastname = shooter.Lastname ?? string.Empty,
+                        Lastname = shooter.Lastname,
+                        Startnumber = shooter.Startnumber,
+                        Team = shooter.Team,
                     })
                     .ToListAsync()
                     .ConfigureAwait(false);
@@ -321,7 +324,7 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
         }
     }
 
-    public async Task<Result<Unit, StoreSaveError>> SaveShooterAsync(ShooterListModel shooter)
+    public async Task<Result<Unit, StoreSaveError>> SaveShooterAsync(ShooterModel shooter)
     {
         try
         {
@@ -332,13 +335,14 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
 
                 if (entity is null)
                 {
-                    entity = new ShooterEntity { Id = shooter.Id };
+                    entity = new ShooterEntity { Id = shooter.Id! };
                     context.Shooters.Add(entity);
                 }
 
                 entity.Birthyear = shooter.Birthyear;
                 entity.Club = club;
                 entity.Firstname = shooter.Firstname;
+                entity.Gender = MapToGenderStore(shooter.Gender);
                 entity.Lastname = shooter.Lastname;
 
                 await context.SaveChangesAsync().ConfigureAwait(false);
@@ -375,56 +379,6 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
         }
     }
 
-    private static ShotModel MapToShotModel(ShotEntity entity)
-    {
-        return new ShotModel
-        {
-            Count = entity.Count,
-            DecValue = entity.DecValue,
-            DiscType = entity.DiscType,
-            Distance = entity.Distance,
-            IsHot = entity.IsHot,
-            IsValid = entity.IsValid,
-            ShotDateTime = entity.ShotDateTime,
-            Shooter = entity.Shooter is null
-                ? null
-                : new ShooterModel
-                {
-                    Birthyear = entity.Shooter.Birthyear,
-                    Club = entity.Shooter.Club?.Name,
-                    Firstname = entity.Shooter.Firstname,
-                    Id = entity.Shooter.Id,
-                    Lastname = entity.Shooter.Lastname,
-                    Startnumber = entity.Shooter.Startnumber,
-                    Team = entity.Shooter.Team,
-                },
-            ShotInfo = entity.ShotInfo is null
-                ? null
-                : new ShotInfoModel
-                {
-                    MenuId = entity.ShotInfo.MenuId,
-                    MenuItemName = entity.ShotInfo.MenuItemName,
-                    MenuPointName = entity.ShotInfo.MenuPointName,
-                },
-        };
-    }
-
-    private static ShotEntity MapToShotEntity(ShotModel shot, ShooterEntity? shooter, ShotInfoEntity? shotInfo)
-    {
-        return new ShotEntity
-        {
-            Count = shot.Count,
-            DecValue = shot.DecValue,
-            DiscType = shot.DiscType,
-            Distance = shot.Distance,
-            IsHot = shot.IsHot,
-            IsValid = shot.IsValid,
-            ShotDateTime = shot.ShotDateTime,
-            ShooterId = shooter?.Id,
-            ShotInfoMenuId = shotInfo?.MenuId,
-        };
-    }
-
     private static async Task<ClubEntity?> FindOrCreateClubAsync(AppDbContext context, string? clubName)
     {
         if (string.IsNullOrWhiteSpace(clubName))
@@ -457,7 +411,7 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
 
         if (entity is null)
         {
-            entity = new ShooterEntity { Id = shooter.Id };
+            entity = new ShooterEntity { Gender = MapToGenderStore(shooter.Gender), Id = shooter.Id };
             context.Shooters.Add(entity);
         }
 
@@ -525,5 +479,75 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
         )
             ? timestamp.ToString("yyMMdd", CultureInfo.InvariantCulture)
             : "N/A";
+    }
+
+    private static Models.Shooter.GenderType MapToGenderModel(Shoootz.Store.Types.GenderType? gender)
+    {
+        return gender switch
+        {
+            Shoootz.Store.Types.GenderType.Diverse => Models.Shooter.GenderType.Diverse,
+            Shoootz.Store.Types.GenderType.Female => Models.Shooter.GenderType.Female,
+            _ => Models.Shooter.GenderType.Male,
+        };
+    }
+
+    private static Shoootz.Store.Types.GenderType MapToGenderStore(Models.Shooter.GenderType? gender)
+    {
+        return gender switch
+        {
+            Models.Shooter.GenderType.Diverse => Shoootz.Store.Types.GenderType.Diverse,
+            Models.Shooter.GenderType.Female => Shoootz.Store.Types.GenderType.Female,
+            _ => Shoootz.Store.Types.GenderType.Male,
+        };
+    }
+
+    private static ShotEntity MapToShotEntity(ShotModel shot, ShooterEntity? shooter, ShotInfoEntity? shotInfo)
+    {
+        return new ShotEntity
+        {
+            Count = shot.Count,
+            DecValue = shot.DecValue,
+            DiscType = shot.DiscType,
+            Distance = shot.Distance,
+            IsHot = shot.IsHot,
+            IsValid = shot.IsValid,
+            ShotDateTime = shot.ShotDateTime,
+            ShooterId = shooter?.Id,
+            ShotInfoMenuId = shotInfo?.MenuId,
+        };
+    }
+
+    private static ShotModel MapToShotModel(ShotEntity entity)
+    {
+        return new ShotModel
+        {
+            Count = entity.Count,
+            DecValue = entity.DecValue,
+            DiscType = entity.DiscType,
+            Distance = entity.Distance,
+            IsHot = entity.IsHot,
+            IsValid = entity.IsValid,
+            ShotDateTime = entity.ShotDateTime,
+            Shooter = entity.Shooter is null
+                ? null
+                : new ShooterModel
+                {
+                    Birthyear = entity.Shooter.Birthyear,
+                    Club = entity.Shooter.Club?.Name,
+                    Firstname = entity.Shooter.Firstname,
+                    Id = entity.Shooter.Id,
+                    Lastname = entity.Shooter.Lastname,
+                    Startnumber = entity.Shooter.Startnumber,
+                    Team = entity.Shooter.Team,
+                },
+            ShotInfo = entity.ShotInfo is null
+                ? null
+                : new ShotInfoModel
+                {
+                    MenuId = entity.ShotInfo.MenuId,
+                    MenuItemName = entity.ShotInfo.MenuItemName,
+                    MenuPointName = entity.ShotInfo.MenuPointName,
+                },
+        };
     }
 }
