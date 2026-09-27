@@ -5,17 +5,46 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <StackPanel Spacing="12"
-                Width="360">
-        <ff:FormFieldControl x:Name="IdField"
-                             Label="{loc:Localization Id}" />
-        <ff:FormFieldControl x:Name="LastnameField"
-                             Label="{loc:Localization Lastname}" />
-        <ff:FormFieldControl x:Name="FirstnameField"
-                             Label="{loc:Localization Firstname}" />
-        <ff:FormFieldControl x:Name="BirthyearField"
-                             AllowedPattern="[0-9]"
-                             Label="{loc:Localization Birthyear}" />
-        <ff:FormFieldControl x:Name="ClubField"
-                             Label="{loc:Localization Club}" />
+                Width="720">
+        <Grid ColumnDefinitions="*,*"
+              ColumnSpacing="12">
+            <ff:FormFieldControl x:Name="IdField"
+                                 Grid.Column="0"
+                                 Label="{loc:Localization Id}" />
+        </Grid>
+
+        <Grid ColumnDefinitions="*,*"
+              ColumnSpacing="12">
+            <ff:FormFieldControl x:Name="LastnameField"
+                                 Grid.Column="0"
+                                 Label="{loc:Localization Lastname}"
+                                 MaxLength="100" />
+
+            <ff:FormFieldControl x:Name="FirstnameField"
+                                 Grid.Column="1"
+                                 Label="{loc:Localization Firstname}"
+                                 MaxLength="100" />
+        </Grid>
+
+        <Grid ColumnDefinitions="*,*"
+              ColumnSpacing="12">
+            <ff:FormFieldControl x:Name="BirthyearField"
+                                 Grid.Column="0"
+                                 AllowedPattern="[0-9]"
+                                 Label="{loc:Localization Birthyear}"
+                                 MaxLength="4" />
+
+            <StackPanel Grid.Column="1"
+                        Spacing="4">
+                <TextBlock Classes="label"
+                           Text="{loc:Localization Club}" />
+                <ComboBox x:Name="ClubComboBox"
+                          HorizontalAlignment="Stretch"
+                          Width="NaN" />
+                <TextBlock x:Name="ClubErrorText"
+                           Classes="hint-error"
+                           IsVisible="False" />
+            </StackPanel>
+        </Grid>
     </StackPanel>
 </UserControl>

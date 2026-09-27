@@ -112,6 +112,15 @@ namespace Shoootz.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please enter a valid birth year..
+        /// </summary>
+        internal static string BirthyearInvalidMessage {
+            get {
+                return ResourceManager.GetString("BirthyearInvalidMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         internal static string Cancel {
@@ -144,6 +153,15 @@ namespace Shoootz.Resources.Lang {
         internal static string ClubName {
             get {
                 return ResourceManager.GetString("ClubName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select a club..
+        /// </summary>
+        internal static string ClubRequiredMessage {
+            get {
+                return ResourceManager.GetString("ClubRequiredMessage", resourceCulture);
             }
         }
         
@@ -437,6 +455,15 @@ namespace Shoootz.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to First name is required..
+        /// </summary>
+        internal static string FirstnameRequiredMessage {
+            get {
+                return ResourceManager.GetString("FirstnameRequiredMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Gender.
         /// </summary>
         internal static string Gender {
@@ -532,6 +559,15 @@ namespace Shoootz.Resources.Lang {
         internal static string Lastname {
             get {
                 return ResourceManager.GetString("Lastname", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last name is required..
+        /// </summary>
+        internal static string LastnameRequiredMessage {
+            get {
+                return ResourceManager.GetString("LastnameRequiredMessage", resourceCulture);
             }
         }
         

@@ -26,7 +26,7 @@ public partial class ShootersView : UserControl
     private static TextBlock BuildShooterDeleteContent(string shooterName)
     {
         string template = LocalizationService.Instance[nameof(Messages.ConfirmDeleteShooterMessage)];
-        string[] parts = template.Split("{0}", 2, StringSplitOptions.None);
+        string[] parts = template.Split("{0}", 2);
 
         TextBlock textBlock = new() { FontSize = 16, TextWrapping = TextWrapping.Wrap };
 
@@ -117,7 +117,7 @@ public partial class ShootersView : UserControl
             Width = 460,
         };
 
-        bool? result = await DialogService.ShowAsync(this, window => dialog.ShowDialog<bool?>(window));
+        bool? result = await DialogService.ShowAsync(this, dialog.ShowDialog<bool?>);
 
         if (result is true)
         {
@@ -136,6 +136,7 @@ public partial class ShootersView : UserControl
         ShooterModel editingShooter = shooter ?? new ShooterModel { Id = await viewModel.GenerateShooterIdAsync() };
 
         ShooterEditView editView = new();
+        editView.SetClubOptions(await viewModel.GetClubNamesAsync());
         editView.LoadShooter(editingShooter);
 
         bool? result = await DialogService.ShowAsync(
@@ -144,6 +145,7 @@ public partial class ShootersView : UserControl
                 new ContentDialog
                 {
                     SubmitText = LocalizationService.Instance[isEdit ? nameof(Messages.Save) : nameof(Messages.Add)],
+                    SubmitValidator = editView.Validate,
                     DialogContent = editView,
                     DialogTitle = LocalizationService.Instance[nameof(Messages.Shooters)],
                     SizeToContent = SizeToContent.WidthAndHeight,
@@ -153,6 +155,10 @@ public partial class ShootersView : UserControl
         if (result is true)
         {
             await viewModel.ExecuteSaveShooterAsync(editView.BuildShooter());
+        }
+        else
+        {
+            viewModel.SelectedShooter = null;
         }
     }
 }

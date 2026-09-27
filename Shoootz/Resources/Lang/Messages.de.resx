@@ -129,6 +129,18 @@
   <data name="ConfirmDeleteSettingsFileMessage" xml:space="preserve">
     <value>Die Datei mit allen Einstellungen wirklich löschen?</value>
   </data>
+  <data name="BirthyearInvalidMessage" xml:space="preserve">
+    <value>Bitte ein gültiges Geburtsjahr angeben.</value>
+  </data>
+  <data name="FirstnameRequiredMessage" xml:space="preserve">
+    <value>Vorname ist erforderlich.</value>
+  </data>
+  <data name="ClubRequiredMessage" xml:space="preserve">
+    <value>Bitte einen Verein auswählen.</value>
+  </data>
+  <data name="LastnameRequiredMessage" xml:space="preserve">
+    <value>Nachname ist erforderlich.</value>
+  </data>
   <data name="Firstname" xml:space="preserve">
     <value>Vorname</value>
   </data>

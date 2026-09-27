@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Result;
 using Result.Types;
+using Shoootz.Models.Club;
 using Shoootz.Models.Error;
 using Shoootz.Models.Shooter;
 using Shoootz.Services.Store;
@@ -64,7 +65,7 @@ internal partial class ShootersViewModel : ViewModelBase
             async _ =>
             {
                 await LoadShootersAsync();
-                SelectedShooter = Shooters.FirstOrDefault(loadedShooter => loadedShooter.Id == shooter.Id);
+                SelectedShooter = null;
             },
             error =>
             {
@@ -74,7 +75,24 @@ internal partial class ShootersViewModel : ViewModelBase
         );
     }
 
-    public async Task<string> GenerateShooterIdAsync() => await _storeService.GenerateShooterIdAsync();
+    public async Task<string> GenerateShooterIdAsync()
+    {
+        return await _storeService.GenerateShooterIdAsync();
+    }
+
+    public async Task<List<string>> GetClubNamesAsync()
+    {
+        Result<List<ClubModel>, StoreReadError> result = await _storeService.GetClubsAsync();
+
+        return result.Match(
+            clubs => clubs.Select(club => club.Name).ToList(),
+            error =>
+            {
+                SaveShooterFailed?.Invoke(error.Value.Message);
+                return [];
+            }
+        );
+    }
 
     private async Task LoadShootersAsync()
     {
