@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Result;
@@ -13,6 +15,8 @@ namespace Shoootz.ViewModels.Competition;
 
 internal partial class ClubsViewModel : ViewModelBase
 {
+    private readonly List<ClubModel> _allClubs = [];
+
     private readonly IStoreService _storeService;
 
     public ClubsViewModel(IStoreService storeService)
@@ -26,7 +30,13 @@ internal partial class ClubsViewModel : ViewModelBase
 
     public ObservableCollection<ClubModel> Clubs { get; } = [];
 
+    public bool HasSearchText => !string.IsNullOrEmpty(SearchText);
+
     public bool IsClubSelected => SelectedClub is not null;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(HasSearchText))]
+    public partial string? SearchText { get; set; }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsClubSelected))]
@@ -94,6 +104,24 @@ internal partial class ClubsViewModel : ViewModelBase
         );
     }
 
+    private void ApplyFilter()
+    {
+        IEnumerable<ClubModel> filtered = string.IsNullOrWhiteSpace(SearchText)
+            ? _allClubs
+            : _allClubs.Where(club =>
+                club.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase)
+                || club.ShooterCount.ToString(CultureInfo.InvariantCulture)
+                    .Contains(SearchText, StringComparison.OrdinalIgnoreCase)
+            );
+
+        Clubs.Clear();
+
+        foreach (ClubModel club in filtered)
+        {
+            Clubs.Add(club);
+        }
+    }
+
     private async Task LoadClubsAsync()
     {
         Result<List<ClubModel>, StoreReadError> result = await _storeService.GetClubsAsync();
@@ -101,14 +129,16 @@ internal partial class ClubsViewModel : ViewModelBase
         result.Match(
             clubs =>
             {
-                Clubs.Clear();
-
-                foreach (ClubModel club in clubs)
-                {
-                    Clubs.Add(club);
-                }
+                _allClubs.Clear();
+                _allClubs.AddRange(clubs);
+                ApplyFilter();
             },
             error => SaveClubFailed?.Invoke(error.Value.Message)
         );
+    }
+
+    partial void OnSearchTextChanged(string? value)
+    {
+        ApplyFilter();
     }
 }

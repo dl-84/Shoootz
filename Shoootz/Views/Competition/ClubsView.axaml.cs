@@ -68,6 +68,14 @@ public partial class ClubsView : UserControl
         }
     }
 
+    private void OnClearSearchIconPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (DataContext is ClubsViewModel viewModel)
+        {
+            viewModel.SearchText = null;
+        }
+    }
+
     private void OnClubRowDoubleTapped(object? sender, TappedEventArgs e)
     {
         if (
