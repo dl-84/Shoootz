@@ -106,6 +106,7 @@ public class App : Application
         services.AddTransient<LicensesViewModel>();
         services.AddTransient<LoggingViewModel>();
         services.AddTransient<ShootersViewModel>();
+        services.AddTransient<ShotsViewModel>();
     }
 
     private void InitContext(ServiceCollection serviceCollection)

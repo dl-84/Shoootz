@@ -189,6 +189,7 @@ internal partial class MainWindowViewModel : ViewModelBase
             NavigationPageType.Licenses => _serviceProvider.GetRequiredService<LicensesViewModel>(),
             NavigationPageType.Logging => _serviceProvider.GetRequiredService<LoggingViewModel>(),
             NavigationPageType.Shooters => _serviceProvider.GetRequiredService<ShootersViewModel>(),
+            NavigationPageType.Shots => _serviceProvider.GetRequiredService<ShotsViewModel>(),
             _ => null,
         };
     }

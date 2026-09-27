@@ -71,6 +71,22 @@
                                 <ListBoxItem Classes="navigation-header"
                                              IsEnabled="False">
                                     <TextBlock Margin="20,28,20,4"
+                                               Text="{loc:Localization Data,
+                                                                       ToUpper=True}" />
+                                </ListBoxItem>
+                                <ListBoxItem Tag="{x:Static vm:NavigationPageType.Shots}">
+                                    <TextBlock Text="{loc:Localization Shots}" />
+                                </ListBoxItem>
+                                <ListBoxItem Tag="{x:Static vm:NavigationPageType.Shooters}">
+                                    <TextBlock Text="{loc:Localization Shooters}" />
+                                </ListBoxItem>
+                                <ListBoxItem Tag="{x:Static vm:NavigationPageType.Clubs}">
+                                    <TextBlock Text="{loc:Localization Clubs}" />
+                                </ListBoxItem>
+
+                                <ListBoxItem Classes="navigation-header"
+                                             IsEnabled="False">
+                                    <TextBlock Margin="20,28,20,4"
                                                Text="{loc:Localization Settings,
                                                                        ToUpper=True}" />
                                 </ListBoxItem>
@@ -79,12 +95,6 @@
                                 </ListBoxItem>
                                 <ListBoxItem Tag="{x:Static vm:NavigationPageType.Groups}">
                                     <TextBlock Text="{loc:Localization Groups}" />
-                                </ListBoxItem>
-                                <ListBoxItem Tag="{x:Static vm:NavigationPageType.Shooters}">
-                                    <TextBlock Text="{loc:Localization Shooters}" />
-                                </ListBoxItem>
-                                <ListBoxItem Tag="{x:Static vm:NavigationPageType.Clubs}">
-                                    <TextBlock Text="{loc:Localization Clubs}" />
                                 </ListBoxItem>
 
                                 <ListBoxItem Classes="navigation-header"

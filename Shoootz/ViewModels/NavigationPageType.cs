@@ -10,4 +10,5 @@ internal enum NavigationPageType
     Licenses,
     Logging,
     Shooters,
+    Shots,
 }
