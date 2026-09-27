@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Result;
@@ -85,7 +84,7 @@ internal partial class ClubsViewModel : ViewModelBase
             async _ =>
             {
                 await LoadClubsAsync();
-                SelectedClub = Clubs.FirstOrDefault(loadedClub => loadedClub.Id == club.Id);
+                SelectedClub = null;
             },
             error =>
             {

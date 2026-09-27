@@ -1,9 +1,13 @@
 using System;
 using System.Threading.Tasks;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Media;
+using Avalonia.VisualTree;
 using Controls.ContentDialog;
+using Controls.FormField;
 using Shoootz.Models.Club;
 using Shoootz.Resources.Lang;
 using Shoootz.Services.Dialog;
@@ -19,11 +23,18 @@ public partial class ClubsView : UserControl
     {
         InitializeComponent();
         DataContextChanged += OnDataContextChanged;
+        ClubsListBox.AddHandler(PointerPressedEvent, OnClubRowPointerPressed, RoutingStrategies.Tunnel);
     }
 
-    private static TextBox BuildClubNameTextBox(string clubName)
+    private static FormFieldControl BuildClubNameField(string clubName)
     {
-        return new TextBox { Text = clubName, Width = 400 };
+        return new FormFieldControl
+        {
+            Label = LocalizationService.Instance[nameof(Messages.Name)],
+            MaxLength = 255,
+            Text = clubName,
+            Width = 400,
+        };
     }
 
     private static TextBlock BuildClubDeleteContent(string clubName)
@@ -35,15 +46,55 @@ public partial class ClubsView : UserControl
         };
     }
 
+    private static bool ValidateClubName(FormFieldControl field)
+    {
+        bool isValid = !string.IsNullOrWhiteSpace(field.Text);
+        field.IsError = !isValid;
+        field.ErrorMessage = isValid ? null : LocalizationService.Instance[nameof(Messages.ClubNameRequiredMessage)];
+
+        return isValid;
+    }
+
     private void OnAddIconPressed(object? sender, PointerPressedEventArgs e)
     {
         if (DataContext is ClubsViewModel viewModel)
         {
             _ = OpenClubNameDialogAsync(
                 string.Empty,
+                LocalizationService.Instance[nameof(Messages.AddClubTitle)],
                 nameof(Messages.Add),
                 name => viewModel.ExecuteCreateClubAsync(name)
             );
+        }
+    }
+
+    private void OnClubRowDoubleTapped(object? sender, TappedEventArgs e)
+    {
+        if (
+            DataContext is ClubsViewModel viewModel
+            && (e.Source as Visual)?.FindAncestorOfType<ListBoxItem>() is { DataContext: ClubModel club }
+        )
+        {
+            _ = OpenClubNameDialogAsync(
+                club.Name,
+                string.Format(LocalizationService.Instance[nameof(Messages.EditClubTitle)], club.Id),
+                nameof(Messages.Save),
+                name => viewModel.ExecuteRenameClubAsync(club, name)
+            );
+        }
+    }
+
+    private void OnClubRowPointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (
+            e.ClickCount == 1
+            && DataContext is ClubsViewModel viewModel
+            && (e.Source as Visual)?.FindAncestorOfType<ListBoxItem>() is { DataContext: ClubModel club }
+            && ReferenceEquals(club, viewModel.SelectedClub)
+        )
+        {
+            viewModel.SelectedClub = null;
+            e.Handled = true;
         }
     }
 
@@ -69,6 +120,7 @@ public partial class ClubsView : UserControl
         {
             _ = OpenClubNameDialogAsync(
                 club.Name,
+                string.Format(LocalizationService.Instance[nameof(Messages.EditClubTitle)], club.Id),
                 nameof(Messages.Save),
                 name => viewModel.ExecuteRenameClubAsync(club, name)
             );
@@ -105,17 +157,29 @@ public partial class ClubsView : UserControl
         }
     }
 
-    private async Task OpenClubNameDialogAsync(string initialName, string submitTextKey, Func<string, Task> onConfirmed)
+    private async Task OpenClubNameDialogAsync(
+        string initialName,
+        string dialogTitle,
+        string submitTextKey,
+        Func<string, Task> onConfirmed
+    )
     {
-        TextBox dialogContent = BuildClubNameTextBox(initialName);
+        if (DataContext is not ClubsViewModel viewModel)
+        {
+            return;
+        }
+
+        FormFieldControl dialogContent = BuildClubNameField(initialName);
+
         bool? result = await DialogService.ShowAsync(
             this,
             window =>
                 new ContentDialog
                 {
                     SubmitText = LocalizationService.Instance[submitTextKey],
+                    SubmitValidator = () => ValidateClubName(dialogContent),
                     DialogContent = dialogContent,
-                    DialogTitle = LocalizationService.Instance[nameof(Messages.ClubName)],
+                    DialogTitle = dialogTitle,
                     SizeToContent = SizeToContent.WidthAndHeight,
                 }.ShowDialog<bool?>(window)
         );
@@ -123,6 +187,10 @@ public partial class ClubsView : UserControl
         if (result is true)
         {
             await onConfirmed(dialogContent.Text ?? string.Empty);
+        }
+        else
+        {
+            viewModel.SelectedClub = null;
         }
     }
 

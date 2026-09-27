@@ -85,6 +85,15 @@ namespace Shoootz.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add club.
+        /// </summary>
+        internal static string AddClubTitle {
+            get {
+                return ResourceManager.GetString("AddClubTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add shooter (ID - {0}).
         /// </summary>
         internal static string AddShooterTitle {
@@ -162,6 +171,15 @@ namespace Shoootz.Resources.Lang {
         internal static string ClubName {
             get {
                 return ResourceManager.GetString("ClubName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Club name is required..
+        /// </summary>
+        internal static string ClubNameRequiredMessage {
+            get {
+                return ResourceManager.GetString("ClubNameRequiredMessage", resourceCulture);
             }
         }
         
@@ -433,6 +451,15 @@ namespace Shoootz.Resources.Lang {
         internal static string DeleteShooterShotsToo {
             get {
                 return ResourceManager.GetString("DeleteShooterShotsToo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit club (ID - {0}).
+        /// </summary>
+        internal static string EditClubTitle {
+            get {
+                return ResourceManager.GetString("EditClubTitle", resourceCulture);
             }
         }
         

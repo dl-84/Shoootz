@@ -111,11 +111,20 @@
   <data name="Birthyear" xml:space="preserve">
     <value>Birth year</value>
   </data>
+  <data name="AddClubTitle" xml:space="preserve">
+    <value>Add club</value>
+  </data>
   <data name="Club" xml:space="preserve">
     <value>Club</value>
   </data>
   <data name="ClubName" xml:space="preserve">
     <value>Club name</value>
+  </data>
+  <data name="ClubNameRequiredMessage" xml:space="preserve">
+    <value>Club name is required.</value>
+  </data>
+  <data name="EditClubTitle" xml:space="preserve">
+    <value>Edit club (ID - {0})</value>
   </data>
   <data name="ConfirmDeleteAllMessage" xml:space="preserve">
     <value>Delete all settings including the database?

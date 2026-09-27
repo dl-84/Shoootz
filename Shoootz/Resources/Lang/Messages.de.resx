@@ -111,11 +111,20 @@
   <data name="Birthyear" xml:space="preserve">
     <value>Jahrgang</value>
   </data>
+  <data name="AddClubTitle" xml:space="preserve">
+    <value>Verein hinzufügen</value>
+  </data>
   <data name="Club" xml:space="preserve">
     <value>Verein</value>
   </data>
   <data name="ClubName" xml:space="preserve">
     <value>Vereinsname</value>
+  </data>
+  <data name="ClubNameRequiredMessage" xml:space="preserve">
+    <value>Vereinsname ist erforderlich.</value>
+  </data>
+  <data name="EditClubTitle" xml:space="preserve">
+    <value>Verein ändern (ID - {0})</value>
   </data>
   <data name="ConfirmDeleteAllMessage" xml:space="preserve">
     <value>Alle Einstellungen inklusive Datenbank wirklich löschen?</value>

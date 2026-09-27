@@ -38,35 +38,31 @@
                 <StackPanel>
                     <Border Background="{DynamicResource PrimaryBrush}"
                             Padding="24,10">
-                        <Grid ColumnDefinitions="60,*,100">
+                        <Grid ColumnDefinitions="*,100">
                             <TextBlock Grid.Column="0"
                                        Classes="table-column-header"
-                                       Text="{loc:Localization Id}" />
-                            <TextBlock Grid.Column="1"
-                                       Classes="table-column-header"
                                        Text="{loc:Localization Name}" />
-                            <TextBlock Grid.Column="2"
+                            <TextBlock Grid.Column="1"
                                        Classes="table-column-header"
                                        Text="{loc:Localization Shooters}"
                                        TextAlignment="Center" />
                         </Grid>
                     </Border>
-                    <ListBox Classes="table-rows"
+                    <ListBox x:Name="ClubsListBox"
+                             Classes="table-rows"
+                             DoubleTapped="OnClubRowDoubleTapped"
                              ItemsSource="{Binding Clubs}"
                              Margin="0"
                              SelectedItem="{Binding SelectedClub}">
                         <ListBox.ItemTemplate>
                             <DataTemplate x:DataType="models:ClubModel">
-                                <Grid ColumnDefinitions="60,*,100"
+                                <Grid ColumnDefinitions="*,100"
                                       Height="40"
                                       Margin="24,0">
                                     <TextBlock Grid.Column="0"
-                                               Text="{Binding Id}"
-                                               VerticalAlignment="Center" />
-                                    <TextBlock Grid.Column="1"
                                                Text="{Binding Name}"
                                                VerticalAlignment="Center" />
-                                    <TextBlock Grid.Column="2"
+                                    <TextBlock Grid.Column="1"
                                                Text="{Binding ShooterCount}"
                                                TextAlignment="Center"
                                                VerticalAlignment="Center" />
