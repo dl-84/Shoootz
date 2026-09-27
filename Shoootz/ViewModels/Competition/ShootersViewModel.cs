@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -15,6 +16,8 @@ namespace Shoootz.ViewModels.Competition;
 
 internal partial class ShootersViewModel : ViewModelBase
 {
+    private readonly List<ShooterModel> _allShooters = [];
+
     private readonly IStoreService _storeService;
 
     public ShootersViewModel(IStoreService storeService)
@@ -26,7 +29,13 @@ internal partial class ShootersViewModel : ViewModelBase
 
     public event Action<string>? SaveShooterFailed;
 
+    public bool HasSearchText => !string.IsNullOrEmpty(SearchText);
+
     public bool IsShooterSelected => SelectedShooter is not null;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(HasSearchText))]
+    public partial string? SearchText { get; set; }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsShooterSelected))]
@@ -94,6 +103,28 @@ internal partial class ShootersViewModel : ViewModelBase
         );
     }
 
+    private void ApplyFilter()
+    {
+        IEnumerable<ShooterModel> filtered = string.IsNullOrWhiteSpace(SearchText)
+            ? _allShooters
+            : _allShooters.Where(shooter =>
+                (shooter.Lastname?.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ?? false)
+                || (shooter.Firstname?.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ?? false)
+                || (shooter.Club?.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ?? false)
+                || shooter
+                    .Birthyear.ToString(CultureInfo.InvariantCulture)
+                    .Contains(SearchText, StringComparison.OrdinalIgnoreCase)
+                || (shooter.Gender?.ToString().Contains(SearchText, StringComparison.OrdinalIgnoreCase) ?? false)
+            );
+
+        Shooters.Clear();
+
+        foreach (ShooterModel shooter in filtered)
+        {
+            Shooters.Add(shooter);
+        }
+    }
+
     private async Task LoadShootersAsync()
     {
         Result<List<ShooterModel>, StoreReadError> result = await _storeService.GetShootersAsync();
@@ -101,14 +132,16 @@ internal partial class ShootersViewModel : ViewModelBase
         result.Match(
             shooters =>
             {
-                Shooters.Clear();
-
-                foreach (ShooterModel shooter in shooters)
-                {
-                    Shooters.Add(shooter);
-                }
+                _allShooters.Clear();
+                _allShooters.AddRange(shooters);
+                ApplyFilter();
             },
             error => SaveShooterFailed?.Invoke(error.Value.Message)
         );
+    }
+
+    partial void OnSearchTextChanged(string? value)
+    {
+        ApplyFilter();
     }
 }

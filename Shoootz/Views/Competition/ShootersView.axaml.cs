@@ -62,6 +62,14 @@ public partial class ShootersView : UserControl
         }
     }
 
+    private void OnClearSearchIconPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (DataContext is ShootersViewModel viewModel)
+        {
+            viewModel.SearchText = null;
+        }
+    }
+
     private void OnDataContextChanged(object? sender, EventArgs e)
     {
         if (DataContext is ShootersViewModel viewModel)

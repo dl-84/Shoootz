@@ -70,6 +70,9 @@
   <data name="Save" xml:space="preserve">
     <value>Speichern</value>
   </data>
+  <data name="Search" xml:space="preserve">
+    <value>Suchen</value>
+  </data>
   <data name="SettingsErrorHint" xml:space="preserve">
     <value>Beheben Sie den folgenden Fehler und validieren Sie die Datei erneut.</value>
   </data>
