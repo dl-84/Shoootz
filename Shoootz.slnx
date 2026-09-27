@@ -22,6 +22,7 @@
     <Project Path="../Library/Avalonia/Controls/InfoDialog/InfoDialog.csproj" />
     <Project Path="../Library/Avalonia/Controls/WaitingDialog/WaitingDialog.csproj" />
     <Project Path="../Library/Avalonia/Controls/LicenseTable/LicenseTable.csproj" />
+    <Project Path="../Library/Avalonia/Controls/SiteActionBar/SiteActionBar.csproj" />
     <Project Path="../Library/Avalonia/Controls/TextEditor/TextEditor.csproj" />
     <Project Path="../Library/Avalonia/Controls/TitleBar/TitleBar.csproj" />
   </Folder>

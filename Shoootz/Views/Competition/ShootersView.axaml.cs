@@ -54,19 +54,11 @@ public partial class ShootersView : UserControl
         return textBlock;
     }
 
-    private void OnAddIconPressed(object? sender, PointerPressedEventArgs e)
+    private void OnAddIconPressed(object? sender, EventArgs e)
     {
         if (DataContext is ShootersViewModel viewModel)
         {
             _ = OpenShooterDialogAsync(null, viewModel);
-        }
-    }
-
-    private void OnClearSearchIconPressed(object? sender, PointerPressedEventArgs e)
-    {
-        if (DataContext is ShootersViewModel viewModel)
-        {
-            viewModel.SearchText = null;
         }
     }
 
@@ -78,7 +70,7 @@ public partial class ShootersView : UserControl
         }
     }
 
-    private void OnDeleteIconPressed(object? sender, PointerPressedEventArgs e)
+    private void OnDeleteIconPressed(object? sender, EventArgs e)
     {
         if (DataContext is ShootersViewModel { SelectedShooter: { } shooter })
         {
@@ -86,7 +78,7 @@ public partial class ShootersView : UserControl
         }
     }
 
-    private void OnEditIconPressed(object? sender, PointerPressedEventArgs e)
+    private void OnEditIconPressed(object? sender, EventArgs e)
     {
         if (DataContext is ShootersViewModel { SelectedShooter: { } shooter } viewModel)
         {

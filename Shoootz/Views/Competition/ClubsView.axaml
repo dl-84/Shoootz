@@ -3,6 +3,7 @@
              xmlns="https://github.com/avaloniaui"
              xmlns:loc="using:Shoootz.Extensions"
              xmlns:models="using:Shoootz.Models.Club"
+             xmlns:sab="using:Controls.SiteActionBar"
              xmlns:vm="using:Shoootz.ViewModels.Competition"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:DataType="vm:ClubsViewModel">
@@ -13,44 +14,12 @@
             <TextBlock Classes="h3"
                        Text="{loc:Localization Clubs}" />
 
-            <Grid ColumnDefinitions="*,Auto">
-                <TextBox Grid.Column="0"
-                         HorizontalAlignment="Left"
-                         PlaceholderText="{loc:Localization Search}"
-                         Text="{Binding SearchText}"
-                         Width="300">
-                    <TextBox.InnerRightContent>
-                        <PathIcon Classes="icon-action icon-danger"
-                                  Data="M55.1 73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L147.2 256 9.9 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192.5 301.3 329.9 438.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.8 256 375.1 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192.5 210.7 55.1 73.4z"
-                                  Height="12"
-                                  Margin="0,0,10,0"
-                                  PointerPressed="OnClearSearchIconPressed"
-                                  Width="12"
-                                  IsVisible="{Binding HasSearchText}" />
-                    </TextBox.InnerRightContent>
-                </TextBox>
-
-                <StackPanel Grid.Column="1"
-                            Margin="0,0,10,0"
-                            Orientation="Horizontal"
-                            Spacing="{DynamicResource SpacingMedium}"
-                            VerticalAlignment="Center">
-                    <PathIcon Classes="icon-action"
-                              Data="{DynamicResource AddIcon}"
-                              PointerPressed="OnAddIconPressed"
-                              VerticalAlignment="Center" />
-                    <PathIcon Classes="icon-action"
-                              Data="{DynamicResource EditIcon}"
-                              PointerPressed="OnEditIconPressed"
-                              VerticalAlignment="Center"
-                              IsEnabled="{Binding IsClubSelected}" />
-                    <PathIcon Classes="icon-action icon-danger"
-                              Data="{DynamicResource DeleteIcon}"
-                              PointerPressed="OnDeleteIconPressed"
-                              VerticalAlignment="Center"
-                              IsEnabled="{Binding IsClubSelected}" />
-                </StackPanel>
-            </Grid>
+            <sab:SiteActionBarControl AddRequested="OnAddIconPressed"
+                                      DeleteRequested="OnDeleteIconPressed"
+                                      EditRequested="OnEditIconPressed"
+                                      IsActionEnabled="{Binding IsClubSelected}"
+                                      SearchPlaceholder="{loc:Localization Search}"
+                                      SearchText="{Binding SearchText}" />
 
             <Border Classes="card"
                     Padding="0">

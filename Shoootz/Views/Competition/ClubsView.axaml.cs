@@ -55,7 +55,7 @@ public partial class ClubsView : UserControl
         return isValid;
     }
 
-    private void OnAddIconPressed(object? sender, PointerPressedEventArgs e)
+    private void OnAddIconPressed(object? sender, EventArgs e)
     {
         if (DataContext is ClubsViewModel viewModel)
         {
@@ -65,14 +65,6 @@ public partial class ClubsView : UserControl
                 nameof(Messages.Add),
                 name => viewModel.ExecuteCreateClubAsync(name)
             );
-        }
-    }
-
-    private void OnClearSearchIconPressed(object? sender, PointerPressedEventArgs e)
-    {
-        if (DataContext is ClubsViewModel viewModel)
-        {
-            viewModel.SearchText = null;
         }
     }
 
@@ -114,7 +106,7 @@ public partial class ClubsView : UserControl
         }
     }
 
-    private void OnDeleteIconPressed(object? sender, PointerPressedEventArgs e)
+    private void OnDeleteIconPressed(object? sender, EventArgs e)
     {
         if (DataContext is ClubsViewModel { SelectedClub: { } club })
         {
@@ -122,7 +114,7 @@ public partial class ClubsView : UserControl
         }
     }
 
-    private void OnEditIconPressed(object? sender, PointerPressedEventArgs e)
+    private void OnEditIconPressed(object? sender, EventArgs e)
     {
         if (DataContext is ClubsViewModel { SelectedClub: { } club } viewModel)
         {
