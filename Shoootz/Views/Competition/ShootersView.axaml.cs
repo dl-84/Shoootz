@@ -2,12 +2,11 @@ using System;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Documents;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.Media;
 using Avalonia.VisualTree;
 using Controls.ContentDialog;
+using Shoootz.Extensions;
 using Shoootz.Models.Shooter;
 using Shoootz.Resources.Lang;
 using Shoootz.Services.Dialog;
@@ -24,34 +23,6 @@ public partial class ShootersView : UserControl
         InitializeComponent();
         DataContextChanged += OnDataContextChanged;
         ShootersListBox.AddHandler(PointerPressedEvent, OnShooterRowPointerPressed, RoutingStrategies.Tunnel);
-    }
-
-    private static TextBlock BuildShooterDeleteContent(string shooterName)
-    {
-        string template = LocalizationService.Instance[nameof(Messages.ConfirmDeleteShooterMessage)];
-        string[] parts = template.Split("{0}", 2);
-
-        TextBlock textBlock = new() { FontSize = 16, TextWrapping = TextWrapping.Wrap };
-
-        if (parts.Length == 2)
-        {
-            textBlock.Inlines =
-            [
-                new Run(parts[0]),
-                new Bold
-                {
-                    FontWeight = FontWeight.Bold,
-                    Inlines = [new Run(shooterName) { FontSize = 16, FontWeight = FontWeight.Bold }],
-                },
-                new Run(parts[1]),
-            ];
-        }
-        else
-        {
-            textBlock.Inlines = [new Run(template)];
-        }
-
-        return textBlock;
     }
 
     private void OnAddIconPressed(object? sender, EventArgs e)
@@ -133,7 +104,11 @@ public partial class ShootersView : UserControl
             Margin = new Thickness(10, 12, 0, 0),
         };
 
-        StackPanel dialogContent = new() { Children = { BuildShooterDeleteContent(fullName), deleteShotsCheckBox } };
+        TextBlock confirmationText = LocalizationService
+            .Instance[nameof(Messages.ConfirmDeleteShooterMessage)]
+            .Highlight(fullName);
+
+        StackPanel dialogContent = new() { Children = { confirmationText, deleteShotsCheckBox } };
 
         ContentDialog dialog = new()
         {

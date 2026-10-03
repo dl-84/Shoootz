@@ -2,13 +2,12 @@ using System;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Documents;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.Media;
 using Avalonia.VisualTree;
 using Controls.ContentDialog;
 using Controls.FormField;
+using Shoootz.Extensions;
 using Shoootz.Models.Club;
 using Shoootz.Resources.Lang;
 using Shoootz.Services.Dialog;
@@ -36,34 +35,6 @@ public partial class ClubsView : UserControl
             Text = clubName,
             Width = 400,
         };
-    }
-
-    private static TextBlock BuildClubDeleteContent(string clubName)
-    {
-        string template = LocalizationService.Instance[nameof(Messages.ConfirmDeleteClubMessage)];
-        string[] parts = template.Split("{0}", 2);
-
-        TextBlock textBlock = new() { FontSize = 16, TextWrapping = TextWrapping.Wrap };
-
-        if (parts.Length == 2)
-        {
-            textBlock.Inlines =
-            [
-                new Run(parts[0]),
-                new Bold
-                {
-                    FontWeight = FontWeight.Bold,
-                    Inlines = [new Run(clubName) { FontSize = 16, FontWeight = FontWeight.Bold }],
-                },
-                new Run(parts[1]),
-            ];
-        }
-        else
-        {
-            textBlock.Inlines = [new Run(template)];
-        }
-
-        return textBlock;
     }
 
     private static bool ValidateClubName(FormFieldControl field)
@@ -161,7 +132,7 @@ public partial class ClubsView : UserControl
 
         ContentDialog dialog = new()
         {
-            DialogContent = BuildClubDeleteContent(club.Name),
+            DialogContent = LocalizationService.Instance[nameof(Messages.ConfirmDeleteClubMessage)].Highlight(club.Name),
             DialogTitle = LocalizationService.Instance[nameof(Messages.DeleteClubTitle)],
             IsDanger = true,
             SizeToContent = SizeToContent.Height,
