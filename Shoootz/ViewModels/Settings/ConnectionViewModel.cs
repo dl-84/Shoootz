@@ -25,6 +25,7 @@ using Shoootz.Services.Udp;
 using Shoootz.Store;
 using Shoootz.Store.Services;
 using Shoootz.Store.Types;
+using Shoootz.Utils.Interfaces;
 using Shoootz.ViewModels;
 
 namespace Shoootz.ViewModels.Settings;

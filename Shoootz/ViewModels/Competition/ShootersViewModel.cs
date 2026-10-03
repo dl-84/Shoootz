@@ -12,13 +12,12 @@ using Shoootz.Models.Club;
 using Shoootz.Models.Error;
 using Shoootz.Models.Shooter;
 using Shoootz.Services.Store;
+using Shoootz.Utils.Classes;
 
 namespace Shoootz.ViewModels.Competition;
 
-internal partial class ShootersViewModel : ViewModelBase
+internal partial class ShootersViewModel : FilterableListViewModelBase<ShooterModel>
 {
-    private readonly List<ShooterModel> _allShooters = [];
-
     private readonly IStoreService _storeService;
 
     public ShootersViewModel(IStoreService storeService)
@@ -30,19 +29,13 @@ internal partial class ShootersViewModel : ViewModelBase
 
     public event Action<string>? SaveShooterFailed;
 
-    public bool HasSearchText => !string.IsNullOrEmpty(SearchText);
-
     public bool IsShooterSelected => SelectedShooter is not null;
-
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(HasSearchText))]
-    public partial string? SearchText { get; set; }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsShooterSelected))]
     public partial ShooterModel? SelectedShooter { get; set; }
 
-    public ObservableCollection<ShooterModel> Shooters { get; } = [];
+    public ObservableCollection<ShooterModel> Shooters => Items;
 
     public async Task ExecuteDeleteShooterAsync(ShooterModel shooter, bool deleteShots)
     {
@@ -104,45 +97,20 @@ internal partial class ShootersViewModel : ViewModelBase
         );
     }
 
-    private void ApplyFilter()
+    protected override bool Matches(ShooterModel item, string searchText)
     {
-        IEnumerable<ShooterModel> filtered = string.IsNullOrWhiteSpace(SearchText)
-            ? _allShooters
-            : _allShooters.Where(shooter =>
-                (shooter.Lastname?.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ?? false)
-                || (shooter.Firstname?.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ?? false)
-                || (shooter.Club?.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ?? false)
-                || shooter
-                    .Birthyear.ToString(CultureInfo.InvariantCulture)
-                    .Contains(SearchText, StringComparison.OrdinalIgnoreCase)
-                || EnumConverter.ToDisplayText(shooter.Gender).Contains(SearchText, StringComparison.OrdinalIgnoreCase)
-            );
-
-        Shooters.Clear();
-
-        foreach (ShooterModel shooter in filtered)
-        {
-            Shooters.Add(shooter);
-        }
+        return (item.Lastname?.Contains(searchText, StringComparison.OrdinalIgnoreCase) ?? false)
+            || (item.Firstname?.Contains(searchText, StringComparison.OrdinalIgnoreCase) ?? false)
+            || (item.Club?.Contains(searchText, StringComparison.OrdinalIgnoreCase) ?? false)
+            || item.Birthyear.ToString(CultureInfo.InvariantCulture)
+                .Contains(searchText, StringComparison.OrdinalIgnoreCase)
+            || EnumConverter.ToDisplayText(item.Gender).Contains(searchText, StringComparison.OrdinalIgnoreCase);
     }
 
     private async Task LoadShootersAsync()
     {
         Result<List<ShooterModel>, StoreReadError> result = await _storeService.GetShootersAsync();
 
-        result.Match(
-            shooters =>
-            {
-                _allShooters.Clear();
-                _allShooters.AddRange(shooters);
-                ApplyFilter();
-            },
-            error => SaveShooterFailed?.Invoke(error.Value.Message)
-        );
-    }
-
-    partial void OnSearchTextChanged(string? value)
-    {
-        ApplyFilter();
+        result.Match(SetItems, error => SaveShooterFailed?.Invoke(error.Value.Message));
     }
 }

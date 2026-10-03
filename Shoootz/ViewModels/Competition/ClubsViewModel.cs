@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
-using System.Linq;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Result;
@@ -12,13 +11,12 @@ using Shoootz.Models.Error;
 using Shoootz.Resources.Lang;
 using Shoootz.Services.Localization;
 using Shoootz.Services.Store;
+using Shoootz.Utils.Classes;
 
 namespace Shoootz.ViewModels.Competition;
 
-internal partial class ClubsViewModel : ViewModelBase
+internal partial class ClubsViewModel : FilterableListViewModelBase<ClubModel>
 {
-    private readonly List<ClubModel> _allClubs = [];
-
     private readonly IStoreService _storeService;
 
     public ClubsViewModel(IStoreService storeService)
@@ -30,15 +28,9 @@ internal partial class ClubsViewModel : ViewModelBase
 
     public event Action<string>? SaveClubFailed;
 
-    public ObservableCollection<ClubModel> Clubs { get; } = [];
-
-    public bool HasSearchText => !string.IsNullOrEmpty(SearchText);
+    public ObservableCollection<ClubModel> Clubs => Items;
 
     public bool IsClubSelected => SelectedClub is not null;
-
-    [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(HasSearchText))]
-    public partial string? SearchText { get; set; }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsClubSelected))]
@@ -112,41 +104,17 @@ internal partial class ClubsViewModel : ViewModelBase
         );
     }
 
-    private void ApplyFilter()
+    protected override bool Matches(ClubModel item, string searchText)
     {
-        IEnumerable<ClubModel> filtered = string.IsNullOrWhiteSpace(SearchText)
-            ? _allClubs
-            : _allClubs.Where(club =>
-                club.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase)
-                || club.ShooterCount.ToString(CultureInfo.InvariantCulture)
-                    .Contains(SearchText, StringComparison.OrdinalIgnoreCase)
-            );
-
-        Clubs.Clear();
-
-        foreach (ClubModel club in filtered)
-        {
-            Clubs.Add(club);
-        }
+        return item.Name.Contains(searchText, StringComparison.OrdinalIgnoreCase)
+            || item.ShooterCount.ToString(CultureInfo.InvariantCulture)
+                .Contains(searchText, StringComparison.OrdinalIgnoreCase);
     }
 
     private async Task LoadClubsAsync()
     {
         Result<List<ClubModel>, StoreReadError> result = await _storeService.GetClubsAsync();
 
-        result.Match(
-            clubs =>
-            {
-                _allClubs.Clear();
-                _allClubs.AddRange(clubs);
-                ApplyFilter();
-            },
-            error => SaveClubFailed?.Invoke(error.Value.Message)
-        );
-    }
-
-    partial void OnSearchTextChanged(string? value)
-    {
-        ApplyFilter();
+        result.Match(SetItems, error => SaveClubFailed?.Invoke(error.Value.Message));
     }
 }

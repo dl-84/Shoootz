@@ -1,4 +1,4 @@
-namespace Shoootz.ViewModels;
+namespace Shoootz.Utils.Types;
 
 internal enum NavigationPageType
 {

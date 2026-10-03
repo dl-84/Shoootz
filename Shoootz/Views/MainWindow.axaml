@@ -6,6 +6,7 @@
         xmlns:tb="using:Controls.TitleBar"
         xmlns:vm="using:Shoootz.ViewModels"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:types="clr-namespace:Shoootz.Utils.Types"
         x:DataType="vm:MainWindowViewModel"
         Background="Transparent"
         ExtendClientAreaTitleBarHeightHint="-1"
@@ -64,7 +65,7 @@
                                                Text="{loc:Localization Competition,
                                                                        ToUpper=True}" />
                                 </ListBoxItem>
-                                <ListBoxItem Tag="{x:Static vm:NavigationPageType.Evaluate}">
+                                <ListBoxItem Tag="{x:Static types:NavigationPageType.Evaluate}">
                                     <TextBlock Text="{loc:Localization Evaluate}" />
                                 </ListBoxItem>
 
@@ -74,13 +75,13 @@
                                                Text="{loc:Localization Data,
                                                                        ToUpper=True}" />
                                 </ListBoxItem>
-                                <ListBoxItem Tag="{x:Static vm:NavigationPageType.Shots}">
+                                <ListBoxItem Tag="{x:Static types:NavigationPageType.Shots}">
                                     <TextBlock Text="{loc:Localization Shots}" />
                                 </ListBoxItem>
-                                <ListBoxItem Tag="{x:Static vm:NavigationPageType.Shooters}">
+                                <ListBoxItem Tag="{x:Static types:NavigationPageType.Shooters}">
                                     <TextBlock Text="{loc:Localization Shooters}" />
                                 </ListBoxItem>
-                                <ListBoxItem Tag="{x:Static vm:NavigationPageType.Clubs}">
+                                <ListBoxItem Tag="{x:Static types:NavigationPageType.Clubs}">
                                     <TextBlock Text="{loc:Localization Clubs}" />
                                 </ListBoxItem>
 
@@ -90,10 +91,10 @@
                                                Text="{loc:Localization Settings,
                                                                        ToUpper=True}" />
                                 </ListBoxItem>
-                                <ListBoxItem Tag="{x:Static vm:NavigationPageType.App}">
+                                <ListBoxItem Tag="{x:Static types:NavigationPageType.App}">
                                     <TextBlock Text="{loc:Localization App}" />
                                 </ListBoxItem>
-                                <ListBoxItem Tag="{x:Static vm:NavigationPageType.Groups}">
+                                <ListBoxItem Tag="{x:Static types:NavigationPageType.Groups}">
                                     <TextBlock Text="{loc:Localization Groups}" />
                                 </ListBoxItem>
 
@@ -103,13 +104,13 @@
                                                Text="{loc:Localization Info,
                                                                        ToUpper=True}" />
                                 </ListBoxItem>
-                                <ListBoxItem Tag="{x:Static vm:NavigationPageType.About}">
+                                <ListBoxItem Tag="{x:Static types:NavigationPageType.About}">
                                     <TextBlock Text="{loc:Localization About}" />
                                 </ListBoxItem>
-                                <ListBoxItem Tag="{x:Static vm:NavigationPageType.Licenses}">
+                                <ListBoxItem Tag="{x:Static types:NavigationPageType.Licenses}">
                                     <TextBlock Text="{loc:Localization Licenses}" />
                                 </ListBoxItem>
-                                <ListBoxItem Tag="{x:Static vm:NavigationPageType.Logging}">
+                                <ListBoxItem Tag="{x:Static types:NavigationPageType.Logging}">
                                     <TextBlock Text="{loc:Localization Logging}" />
                                 </ListBoxItem>
 

@@ -1,4 +1,4 @@
-namespace Shoootz.ViewModels;
+namespace Shoootz.Utils.Interfaces;
 
 internal interface IHasUnsavedChanges
 {
