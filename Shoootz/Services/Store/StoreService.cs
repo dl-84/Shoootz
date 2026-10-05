@@ -144,15 +144,7 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
                     .DefaultIfEmpty(0)
                     .Max() + 1;
 
-            string generatedId = $"M{nextNumber}";
-
-            while (await context.Shooters.FindAsync(generatedId).ConfigureAwait(false) is not null)
-            {
-                nextNumber++;
-                generatedId = $"M{nextNumber}";
-            }
-
-            return generatedId;
+            return $"M{nextNumber}";
         }
     }
 
