@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
@@ -122,10 +123,16 @@ public partial class ShootersView : UserControl
     private async Task OpenShooterDialogAsync(ShooterModel? shooter, ShootersViewModel viewModel)
     {
         bool isEdit = shooter is not null;
-        ShooterModel editingShooter = shooter ?? new ShooterModel { Id = await viewModel.GenerateShooterIdAsync() };
+
+        Task<string> idTask = isEdit ? Task.FromResult(shooter!.Id!) : viewModel.GenerateShooterIdAsync();
+        Task<List<string>> clubNamesTask = viewModel.GetClubNamesAsync();
+
+        await Task.WhenAll(idTask, clubNamesTask);
+
+        ShooterModel editingShooter = shooter ?? new ShooterModel { Id = idTask.Result };
 
         ShooterEditView editView = new();
-        editView.SetClubOptions(await viewModel.GetClubNamesAsync());
+        editView.SetClubOptions(clubNamesTask.Result);
         editView.LoadShooter(editingShooter);
 
         bool? result = await DialogService.ShowAsync(
