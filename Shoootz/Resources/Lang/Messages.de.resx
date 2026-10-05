@@ -192,6 +192,9 @@
   <data name="DeleteShooterTitle" xml:space="preserve">
     <value>Schütze löschen</value>
   </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Bearbeiten</value>
+  </data>
   <data name="Error" xml:space="preserve">
     <value>Fehler</value>
   </data>

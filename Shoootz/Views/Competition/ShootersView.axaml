@@ -21,8 +21,11 @@
                        Text="{extensions:Localization Shooters}" />
 
             <sab:SiteActionBarControl AddRequested="OnAddIconPressed"
+                                      AddTooltip="{extensions:Localization Add}"
                                       DeleteRequested="OnDeleteIconPressed"
+                                      DeleteTooltip="{extensions:Localization Delete}"
                                       EditRequested="OnEditIconPressed"
+                                      EditTooltip="{extensions:Localization Edit}"
                                       IsActionEnabled="{Binding IsShooterSelected}"
                                       SearchPlaceholder="{extensions:Localization Search}"
                                       SearchText="{Binding SearchText}" />
