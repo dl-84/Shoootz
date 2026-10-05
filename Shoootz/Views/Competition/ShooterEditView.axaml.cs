@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using Avalonia.Controls;
-using Controls.FormField;
 using Shoootz.Models.Shooter;
 using Shoootz.Resources.Lang;
 using Shoootz.Services.Localization;
+using Shoootz.Views.Extensions;
 
 namespace Shoootz.Views.Competition;
 
@@ -61,19 +61,17 @@ public partial class ShooterEditView : UserControl
             && birthyear >= currentYear - 100
             && birthyear <= currentYear;
 
-        bool isFirstnameValid = ValidateField(
-            FirstnameField,
+        bool isFirstnameValid = FirstnameField.SetError(
             !string.IsNullOrWhiteSpace(FirstnameField.Text),
             nameof(Messages.FirstnameRequiredMessage)
         );
 
-        bool isLastnameValid = ValidateField(
-            LastnameField,
+        bool isLastnameValid = LastnameField.SetError(
             !string.IsNullOrWhiteSpace(LastnameField.Text),
             nameof(Messages.LastnameRequiredMessage)
         );
 
-        isBirthyearValid = ValidateField(BirthyearField, isBirthyearValid, nameof(Messages.BirthyearInvalidMessage));
+        isBirthyearValid = BirthyearField.SetError(isBirthyearValid, nameof(Messages.BirthyearInvalidMessage));
 
         bool isClubValid = ValidateComboBox(
             ClubComboBox,
@@ -90,14 +88,6 @@ public partial class ShooterEditView : UserControl
         comboBox.Classes.Set("error", !isValid);
         errorText.Text = isValid ? null : LocalizationService.Instance[messageKey];
         errorText.IsVisible = !isValid;
-
-        return isValid;
-    }
-
-    private static bool ValidateField(FormFieldControl field, bool isValid, string messageKey)
-    {
-        field.IsError = !isValid;
-        field.ErrorMessage = isValid ? null : LocalizationService.Instance[messageKey];
 
         return isValid;
     }

@@ -37,15 +37,6 @@ public partial class ClubsView : UserControl
         };
     }
 
-    private static bool ValidateClubName(FormFieldControl field)
-    {
-        bool isValid = !string.IsNullOrWhiteSpace(field.Text);
-        field.IsError = !isValid;
-        field.ErrorMessage = isValid ? null : LocalizationService.Instance[nameof(Messages.ClubNameRequiredMessage)];
-
-        return isValid;
-    }
-
     private void OnAddIconPressed(object? sender, EventArgs e)
     {
         if (DataContext is ClubsViewModel viewModel)
@@ -156,7 +147,11 @@ public partial class ClubsView : UserControl
                 new ContentDialog
                 {
                     SubmitText = LocalizationService.Instance[submitTextKey],
-                    SubmitValidator = () => ValidateClubName(dialogContent),
+                    SubmitValidator = () =>
+                        dialogContent.SetError(
+                            !string.IsNullOrWhiteSpace(dialogContent.Text),
+                            nameof(Messages.ClubNameRequiredMessage)
+                        ),
                     DialogContent = dialogContent,
                     DialogTitle = dialogTitle,
                     SizeToContent = SizeToContent.WidthAndHeight,
