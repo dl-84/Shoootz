@@ -1,8 +1,9 @@
 using System;
 using Avalonia.Data;
 using Avalonia.Markup.Xaml;
+using Shoootz.Views.Settings;
 
-namespace Shoootz.Extensions;
+namespace Shoootz.Views.Extensions;
 
 public class LocalizationExtension(string key) : MarkupExtension
 {
@@ -10,9 +11,9 @@ public class LocalizationExtension(string key) : MarkupExtension
 
     public override object ProvideValue(IServiceProvider serviceProvider)
     {
-        return new Binding(nameof(LocalizationSource.Value))
+        return new Binding(nameof(LocalizationSourceService.Value))
         {
-            Source = new LocalizationSource(key, ToUpper),
+            Source = new LocalizationSourceService(key, ToUpper),
             Mode = BindingMode.OneWay,
         };
     }

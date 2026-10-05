@@ -13,6 +13,7 @@ using Shoootz.Resources.Lang;
 using Shoootz.Services.Dialog;
 using Shoootz.Services.Localization;
 using Shoootz.ViewModels.Competition;
+using Shoootz.Views.Extensions;
 
 namespace Shoootz.Views.Competition;
 
@@ -23,7 +24,6 @@ public partial class ClubsView : UserControl
     {
         InitializeComponent();
         DataContextChanged += OnDataContextChanged;
-        ClubsListBox.AddHandler(PointerPressedEvent, OnClubRowPointerPressed, RoutingStrategies.Tunnel);
     }
 
     private static FormFieldControl BuildClubNameField(string clubName)
@@ -75,20 +75,6 @@ public partial class ClubsView : UserControl
         }
     }
 
-    private void OnClubRowPointerPressed(object? sender, PointerPressedEventArgs e)
-    {
-        if (
-            e.ClickCount == 1
-            && DataContext is ClubsViewModel viewModel
-            && (e.Source as Visual)?.FindAncestorOfType<ListBoxItem>() is { DataContext: ClubModel club }
-            && ReferenceEquals(club, viewModel.SelectedClub)
-        )
-        {
-            viewModel.SelectedClub = null;
-            e.Handled = true;
-        }
-    }
-
     private void OnDataContextChanged(object? sender, EventArgs e)
     {
         if (DataContext is ClubsViewModel viewModel)
@@ -132,7 +118,9 @@ public partial class ClubsView : UserControl
 
         ContentDialog dialog = new()
         {
-            DialogContent = LocalizationService.Instance[nameof(Messages.ConfirmDeleteClubMessage)].Highlight(club.Name),
+            DialogContent = LocalizationService
+                .Instance[nameof(Messages.ConfirmDeleteClubMessage)]
+                .Highlight(club.Name),
             DialogTitle = LocalizationService.Instance[nameof(Messages.DeleteClubTitle)],
             IsDanger = true,
             SizeToContent = SizeToContent.Height,

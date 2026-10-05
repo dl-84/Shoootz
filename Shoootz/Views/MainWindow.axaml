@@ -1,10 +1,11 @@
 ﻿<Window x:Class="Shoootz.Views.MainWindow"
         xmlns="https://github.com/avaloniaui"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:extensions="clr-namespace:Shoootz.Views.Extensions"
         xmlns:loc="using:Shoootz.Extensions"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:tb="using:Controls.TitleBar"
-        xmlns:types="clr-namespace:Shoootz.Utils.Types"
+        xmlns:types="clr-namespace:Shoootz.Views.Types"
         xmlns:vm="using:Shoootz.ViewModels"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:DataType="vm:MainWindowViewModel"
@@ -62,56 +63,56 @@
                                 <ListBoxItem Classes="navigation-header"
                                              IsEnabled="False">
                                     <TextBlock Margin="20,16,20,4"
-                                               Text="{loc:Localization Competition,
-                                                                       ToUpper=True}" />
+                                               Text="{extensions:Localization Competition,
+                                                                              ToUpper=True}" />
                                 </ListBoxItem>
                                 <ListBoxItem Tag="{x:Static types:NavigationPageType.Evaluate}">
-                                    <TextBlock Text="{loc:Localization Evaluate}" />
+                                    <TextBlock Text="{extensions:Localization Evaluate}" />
                                 </ListBoxItem>
 
                                 <ListBoxItem Classes="navigation-header"
                                              IsEnabled="False">
                                     <TextBlock Margin="20,28,20,4"
-                                               Text="{loc:Localization Data,
-                                                                       ToUpper=True}" />
+                                               Text="{extensions:Localization Data,
+                                                                              ToUpper=True}" />
                                 </ListBoxItem>
                                 <ListBoxItem Tag="{x:Static types:NavigationPageType.Shots}">
-                                    <TextBlock Text="{loc:Localization Shots}" />
+                                    <TextBlock Text="{extensions:Localization Shots}" />
                                 </ListBoxItem>
                                 <ListBoxItem Tag="{x:Static types:NavigationPageType.Shooters}">
-                                    <TextBlock Text="{loc:Localization Shooters}" />
+                                    <TextBlock Text="{extensions:Localization Shooters}" />
                                 </ListBoxItem>
                                 <ListBoxItem Tag="{x:Static types:NavigationPageType.Clubs}">
-                                    <TextBlock Text="{loc:Localization Clubs}" />
+                                    <TextBlock Text="{extensions:Localization Clubs}" />
                                 </ListBoxItem>
 
                                 <ListBoxItem Classes="navigation-header"
                                              IsEnabled="False">
                                     <TextBlock Margin="20,28,20,4"
-                                               Text="{loc:Localization Settings,
-                                                                       ToUpper=True}" />
+                                               Text="{extensions:Localization Settings,
+                                                                              ToUpper=True}" />
                                 </ListBoxItem>
                                 <ListBoxItem Tag="{x:Static types:NavigationPageType.App}">
-                                    <TextBlock Text="{loc:Localization App}" />
+                                    <TextBlock Text="{extensions:Localization App}" />
                                 </ListBoxItem>
                                 <ListBoxItem Tag="{x:Static types:NavigationPageType.Groups}">
-                                    <TextBlock Text="{loc:Localization Groups}" />
+                                    <TextBlock Text="{extensions:Localization Groups}" />
                                 </ListBoxItem>
 
                                 <ListBoxItem Classes="navigation-header"
                                              IsEnabled="False">
                                     <TextBlock Margin="20,28,20,4"
-                                               Text="{loc:Localization Info,
-                                                                       ToUpper=True}" />
+                                               Text="{extensions:Localization Info,
+                                                                              ToUpper=True}" />
                                 </ListBoxItem>
                                 <ListBoxItem Tag="{x:Static types:NavigationPageType.About}">
-                                    <TextBlock Text="{loc:Localization About}" />
+                                    <TextBlock Text="{extensions:Localization About}" />
                                 </ListBoxItem>
                                 <ListBoxItem Tag="{x:Static types:NavigationPageType.Licenses}">
-                                    <TextBlock Text="{loc:Localization Licenses}" />
+                                    <TextBlock Text="{extensions:Localization Licenses}" />
                                 </ListBoxItem>
                                 <ListBoxItem Tag="{x:Static types:NavigationPageType.Logging}">
-                                    <TextBlock Text="{loc:Localization Logging}" />
+                                    <TextBlock Text="{extensions:Localization Logging}" />
                                 </ListBoxItem>
 
                             </ListBox>

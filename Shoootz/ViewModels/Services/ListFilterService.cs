@@ -2,11 +2,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Shoootz.ViewModels;
 
-namespace Shoootz.Utils.Classes;
+namespace Shoootz.ViewModels.Services;
 
-internal abstract partial class FilterableListViewModelBase<TItem> : ViewModelBase
+internal abstract partial class ListFilterService<TItem> : ViewModelBase
 {
     private readonly List<TItem> _allItems = [];
 

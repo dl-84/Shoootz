@@ -12,6 +12,7 @@ using Shoootz.Resources.Lang;
 using Shoootz.Services.Dialog;
 using Shoootz.Services.Localization;
 using Shoootz.ViewModels.Competition;
+using Shoootz.Views.Extensions;
 
 namespace Shoootz.Views.Competition;
 
@@ -22,7 +23,6 @@ public partial class ShootersView : UserControl
     {
         InitializeComponent();
         DataContextChanged += OnDataContextChanged;
-        ShootersListBox.AddHandler(PointerPressedEvent, OnShooterRowPointerPressed, RoutingStrategies.Tunnel);
     }
 
     private void OnAddIconPressed(object? sender, EventArgs e)
@@ -70,20 +70,6 @@ public partial class ShootersView : UserControl
         )
         {
             _ = OpenShooterDialogAsync(shooter, viewModel);
-        }
-    }
-
-    private void OnShooterRowPointerPressed(object? sender, PointerPressedEventArgs e)
-    {
-        if (
-            e.ClickCount == 1
-            && DataContext is ShootersViewModel viewModel
-            && (e.Source as Visual)?.FindAncestorOfType<ListBoxItem>() is { DataContext: ShooterModel shooter }
-            && ReferenceEquals(shooter, viewModel.SelectedShooter)
-        )
-        {
-            viewModel.SelectedShooter = null;
-            e.Handled = true;
         }
     }
 

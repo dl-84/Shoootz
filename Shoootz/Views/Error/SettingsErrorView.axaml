@@ -1,5 +1,6 @@
 ﻿<UserControl x:Class="Shoootz.Views.Error.SettingsErrorView"
              xmlns="https://github.com/avaloniaui"
+             xmlns:extensions="clr-namespace:Shoootz.Views.Extensions"
              xmlns:jsonEditor="using:Controls.JsonEditor"
              xmlns:loc="using:Shoootz.Extensions"
              xmlns:vm="using:Shoootz.ViewModels.Error"
@@ -11,7 +12,7 @@
 
         <TextBlock Grid.Row="0"
                    Classes="h3"
-                   Text="{loc:Localization SettingsFileError}" />
+                   Text="{extensions:Localization SettingsFileError}" />
 
         <Border Grid.Row="1"
                 Classes="card-error"
@@ -20,7 +21,7 @@
             <StackPanel Spacing="{DynamicResource SpacingSmall}">
                 <TextBlock Classes="on-dark"
                            FontWeight="SemiBold"
-                           Text="{loc:Localization SettingsErrorHint}"
+                           Text="{extensions:Localization SettingsErrorHint}"
                            TextWrapping="Wrap" />
                 <ItemsControl ItemsSource="{Binding ErrorMessages}"
                               IsVisible="{Binding ShowOriginalErrors}">
@@ -46,9 +47,9 @@
             <StackPanel Spacing="4">
                 <TextBlock Classes="on-dark"
                            FontWeight="SemiBold"
-                           Text="{loc:Localization SettingsValidSuccess}" />
+                           Text="{extensions:Localization SettingsValidSuccess}" />
                 <TextBlock Classes="on-dark"
-                           Text="{loc:Localization SettingsValidSuccessHint}" />
+                           Text="{extensions:Localization SettingsValidSuccessHint}" />
             </StackPanel>
         </Border>
 
@@ -63,14 +64,14 @@
                     Spacing="{DynamicResource SpacingSmall}">
             <Button Classes="green"
                     Command="{Binding ValidateCommand}"
-                    Content="{loc:Localization Validate}" />
+                    Content="{extensions:Localization Validate}" />
             <Button Classes="green"
                     Command="{Binding SaveCommand}"
-                    Content="{loc:Localization Save}"
+                    Content="{extensions:Localization Save}"
                     IsEnabled="{Binding IsValid}" />
             <Button Classes="green"
                     Command="{Binding RestartCommand}"
-                    Content="{loc:Localization Restart}"
+                    Content="{extensions:Localization Restart}"
                     IsEnabled="{Binding IsSaved}" />
         </StackPanel>
 

@@ -19,11 +19,11 @@ using Shoootz.Services.Store;
 using Shoootz.Services.Udp;
 using Shoootz.Store;
 using Shoootz.Store.Services;
-using Shoootz.Utils.Types;
 using Shoootz.ViewModels.Competition;
 using Shoootz.ViewModels.Error;
 using Shoootz.ViewModels.Info;
 using Shoootz.ViewModels.Settings;
+using Shoootz.Views.Types;
 
 namespace Shoootz.ViewModels;
 

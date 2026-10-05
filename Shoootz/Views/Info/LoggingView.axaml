@@ -1,5 +1,6 @@
 ﻿<UserControl x:Class="Shoootz.Views.Info.LoggingView"
              xmlns="https://github.com/avaloniaui"
+             xmlns:extensions="clr-namespace:Shoootz.Views.Extensions"
              xmlns:loc="using:Shoootz.Extensions"
              xmlns:sc="using:Controls.CounterCard"
              xmlns:vm="using:Shoootz.ViewModels.Info"
@@ -12,7 +13,7 @@
 
         <TextBlock Grid.Row="0"
                    Classes="h3"
-                   Text="{loc:Localization Logging}" />
+                   Text="{extensions:Localization Logging}" />
 
         <Grid Grid.Row="1"
               ColumnDefinitions="*,*,*"
@@ -22,61 +23,61 @@
 
             <sc:CounterCardControl Grid.Row="0"
                                    Grid.Column="0"
-                                   InfoText="{loc:Localization ShotCounterReceivedTooltip}"
-                                   Label="{loc:Localization ShotCounterReceived}"
+                                   InfoText="{extensions:Localization ShotCounterReceivedTooltip}"
+                                   Label="{extensions:Localization ShotCounterReceived}"
                                    Value="{Binding ReceivedShots}" />
 
             <sc:CounterCardControl Grid.Row="0"
                                    Grid.Column="1"
-                                   InfoText="{loc:Localization ShotCounterParsedTooltip}"
-                                   Label="{loc:Localization ShotCounterParsed}"
+                                   InfoText="{extensions:Localization ShotCounterParsedTooltip}"
+                                   Label="{extensions:Localization ShotCounterParsed}"
                                    Value="{Binding ParsedShots}" />
 
             <sc:CounterCardControl Grid.Row="0"
                                    Grid.Column="2"
-                                   InfoText="{loc:Localization ShotCounterSavedTooltip}"
-                                   Label="{loc:Localization ShotCounterSaved}"
+                                   InfoText="{extensions:Localization ShotCounterSavedTooltip}"
+                                   Label="{extensions:Localization ShotCounterSaved}"
                                    Value="{Binding SavedShots}" />
 
             <sc:CounterCardControl Grid.Row="1"
                                    Grid.Column="0"
-                                   InfoText="{loc:Localization ShotCounterWarmupTooltip}"
-                                   Label="{loc:Localization ShotCounterWarmup}"
+                                   InfoText="{extensions:Localization ShotCounterWarmupTooltip}"
+                                   Label="{extensions:Localization ShotCounterWarmup}"
                                    Value="{Binding WarmupShots}" />
 
             <sc:CounterCardControl Grid.Row="1"
                                    Grid.Column="1"
-                                   InfoText="{loc:Localization ShotCounterIncorrectNumberOfObjectsTooltip}"
+                                   InfoText="{extensions:Localization ShotCounterIncorrectNumberOfObjectsTooltip}"
                                    IsDanger="True"
-                                   Label="{loc:Localization ShotCounterIncorrectNumberOfObjects}"
+                                   Label="{extensions:Localization ShotCounterIncorrectNumberOfObjects}"
                                    Value="{Binding IncorrectNumberOfObjects}" />
 
             <sc:CounterCardControl Grid.Row="1"
                                    Grid.Column="2"
-                                   InfoText="{loc:Localization ShotCounterNotTypeOfShotTooltip}"
+                                   InfoText="{extensions:Localization ShotCounterNotTypeOfShotTooltip}"
                                    IsDanger="True"
-                                   Label="{loc:Localization ShotCounterNotTypeOfShot}"
+                                   Label="{extensions:Localization ShotCounterNotTypeOfShot}"
                                    Value="{Binding NotTypeOfShot}" />
 
             <sc:CounterCardControl Grid.Row="2"
                                    Grid.Column="0"
-                                   InfoText="{loc:Localization ShotCounterMissingShooterDataTooltip}"
+                                   InfoText="{extensions:Localization ShotCounterMissingShooterDataTooltip}"
                                    IsDanger="True"
-                                   Label="{loc:Localization ShotCounterMissingShooterData}"
+                                   Label="{extensions:Localization ShotCounterMissingShooterData}"
                                    Value="{Binding MissingShooterData}" />
 
             <sc:CounterCardControl Grid.Row="2"
                                    Grid.Column="1"
-                                   InfoText="{loc:Localization ShotCounterParsedErrorTooltip}"
+                                   InfoText="{extensions:Localization ShotCounterParsedErrorTooltip}"
                                    IsDanger="True"
-                                   Label="{loc:Localization ShotCounterParsedError}"
+                                   Label="{extensions:Localization ShotCounterParsedError}"
                                    Value="{Binding ParsedShotErrors}" />
 
             <sc:CounterCardControl Grid.Row="2"
                                    Grid.Column="2"
-                                   InfoText="{loc:Localization ShotCounterSavedErrorTooltip}"
+                                   InfoText="{extensions:Localization ShotCounterSavedErrorTooltip}"
                                    IsDanger="True"
-                                   Label="{loc:Localization ShotCounterSavedError}"
+                                   Label="{extensions:Localization ShotCounterSavedError}"
                                    Value="{Binding SavedShotErrors}" />
         </Grid>
 
@@ -87,7 +88,7 @@
 
                 <TextBlock Grid.Row="0"
                            Classes="h4"
-                           Text="{loc:Localization LoggingRawTitle}" />
+                           Text="{extensions:Localization LoggingRawTitle}" />
 
                 <ListBox Grid.Row="1"
                          Background="Transparent"

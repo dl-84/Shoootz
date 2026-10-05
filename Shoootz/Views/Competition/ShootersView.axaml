@@ -1,9 +1,11 @@
 ﻿<UserControl x:Class="Shoootz.Views.Competition.ShootersView"
              x:Name="Root"
              xmlns="https://github.com/avaloniaui"
+             xmlns:extensions="clr-namespace:Shoootz.Views.Extensions"
              xmlns:loc="using:Shoootz.Extensions"
              xmlns:models="using:Shoootz.Models.Shooter"
              xmlns:sab="using:Controls.SiteActionBar"
+             xmlns:services="clr-namespace:Shoootz.Views.Services"
              xmlns:vm="using:Shoootz.ViewModels.Competition"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:DataType="vm:ShootersViewModel">
@@ -16,13 +18,13 @@
         <StackPanel Classes="page-content">
 
             <TextBlock Classes="h3"
-                       Text="{loc:Localization Shooters}" />
+                       Text="{extensions:Localization Shooters}" />
 
             <sab:SiteActionBarControl AddRequested="OnAddIconPressed"
                                       DeleteRequested="OnDeleteIconPressed"
                                       EditRequested="OnEditIconPressed"
                                       IsActionEnabled="{Binding IsShooterSelected}"
-                                      SearchPlaceholder="{loc:Localization Search}"
+                                      SearchPlaceholder="{extensions:Localization Search}"
                                       SearchText="{Binding SearchText}" />
 
             <Border Classes="card"
@@ -43,29 +45,29 @@
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0"
                                        Classes="table-column-header"
-                                       Text="{loc:Localization Lastname}" />
+                                       Text="{extensions:Localization Lastname}" />
                             <TextBlock Grid.Column="1"
                                        Classes="table-column-header"
-                                       Text="{loc:Localization Firstname}" />
+                                       Text="{extensions:Localization Firstname}" />
                             <TextBlock Grid.Column="2"
                                        Classes="table-column-header"
-                                       Text="{loc:Localization Club}" />
+                                       Text="{extensions:Localization Club}" />
                             <TextBlock Grid.Column="3"
                                        Classes="table-column-header"
-                                       Text="{loc:Localization Birthyear}"
+                                       Text="{extensions:Localization Birthyear}"
                                        TextAlignment="Center" />
                             <TextBlock Grid.Column="5"
                                        Classes="table-column-header"
-                                       Text="{loc:Localization Gender}"
+                                       Text="{extensions:Localization Gender}"
                                        TextAlignment="Center" />
                         </Grid>
                     </Border>
-                    <ListBox x:Name="ShootersListBox"
-                             Classes="table-rows"
+                    <ListBox Classes="table-rows"
                              DoubleTapped="OnShooterRowDoubleTapped"
                              ItemsSource="{Binding Shooters}"
                              Margin="0"
-                             SelectedItem="{Binding SelectedShooter}">
+                             SelectedItem="{Binding SelectedShooter}"
+                             services:ListBoxSelectService.DeselectOnClick="True">
                         <ListBox.ItemTemplate>
                             <DataTemplate x:DataType="models:ShooterModel">
                                 <Grid ColumnSpacing="{DynamicResource SpacingMedium}"

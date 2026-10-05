@@ -1,5 +1,6 @@
 ﻿<UserControl x:Class="Shoootz.Views.Competition.ShooterEditView"
              xmlns="https://github.com/avaloniaui"
+             xmlns:extensions="clr-namespace:Shoootz.Views.Extensions"
              xmlns:ff="using:Controls.FormField"
              xmlns:loc="using:Shoootz.Extensions"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
@@ -12,15 +13,15 @@
                   ColumnDefinitions="*,*,*">
                 <RadioButton x:Name="MaleRadioButton"
                              Grid.Column="0"
-                             Content="{loc:Localization GenderMale}"
+                             Content="{extensions:Localization GenderMale}"
                              GroupName="Gender" />
                 <RadioButton x:Name="FemaleRadioButton"
                              Grid.Column="1"
-                             Content="{loc:Localization GenderFemale}"
+                             Content="{extensions:Localization GenderFemale}"
                              GroupName="Gender" />
                 <RadioButton x:Name="DiverseRadioButton"
                              Grid.Column="2"
-                             Content="{loc:Localization GenderDiverse}"
+                             Content="{extensions:Localization GenderDiverse}"
                              GroupName="Gender" />
             </Grid>
         </Grid>
@@ -29,12 +30,12 @@
               ColumnSpacing="12">
             <ff:FormFieldControl x:Name="LastnameField"
                                  Grid.Column="0"
-                                 Label="{loc:Localization Lastname}"
+                                 Label="{extensions:Localization Lastname}"
                                  MaxLength="100" />
 
             <ff:FormFieldControl x:Name="FirstnameField"
                                  Grid.Column="1"
-                                 Label="{loc:Localization Firstname}"
+                                 Label="{extensions:Localization Firstname}"
                                  MaxLength="100" />
         </Grid>
 
@@ -43,13 +44,13 @@
             <ff:FormFieldControl x:Name="BirthyearField"
                                  Grid.Column="0"
                                  AllowedPattern="[0-9]"
-                                 Label="{loc:Localization Birthyear}"
+                                 Label="{extensions:Localization Birthyear}"
                                  MaxLength="4" />
 
             <StackPanel Grid.Column="1"
                         Spacing="4">
                 <TextBlock Classes="label"
-                           Text="{loc:Localization Club}" />
+                           Text="{extensions:Localization Club}" />
                 <ComboBox x:Name="ClubComboBox"
                           HorizontalAlignment="Stretch"
                           Width="NaN" />

@@ -1,7 +1,9 @@
 ﻿<UserControl x:Class="Shoootz.Views.Settings.ConnectionView"
              xmlns="https://github.com/avaloniaui"
+             xmlns:extensions="clr-namespace:Shoootz.Views.Extensions"
              xmlns:loc="using:Shoootz.Extensions"
              xmlns:models="using:Shoootz.Models.Settings.Language"
+             xmlns:services="clr-namespace:Shoootz.Views.Services"
              xmlns:vm="using:Shoootz.ViewModels.Settings"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:DataType="vm:ConnectionViewModel">
@@ -12,7 +14,7 @@
             <StackPanel Classes="page-content">
 
                 <TextBlock Classes="h3"
-                           Text="{loc:Localization App}" />
+                           Text="{extensions:Localization App}" />
 
                 <StackPanel HorizontalAlignment="Right"
                             Margin="0,0,10,0"
@@ -24,7 +26,7 @@
                               Tag="{Binding SaveCommand}"
                               ToolTip.HorizontalOffset="0"
                               ToolTip.Placement="TopEdgeAlignedRight"
-                              ToolTip.Tip="{loc:Localization Save}"
+                              ToolTip.Tip="{extensions:Localization Save}"
                               ToolTip.VerticalOffset="-2"
                               VerticalAlignment="Center"
                               IsEnabled="{Binding IsSaveEnabled}" />
@@ -34,7 +36,7 @@
                     <StackPanel Spacing="{DynamicResource SpacingMedium}">
 
                         <TextBlock Classes="h4"
-                                   Text="{loc:Localization General}" />
+                                   Text="{extensions:Localization General}" />
 
                         <Grid ColumnDefinitions="Auto,*">
                             <ComboBox Grid.Column="0"
@@ -68,7 +70,7 @@
                                           Tag="{Binding OpenSettingsFolderCommand}"
                                           ToolTip.HorizontalOffset="0"
                                           ToolTip.Placement="TopEdgeAlignedRight"
-                                          ToolTip.Tip="{loc:Localization OpenFolder}"
+                                          ToolTip.Tip="{extensions:Localization OpenFolder}"
                                           ToolTip.VerticalOffset="-2"
                                           VerticalAlignment="Center" />
                                 <PathIcon Classes="icon-action"
@@ -77,7 +79,7 @@
                                           Tag="{Binding ShowSettingsContentCommand}"
                                           ToolTip.HorizontalOffset="0"
                                           ToolTip.Placement="TopEdgeAlignedRight"
-                                          ToolTip.Tip="{loc:Localization ShowSettings}"
+                                          ToolTip.Tip="{extensions:Localization ShowSettings}"
                                           ToolTip.VerticalOffset="-2"
                                           VerticalAlignment="Center" />
                                 <PathIcon Classes="icon-action icon-danger"
@@ -86,7 +88,7 @@
                                           Tag="{Binding DeleteSettingsFileCommand}"
                                           ToolTip.HorizontalOffset="0"
                                           ToolTip.Placement="TopEdgeAlignedRight"
-                                          ToolTip.Tip="{loc:Localization DeleteSettingsFile}"
+                                          ToolTip.Tip="{extensions:Localization DeleteSettingsFile}"
                                           ToolTip.VerticalOffset="-2"
                                           VerticalAlignment="Center" />
                                 <PathIcon Classes="icon-action icon-danger"
@@ -95,7 +97,7 @@
                                           Tag="{Binding DeleteSettingsFolderCommand}"
                                           ToolTip.HorizontalOffset="0"
                                           ToolTip.Placement="TopEdgeAlignedRight"
-                                          ToolTip.Tip="{loc:Localization DeleteAll}"
+                                          ToolTip.Tip="{extensions:Localization DeleteAll}"
                                           ToolTip.VerticalOffset="-2"
                                           VerticalAlignment="Center" />
                             </StackPanel>
@@ -108,7 +110,7 @@
                     <StackPanel Spacing="{DynamicResource SpacingMedium}">
 
                         <TextBlock Classes="h4"
-                                   Text="{loc:Localization UdpBroadcast}" />
+                                   Text="{extensions:Localization UdpBroadcast}" />
 
                         <Grid ColumnDefinitions="*,Auto">
                             <StackPanel Grid.Column="0"
@@ -139,7 +141,7 @@
                                           Tag="{Binding StopUdpCommand}"
                                           ToolTip.HorizontalOffset="0"
                                           ToolTip.Placement="TopEdgeAlignedRight"
-                                          ToolTip.Tip="{loc:Localization Stop}"
+                                          ToolTip.Tip="{extensions:Localization Stop}"
                                           ToolTip.VerticalOffset="-2"
                                           VerticalAlignment="Center"
                                           IsVisible="{Binding IsUdpListening}" />
@@ -149,7 +151,7 @@
                                           Tag="{Binding StartUdpCommand}"
                                           ToolTip.HorizontalOffset="0"
                                           ToolTip.Placement="TopEdgeAlignedRight"
-                                          ToolTip.Tip="{loc:Localization Start}"
+                                          ToolTip.Tip="{extensions:Localization Start}"
                                           ToolTip.VerticalOffset="-2"
                                           VerticalAlignment="Center"
                                           IsEnabled="{Binding IsPortValid}"
@@ -163,12 +165,12 @@
                             <StackPanel Grid.Column="0"
                                         Spacing="{DynamicResource SpacingXSmall}">
                                 <TextBlock Classes="label"
-                                           Text="{loc:Localization Port}" />
-                                <TextBox AutomationProperties.HelpText="{loc:Localization PortRangeHint}"
+                                           Text="{extensions:Localization Port}" />
+                                <TextBox AutomationProperties.HelpText="{extensions:Localization PortRangeHint}"
                                          Classes.error="{Binding !IsPortValid}"
                                          MaxLength="5"
                                          Text="{Binding Port}"
-                                         loc:InputFilter.AllowedPattern="[0-9]"
+                                         services:InputFilter.AllowedPattern="[0-9]"
                                          IsEnabled="{Binding !IsUdpListening}" />
                             </StackPanel>
 
@@ -181,7 +183,7 @@
                                            Opacity="0"
                                            Text="placeholder" />
                                 <CheckBox Grid.Row="1"
-                                          Content="{loc:Localization AutoConnect}"
+                                          Content="{extensions:Localization AutoConnect}"
                                           FontSize="16"
                                           HorizontalAlignment="Right"
                                           IsChecked="{Binding AutoConnect}"
@@ -191,7 +193,7 @@
                         </Grid>
 
                         <TextBlock Classes="hint-error"
-                                   Text="{loc:Localization PortRangeHint}"
+                                   Text="{extensions:Localization PortRangeHint}"
                                    IsVisible="{Binding !IsPortValid}" />
 
                     </StackPanel>
@@ -201,7 +203,7 @@
                     <StackPanel Spacing="{DynamicResource SpacingMedium}">
 
                         <TextBlock Classes="h4"
-                                   Text="{loc:Localization Database}" />
+                                   Text="{extensions:Localization Database}" />
 
                         <Grid ColumnDefinitions="*,Auto">
                             <StackPanel Grid.Column="0"
@@ -232,7 +234,7 @@
                                           Tag="{Binding CreateDbCommand}"
                                           ToolTip.HorizontalOffset="0"
                                           ToolTip.Placement="TopEdgeAlignedRight"
-                                          ToolTip.Tip="{loc:Localization CreateDb}"
+                                          ToolTip.Tip="{extensions:Localization CreateDb}"
                                           ToolTip.VerticalOffset="-2"
                                           VerticalAlignment="Center"
                                           IsEnabled="{Binding !IsSaveEnabled}"
@@ -243,7 +245,7 @@
                                           Tag="{Binding TestDbConnectionCommand}"
                                           ToolTip.HorizontalOffset="0"
                                           ToolTip.Placement="TopEdgeAlignedRight"
-                                          ToolTip.Tip="{loc:Localization TestConnection}"
+                                          ToolTip.Tip="{extensions:Localization TestConnection}"
                                           ToolTip.VerticalOffset="-2"
                                           VerticalAlignment="Center" />
                                 <PathIcon Classes="icon-action"
@@ -252,7 +254,7 @@
                                           Tag="{Binding InitializeDbCommand}"
                                           ToolTip.HorizontalOffset="0"
                                           ToolTip.Placement="TopEdgeAlignedRight"
-                                          ToolTip.Tip="{loc:Localization InitializeDb}"
+                                          ToolTip.Tip="{extensions:Localization InitializeDb}"
                                           ToolTip.VerticalOffset="-2"
                                           VerticalAlignment="Center"
                                           IsEnabled="{Binding IsInitializeDbEnabled}" />
@@ -262,7 +264,7 @@
                                           Tag="{Binding DisconnectDbCommand}"
                                           ToolTip.HorizontalOffset="0"
                                           ToolTip.Placement="TopEdgeAlignedRight"
-                                          ToolTip.Tip="{loc:Localization Stop}"
+                                          ToolTip.Tip="{extensions:Localization Stop}"
                                           ToolTip.VerticalOffset="-2"
                                           VerticalAlignment="Center"
                                           IsVisible="{Binding IsDbConnected}" />
@@ -272,7 +274,7 @@
                                           Tag="{Binding ConnectDbCommand}"
                                           ToolTip.HorizontalOffset="0"
                                           ToolTip.Placement="TopEdgeAlignedRight"
-                                          ToolTip.Tip="{loc:Localization Start}"
+                                          ToolTip.Tip="{extensions:Localization Start}"
                                           ToolTip.VerticalOffset="-2"
                                           VerticalAlignment="Center"
                                           IsEnabled="{Binding !IsSaveEnabled}"
@@ -286,7 +288,7 @@
                             <StackPanel Grid.Column="0"
                                         Spacing="{DynamicResource SpacingXSmall}">
                                 <TextBlock Classes="label"
-                                           Text="{loc:Localization Provider}" />
+                                           Text="{extensions:Localization Provider}" />
                                 <ComboBox ItemsSource="{Binding ProviderOptions}"
                                           SelectedItem="{Binding SelectedProvider}"
                                           Width="170"
@@ -296,7 +298,7 @@
                             <StackPanel Grid.Column="1"
                                         Spacing="{DynamicResource SpacingXSmall}">
                                 <TextBlock Classes="label"
-                                           Text="{loc:Localization ConnectionString}" />
+                                           Text="{extensions:Localization ConnectionString}" />
                                 <TextBox Text="{Binding ConnectionString}"
                                          IsEnabled="{Binding !IsDbConnected}" />
                             </StackPanel>

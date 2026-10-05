@@ -1,9 +1,11 @@
 ﻿<UserControl x:Class="Shoootz.Views.Competition.ClubsView"
              x:Name="Root"
              xmlns="https://github.com/avaloniaui"
+             xmlns:extensions="clr-namespace:Shoootz.Views.Extensions"
              xmlns:loc="using:Shoootz.Extensions"
              xmlns:models="using:Shoootz.Models.Club"
              xmlns:sab="using:Controls.SiteActionBar"
+             xmlns:services="clr-namespace:Shoootz.Views.Services"
              xmlns:vm="using:Shoootz.ViewModels.Competition"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:DataType="vm:ClubsViewModel">
@@ -12,13 +14,13 @@
         <StackPanel Classes="page-content">
 
             <TextBlock Classes="h3"
-                       Text="{loc:Localization Clubs}" />
+                       Text="{extensions:Localization Clubs}" />
 
             <sab:SiteActionBarControl AddRequested="OnAddIconPressed"
                                       DeleteRequested="OnDeleteIconPressed"
                                       EditRequested="OnEditIconPressed"
                                       IsActionEnabled="{Binding IsClubSelected}"
-                                      SearchPlaceholder="{loc:Localization Search}"
+                                      SearchPlaceholder="{extensions:Localization Search}"
                                       SearchText="{Binding SearchText}" />
 
             <Border Classes="card"
@@ -29,19 +31,19 @@
                         <Grid ColumnDefinitions="*,100">
                             <TextBlock Grid.Column="0"
                                        Classes="table-column-header"
-                                       Text="{loc:Localization Name}" />
+                                       Text="{extensions:Localization Name}" />
                             <TextBlock Grid.Column="1"
                                        Classes="table-column-header"
-                                       Text="{loc:Localization Shooters}"
+                                       Text="{extensions:Localization Shooters}"
                                        TextAlignment="Center" />
                         </Grid>
                     </Border>
-                    <ListBox x:Name="ClubsListBox"
-                             Classes="table-rows"
+                    <ListBox Classes="table-rows"
                              DoubleTapped="OnClubRowDoubleTapped"
                              ItemsSource="{Binding Clubs}"
                              Margin="0"
-                             SelectedItem="{Binding SelectedClub}">
+                             SelectedItem="{Binding SelectedClub}"
+                             services:ListBoxSelectService.DeselectOnClick="True">
                         <ListBox.ItemTemplate>
                             <DataTemplate x:DataType="models:ClubModel">
                                 <Grid ColumnDefinitions="*,100"

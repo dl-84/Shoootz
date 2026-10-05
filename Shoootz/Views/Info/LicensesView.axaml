@@ -1,7 +1,8 @@
-
+﻿
 <UserControl x:Class="Shoootz.Views.Info.LicensesView"
              xmlns="https://github.com/avaloniaui"
              xmlns:controls="using:Controls.LicenseTable"
+             xmlns:extensions="clr-namespace:Shoootz.Views.Extensions"
              xmlns:loc="using:Shoootz.Extensions"
              xmlns:vm="using:Shoootz.ViewModels.Info"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -11,7 +12,7 @@
         <StackPanel Classes="page-content">
 
             <TextBlock Classes="h3"
-                       Text="{loc:Localization LicensesTitle}" />
+                       Text="{extensions:Localization LicensesTitle}" />
 
             <controls:LicenseTableControl Headers="{Binding ColumnHeaders}"
                                           Items="{Binding Packages}" />

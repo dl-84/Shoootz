@@ -12,11 +12,10 @@ using Shoootz.Models.Club;
 using Shoootz.Models.Error;
 using Shoootz.Models.Shooter;
 using Shoootz.Services.Store;
-using Shoootz.Utils.Classes;
 
 namespace Shoootz.ViewModels.Competition;
 
-internal partial class ShootersViewModel : FilterableListViewModelBase<ShooterModel>
+internal partial class ShootersViewModel : Services.ListFilterService<ShooterModel>
 {
     private readonly IStoreService _storeService;
 

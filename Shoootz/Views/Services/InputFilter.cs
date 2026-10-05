@@ -4,7 +4,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 
-namespace Shoootz.Extensions;
+namespace Shoootz.Views.Services;
 
 internal static class InputFilter
 {

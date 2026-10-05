@@ -1,4 +1,4 @@
-namespace Shoootz.Utils.Interfaces;
+namespace Shoootz.Utils;
 
 internal interface IHasUnsavedChanges
 {

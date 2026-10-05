@@ -2,15 +2,15 @@ using System;
 using System.ComponentModel;
 using Shoootz.Services.Localization;
 
-namespace Shoootz.Extensions;
+namespace Shoootz.Views.Settings;
 
-internal class LocalizationSource : INotifyPropertyChanged
+internal class LocalizationSourceService : INotifyPropertyChanged
 {
     private readonly string _key;
 
     private readonly bool _toUpper;
 
-    public LocalizationSource(string key, bool toUpper = false)
+    public LocalizationSourceService(string key, bool toUpper = false)
     {
         _key = key;
         _toUpper = toUpper;
