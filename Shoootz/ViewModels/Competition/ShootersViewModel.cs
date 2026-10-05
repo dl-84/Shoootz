@@ -54,14 +54,14 @@ internal partial class ShootersViewModel : Services.ListFilterService<ShooterMod
         );
     }
 
-    public async Task ExecuteSaveShooterAsync(ShooterModel shooter)
+    public async Task ExecuteSaveShooterAsync(ShooterModel shooter, bool isNew)
     {
         if (string.IsNullOrWhiteSpace(shooter.Id) || string.IsNullOrWhiteSpace(shooter.Lastname))
         {
             return;
         }
 
-        Result<Unit, StoreSaveError> result = await _storeService.SaveShooterAsync(shooter);
+        Result<Unit, StoreSaveError> result = await _storeService.SaveShooterAsync(shooter, isNew);
 
         await result.Match(
             async _ =>

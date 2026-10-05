@@ -43,7 +43,7 @@ internal interface IStoreService
 
     Task<Result<Unit, StoreSaveError>> SaveClubAsync(ClubModel club);
 
-    Task<Result<Unit, StoreSaveError>> SaveShooterAsync(ShooterModel shooter);
+    Task<Result<Unit, StoreSaveError>> SaveShooterAsync(ShooterModel shooter, bool isNew);
 
     Task<Result<Unit, StoreSaveError>> SaveShotAsync(ShotModel shot);
 }

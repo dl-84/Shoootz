@@ -140,7 +140,9 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
 
             int nextNumber =
                 existingIds
-                    .Select(id => int.TryParse(id.AsSpan(1), out int number) ? number : 0)
+                    .Select(id => int.TryParse(id.AsSpan(1), out int number) ? number : (int?)null)
+                    .Where(number => number is not null)
+                    .Select(number => number!.Value)
                     .DefaultIfEmpty(0)
                     .Max() + 1;
 
@@ -316,7 +318,7 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
         }
     }
 
-    public async Task<Result<Unit, StoreSaveError>> SaveShooterAsync(ShooterModel shooter)
+    public async Task<Result<Unit, StoreSaveError>> SaveShooterAsync(ShooterModel shooter, bool isNew)
     {
         try
         {
@@ -324,6 +326,11 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
             {
                 ClubEntity? club = await FindOrCreateClubAsync(context, shooter.Club).ConfigureAwait(false);
                 ShooterEntity? entity = await context.Shooters.FindAsync(shooter.Id).ConfigureAwait(false);
+
+                if (isNew && entity is not null)
+                {
+                    return new Error<StoreSaveError>(new StoreSaveError($"Shooter {shooter.Id} already exists."));
+                }
 
                 if (entity is null)
                 {
