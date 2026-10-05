@@ -31,6 +31,25 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
 
     public bool IsConnected { get; private set; } = true;
 
+    public async Task<Result<bool, StoreReadError>> ClubHasShootersAsync(int id)
+    {
+        try
+        {
+            await using (AppDbContext context = await contextFactory.CreateDbContextAsync().ConfigureAwait(false))
+            {
+                bool hasShooters = await context
+                    .Shooters.AnyAsync(shooter => shooter.ClubId == id)
+                    .ConfigureAwait(false);
+
+                return hasShooters;
+            }
+        }
+        catch (Exception exception)
+        {
+            return new Error<StoreReadError>(new StoreReadError(GetFullMessage(exception)));
+        }
+    }
+
     public void Connect()
     {
         IsConnected = true;

@@ -19,6 +19,8 @@ internal interface IStoreService
 
     bool IsConnected { get; }
 
+    Task<Result<bool, StoreReadError>> ClubHasShootersAsync(int id);
+
     void Connect();
 
     void Disconnect();

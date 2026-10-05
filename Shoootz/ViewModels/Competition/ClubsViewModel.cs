@@ -62,13 +62,32 @@ internal partial class ClubsViewModel : Services.ListFilterService<ClubModel>
             return;
         }
 
-        Result<Unit, StoreSaveError> result = await _storeService.DeleteClubAsync(club.Id);
 
-        await result.Match(
-            async _ =>
+        Result<bool, StoreReadError> hasShootersResult = await _storeService.ClubHasShootersAsync(club.Id);
+
+        await hasShootersResult.Match(
+            async hasShooters =>
             {
-                SelectedClub = null;
-                await LoadClubsAsync();
+                if (hasShooters)
+                {
+                    SaveClubFailed?.Invoke(LocalizationService.Instance[nameof(Messages.ClubHasShootersMessage)]);
+                    return;
+                }
+
+                Result<Unit, StoreSaveError> result = await _storeService.DeleteClubAsync(club.Id);
+
+                await result.Match(
+                    async _ =>
+                    {
+                        SelectedClub = null;
+                        await LoadClubsAsync();
+                    },
+                    error =>
+                    {
+                        SaveClubFailed?.Invoke(error.Value.Message);
+                        return Task.CompletedTask;
+                    }
+                );
             },
             error =>
             {
