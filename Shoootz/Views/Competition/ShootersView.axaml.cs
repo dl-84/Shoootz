@@ -157,7 +157,7 @@ public partial class ShootersView : UserControl
         {
             await viewModel.ExecuteSaveShooterAsync(editView.BuildShooter(), !isEdit);
         }
-        else
+        else if (isEdit)
         {
             viewModel.SelectedShooter = null;
         }

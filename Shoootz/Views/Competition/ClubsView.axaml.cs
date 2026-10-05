@@ -45,7 +45,8 @@ public partial class ClubsView : UserControl
                 string.Empty,
                 LocalizationService.Instance[nameof(Messages.AddClubTitle)],
                 nameof(Messages.Add),
-                name => viewModel.ExecuteCreateClubAsync(name)
+                isEdit: false,
+                onConfirmed: name => viewModel.ExecuteCreateClubAsync(name)
             );
         }
     }
@@ -61,7 +62,8 @@ public partial class ClubsView : UserControl
                 club.Name,
                 string.Format(LocalizationService.Instance[nameof(Messages.EditClubTitle)], club.Id),
                 nameof(Messages.Save),
-                name => viewModel.ExecuteRenameClubAsync(club, name)
+                isEdit: true,
+                onConfirmed: name => viewModel.ExecuteRenameClubAsync(club, name)
             );
         }
     }
@@ -90,7 +92,8 @@ public partial class ClubsView : UserControl
                 club.Name,
                 string.Format(LocalizationService.Instance[nameof(Messages.EditClubTitle)], club.Id),
                 nameof(Messages.Save),
-                name => viewModel.ExecuteRenameClubAsync(club, name)
+                isEdit: true,
+                onConfirmed: name => viewModel.ExecuteRenameClubAsync(club, name)
             );
         }
     }
@@ -131,6 +134,7 @@ public partial class ClubsView : UserControl
         string initialName,
         string dialogTitle,
         string submitTextKey,
+        bool isEdit,
         Func<string, Task> onConfirmed
     )
     {
@@ -162,7 +166,7 @@ public partial class ClubsView : UserControl
         {
             await onConfirmed(dialogContent.Text ?? string.Empty);
         }
-        else
+        else if (isEdit)
         {
             viewModel.SelectedClub = null;
         }
