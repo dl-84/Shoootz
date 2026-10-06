@@ -60,7 +60,7 @@ public partial class ShootersView : UserControl
 
     private void OnSaveShooterFailed(string message)
     {
-        _ = OpenErrorDialogAsync(message);
+        _ = DialogService.ShowErrorDialogAsync(this, message);
     }
 
     private void OnShooterRowDoubleTapped(object? sender, TappedEventArgs e)
@@ -113,11 +113,6 @@ public partial class ShootersView : UserControl
         {
             await viewModel.ExecuteDeleteShooterAsync(shooter, deleteShotsCheckBox.IsChecked ?? true);
         }
-    }
-
-    private async Task OpenErrorDialogAsync(string message)
-    {
-        await DialogService.ShowErrorDialogAsync(this, message);
     }
 
     private async Task OpenShooterDialogAsync(ShooterModel? shooter, ShootersViewModel viewModel)

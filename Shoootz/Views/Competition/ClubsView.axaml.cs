@@ -100,7 +100,7 @@ public partial class ClubsView : UserControl
 
     private void OnSaveClubFailed(string message)
     {
-        _ = OpenErrorDialogAsync(message);
+        _ = DialogService.ShowErrorDialogAsync(this, message);
     }
 
     private async Task OpenConfirmDeleteDialogAsync(ClubModel club)
@@ -170,10 +170,5 @@ public partial class ClubsView : UserControl
         {
             viewModel.SelectedClub = null;
         }
-    }
-
-    private async Task OpenErrorDialogAsync(string message)
-    {
-        await DialogService.ShowErrorDialogAsync(this, message);
     }
 }

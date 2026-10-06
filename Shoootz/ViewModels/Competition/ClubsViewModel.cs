@@ -11,10 +11,11 @@ using Shoootz.Models.Error;
 using Shoootz.Resources.Lang;
 using Shoootz.Services.Localization;
 using Shoootz.Services.Store;
+using Shoootz.ViewModels.Services;
 
 namespace Shoootz.ViewModels.Competition;
 
-internal partial class ClubsViewModel : Services.ListFilterService<ClubModel>
+internal partial class ClubsViewModel : ListFilterService<ClubModel>
 {
     private readonly IStoreService _storeService;
 
@@ -61,7 +62,6 @@ internal partial class ClubsViewModel : Services.ListFilterService<ClubModel>
             SaveClubFailed?.Invoke(LocalizationService.Instance[nameof(Messages.ClubHasShootersMessage)]);
             return;
         }
-
 
         Result<bool, StoreReadError> hasShootersResult = await _storeService.ClubHasShootersAsync(club.Id);
 
