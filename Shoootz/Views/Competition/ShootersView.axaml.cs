@@ -135,8 +135,6 @@ public partial class ShootersView : UserControl
             window =>
                 new ContentDialog
                 {
-                    SubmitText = LocalizationService.Instance[isEdit ? nameof(Messages.Save) : nameof(Messages.Add)],
-                    SubmitValidator = editView.Validate,
                     DialogContent = editView,
                     DialogTitle = string.Format(
                         LocalizationService.Instance[
@@ -145,6 +143,8 @@ public partial class ShootersView : UserControl
                         editingShooter.Id
                     ),
                     SizeToContent = SizeToContent.WidthAndHeight,
+                    SubmitText = LocalizationService.Instance[isEdit ? nameof(Messages.Save) : nameof(Messages.Add)],
+                    SubmitValidator = editView.Validate,
                 }.ShowDialog<bool?>(window)
         );
 

@@ -150,15 +150,15 @@ public partial class ClubsView : UserControl
             window =>
                 new ContentDialog
                 {
+                    DialogContent = dialogContent,
+                    DialogTitle = dialogTitle,
+                    SizeToContent = SizeToContent.WidthAndHeight,
                     SubmitText = LocalizationService.Instance[submitTextKey],
                     SubmitValidator = () =>
                         dialogContent.SetError(
                             !string.IsNullOrWhiteSpace(dialogContent.Text),
                             nameof(Messages.ClubNameRequiredMessage)
                         ),
-                    DialogContent = dialogContent,
-                    DialogTitle = dialogTitle,
-                    SizeToContent = SizeToContent.WidthAndHeight,
                 }.ShowDialog<bool?>(window)
         );
 

@@ -2,7 +2,6 @@
              x:Name="Root"
              xmlns="https://github.com/avaloniaui"
              xmlns:extensions="clr-namespace:Shoootz.Views.Extensions"
-             xmlns:loc="using:Shoootz.Extensions"
              xmlns:models="using:Shoootz.Models.Club"
              xmlns:sab="using:Controls.SiteActionBar"
              xmlns:services="clr-namespace:Shoootz.Views.Services"
