@@ -33,7 +33,8 @@
             <Border Classes="card"
                     Padding="0">
                 <StackPanel Grid.IsSharedSizeScope="True">
-                    <Border Background="{DynamicResource PrimaryBrush}"
+                    <Border BorderBrush="{DynamicResource BorderTableBrush}"
+                            BorderThickness="0,0,0,1"
                             Padding="24,10">
                         <Grid ColumnSpacing="{DynamicResource SpacingMedium}">
                             <Grid.ColumnDefinitions>
@@ -47,21 +48,26 @@
                                                   Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0"
-                                       Classes="table-column-header"
-                                       Text="{extensions:Localization Lastname}" />
+                                       Classes="table-header"
+                                       Text="{extensions:Localization Lastname,
+                                                                      ToUpper=True}" />
                             <TextBlock Grid.Column="1"
-                                       Classes="table-column-header"
-                                       Text="{extensions:Localization Firstname}" />
+                                       Classes="table-header"
+                                       Text="{extensions:Localization Firstname,
+                                                                      ToUpper=True}" />
                             <TextBlock Grid.Column="2"
-                                       Classes="table-column-header"
-                                       Text="{extensions:Localization Club}" />
+                                       Classes="table-header"
+                                       Text="{extensions:Localization Club,
+                                                                      ToUpper=True}" />
                             <TextBlock Grid.Column="3"
-                                       Classes="table-column-header"
-                                       Text="{extensions:Localization Birthyear}"
+                                       Classes="table-header"
+                                       Text="{extensions:Localization Birthyear,
+                                                                      ToUpper=True}"
                                        TextAlignment="Center" />
                             <TextBlock Grid.Column="5"
-                                       Classes="table-column-header"
-                                       Text="{extensions:Localization Gender}"
+                                       Classes="table-header"
+                                       Text="{extensions:Localization Gender,
+                                                                      ToUpper=True}"
                                        TextAlignment="Center" />
                         </Grid>
                     </Border>

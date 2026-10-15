@@ -28,15 +28,18 @@
             <Border Classes="card"
                     Padding="0">
                 <StackPanel>
-                    <Border Background="{DynamicResource PrimaryBrush}"
+                    <Border BorderBrush="{DynamicResource BorderTableBrush}"
+                            BorderThickness="0,0,0,1"
                             Padding="24,10">
                         <Grid ColumnDefinitions="*,100">
                             <TextBlock Grid.Column="0"
-                                       Classes="table-column-header"
-                                       Text="{extensions:Localization Name}" />
+                                       Classes="table-header"
+                                       Text="{extensions:Localization Name,
+                                                                      ToUpper=True}" />
                             <TextBlock Grid.Column="1"
-                                       Classes="table-column-header"
-                                       Text="{extensions:Localization Shooters}"
+                                       Classes="table-header"
+                                       Text="{extensions:Localization Shooters,
+                                                                      ToUpper=True}"
                                        TextAlignment="Center" />
                         </Grid>
                     </Border>
