@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Media;
+using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -62,7 +63,8 @@ internal partial class MainWindowViewModel : ViewModelBase
         _settingsWriter.SettingsSaved += settings => _ = CheckDbConnectionAsync();
 
         _udpListenerService = udpListenerService;
-        _udpListenerService.IsListeningChanged += (_, isListening) => IsUdpConnected = isListening;
+        _udpListenerService.IsListeningChanged += (_, isListening) =>
+            Dispatcher.UIThread.Post(() => IsUdpConnected = isListening);
 
         _storeService = storeService;
         IsDbConnected = _storeService.IsConnected;

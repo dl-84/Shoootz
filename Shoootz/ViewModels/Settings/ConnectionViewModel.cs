@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Options;
@@ -264,7 +265,8 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
 
     private void OnStoreConnectionChanged(object? sender, EventArgs e) => IsDbConnected = _storeService.IsConnected;
 
-    private void OnUdpListeningChanged(object? sender, bool isListening) => IsUdpListening = isListening;
+    private void OnUdpListeningChanged(object? sender, bool isListening) =>
+        Dispatcher.UIThread.Post(() => IsUdpListening = isListening);
 
     [RelayCommand]
     private async Task ConnectDb()

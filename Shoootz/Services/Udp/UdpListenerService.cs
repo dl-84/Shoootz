@@ -1,4 +1,5 @@
 using System;
+using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
@@ -28,7 +29,9 @@ internal class UdpListenerService : IUdpListenerService
 
         try
         {
-            _client = new UdpClient(port);
+            _client = new UdpClient();
+            _client.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+            _client.Client.Bind(new IPEndPoint(IPAddress.Any, port));
             _cancellationTokenSource = new CancellationTokenSource();
 
             SetIsListening(true);
@@ -97,7 +100,7 @@ internal class UdpListenerService : IUdpListenerService
             }
             catch (Exception)
             {
-                break;
+                // A single bad packet or subscriber error must not permanently kill the listener.
             }
         }
 
