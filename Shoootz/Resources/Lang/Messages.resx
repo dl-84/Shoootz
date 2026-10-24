@@ -394,4 +394,33 @@
   <data name="LoggingRawTitle" xml:space="preserve">
     <value>Raw data</value>
   </data>
+
+  <!-- Shots Table -->
+  <data name="DiscType" xml:space="preserve">
+    <value>Disc type</value>
+  </data>
+  <data name="Distance" xml:space="preserve">
+    <value>Distance</value>
+  </data>
+  <data name="DateTime" xml:space="preserve">
+    <value>Date / Time</value>
+  </data>
+  <data name="WeaponType" xml:space="preserve">
+    <value>Weapon type</value>
+  </data>
+  <data name="Shot" xml:space="preserve">
+    <value>Shot</value>
+  </data>
+  <data name="Shooter" xml:space="preserve">
+    <value>Shooter</value>
+  </data>
+  <data name="ConfirmDeleteShotsMessage" xml:space="preserve">
+    <value>Do you really want to delete the selected shots?</value>
+  </data>
+  <data name="DeleteShotsTitle" xml:space="preserve">
+    <value>Delete shots</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
 </root>

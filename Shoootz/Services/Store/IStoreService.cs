@@ -31,6 +31,8 @@ internal interface IStoreService
 
     Task<Result<Unit, StoreSaveError>> DeleteShooterAsync(string id, bool deleteShots);
 
+    Task<Result<Unit, StoreSaveError>> DeleteShotsAsync(IReadOnlyCollection<int> ids);
+
     Task<string> GenerateShooterIdAsync();
 
     Task<Result<List<ClubModel>, StoreReadError>> GetClubsAsync();

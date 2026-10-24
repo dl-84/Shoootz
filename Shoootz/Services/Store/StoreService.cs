@@ -147,6 +147,29 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
         }
     }
 
+    public async Task<Result<Unit, StoreSaveError>> DeleteShotsAsync(IReadOnlyCollection<int> ids)
+    {
+        try
+        {
+            await using (AppDbContext context = await contextFactory.CreateDbContextAsync().ConfigureAwait(false))
+            {
+                List<ShotEntity> entities = await context
+                    .Shots.Where(shot => ids.Contains(shot.Id))
+                    .ToListAsync()
+                    .ConfigureAwait(false);
+
+                context.Shots.RemoveRange(entities);
+                await context.SaveChangesAsync().ConfigureAwait(false);
+
+                return Unit.Value;
+            }
+        }
+        catch (Exception exception)
+        {
+            return new Error<StoreSaveError>(new StoreSaveError(GetFullMessage(exception)));
+        }
+    }
+
     public async Task<string> GenerateShooterIdAsync()
     {
         await using (AppDbContext context = await contextFactory.CreateDbContextAsync().ConfigureAwait(false))
@@ -543,6 +566,7 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
             DecValue = entity.DecValue,
             DiscType = entity.DiscType,
             Distance = entity.Distance,
+            Id = entity.Id,
             IsHot = entity.IsHot,
             IsValid = entity.IsValid,
             ShotDateTime = entity.ShotDateTime,

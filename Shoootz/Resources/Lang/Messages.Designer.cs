@@ -257,6 +257,15 @@ namespace Shoootz.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you really want to delete the selected shots?.
+        /// </summary>
+        internal static string ConfirmDeleteShotsMessage {
+            get {
+                return ResourceManager.GetString("ConfirmDeleteShotsMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Connected.
         /// </summary>
         internal static string Connected {
@@ -325,6 +334,15 @@ namespace Shoootz.Resources.Lang {
         internal static string Database {
             get {
                 return ResourceManager.GetString("Database", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date / Time.
+        /// </summary>
+        internal static string DateTime {
+            get {
+                return ResourceManager.GetString("DateTime", resourceCulture);
             }
         }
         
@@ -478,6 +496,33 @@ namespace Shoootz.Resources.Lang {
         internal static string DeleteShooterTitle {
             get {
                 return ResourceManager.GetString("DeleteShooterTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete shots.
+        /// </summary>
+        internal static string DeleteShotsTitle {
+            get {
+                return ResourceManager.GetString("DeleteShotsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disc type.
+        /// </summary>
+        internal static string DiscType {
+            get {
+                return ResourceManager.GetString("DiscType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Distance.
+        /// </summary>
+        internal static string Distance {
+            get {
+                return ResourceManager.GetString("Distance", resourceCulture);
             }
         }
         
@@ -779,6 +824,15 @@ namespace Shoootz.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Refresh.
+        /// </summary>
+        internal static string Refresh {
+            get {
+                return ResourceManager.GetString("Refresh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Restart.
         /// </summary>
         internal static string Restart {
@@ -851,11 +905,29 @@ namespace Shoootz.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Shooter.
+        /// </summary>
+        internal static string Shooter {
+            get {
+                return ResourceManager.GetString("Shooter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Shooters.
         /// </summary>
         internal static string Shooters {
             get {
                 return ResourceManager.GetString("Shooters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shot.
+        /// </summary>
+        internal static string Shot {
+            get {
+                return ResourceManager.GetString("Shot", resourceCulture);
             }
         }
         
@@ -1162,6 +1234,15 @@ namespace Shoootz.Resources.Lang {
         internal static string Version {
             get {
                 return ResourceManager.GetString("Version", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weapon type.
+        /// </summary>
+        internal static string WeaponType {
+            get {
+                return ResourceManager.GetString("WeaponType", resourceCulture);
             }
         }
     }

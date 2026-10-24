@@ -393,4 +393,33 @@
   <data name="ShotCounter" xml:space="preserve">
     <value>Schüsse</value>
   </data>
+
+  <!-- Shots Table -->
+  <data name="DiscType" xml:space="preserve">
+    <value>Scheibentyp</value>
+  </data>
+  <data name="Distance" xml:space="preserve">
+    <value>Teiler</value>
+  </data>
+  <data name="DateTime" xml:space="preserve">
+    <value>Datum / Zeit</value>
+  </data>
+  <data name="WeaponType" xml:space="preserve">
+    <value>Waffenart</value>
+  </data>
+  <data name="Shot" xml:space="preserve">
+    <value>Schuss</value>
+  </data>
+  <data name="Shooter" xml:space="preserve">
+    <value>Schütze</value>
+  </data>
+  <data name="ConfirmDeleteShotsMessage" xml:space="preserve">
+    <value>Wollen Sie die markierten Schüsse wirklich löschen?</value>
+  </data>
+  <data name="DeleteShotsTitle" xml:space="preserve">
+    <value>Schüsse löschen</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>Aktualisieren</value>
+  </data>
 </root>

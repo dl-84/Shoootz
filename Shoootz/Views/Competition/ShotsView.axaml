@@ -1,14 +1,138 @@
-﻿<UserControl x:Class="Shoootz.Views.Competition.ShotsView"
+<UserControl x:Class="Shoootz.Views.Competition.ShotsView"
              xmlns="https://github.com/avaloniaui"
              xmlns:extensions="clr-namespace:Shoootz.Views.Extensions"
-             xmlns:loc="using:Shoootz.Extensions"
+             xmlns:sab="using:Controls.SiteActionBar"
              xmlns:vm="using:Shoootz.ViewModels.Competition"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:DataType="vm:ShotsViewModel">
+
     <ScrollViewer>
         <StackPanel Classes="page-content">
+
             <TextBlock Classes="h3"
                        Text="{extensions:Localization Shots}" />
+
+            <sab:SiteActionBarControl AddTooltip="{extensions:Localization Add}"
+                                      DeleteRequested="OnDeleteIconPressed"
+                                      DeleteTooltip="{extensions:Localization Delete}"
+                                      EditTooltip="{extensions:Localization Edit}"
+                                      IsActionEnabled="{Binding IsAnyShotSelected}"
+                                      IsRefreshVisible="True"
+                                      RefreshRequested="OnRefreshIconPressed"
+                                      RefreshTooltip="{extensions:Localization Refresh}"
+                                      SearchPlaceholder="{extensions:Localization Search}"
+                                      SearchText="{Binding SearchText}" />
+
+            <Border Classes="card"
+                    Padding="0">
+                <StackPanel Grid.IsSharedSizeScope="True">
+                    <Border BorderBrush="{DynamicResource BorderTableBrush}"
+                            BorderThickness="0,0,0,1"
+                            Padding="24,10">
+                        <Grid ColumnSpacing="{DynamicResource SpacingMedium}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="40" />
+                                <ColumnDefinition SharedSizeGroup="DateTime"
+                                                  Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition SharedSizeGroup="WeaponType"
+                                                  Width="Auto" />
+                                <ColumnDefinition SharedSizeGroup="Shot"
+                                                  Width="Auto" />
+                                <ColumnDefinition SharedSizeGroup="Distance"
+                                                  Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <CheckBox Grid.Column="0"
+                                      IsChecked="{Binding IsAllSelected}" />
+                            <TextBlock Grid.Column="1"
+                                       Classes="table-header"
+                                       Text="{extensions:Localization DateTime,
+                                                                      ToUpper=True}" />
+                            <TextBlock Grid.Column="2"
+                                       Classes="table-header"
+                                       Text="{extensions:Localization Shooter,
+                                                                      ToUpper=True}" />
+                            <TextBlock Grid.Column="3"
+                                       Classes="table-header"
+                                       Text="{extensions:Localization WeaponType,
+                                                                      ToUpper=True}"
+                                       TextAlignment="Center" />
+                            <TextBlock Grid.Column="4"
+                                       Classes="table-header"
+                                       Text="{extensions:Localization Shot,
+                                                                      ToUpper=True}"
+                                       TextAlignment="Center" />
+                            <TextBlock Grid.Column="5"
+                                       Classes="table-header"
+                                       Text="{extensions:Localization Distance,
+                                                                      ToUpper=True}"
+                                       TextAlignment="Center" />
+                        </Grid>
+                    </Border>
+                    <ListBox x:Name="ShotsListBox"
+                             Classes="table-rows"
+                             ItemsSource="{Binding Shots}"
+                             Margin="0">
+                        <ListBox.Styles>
+                            <Style Selector="ListBoxItem:selected /template/ ContentPresenter">
+                                <Setter Property="Background" Value="Transparent" />
+                            </Style>
+                            <Style Selector="ListBoxItem:selected:pointerover /template/ ContentPresenter">
+                                <Setter Property="Background" Value="Transparent" />
+                            </Style>
+                            <Style Selector="ListBoxItem:selected TextBlock">
+                                <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}" />
+                            </Style>
+                        </ListBox.Styles>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate x:DataType="vm:ShotRowViewModel">
+                                <Grid ColumnSpacing="{DynamicResource SpacingMedium}"
+                                      Height="40"
+                                      Margin="24,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="40" />
+                                        <ColumnDefinition SharedSizeGroup="DateTime"
+                                                          Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition SharedSizeGroup="WeaponType"
+                                                          Width="Auto" />
+                                        <ColumnDefinition SharedSizeGroup="Shot"
+                                                          Width="Auto" />
+                                        <ColumnDefinition SharedSizeGroup="Distance"
+                                                          Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <CheckBox Grid.Column="0"
+                                              IsChecked="{Binding IsSelected}" />
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding Shot.ShotDateTime, StringFormat='dd.MM.yyyy HH:mm:ss'}"
+                                               VerticalAlignment="Center" />
+                                    <TextBlock Grid.Column="2"
+                                               VerticalAlignment="Center">
+                                        <TextBlock.Text>
+                                            <MultiBinding StringFormat="{}{0} {1}">
+                                                <Binding Path="Shot.Shooter.Lastname" />
+                                                <Binding Path="Shot.Shooter.Firstname" />
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                    <TextBlock Grid.Column="3"
+                                               Text="{Binding Shot.DiscType}"
+                                               TextAlignment="Center"
+                                               VerticalAlignment="Center" />
+                                    <TextBlock Grid.Column="4"
+                                               Text="{Binding Shot.DecValue}"
+                                               TextAlignment="Center"
+                                               VerticalAlignment="Center" />
+                                    <TextBlock Grid.Column="5"
+                                               Text="{Binding Shot.Distance, StringFormat='{}{0:0.0}'}"
+                                               TextAlignment="Center"
+                                               VerticalAlignment="Center" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+            </Border>
         </StackPanel>
     </ScrollViewer>
 </UserControl>
