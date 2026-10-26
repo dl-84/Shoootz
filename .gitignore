@@ -17,6 +17,7 @@ project.lock.json
 
 # Build results
 out/
+publish/
 [Dd]ebug/
 [Rr]elease/
 x64/
@@ -34,3 +35,4 @@ Thumbs.db
 
 # Generated
 Shoootz/Resources/Licenses/licenses.json
+Shoootz.Bridge.TCP/Resources/Licenses/licenses.json

@@ -9,10 +9,10 @@ using Avalonia.LogicalTree;
 using Controls.ContentDialog;
 using Controls.InfoDialog;
 using Controls.InfoDialog.Enum;
-using Shoootz.Resources.Lang;
-using Shoootz.Services.Dialog;
-using Shoootz.Services.Localization;
-using Shoootz.Utils;
+using Shoootz.Common.Resources.Lang;
+using Shoootz.Common.Services.Dialog;
+using Shoootz.Common.Services.Localization;
+using Shoootz.Common.ViewModels;
 using Shoootz.ViewModels;
 using Shoootz.Views.Types;
 

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Shoootz.Common.ViewModels;
 
 namespace Shoootz.ViewModels.Services;
 

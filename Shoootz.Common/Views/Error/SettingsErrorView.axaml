@@ -1,0 +1,78 @@
+<UserControl x:Class="Shoootz.Common.Views.Error.SettingsErrorView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:extensions="using:Shoootz.Common.Extensions"
+             xmlns:jsonEditor="using:Controls.JsonEditor"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:CompileBindings="False">
+
+    <Grid Margin="16,0,16,16"
+          RowDefinitions="Auto,Auto,*,Auto">
+
+        <TextBlock Grid.Row="0"
+                   Classes="h3"
+                   Text="{extensions:Localization SettingsFileError}" />
+
+        <Border Grid.Row="1"
+                Classes="card-error"
+                Margin="{DynamicResource MarginTopMedium}"
+                IsVisible="{Binding !IsValid}">
+            <StackPanel Spacing="{DynamicResource SpacingSmall}">
+                <TextBlock Classes="on-dark"
+                           FontWeight="SemiBold"
+                           Text="{extensions:Localization SettingsErrorHint}"
+                           TextWrapping="Wrap" />
+                <ItemsControl ItemsSource="{Binding ErrorMessages}"
+                              IsVisible="{Binding ShowOriginalErrors}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Classes="on-dark"
+                                       Text="{Binding}"
+                                       TextWrapping="Wrap" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <TextBlock Classes="on-dark"
+                           Text="{Binding ValidationError}"
+                           TextWrapping="Wrap"
+                           IsVisible="{Binding ShowValidationError}" />
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Row="1"
+                Classes="card-success"
+                Margin="{DynamicResource MarginTopMedium}"
+                IsVisible="{Binding IsValid}">
+            <StackPanel Spacing="4">
+                <TextBlock Classes="on-dark"
+                           FontWeight="SemiBold"
+                           Text="{extensions:Localization SettingsValidSuccess}" />
+                <TextBlock Classes="on-dark"
+                           Text="{extensions:Localization SettingsValidSuccessHint}" />
+            </StackPanel>
+        </Border>
+
+        <jsonEditor:JsonEditorControl x:Name="JsonEditor"
+                                      Grid.Row="2"
+                                      Margin="{DynamicResource MarginTopMedium}"
+                                      Text="{Binding EditorContent}" />
+
+        <StackPanel Grid.Row="3"
+                    Margin="{DynamicResource MarginTopMedium}"
+                    Orientation="Horizontal"
+                    Spacing="{DynamicResource SpacingSmall}">
+            <Button Classes="green"
+                    Command="{Binding ValidateCommand}"
+                    Content="{extensions:Localization Validate}" />
+            <Button Classes="green"
+                    Command="{Binding SaveCommand}"
+                    Content="{extensions:Localization Save}"
+                    IsEnabled="{Binding IsValid}" />
+            <Button Classes="green"
+                    Command="{Binding RestartCommand}"
+                    Content="{extensions:Localization Restart}"
+                    IsEnabled="{Binding IsSaved}" />
+        </StackPanel>
+
+    </Grid>
+
+</UserControl>

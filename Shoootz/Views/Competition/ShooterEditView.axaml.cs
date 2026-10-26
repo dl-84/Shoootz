@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using Avalonia.Controls;
+using Shoootz.Common.Resources.Lang;
+using Shoootz.Common.Services.Localization;
 using Shoootz.Models.Shooter;
-using Shoootz.Resources.Lang;
-using Shoootz.Services.Localization;
 using Shoootz.Views.Extensions;
 
 namespace Shoootz.Views.Competition;

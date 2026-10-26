@@ -7,9 +7,9 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.VisualTree;
 using Controls.ContentDialog;
-using Shoootz.Resources.Lang;
-using Shoootz.Services.Dialog;
-using Shoootz.Services.Localization;
+using Shoootz.Common.Resources.Lang;
+using Shoootz.Common.Services.Dialog;
+using Shoootz.Common.Services.Localization;
 using Shoootz.ViewModels.Competition;
 
 namespace Shoootz.Views.Competition;

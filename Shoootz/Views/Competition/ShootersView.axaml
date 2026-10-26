@@ -1,7 +1,7 @@
 ﻿<UserControl x:Class="Shoootz.Views.Competition.ShootersView"
              x:Name="Root"
              xmlns="https://github.com/avaloniaui"
-             xmlns:extensions="clr-namespace:Shoootz.Views.Extensions"
+             xmlns:common="using:Shoootz.Common.Extensions"
              xmlns:loc="using:Shoootz.Extensions"
              xmlns:models="using:Shoootz.Models.Shooter"
              xmlns:sab="using:Controls.SiteActionBar"
@@ -18,16 +18,16 @@
         <StackPanel Classes="page-content">
 
             <TextBlock Classes="h3"
-                       Text="{extensions:Localization Shooters}" />
+                       Text="{common:Localization Shooters}" />
 
             <sab:SiteActionBarControl AddRequested="OnAddIconPressed"
-                                      AddTooltip="{extensions:Localization Add}"
+                                      AddTooltip="{common:Localization Add}"
                                       DeleteRequested="OnDeleteIconPressed"
-                                      DeleteTooltip="{extensions:Localization Delete}"
+                                      DeleteTooltip="{common:Localization Delete}"
                                       EditRequested="OnEditIconPressed"
-                                      EditTooltip="{extensions:Localization Edit}"
+                                      EditTooltip="{common:Localization Edit}"
                                       IsActionEnabled="{Binding IsShooterSelected}"
-                                      SearchPlaceholder="{extensions:Localization Search}"
+                                      SearchPlaceholder="{common:Localization Search}"
                                       SearchText="{Binding SearchText}" />
 
             <Border Classes="card"
@@ -49,25 +49,25 @@
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0"
                                        Classes="table-header"
-                                       Text="{extensions:Localization Lastname,
-                                                                      ToUpper=True}" />
+                                       Text="{common:Localization Lastname,
+                                                                  ToUpper=True}" />
                             <TextBlock Grid.Column="1"
                                        Classes="table-header"
-                                       Text="{extensions:Localization Firstname,
-                                                                      ToUpper=True}" />
+                                       Text="{common:Localization Firstname,
+                                                                  ToUpper=True}" />
                             <TextBlock Grid.Column="2"
                                        Classes="table-header"
-                                       Text="{extensions:Localization Club,
-                                                                      ToUpper=True}" />
+                                       Text="{common:Localization Club,
+                                                                  ToUpper=True}" />
                             <TextBlock Grid.Column="3"
                                        Classes="table-header"
-                                       Text="{extensions:Localization Birthyear,
-                                                                      ToUpper=True}"
+                                       Text="{common:Localization Birthyear,
+                                                                  ToUpper=True}"
                                        TextAlignment="Center" />
                             <TextBlock Grid.Column="5"
                                        Classes="table-header"
-                                       Text="{extensions:Localization Gender,
-                                                                      ToUpper=True}"
+                                       Text="{common:Localization Gender,
+                                                                  ToUpper=True}"
                                        TextAlignment="Center" />
                         </Grid>
                     </Border>

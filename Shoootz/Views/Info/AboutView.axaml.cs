@@ -3,9 +3,9 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Controls.ContentDialog;
-using Shoootz.Resources.Lang;
-using Shoootz.Services.Dialog;
-using Shoootz.Services.Localization;
+using Shoootz.Common.Resources.Lang;
+using Shoootz.Common.Services.Dialog;
+using Shoootz.Common.Services.Localization;
 
 namespace Shoootz.Views.Info;
 

@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
-using Shoootz.Services.License;
-using Shoootz.Services.Localization;
+using Shoootz.Common.Services.License;
+using Shoootz.Common.Services.Localization;
+using Shoootz.Common.ViewModels.Info;
 using Shoootz.Services.Store;
 
 namespace Shoootz.ViewModels.Info;

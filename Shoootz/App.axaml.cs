@@ -5,25 +5,24 @@ using System.Text;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Controls.LicenseTable.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Result;
-using Shoootz.Models.Error;
+using Shoootz.Common.Models.Language.Error;
+using Shoootz.Common.Services.App;
+using Shoootz.Common.Services.Graphics;
+using Shoootz.Common.Services.Language;
+using Shoootz.Common.Services.License;
+using Shoootz.Common.Services.Localization;
+using Shoootz.Common.Services.Settings;
 using Shoootz.Models.Settings;
 using Shoootz.Models.Settings.Database;
 using Shoootz.Models.Settings.Udp;
-using Shoootz.Services.App;
 using Shoootz.Services.Data;
-using Shoootz.Services.Graphics;
-using Shoootz.Services.Language;
-using Shoootz.Services.License;
-using Shoootz.Services.Localization;
 using Shoootz.Services.Parser;
-using Shoootz.Services.Settings;
-using Shoootz.Services.Settings.Read;
-using Shoootz.Services.Settings.Validation;
 using Shoootz.Services.Store;
 using Shoootz.Services.Udp;
 using Shoootz.Store;
@@ -88,10 +87,26 @@ public class App : Application
         services.AddSingleton<IDataProcessor, DataProcessor>();
         services.AddSingleton<IGraphicsService, GraphicsService>();
         services.AddSingleton<ILanguageService, LanguageService>();
-        services.AddSingleton<ILicenseService, LicenseService>();
-        services.AddSingleton<ILocalizationService, LocalizationService>();
+        services.AddSingleton<ILicenseService>(serviceProvider => new LicenseService(
+            typeof(App).Assembly,
+            () =>
+                [
+                    new PackageModel(
+                        serviceProvider.GetRequiredService<ILocalizationService>()["Database"],
+                        serviceProvider.GetService<IStoreService>()?.DbVersion ?? "n/a",
+                        LicenseService.LicenseType,
+                        null,
+                        null,
+                        LicenseService.Copyright
+                    ),
+                ]
+        ));
+        services.AddSingleton<ILocalizationService>(_ => new LocalizationService(
+            "Shoootz.Common.Resources.Lang.Messages",
+            typeof(LocalizationService).Assembly
+        ));
         services.AddSingleton<IShotDataParser, ShotDataParser>();
-        services.AddSingleton<ISettingsWriter, SettingsWriter>();
+        services.AddSingleton<ISettingsWriter<SettingsModel>, SettingsWriter<SettingsModel>>();
         services.AddSingleton<IUdpListenerService, UdpListenerService>();
         services.AddSingleton<MainWindowViewModel>();
     }
@@ -118,7 +133,7 @@ public class App : Application
                     .GetRequiredService<IOptionsMonitor<SettingsModel>>()
                     .CurrentValue.DatabaseConnection;
 
-                switch (databaseConnection?.Provider)
+                switch (databaseConnection.Provider)
                 {
                     case ProviderType.PostgreSql:
                         options.UseNpgsql(
@@ -166,7 +181,7 @@ public class App : Application
     {
         if (!File.Exists(AppPath.SettingsFile))
         {
-            new SettingsWriter().Save(new SettingsModel());
+            new SettingsWriter<SettingsModel>().Save(new SettingsModel());
         }
 
         SettingsReader.Read.Match(value => _rawSettings = value, error => _errors.Add(error.Value));
@@ -176,7 +191,11 @@ public class App : Application
             return;
         }
 
-        Result<string, List<SettingsError>> validationResult = SettingsValidation.Run(_rawSettings);
+        Result<string, List<SettingsError>> validationResult = SettingsValidation.Run(
+            _rawSettings,
+            typeof(App).Assembly,
+            "Shoootz.Resources.JsonSchemas.Settings.schema.json"
+        );
 
         validationResult.Match(
             value =>

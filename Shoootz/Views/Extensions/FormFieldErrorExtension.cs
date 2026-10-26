@@ -1,5 +1,5 @@
 using Controls.FormField;
-using Shoootz.Services.Localization;
+using Shoootz.Common.Services.Localization;
 
 namespace Shoootz.Views.Extensions;
 

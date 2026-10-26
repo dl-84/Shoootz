@@ -3,15 +3,12 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Media;
-using Controls.ContentDialog;
 using Controls.InfoDialog;
 using Controls.InfoDialog.Enum;
-using Controls.JsonEditor;
 using Controls.WaitingDialog;
-using Shoootz.Resources.Lang;
-using Shoootz.Services.Dialog;
-using Shoootz.Services.Localization;
+using Shoootz.Common.Resources.Lang;
+using Shoootz.Common.Services.Dialog;
+using Shoootz.Common.Services.Localization;
 using Shoootz.ViewModels;
 using Shoootz.ViewModels.Settings;
 
@@ -26,24 +23,6 @@ public partial class ConnectionView : UserControl
     {
         InitializeComponent();
         DataContextChanged += OnDataContextChanged;
-    }
-
-    private static ContentDialog BuildConfirmDialog(string title, string message)
-    {
-        return new ContentDialog
-        {
-            DialogContent = new TextBlock { Text = message, TextWrapping = TextWrapping.Wrap },
-            DialogTitle = title,
-            IsDanger = true,
-            SizeToContent = SizeToContent.Height,
-            SubmitText = LocalizationService.Instance[Messages.Delete],
-            Width = 460,
-        };
-    }
-
-    private static JsonEditorControl BuildTextEditor(string content)
-    {
-        return new JsonEditorControl { IsReadOnly = true, Text = content };
     }
 
     private void OnCommandIconPressed(object? sender, PointerPressedEventArgs e)
@@ -66,12 +45,6 @@ public partial class ConnectionView : UserControl
             viewModel.ConnectionTestCompleted += OnConnectionTestCompleted;
             viewModel.DbInitializeCompleted += OnDbInitializeCompleted;
             viewModel.DbInitializeStarted += OnDbInitializeStarted;
-            viewModel.DeleteAllCompleted += OnDeleteAllCompleted;
-            viewModel.DeleteAllStarted += OnDeleteAllStarted;
-            viewModel.DeleteSettingsFileRequested += OnDeleteSettingsFileRequested;
-            viewModel.DeleteSettingsFolderRequested += OnDeleteSettingsFolderRequested;
-            viewModel.ReadSettingsFileFailed += OnReadSettingsFileFailed;
-            viewModel.SettingsContentRequested += OnSettingsContentRequested;
         }
     }
 
@@ -114,90 +87,6 @@ public partial class ConnectionView : UserControl
         _ = _waitingDialog.ShowDialog(window);
     }
 
-    private void OnDeleteAllCompleted(bool success, string? errorMessage)
-    {
-        if (TopLevel.GetTopLevel(this) is Window { DataContext: MainWindowViewModel mainWindowViewModel })
-        {
-            mainWindowViewModel.IsDialogOpen = false;
-        }
-
-        _waitingDialog?.Close();
-        _waitingDialog = null;
-
-        _ = OpenDeleteAllDialogAsync(success, errorMessage);
-    }
-
-    private void OnDeleteAllStarted()
-    {
-        if (TopLevel.GetTopLevel(this) is not Window window)
-        {
-            return;
-        }
-
-        if (window.DataContext is MainWindowViewModel mainWindowViewModel)
-        {
-            mainWindowViewModel.IsDialogOpen = true;
-        }
-
-        _waitingDialog = new WaitingDialog
-        {
-            DialogTitle = LocalizationService.Instance[Messages.DeleteAll],
-            Message = LocalizationService.Instance[Messages.DeleteAllInProgress],
-        };
-
-        _ = _waitingDialog.ShowDialog(window);
-    }
-
-    private void OnDeleteSettingsFileRequested()
-    {
-        _ = OpenConfirmDialogAsync(
-            LocalizationService.Instance[Messages.DeleteSettingsFile],
-            LocalizationService.Instance[Messages.ConfirmDeleteSettingsFileMessage],
-            () =>
-            {
-                if (DataContext is ConnectionViewModel viewModel)
-                {
-                    viewModel.ExecuteDeleteSettingsFile();
-                }
-
-                return Task.CompletedTask;
-            }
-        );
-    }
-
-    private void OnDeleteSettingsFolderRequested()
-    {
-        _ = OpenConfirmDialogAsync(
-            LocalizationService.Instance[Messages.DeleteAll],
-            LocalizationService.Instance[Messages.ConfirmDeleteAllMessage],
-            () =>
-                DataContext is ConnectionViewModel viewModel
-                    ? viewModel.ExecuteDeleteSettingsFolderAsync()
-                    : Task.CompletedTask
-        );
-    }
-
-    private void OnReadSettingsFileFailed(string message)
-    {
-        _ = OpenReadSettingsFileFailedDialogAsync(message);
-    }
-
-    private void OnSettingsContentRequested(string content)
-    {
-        _ = OpenSettingsContentDialogAsync(content);
-    }
-
-    private async Task OpenConfirmDialogAsync(string title, string message, Func<Task> onConfirmed)
-    {
-        ContentDialog dialog = BuildConfirmDialog(title, message);
-        bool? result = await DialogService.ShowAsync(this, window => dialog.ShowDialog<bool?>(window));
-
-        if (result is true)
-        {
-            await onConfirmed();
-        }
-    }
-
     private async Task OpenConnectionTestDialogAsync(bool success, string? errorMessage) =>
         await OpenResultDialogAsync(
             LocalizationService.Instance[Messages.TestConnection],
@@ -214,19 +103,6 @@ public partial class ConnectionView : UserControl
             errorMessage
         );
 
-    private async Task OpenDeleteAllDialogAsync(bool success, string? errorMessage) =>
-        await OpenResultDialogAsync(
-            LocalizationService.Instance[Messages.DeleteAll],
-            success,
-            LocalizationService.Instance[Messages.DeleteAllSuccessful],
-            errorMessage
-        );
-
-    private async Task OpenReadSettingsFileFailedDialogAsync(string message)
-    {
-        await DialogService.ShowErrorDialogAsync(this, message);
-    }
-
     private async Task OpenResultDialogAsync(string title, bool success, string successMessage, string? errorMessage)
     {
         await DialogService.ShowAsync(
@@ -239,22 +115,6 @@ public partial class ConnectionView : UserControl
                     Message = success
                         ? successMessage
                         : errorMessage ?? LocalizationService.Instance[Messages.ConnectionFailed],
-                }.ShowDialog(window)
-        );
-    }
-
-    private async Task OpenSettingsContentDialogAsync(string content)
-    {
-        await DialogService.ShowAsync(
-            this,
-            window =>
-                new ContentDialog
-                {
-                    CopyText = content,
-                    DialogContent = BuildTextEditor(content),
-                    DialogTitle = LocalizationService.Instance[Messages.Settings],
-                    Height = 650,
-                    Width = 1000,
                 }.ShowDialog(window)
         );
     }

@@ -8,7 +8,7 @@ VERSION="0.0.1"
 ROOT="$(git -C "$(dirname "$0")" rev-parse --show-toplevel)"
 BIN="$ROOT/bin"
 BUNDLE="$BIN/Shoootz.app"
-LOGO="$ROOT/Shoootz/Assets/Disag/Logo.png"
+LOGO="$ROOT/Shoootz/Assets/Logo/Logo.png"
 
 echo "Publishing ($RID)..."
 dotnet publish "$ROOT/Shoootz/Shoootz.csproj" -r "$RID" -c Release -o "$BIN"

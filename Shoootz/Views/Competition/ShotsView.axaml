@@ -1,6 +1,6 @@
-<UserControl x:Class="Shoootz.Views.Competition.ShotsView"
+﻿<UserControl x:Class="Shoootz.Views.Competition.ShotsView"
              xmlns="https://github.com/avaloniaui"
-             xmlns:extensions="clr-namespace:Shoootz.Views.Extensions"
+             xmlns:common="using:Shoootz.Common.Extensions"
              xmlns:sab="using:Controls.SiteActionBar"
              xmlns:vm="using:Shoootz.ViewModels.Competition"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -10,17 +10,17 @@
         <StackPanel Classes="page-content">
 
             <TextBlock Classes="h3"
-                       Text="{extensions:Localization Shots}" />
+                       Text="{common:Localization Shots}" />
 
-            <sab:SiteActionBarControl AddTooltip="{extensions:Localization Add}"
+            <sab:SiteActionBarControl AddTooltip="{common:Localization Add}"
                                       DeleteRequested="OnDeleteIconPressed"
-                                      DeleteTooltip="{extensions:Localization Delete}"
-                                      EditTooltip="{extensions:Localization Edit}"
+                                      DeleteTooltip="{common:Localization Delete}"
+                                      EditTooltip="{common:Localization Edit}"
                                       IsActionEnabled="{Binding IsAnyShotSelected}"
                                       IsRefreshVisible="True"
                                       RefreshRequested="OnRefreshIconPressed"
-                                      RefreshTooltip="{extensions:Localization Refresh}"
-                                      SearchPlaceholder="{extensions:Localization Search}"
+                                      RefreshTooltip="{common:Localization Refresh}"
+                                      SearchPlaceholder="{common:Localization Search}"
                                       SearchText="{Binding SearchText}" />
 
             <Border Classes="card"
@@ -46,26 +46,26 @@
                                       IsChecked="{Binding IsAllSelected}" />
                             <TextBlock Grid.Column="1"
                                        Classes="table-header"
-                                       Text="{extensions:Localization DateTime,
-                                                                      ToUpper=True}" />
+                                       Text="{common:Localization DateTime,
+                                                                  ToUpper=True}" />
                             <TextBlock Grid.Column="2"
                                        Classes="table-header"
-                                       Text="{extensions:Localization Shooter,
-                                                                      ToUpper=True}" />
+                                       Text="{common:Localization Shooter,
+                                                                  ToUpper=True}" />
                             <TextBlock Grid.Column="3"
                                        Classes="table-header"
-                                       Text="{extensions:Localization WeaponType,
-                                                                      ToUpper=True}"
+                                       Text="{common:Localization WeaponType,
+                                                                  ToUpper=True}"
                                        TextAlignment="Center" />
                             <TextBlock Grid.Column="4"
                                        Classes="table-header"
-                                       Text="{extensions:Localization Shot,
-                                                                      ToUpper=True}"
+                                       Text="{common:Localization Shot,
+                                                                  ToUpper=True}"
                                        TextAlignment="Center" />
                             <TextBlock Grid.Column="5"
                                        Classes="table-header"
-                                       Text="{extensions:Localization Distance,
-                                                                      ToUpper=True}"
+                                       Text="{common:Localization Distance,
+                                                                  ToUpper=True}"
                                        TextAlignment="Center" />
                         </Grid>
                     </Border>

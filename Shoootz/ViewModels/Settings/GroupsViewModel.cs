@@ -1,3 +1,5 @@
+using Shoootz.Common.ViewModels;
+
 namespace Shoootz.ViewModels.Settings;
 
-internal partial class GroupsViewModel : ViewModelBase { }
+internal class GroupsViewModel : ViewModelBase { }

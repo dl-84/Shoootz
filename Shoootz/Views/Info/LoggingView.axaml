@@ -1,7 +1,6 @@
 ﻿<UserControl x:Class="Shoootz.Views.Info.LoggingView"
              xmlns="https://github.com/avaloniaui"
-             xmlns:extensions="clr-namespace:Shoootz.Views.Extensions"
-             xmlns:loc="using:Shoootz.Extensions"
+             xmlns:common="using:Shoootz.Common.Extensions"
              xmlns:sc="using:Controls.CounterCard"
              xmlns:vm="using:Shoootz.ViewModels.Info"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -13,7 +12,7 @@
 
         <TextBlock Grid.Row="0"
                    Classes="h3"
-                   Text="{extensions:Localization Logging}" />
+                   Text="{common:Localization Logging}" />
 
         <Grid Grid.Row="1"
               ColumnDefinitions="*,*,*"
@@ -23,61 +22,61 @@
 
             <sc:CounterCardControl Grid.Row="0"
                                    Grid.Column="0"
-                                   InfoText="{extensions:Localization ShotCounterReceivedTooltip}"
-                                   Label="{extensions:Localization ShotCounterReceived}"
+                                   InfoText="{common:Localization ShotCounterReceivedTooltip}"
+                                   Label="{common:Localization ShotCounterReceived}"
                                    Value="{Binding ReceivedShots}" />
 
             <sc:CounterCardControl Grid.Row="0"
                                    Grid.Column="1"
-                                   InfoText="{extensions:Localization ShotCounterParsedTooltip}"
-                                   Label="{extensions:Localization ShotCounterParsed}"
+                                   InfoText="{common:Localization ShotCounterParsedTooltip}"
+                                   Label="{common:Localization ShotCounterParsed}"
                                    Value="{Binding ParsedShots}" />
 
             <sc:CounterCardControl Grid.Row="0"
                                    Grid.Column="2"
-                                   InfoText="{extensions:Localization ShotCounterSavedTooltip}"
-                                   Label="{extensions:Localization ShotCounterSaved}"
+                                   InfoText="{common:Localization ShotCounterSavedTooltip}"
+                                   Label="{common:Localization ShotCounterSaved}"
                                    Value="{Binding SavedShots}" />
 
             <sc:CounterCardControl Grid.Row="1"
                                    Grid.Column="0"
-                                   InfoText="{extensions:Localization ShotCounterWarmupTooltip}"
-                                   Label="{extensions:Localization ShotCounterWarmup}"
+                                   InfoText="{common:Localization ShotCounterWarmupTooltip}"
+                                   Label="{common:Localization ShotCounterWarmup}"
                                    Value="{Binding WarmupShots}" />
 
             <sc:CounterCardControl Grid.Row="1"
                                    Grid.Column="1"
-                                   InfoText="{extensions:Localization ShotCounterIncorrectNumberOfObjectsTooltip}"
+                                   InfoText="{common:Localization ShotCounterIncorrectNumberOfObjectsTooltip}"
                                    IsDanger="True"
-                                   Label="{extensions:Localization ShotCounterIncorrectNumberOfObjects}"
+                                   Label="{common:Localization ShotCounterIncorrectNumberOfObjects}"
                                    Value="{Binding IncorrectNumberOfObjects}" />
 
             <sc:CounterCardControl Grid.Row="1"
                                    Grid.Column="2"
-                                   InfoText="{extensions:Localization ShotCounterNotTypeOfShotTooltip}"
+                                   InfoText="{common:Localization ShotCounterNotTypeOfShotTooltip}"
                                    IsDanger="True"
-                                   Label="{extensions:Localization ShotCounterNotTypeOfShot}"
+                                   Label="{common:Localization ShotCounterNotTypeOfShot}"
                                    Value="{Binding NotTypeOfShot}" />
 
             <sc:CounterCardControl Grid.Row="2"
                                    Grid.Column="0"
-                                   InfoText="{extensions:Localization ShotCounterMissingShooterDataTooltip}"
+                                   InfoText="{common:Localization ShotCounterMissingShooterDataTooltip}"
                                    IsDanger="True"
-                                   Label="{extensions:Localization ShotCounterMissingShooterData}"
+                                   Label="{common:Localization ShotCounterMissingShooterData}"
                                    Value="{Binding MissingShooterData}" />
 
             <sc:CounterCardControl Grid.Row="2"
                                    Grid.Column="1"
-                                   InfoText="{extensions:Localization ShotCounterParsedErrorTooltip}"
+                                   InfoText="{common:Localization ShotCounterParsedErrorTooltip}"
                                    IsDanger="True"
-                                   Label="{extensions:Localization ShotCounterParsedError}"
+                                   Label="{common:Localization ShotCounterParsedError}"
                                    Value="{Binding ParsedShotErrors}" />
 
             <sc:CounterCardControl Grid.Row="2"
                                    Grid.Column="2"
-                                   InfoText="{extensions:Localization ShotCounterSavedErrorTooltip}"
+                                   InfoText="{common:Localization ShotCounterSavedErrorTooltip}"
                                    IsDanger="True"
-                                   Label="{extensions:Localization ShotCounterSavedError}"
+                                   Label="{common:Localization ShotCounterSavedError}"
                                    Value="{Binding SavedShotErrors}" />
         </Grid>
 
@@ -88,7 +87,7 @@
 
                 <TextBlock Grid.Row="0"
                            Classes="h4"
-                           Text="{extensions:Localization LoggingRawTitle}" />
+                           Text="{common:Localization LoggingRawTitle}" />
 
                 <ListBox Grid.Row="1"
                          Background="Transparent"

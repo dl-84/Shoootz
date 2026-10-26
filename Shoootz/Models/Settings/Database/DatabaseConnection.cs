@@ -1,5 +1,5 @@
 using System.Text.Json.Serialization;
-using Shoootz.Services.App;
+using Shoootz.Common.Services.App;
 using Shoootz.Store.Types;
 
 namespace Shoootz.Models.Settings.Database;

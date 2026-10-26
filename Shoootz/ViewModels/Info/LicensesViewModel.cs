@@ -1,5 +1,6 @@
-using Shoootz.Services.License;
-using Shoootz.Services.Localization;
+using Shoootz.Common.Services.License;
+using Shoootz.Common.Services.Localization;
+using Shoootz.Common.ViewModels.Info;
 
 namespace Shoootz.ViewModels.Info;
 

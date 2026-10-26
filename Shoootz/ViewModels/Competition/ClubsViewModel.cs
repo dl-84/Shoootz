@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Result;
 using Result.Types;
+using Shoootz.Common.Resources.Lang;
+using Shoootz.Common.Services.Localization;
 using Shoootz.Models.Club;
 using Shoootz.Models.Error;
-using Shoootz.Resources.Lang;
-using Shoootz.Services.Localization;
 using Shoootz.Services.Store;
 using Shoootz.ViewModels.Services;
 

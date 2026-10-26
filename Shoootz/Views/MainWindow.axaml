@@ -1,8 +1,7 @@
 ﻿<Window x:Class="Shoootz.Views.MainWindow"
         xmlns="https://github.com/avaloniaui"
+        xmlns:common="using:Shoootz.Common.Extensions"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:extensions="clr-namespace:Shoootz.Views.Extensions"
-        xmlns:loc="using:Shoootz.Extensions"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:tb="using:Controls.TitleBar"
         xmlns:types="clr-namespace:Shoootz.Views.Types"
@@ -13,7 +12,7 @@
         ExtendClientAreaTitleBarHeightHint="-1"
         ExtendClientAreaToDecorationsHint="True"
         Height="768"
-        Icon="/Assets/Disag/Logo.png"
+        Icon="/Assets/Logo/Logo.png"
         MinHeight="768"
         MinWidth="1366"
         Title="Shoootz"
@@ -41,14 +40,16 @@
                                   DockPanel.Dock="Bottom"
                                   Margin="0,16,0,20">
                                 <PathIcon Grid.Column="1"
+                                          Classes.status-error="{Binding !IsDbConnected}"
+                                          Classes.status-success="{Binding IsDbConnected}"
                                           Data="{DynamicResource DatabaseIcon}"
-                                          Foreground="{Binding DatabaseStatusBrush}"
                                           Height="24"
                                           ToolTip.Tip="{Binding DbBadgeText}"
                                           Width="24" />
                                 <PathIcon Grid.Column="3"
+                                          Classes.status-error="{Binding !IsUdpConnected}"
+                                          Classes.status-success="{Binding IsUdpConnected}"
                                           Data="{DynamicResource NetworkWiredIcon}"
-                                          Foreground="{Binding NetworkWiredStatusBrush}"
                                           Height="24"
                                           ToolTip.Tip="{Binding UdpBadgeText}"
                                           Width="24" />
@@ -63,56 +64,56 @@
                                 <ListBoxItem Classes="navigation-header"
                                              IsEnabled="False">
                                     <TextBlock Margin="20,16,20,4"
-                                               Text="{extensions:Localization Competition,
-                                                                              ToUpper=True}" />
+                                               Text="{common:Localization Competition,
+                                                                          ToUpper=True}" />
                                 </ListBoxItem>
                                 <ListBoxItem Tag="{x:Static types:NavigationPageType.Evaluate}">
-                                    <TextBlock Text="{extensions:Localization Evaluate}" />
+                                    <TextBlock Text="{common:Localization Evaluate}" />
                                 </ListBoxItem>
 
                                 <ListBoxItem Classes="navigation-header"
                                              IsEnabled="False">
                                     <TextBlock Margin="20,28,20,4"
-                                               Text="{extensions:Localization Data,
-                                                                              ToUpper=True}" />
+                                               Text="{common:Localization Data,
+                                                                          ToUpper=True}" />
                                 </ListBoxItem>
                                 <ListBoxItem Tag="{x:Static types:NavigationPageType.Shots}">
-                                    <TextBlock Text="{extensions:Localization Shots}" />
+                                    <TextBlock Text="{common:Localization Shots}" />
                                 </ListBoxItem>
                                 <ListBoxItem Tag="{x:Static types:NavigationPageType.Shooters}">
-                                    <TextBlock Text="{extensions:Localization Shooters}" />
+                                    <TextBlock Text="{common:Localization Shooters}" />
                                 </ListBoxItem>
                                 <ListBoxItem Tag="{x:Static types:NavigationPageType.Clubs}">
-                                    <TextBlock Text="{extensions:Localization Clubs}" />
+                                    <TextBlock Text="{common:Localization Clubs}" />
                                 </ListBoxItem>
 
                                 <ListBoxItem Classes="navigation-header"
                                              IsEnabled="False">
                                     <TextBlock Margin="20,28,20,4"
-                                               Text="{extensions:Localization Settings,
-                                                                              ToUpper=True}" />
+                                               Text="{common:Localization Settings,
+                                                                          ToUpper=True}" />
                                 </ListBoxItem>
                                 <ListBoxItem Tag="{x:Static types:NavigationPageType.App}">
-                                    <TextBlock Text="{extensions:Localization App}" />
+                                    <TextBlock Text="{common:Localization App}" />
                                 </ListBoxItem>
                                 <ListBoxItem Tag="{x:Static types:NavigationPageType.Groups}">
-                                    <TextBlock Text="{extensions:Localization Groups}" />
+                                    <TextBlock Text="{common:Localization Groups}" />
                                 </ListBoxItem>
 
                                 <ListBoxItem Classes="navigation-header"
                                              IsEnabled="False">
                                     <TextBlock Margin="20,28,20,4"
-                                               Text="{extensions:Localization Info,
-                                                                              ToUpper=True}" />
+                                               Text="{common:Localization Info,
+                                                                          ToUpper=True}" />
                                 </ListBoxItem>
                                 <ListBoxItem Tag="{x:Static types:NavigationPageType.About}">
-                                    <TextBlock Text="{extensions:Localization About}" />
+                                    <TextBlock Text="{common:Localization About}" />
                                 </ListBoxItem>
                                 <ListBoxItem Tag="{x:Static types:NavigationPageType.Licenses}">
-                                    <TextBlock Text="{extensions:Localization Licenses}" />
+                                    <TextBlock Text="{common:Localization Licenses}" />
                                 </ListBoxItem>
                                 <ListBoxItem Tag="{x:Static types:NavigationPageType.Logging}">
-                                    <TextBlock Text="{extensions:Localization Logging}" />
+                                    <TextBlock Text="{common:Localization Logging}" />
                                 </ListBoxItem>
 
                             </ListBox>

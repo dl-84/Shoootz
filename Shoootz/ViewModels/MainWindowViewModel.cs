@@ -2,33 +2,31 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Avalonia.Media;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Result;
+using Shoootz.Common.Models.Language.Error;
+using Shoootz.Common.Resources.Lang;
+using Shoootz.Common.Services.Dialog;
+using Shoootz.Common.Services.Localization;
+using Shoootz.Common.Services.Settings;
+using Shoootz.Common.ViewModels;
 using Shoootz.Models.Database;
-using Shoootz.Models.Error;
 using Shoootz.Models.Settings;
-using Shoootz.Models.Settings.Database;
-using Shoootz.Resources.Lang;
-using Shoootz.Services.App;
-using Shoootz.Services.Localization;
-using Shoootz.Services.Settings;
 using Shoootz.Services.Store;
 using Shoootz.Services.Udp;
 using Shoootz.Store;
 using Shoootz.Store.Services;
 using Shoootz.ViewModels.Competition;
-using Shoootz.ViewModels.Error;
 using Shoootz.ViewModels.Info;
 using Shoootz.ViewModels.Settings;
 using Shoootz.Views.Types;
 
 namespace Shoootz.ViewModels;
 
-internal partial class MainWindowViewModel : ViewModelBase
+internal partial class MainWindowViewModel : ViewModelBase, IDialogHost
 {
     private readonly IConnectionTester _connectionTester;
 
@@ -38,7 +36,7 @@ internal partial class MainWindowViewModel : ViewModelBase
 
     private readonly SettingsModel _settings;
 
-    private readonly ISettingsWriter _settingsWriter;
+    private readonly ISettingsWriter<SettingsModel> _settingsWriter;
 
     private readonly IStoreService _storeService;
 
@@ -49,7 +47,7 @@ internal partial class MainWindowViewModel : ViewModelBase
         ILocalizationService localizationService,
         IOptionsMonitor<SettingsModel> settings,
         IServiceProvider serviceProvider,
-        ISettingsWriter settingsWriter,
+        ISettingsWriter<SettingsModel> settingsWriter,
         IStoreService storeService,
         IUdpListenerService udpListenerService
     )
@@ -60,7 +58,7 @@ internal partial class MainWindowViewModel : ViewModelBase
         _serviceProvider = serviceProvider;
 
         _settingsWriter = settingsWriter;
-        _settingsWriter.SettingsSaved += settings => _ = CheckDbConnectionAsync();
+        _settingsWriter.SettingsSaved += settingsModel => _ = CheckDbConnectionAsync();
 
         _udpListenerService = udpListenerService;
         _udpListenerService.IsListeningChanged += (_, isListening) =>
@@ -83,8 +81,6 @@ internal partial class MainWindowViewModel : ViewModelBase
     [NotifyPropertyChangedFor(nameof(IsNavbarEnabled))]
     public partial ViewModelBase CurrentPage { get; set; }
 
-    public IBrush DatabaseStatusBrush => IsDbConnected ? AppBrush.Success : AppBrush.Error;
-
     public string DbBadgeText
     {
         get
@@ -100,20 +96,16 @@ internal partial class MainWindowViewModel : ViewModelBase
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(DbBadgeText))]
-    [NotifyPropertyChangedFor(nameof(DatabaseStatusBrush))]
     public partial bool IsDbConnected { get; set; }
 
     [ObservableProperty]
     public partial bool IsDialogOpen { get; set; }
 
-    public bool IsNavbarEnabled => CurrentPage is not SettingsErrorViewModel;
+    public bool IsNavbarEnabled => CurrentPage is not Common.ViewModels.Error.SettingsErrorViewModel<SettingsModel>;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(UdpBadgeText))]
-    [NotifyPropertyChangedFor(nameof(NetworkWiredStatusBrush))]
     public partial bool IsUdpConnected { get; set; }
-
-    public IBrush NetworkWiredStatusBrush => IsUdpConnected ? AppBrush.Success : AppBrush.Error;
 
     public string UdpBadgeText
     {
@@ -171,13 +163,17 @@ internal partial class MainWindowViewModel : ViewModelBase
 
     public void RedirectToSettingsError(List<SettingsError> settingsErrors, string settings)
     {
-        CurrentPage = new SettingsErrorViewModel(_settingsWriter);
+        CurrentPage = new Common.ViewModels.Error.SettingsErrorViewModel<SettingsModel>(
+            _settingsWriter,
+            typeof(MainWindowViewModel).Assembly,
+            "Shoootz.Resources.JsonSchemas.Settings.schema.json"
+        );
 
-        (CurrentPage as SettingsErrorViewModel)?.ErrorMessages = settingsErrors
+        (CurrentPage as Common.ViewModels.Error.SettingsErrorViewModel<SettingsModel>)?.ErrorMessages = settingsErrors
             .Select(settingsError => settingsError.Message)
             .ToList();
 
-        (CurrentPage as SettingsErrorViewModel)?.EditorContent = settings;
+        (CurrentPage as Common.ViewModels.Error.SettingsErrorViewModel<SettingsModel>)?.EditorContent = settings;
     }
 
     private ViewModelBase? CreateView(NavigationPageType pageType)

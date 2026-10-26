@@ -7,11 +7,11 @@ using Avalonia.Interactivity;
 using Avalonia.VisualTree;
 using Controls.ContentDialog;
 using Controls.FormField;
+using Shoootz.Common.Resources.Lang;
+using Shoootz.Common.Services.Dialog;
+using Shoootz.Common.Services.Localization;
 using Shoootz.Extensions;
 using Shoootz.Models.Club;
-using Shoootz.Resources.Lang;
-using Shoootz.Services.Dialog;
-using Shoootz.Services.Localization;
 using Shoootz.ViewModels.Competition;
 using Shoootz.Views.Extensions;
 

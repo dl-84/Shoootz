@@ -1,10 +1,11 @@
 using System.Globalization;
+using Shoootz.Common.Models.Language;
 using Shoootz.Models.Settings.Database;
 using Shoootz.Models.Settings.Udp;
 
 namespace Shoootz.Models.Settings;
 
-internal class SettingsModel
+internal class SettingsModel : ILanguageSettings
 {
     public string CurrentLanguageCode { get; set; } = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
 

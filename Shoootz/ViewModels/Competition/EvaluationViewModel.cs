@@ -1,3 +1,5 @@
+using Shoootz.Common.ViewModels;
+
 namespace Shoootz.ViewModels.Competition;
 
-internal partial class EvaluationViewModel : ViewModelBase { }
+internal class EvaluationViewModel : ViewModelBase { }

@@ -3,10 +3,10 @@ using System.Threading.Tasks;
 using Avalonia.Controls;
 using Controls.ContentDialog;
 using Controls.JsonEditor;
+using Shoootz.Common.Resources.Lang;
+using Shoootz.Common.Services.Dialog;
+using Shoootz.Common.Services.Localization;
 using Shoootz.Models.Udp;
-using Shoootz.Resources.Lang;
-using Shoootz.Services.Dialog;
-using Shoootz.Services.Localization;
 
 namespace Shoootz.Views.Info;
 

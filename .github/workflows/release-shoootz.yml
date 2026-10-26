@@ -62,7 +62,7 @@ jobs:
         run: |
           VERSION="${GITHUB_REF_NAME#v}"
           BUNDLE=./out/Shoootz.app
-          LOGO=Shoootz/Assets/Disag/Logo.png
+          LOGO=Shoootz/Assets/Logo/Logo.png
 
           mkdir -p "$BUNDLE/Contents/MacOS"
           mkdir -p "$BUNDLE/Contents/Resources"
@@ -136,8 +136,8 @@ jobs:
           mkdir -p "$APPDIR/usr/bin"
           mkdir -p "$APPDIR/usr/share/icons/hicolor/256x256/apps"
           mv ./out/Shoootz "$APPDIR/usr/bin/"
-          cp Shoootz/Assets/Disag/Logo.png "$APPDIR/Shoootz.png"
-          cp Shoootz/Assets/Disag/Logo.png "$APPDIR/usr/share/icons/hicolor/256x256/apps/Shoootz.png"
+          cp Shoootz/Assets/Logo/Logo.png "$APPDIR/Shoootz.png"
+          cp Shoootz/Assets/Logo/Logo.png "$APPDIR/usr/share/icons/hicolor/256x256/apps/Shoootz.png"
 
           cat > "$APPDIR/AppRun" << 'APPRUN'
           #!/bin/sh

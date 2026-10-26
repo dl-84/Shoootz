@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -9,25 +7,22 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Options;
 using Result;
 using Result.Types;
+using Shoootz.Common.Resources.Lang;
+using Shoootz.Common.Services.App;
+using Shoootz.Common.Services.Language;
+using Shoootz.Common.Services.Localization;
+using Shoootz.Common.Services.Settings;
+using Shoootz.Common.ViewModels;
+using Shoootz.Common.ViewModels.Settings;
 using Shoootz.Models.Database;
 using Shoootz.Models.Error;
 using Shoootz.Models.Settings;
-using Shoootz.Models.Settings.Database;
-using Shoootz.Models.Settings.Language;
-using Shoootz.Resources.Lang;
-using Shoootz.Services.App;
 using Shoootz.Services.Data;
-using Shoootz.Services.Language;
-using Shoootz.Services.Localization;
-using Shoootz.Services.Settings;
-using Shoootz.Services.Settings.Read;
 using Shoootz.Services.Store;
 using Shoootz.Services.Udp;
 using Shoootz.Store;
 using Shoootz.Store.Services;
 using Shoootz.Store.Types;
-using Shoootz.Utils;
-using Shoootz.ViewModels;
 
 namespace Shoootz.ViewModels.Settings;
 
@@ -37,11 +32,9 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
 
     private readonly IDataProcessor _dataProcessor;
 
-    private readonly ILocalizationService _localizationService;
-
     private readonly SettingsModel _settings;
 
-    private readonly ISettingsWriter _settingsWriter;
+    private readonly ISettingsWriter<SettingsModel> _settingsWriter;
 
     private readonly IStoreService _storeService;
 
@@ -53,27 +46,40 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
         ILanguageService languageService,
         ILocalizationService localizationService,
         IOptionsMonitor<SettingsModel> settings,
-        ISettingsWriter settingsWriter,
+        ISettingsWriter<SettingsModel> settingsWriter,
         IStoreService storeService,
         IUdpListenerService udpListenerService
     )
     {
         _connectionTester = connectionTester;
         _dataProcessor = dataProcessor;
-        _localizationService = localizationService;
         _settings = settings.CurrentValue;
         _settingsWriter = settingsWriter;
         _storeService = storeService;
         _udpListenerService = udpListenerService;
 
-        LanguageOptions = languageService.GetAvailableLanguages();
+        GeneralSettings = new GeneralSettingsViewModel<SettingsModel>(
+            languageService,
+            localizationService,
+            settings,
+            settingsWriter,
+            additionalDeleteFolderCleanup: async () =>
+            {
+                Result<Unit, StoreSaveError> result = await _storeService.DeleteDatabaseAsync();
+
+                return result.Match(
+                    _ => null!,
+                    error =>
+                        $"{LocalizationService.Instance[Messages.DeleteDatabaseFailedHint]}\n\n{error.Value.Message}"
+                );
+            }
+        );
 
         AutoConnect = _settings.UdpConnection.AutoConnect;
         IsUdpListening = udpListenerService.IsListening;
         Port = _settings.UdpConnection.Port.ToString();
         SelectedProvider = _settings.DatabaseConnection.Provider;
         ConnectionString = _settings.DatabaseConnection.ConnectionString;
-        SelectedLanguageOption = GetLanguage(_settings.CurrentLanguageCode);
 
         _udpListenerService.IsListeningChanged += OnUdpListeningChanged;
 
@@ -89,18 +95,6 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
 
     public event Action? DbInitializeStarted;
 
-    public event Action<bool, string?>? DeleteAllCompleted;
-
-    public event Action? DeleteAllStarted;
-
-    public event Action? DeleteSettingsFileRequested;
-
-    public event Action? DeleteSettingsFolderRequested;
-
-    public event Action<string>? ReadSettingsFileFailed;
-
-    public event Action<string>? SettingsContentRequested;
-
     [ObservableProperty]
     public partial bool AutoConnect { get; set; }
 
@@ -111,6 +105,8 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
     [NotifyPropertyChangedFor(nameof(InitializeDbLabel))]
     [NotifyPropertyChangedFor(nameof(IsInitializeDbEnabled))]
     public partial DbStatus DbStatus { get; set; }
+
+    public GeneralSettingsViewModel<SettingsModel> GeneralSettings { get; }
 
     public string InitializeDbLabel =>
         !IsDbConnected
@@ -137,16 +133,11 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
     [NotifyPropertyChangedFor(nameof(UdpStatusLabel))]
     public partial bool IsUdpListening { get; set; }
 
-    public List<LanguageOptionModel> LanguageOptions { get; }
-
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsPortValid))]
     public partial string Port { get; set; }
 
     public IEnumerable<ProviderType> ProviderOptions { get; } = Enum.GetValues<ProviderType>();
-
-    [ObservableProperty]
-    public partial LanguageOptionModel? SelectedLanguageOption { get; set; }
 
     [ObservableProperty]
     public partial ProviderType SelectedProvider { get; set; }
@@ -158,37 +149,6 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
     {
         _udpListenerService.IsListeningChanged -= OnUdpListeningChanged;
         _storeService.ConnectionChanged -= OnStoreConnectionChanged;
-    }
-
-    public void ExecuteDeleteSettingsFile()
-    {
-        _settingsWriter.DeleteSettingsFile();
-    }
-
-    public async Task ExecuteDeleteSettingsFolderAsync()
-    {
-        DeleteAllStarted?.Invoke();
-
-        Result<Unit, StoreSaveError> result = await _storeService.DeleteDatabaseAsync();
-
-        result.Match(
-            _ =>
-            {
-                _settingsWriter.DeleteSettingsFolder();
-                DeleteAllCompleted?.Invoke(true, null);
-            },
-            error =>
-                DeleteAllCompleted?.Invoke(
-                    false,
-                    $"{LocalizationService.Instance[Messages.DeleteDatabaseFailedHint]}\n\n{error.Value.Message}"
-                )
-        );
-    }
-
-    [RelayCommand]
-    private static void OpenSettingsFolder()
-    {
-        Process.Start(new ProcessStartInfo { FileName = AppPath.AppDataBase, UseShellExecute = true });
     }
 
     [RelayCommand(CanExecute = nameof(CanSave))]
@@ -226,25 +186,6 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
     partial void OnIsDbConnectedChanged(bool value) => InitializeDbCommand.NotifyCanExecuteChanged();
 
     partial void OnPortChanged(string value) => NotifySaveStateChanged();
-
-    private LanguageOptionModel GetLanguage(string cultureCode)
-    {
-        return LanguageOptions.FirstOrDefault(languageModel =>
-                languageModel.CultureInfo.TwoLetterISOLanguageName == cultureCode
-            ) ?? LanguageOptions[0];
-    }
-
-    partial void OnSelectedLanguageOptionChanged(LanguageOptionModel? value)
-    {
-        if (value is null || value.CultureInfo.TwoLetterISOLanguageName == _settings.CurrentLanguageCode)
-        {
-            return;
-        }
-
-        _settings.CurrentLanguageCode = value.CultureInfo.TwoLetterISOLanguageName;
-        _settingsWriter.Save(_settings);
-        _localizationService.SetLanguage(value.CultureInfo.TwoLetterISOLanguageName);
-    }
 
     partial void OnSelectedProviderChanged(ProviderType value)
     {
@@ -377,27 +318,6 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
         result.Match(
             _ => ConnectionTestCompleted?.Invoke(true, null),
             error => ConnectionTestCompleted?.Invoke(false, error.Value.Message)
-        );
-    }
-
-    [RelayCommand]
-    private void DeleteSettingsFile()
-    {
-        DeleteSettingsFileRequested?.Invoke();
-    }
-
-    [RelayCommand]
-    private void DeleteSettingsFolder()
-    {
-        DeleteSettingsFolderRequested?.Invoke();
-    }
-
-    [RelayCommand]
-    private void ShowSettingsContent()
-    {
-        SettingsReader.Read.Match(
-            value => SettingsContentRequested?.Invoke(value),
-            error => ReadSettingsFileFailed?.Invoke(error.Value.Message)
         );
     }
 }

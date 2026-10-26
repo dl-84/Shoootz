@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="App" xml:space="preserve">
+    <value>App</value>
+  </data>
+  <data name="Clubs" xml:space="preserve">
+    <value>Vereine</value>
+  </data>
+  <data name="Competition" xml:space="preserve">
+    <value>Wettkampf</value>
+  </data>
+  <data name="Data" xml:space="preserve">
+    <value>Daten</value>
+  </data>
+  <data name="Database" xml:space="preserve">
+    <value>Datenbank</value>
+  </data>
+  <data name="Evaluate" xml:space="preserve">
+    <value>Auswerten</value>
+  </data>
+  <data name="GeneralSettings" xml:space="preserve">
+    <value>Allgemein</value>
+  </data>
+  <data name="Groups" xml:space="preserve">
+    <value>Gruppen</value>
+  </data>
+  <data name="Info" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Einstellungen</value>
+  </data>
+  <data name="Shooters" xml:space="preserve">
+    <value>Schützen</value>
+  </data>
+  <data name="Shots" xml:space="preserve">
+    <value>Schüsse</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Schließen</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Sprache</value>
+  </data>
+  <data name="OpenFolder" xml:space="preserve">
+    <value>App-Ordner öffnen</value>
+  </data>
+  <data name="Restart" xml:space="preserve">
+    <value>Neustart</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Speichern</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Suchen</value>
+  </data>
+  <data name="SettingsErrorHint" xml:space="preserve">
+    <value>Beheben Sie den folgenden Fehler und validieren Sie die Datei erneut.</value>
+  </data>
+  <data name="SettingsFileError" xml:space="preserve">
+    <value>Fehler in der Einstellungsdatei</value>
+  </data>
+  <data name="SettingsValidSuccess" xml:space="preserve">
+    <value>Validierung erfolgreich.</value>
+  </data>
+  <data name="SettingsValidSuccessHint" xml:space="preserve">
+    <value>Datei speichern und Anwendung neu starten.</value>
+  </data>
+  <data name="ShowSettings" xml:space="preserve">
+    <value>Einstellungsdatei anzeigen</value>
+  </data>
+  <data name="Validate" xml:space="preserve">
+    <value>Validieren</value>
+  </data>
+  <data name="About" xml:space="preserve">
+    <value>Über</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Hinzufügen</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="Connected" xml:space="preserve">
+    <value>Verbunden</value>
+  </data>
+  <data name="NotConnected" xml:space="preserve">
+    <value>Nicht verbunden</value>
+  </data>
+  <data name="Birthyear" xml:space="preserve">
+    <value>Jahrgang</value>
+  </data>
+  <data name="AddClubTitle" xml:space="preserve">
+    <value>Verein hinzufügen</value>
+  </data>
+  <data name="Club" xml:space="preserve">
+    <value>Verein</value>
+  </data>
+  <data name="ClubName" xml:space="preserve">
+    <value>Vereinsname</value>
+  </data>
+  <data name="ClubNameRequiredMessage" xml:space="preserve">
+    <value>Vereinsname ist erforderlich.</value>
+  </data>
+  <data name="EditClubTitle" xml:space="preserve">
+    <value>Verein ändern (ID - {0})</value>
+  </data>
+  <data name="ConfirmDeleteAllAdditionalDataHint" xml:space="preserve">
+    <value>Dies löscht auch die Datenbank.</value>
+  </data>
+  <data name="ConfirmDeleteAllMessage" xml:space="preserve">
+    <value>Alle Einstellungen wirklich löschen?</value>
+  </data>
+  <data name="ClubHasShootersMessage" xml:space="preserve">
+    <value>Dieser Verein hat noch Mitglieder und kann nicht gelöscht werden.</value>
+  </data>
+  <data name="ConfirmDeleteClubMessage" xml:space="preserve">
+    <value>Wollen Sie den Verein {0} wirklich löschen?</value>
+  </data>
+  <data name="ConfirmDeleteShooterMessage" xml:space="preserve">
+    <value>Wollen Sie den Schützen {0} wirklich löschen?</value>
+  </data>
+  <data name="ConfirmDeleteSettingsFileMessage" xml:space="preserve">
+    <value>Die Datei mit allen Einstellungen wirklich löschen?</value>
+  </data>
+  <data name="BirthyearInvalidMessage" xml:space="preserve">
+    <value>Bitte ein gültiges Geburtsjahr angeben.</value>
+  </data>
+  <data name="FirstnameRequiredMessage" xml:space="preserve">
+    <value>Vorname ist erforderlich.</value>
+  </data>
+  <data name="ClubRequiredMessage" xml:space="preserve">
+    <value>Bitte einen Verein auswählen.</value>
+  </data>
+  <data name="LastnameRequiredMessage" xml:space="preserve">
+    <value>Nachname ist erforderlich.</value>
+  </data>
+  <data name="Firstname" xml:space="preserve">
+    <value>Vorname</value>
+  </data>
+  <data name="Gender" xml:space="preserve">
+    <value>Geschlecht</value>
+  </data>
+  <data name="GenderDiverse" xml:space="preserve">
+    <value>Divers</value>
+  </data>
+  <data name="GenderFemale" xml:space="preserve">
+    <value>Weiblich</value>
+  </data>
+  <data name="GenderMale" xml:space="preserve">
+    <value>Männlich</value>
+  </data>
+  <data name="DangerZone" xml:space="preserve">
+    <value>Danger Zone</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
+  <data name="DeleteAll" xml:space="preserve">
+    <value>Alle Daten der App löschen</value>
+  </data>
+  <data name="DeleteClubTitle" xml:space="preserve">
+    <value>Verein löschen</value>
+  </data>
+  <data name="DeleteSettingsFile" xml:space="preserve">
+    <value>Einstellungsdatei löschen</value>
+  </data>
+  <data name="DeleteShooterShotsToo" xml:space="preserve">
+    <value>Die Schüsse dieses Schützen löschen</value>
+  </data>
+  <data name="DeleteShooterTitle" xml:space="preserve">
+    <value>Schütze löschen</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Bearbeiten</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Fehler</value>
+  </data>
+  <data name="License" xml:space="preserve">
+    <value>Lizenz</value>
+  </data>
+  <data name="Licenses" xml:space="preserve">
+    <value>Lizenzen</value>
+  </data>
+  <data name="LicensesTitle" xml:space="preserve">
+    <value>Genutzte Drittanbieter-Komponenten dieser Anwendung</value>
+  </data>
+  <data name="Link" xml:space="preserve">
+    <value>Link</value>
+  </data>
+  <data name="AddShooterTitle" xml:space="preserve">
+    <value>Schütze hinzufügen (ID - {0})</value>
+  </data>
+  <data name="EditShooterTitle" xml:space="preserve">
+    <value>Schütze ändern (ID - {0})</value>
+  </data>
+  <data name="Id" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="Lastname" xml:space="preserve">
+    <value>Nachname</value>
+  </data>
+  <data name="MitLicense" xml:space="preserve">
+    <value>MIT Lizenz</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Leave" xml:space="preserve">
+    <value>Verlassen</value>
+  </data>
+  <data name="UnsavedChangesMessage" xml:space="preserve">
+    <value>Es gibt ungespeicherte Änderungen auf dieser Seite, wirklich verlassen?</value>
+  </data>
+  <data name="UnsavedChangesTitle" xml:space="preserve">
+    <value>Ungespeicherte Änderungen</value>
+  </data>
+  <data name="StatusConnected" xml:space="preserve">
+    <value>verbunden</value>
+  </data>
+  <data name="StatusDisconnected" xml:space="preserve">
+    <value>getrennt</value>
+  </data>
+  <data name="UdpBroadcast" xml:space="preserve">
+    <value>UDP Broadcast</value>
+  </data>
+  <data name="AutoConnect" xml:space="preserve">
+    <value>Beim Start automatisch verbinden</value>
+  </data>
+  <data name="Connect" xml:space="preserve">
+    <value>Verbinden</value>
+  </data>
+  <data name="Disconnect" xml:space="preserve">
+    <value>Trennen</value>
+  </data>
+  <data name="Port" xml:space="preserve">
+    <value>Port</value>
+  </data>
+  <data name="PortRangeHint" xml:space="preserve">
+    <value>Min: 1, Max: 65535</value>
+  </data>
+  <data name="ConnectionFailed" xml:space="preserve">
+    <value>Verbindung fehlgeschlagen</value>
+  </data>
+  <data name="ConnectionString" xml:space="preserve">
+    <value>Connection String</value>
+  </data>
+  <data name="ConnectionSuccessful" xml:space="preserve">
+    <value>Verbindung erfolgreich</value>
+  </data>
+  <data name="DbErrorFileNotFound" xml:space="preserve">
+    <value>Datenbankdatei nicht gefunden: {0}</value>
+  </data>
+  <data name="DbErrorUnknownProvider" xml:space="preserve">
+    <value>Unbekannter Datenbankprovider</value>
+  </data>
+  <data name="DeleteAllInProgress" xml:space="preserve">
+    <value>Daten werden gelöscht...</value>
+  </data>
+  <data name="DeleteAllSuccessful" xml:space="preserve">
+    <value>Alle Daten erfolgreich gelöscht</value>
+  </data>
+  <data name="DeleteDatabaseFailedHint" xml:space="preserve">
+    <value>Die Datenbank konnte nicht automatisch gelöscht werden. Bitte manuell auf dem Server löschen.</value>
+  </data>
+  <data name="DbInitializing" xml:space="preserve">
+    <value>Datenbank wird initialisiert...</value>
+  </data>
+  <data name="DbNotConnected" xml:space="preserve">
+    <value>Nicht verbunden</value>
+  </data>
+  <data name="DbPendingMigrations" xml:space="preserve">
+    <value>Es wurden ausstehende Datenbankmigrationen gefunden. Bitte aktualisiere die Datenbank.</value>
+  </data>
+  <data name="DbPendingMigrationsTitle" xml:space="preserve">
+    <value>Datenbankupdate verfügbar</value>
+  </data>
+  <data name="DbUpToDate" xml:space="preserve">
+    <value>Verbunden, Schema aktuell</value>
+  </data>
+  <data name="DbInitializeSuccessful" xml:space="preserve">
+    <value>Datenbank erfolgreich initialisiert</value>
+  </data>
+  <data name="CreateDb" xml:space="preserve">
+    <value>Erstellen</value>
+  </data>
+  <data name="InitializeDb" xml:space="preserve">
+    <value>Initialisieren</value>
+  </data>
+  <data name="UpdateDb" xml:space="preserve">
+    <value>Aktualisieren</value>
+  </data>
+  <data name="Provider" xml:space="preserve">
+    <value>Provider</value>
+  </data>
+  <data name="Test" xml:space="preserve">
+    <value>Test</value>
+  </data>
+  <data name="TestConnection" xml:space="preserve">
+    <value>Verbindung testen</value>
+  </data>
+  <data name="Udp" xml:space="preserve">
+    <value>UDP</value>
+  </data>
+  <data name="Logging" xml:space="preserve">
+    <value>Logging</value>
+  </data>
+  <data name="ShotCounterParsed" xml:space="preserve">
+    <value>Analysierte Schüsse</value>
+  </data>
+  <data name="ShotCounterParsedTooltip" xml:space="preserve">
+    <value>Anzahl der Datensätze, die erfolgreich als Schuss erkannt und verarbeitet wurden.</value>
+  </data>
+  <data name="ShotCounterReceived" xml:space="preserve">
+    <value>Empfangene Schüsse</value>
+  </data>
+  <data name="ShotCounterReceivedTooltip" xml:space="preserve">
+    <value>Anzahl der empfangenen Datenpakete.</value>
+  </data>
+  <data name="ShotCounterParsedError" xml:space="preserve">
+    <value>Analysefehler</value>
+  </data>
+  <data name="ShotCounterParsedErrorTooltip" xml:space="preserve">
+    <value>Datensätze, die wegen eines Fehlers nicht verarbeitet werden konnten.</value>
+  </data>
+  <data name="ShotCounterSaved" xml:space="preserve">
+    <value>Gespeicherte Schüsse</value>
+  </data>
+  <data name="ShotCounterSavedTooltip" xml:space="preserve">
+    <value>Anzahl der erfolgreich in der Datenbank gespeicherten Schüsse.</value>
+  </data>
+  <data name="ShotCounterSavedError" xml:space="preserve">
+    <value>Fehler beim Speichern</value>
+  </data>
+  <data name="ShotCounterSavedErrorTooltip" xml:space="preserve">
+    <value>Schüsse, die nicht in der Datenbank gespeichert werden konnten.</value>
+  </data>
+  <data name="ShotCounterIncorrectNumberOfObjects" xml:space="preserve">
+    <value>Anzahl Datensatz falsch</value>
+  </data>
+  <data name="ShotCounterIncorrectNumberOfObjectsTooltip" xml:space="preserve">
+    <value>Datensätze, die nicht genau ein Objekt enthielten und daher verworfen wurden.</value>
+  </data>
+  <data name="ShotCounterMissingShooterData" xml:space="preserve">
+    <value>Fehlende Schützendaten</value>
+  </data>
+  <data name="ShotCounterMissingShooterDataTooltip" xml:space="preserve">
+    <value>Schüsse ohne vollständige Schützendaten (Vor-/Nachname).</value>
+  </data>
+  <data name="ShotCounterNotTypeOfShot" xml:space="preserve">
+    <value>Datensatztyp falsch</value>
+  </data>
+  <data name="ShotCounterNotTypeOfShotTooltip" xml:space="preserve">
+    <value>Datensätze, deren Objekt kein Schuss war, und daher verworfen wurden.</value>
+  </data>
+  <data name="ShotCounterWarmup" xml:space="preserve">
+    <value>Probeschüsse</value>
+  </data>
+  <data name="ShotCounterWarmupTooltip" xml:space="preserve">
+    <value>Schüsse, die als Probeschuss markiert und daher nicht gespeichert wurden.</value>
+  </data>
+  <data name="LoggingRawTitle" xml:space="preserve">
+    <value>Rohdaten</value>
+  </data>
+  <data name="ShotCounter" xml:space="preserve">
+    <value>Schüsse</value>
+  </data>
+  <data name="DiscType" xml:space="preserve">
+    <value>Scheibentyp</value>
+  </data>
+  <data name="Distance" xml:space="preserve">
+    <value>Teiler</value>
+  </data>
+  <data name="DateTime" xml:space="preserve">
+    <value>Datum / Zeit</value>
+  </data>
+  <data name="WeaponType" xml:space="preserve">
+    <value>Waffenart</value>
+  </data>
+  <data name="Shot" xml:space="preserve">
+    <value>Schuss</value>
+  </data>
+  <data name="Shooter" xml:space="preserve">
+    <value>Schütze</value>
+  </data>
+  <data name="ConfirmDeleteShotsMessage" xml:space="preserve">
+    <value>Wollen Sie die markierten Schüsse wirklich löschen?</value>
+  </data>
+  <data name="DeleteShotsTitle" xml:space="preserve">
+    <value>Schüsse löschen</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>Aktualisieren</value>
+  </data>
+  <!-- Bridge-exclusive -->
+  <data name="General" xml:space="preserve">
+    <value>ALLGEMEIN</value>
+  </data>
+  <data name="Overview" xml:space="preserve">
+    <value>Übersicht</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="IpAddress" xml:space="preserve">
+    <value>IPv4-Adresse</value>
+  </data>
+  <data name="NotAvailable" xml:space="preserve">
+    <value>nicht verfügbar</value>
+  </data>
+  <data name="Connection" xml:space="preserve">
+    <value>Verbindung</value>
+  </data>
+  <data name="Running" xml:space="preserve">
+    <value>Läuft</value>
+  </data>
+  <data name="Stopped" xml:space="preserve">
+    <value>Gestoppt</value>
+  </data>
+  <data name="ConnectedClients" xml:space="preserve">
+    <value>Verbundene Clients</value>
+  </data>
+  <data name="RelayedPackets" xml:space="preserve">
+    <value>Weitergeleitete Pakete</value>
+  </data>
+  <data name="UdpPort" xml:space="preserve">
+    <value>UDP-Port</value>
+  </data>
+  <data name="TcpPort" xml:space="preserve">
+    <value>TCP-Port</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Starten</value>
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value>Stoppen</value>
+  </data>
+</root>

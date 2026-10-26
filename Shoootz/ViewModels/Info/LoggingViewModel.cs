@@ -2,6 +2,7 @@ using System;
 using System.Collections.ObjectModel;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Shoootz.Common.ViewModels;
 using Shoootz.Models.Udp;
 using Shoootz.Services.Data;
 
@@ -9,8 +10,6 @@ namespace Shoootz.ViewModels.Info;
 
 internal partial class LoggingViewModel : ViewModelBase, IDisposable
 {
-    private const int MaxLogEntries = 300;
-
     private readonly IDataProcessor _dataProcessor;
 
     private readonly DispatcherTimer _refreshTimer;

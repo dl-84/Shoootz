@@ -1,9 +1,9 @@
 using System;
 using System.Globalization;
 using Avalonia.Data.Converters;
+using Shoootz.Common.Resources.Lang;
+using Shoootz.Common.Services.Localization;
 using Shoootz.Models.Shooter;
-using Shoootz.Resources.Lang;
-using Shoootz.Services.Localization;
 
 namespace Shoootz.Extensions;
 
@@ -19,12 +19,12 @@ internal class EnumConverter : IValueConverter
         };
     }
 
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         return ToDisplayText(value as GenderType?);
     }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         throw new NotSupportedException();
     }

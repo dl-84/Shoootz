@@ -1,7 +1,7 @@
 ﻿<UserControl x:Class="Shoootz.Views.Competition.ClubsView"
              x:Name="Root"
              xmlns="https://github.com/avaloniaui"
-             xmlns:extensions="clr-namespace:Shoootz.Views.Extensions"
+             xmlns:common="using:Shoootz.Common.Extensions"
              xmlns:models="using:Shoootz.Models.Club"
              xmlns:sab="using:Controls.SiteActionBar"
              xmlns:services="clr-namespace:Shoootz.Views.Services"
@@ -13,16 +13,16 @@
         <StackPanel Classes="page-content">
 
             <TextBlock Classes="h3"
-                       Text="{extensions:Localization Clubs}" />
+                       Text="{common:Localization Clubs}" />
 
             <sab:SiteActionBarControl AddRequested="OnAddIconPressed"
-                                      AddTooltip="{extensions:Localization Add}"
+                                      AddTooltip="{common:Localization Add}"
                                       DeleteRequested="OnDeleteIconPressed"
-                                      DeleteTooltip="{extensions:Localization Delete}"
+                                      DeleteTooltip="{common:Localization Delete}"
                                       EditRequested="OnEditIconPressed"
-                                      EditTooltip="{extensions:Localization Edit}"
+                                      EditTooltip="{common:Localization Edit}"
                                       IsActionEnabled="{Binding IsClubSelected}"
-                                      SearchPlaceholder="{extensions:Localization Search}"
+                                      SearchPlaceholder="{common:Localization Search}"
                                       SearchText="{Binding SearchText}" />
 
             <Border Classes="card"
@@ -34,12 +34,12 @@
                         <Grid ColumnDefinitions="*,100">
                             <TextBlock Grid.Column="0"
                                        Classes="table-header"
-                                       Text="{extensions:Localization Name,
-                                                                      ToUpper=True}" />
+                                       Text="{common:Localization Name,
+                                                                  ToUpper=True}" />
                             <TextBlock Grid.Column="1"
                                        Classes="table-header"
-                                       Text="{extensions:Localization Shooters,
-                                                                      ToUpper=True}"
+                                       Text="{common:Localization Shooters,
+                                                                  ToUpper=True}"
                                        TextAlignment="Center" />
                         </Grid>
                     </Border>
