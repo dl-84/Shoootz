@@ -56,7 +56,12 @@ jobs:
       - name: Free disk space
         working-directory: ${{ github.workspace }}
         run: |
+          sudo rm -rf /Applications/Xcode_15*.app 2>/dev/null || true
+          sudo rm -rf /Applications/Xcode_16*.app 2>/dev/null || true
           sudo rm -rf /Library/Developer/CoreSimulator/Profiles/Runtimes 2>/dev/null || true
+          sudo rm -rf ~/Library/Android/sdk 2>/dev/null || true
+          sudo rm -rf /usr/local/share/android-commandlinetools 2>/dev/null || true
+          sudo rm -rf ~/Library/Developer/Xcode/DerivedData 2>/dev/null || true
           brew cleanup --prune=all 2>/dev/null || true
           df -h /
 
