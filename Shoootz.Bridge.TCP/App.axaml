@@ -1,0 +1,18 @@
+﻿<Application x:Class="Shoootz.Bridge.TCP.App"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:common="using:Shoootz.Common.Views"
+             xmlns:icons="using:Controls.Icons"
+             xmlns:themes="using:Themes.Disag"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             RequestedThemeVariant="Light">
+
+    <Application.DataTemplates>
+        <common:ViewLocator />
+    </Application.DataTemplates>
+
+    <Application.Styles>
+        <FluentTheme />
+        <themes:Disag />
+        <icons:Icons />
+    </Application.Styles>
+</Application>

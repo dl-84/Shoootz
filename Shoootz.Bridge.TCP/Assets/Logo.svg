@@ -1,0 +1,36 @@
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <clipPath id="shape">
+      <rect width="512" height="512" rx="96"/>
+    </clipPath>
+    <linearGradient id="textGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#b6e05a"/>
+      <stop offset="100%" stop-color="#6e9c26"/>
+    </linearGradient>
+  </defs>
+  <g clip-path="url(#shape)">
+    <rect width="512" height="512" fill="#012a38"/>
+
+    <!-- outer reticle ring, full teal -->
+    <circle cx="256" cy="256" r="168" fill="none" stroke="#2aa5b2" stroke-width="16"/>
+
+    <!-- crosshair ticks, gapped near center -->
+    <line x1="256" y1="40"  x2="256" y2="150" stroke="#e9ecf1" stroke-width="10" stroke-linecap="round"/>
+    <line x1="256" y1="362" x2="256" y2="472" stroke="#e9ecf1" stroke-width="10" stroke-linecap="round"/>
+    <line x1="40"  y1="256" x2="150" y2="256" stroke="#e9ecf1" stroke-width="10" stroke-linecap="round"/>
+    <line x1="362" y1="256" x2="472" y2="256" stroke="#e9ecf1" stroke-width="10" stroke-linecap="round"/>
+
+    <!-- center label -->
+    <text
+      x="256"
+      y="256"
+      font-family="Arial, Helvetica, sans-serif"
+      font-size="88"
+      font-weight="700"
+      fill="url(#textGrad)"
+      text-anchor="middle"
+      dominant-baseline="central"
+      letter-spacing="2"
+    >TCP</text>
+  </g>
+</svg>

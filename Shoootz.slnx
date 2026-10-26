@@ -1,5 +1,6 @@
 <Solution>
   <Project Path="Shoootz/Shoootz.csproj" />
+  <Project Path="Shoootz.Bridge.TCP/Shoootz.Bridge.TCP.csproj" />
   <Project Path="Shoootz.Common/Shoootz.Common.csproj" />
   <Project Path="Shoootz.Store/Shoootz.Store.csproj" />
   <Project Path="Shoootz.Store.Adapter.PostgreSQL/Shoootz.Store.Adapter.PostgreSQL.csproj" />

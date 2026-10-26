@@ -1,0 +1,84 @@
+<Window x:Class="Shoootz.Bridge.TCP.Views.MainWindow"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:extensions="using:Shoootz.Common.Extensions"
+        xmlns:tb="using:Controls.TitleBar"
+        xmlns:types="clr-namespace:Shoootz.Bridge.TCP.Views.Types"
+        xmlns:vm="using:Shoootz.Bridge.TCP.ViewModels"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:DataType="vm:MainWindowViewModel"
+        Background="Transparent"
+        CanResize="False"
+        ExtendClientAreaTitleBarHeightHint="-1"
+        ExtendClientAreaToDecorationsHint="True"
+        Height="410"
+        Icon="/Assets/Logo.png"
+        Title="Shoootz TCP Bridge"
+        TransparencyLevelHint="Transparent"
+        Width="960"
+        WindowDecorations="BorderOnly"
+        WindowStartupLocation="CenterScreen">
+
+    <Border x:Name="RootBorder"
+            ClipToBounds="True"
+            CornerRadius="10">
+        <Panel>
+            <DockPanel>
+
+                <tb:TitleBarControl />
+
+                <Grid ColumnDefinitions="220,*">
+
+                    <Border Grid.Column="0"
+                            Background="{DynamicResource PrimaryBrush}">
+                        <ListBox x:Name="NavList"
+                                 Classes="nav"
+                                 ItemContainerTheme="{DynamicResource NavigationItem}"
+                                 Margin="{DynamicResource MarginTopMedium}"
+                                 SelectionChanged="OnNavSelectionChanged">
+
+                            <ListBoxItem Classes="navigation-header"
+                                         IsEnabled="False">
+                                <TextBlock Margin="20,16,20,4"
+                                           Text="{extensions:Localization General}" />
+                            </ListBoxItem>
+                            <ListBoxItem Tag="{x:Static types:NavigationPageType.General}">
+                                <TextBlock Text="{extensions:Localization Overview}" />
+                            </ListBoxItem>
+
+                            <ListBoxItem Classes="navigation-header"
+                                         IsEnabled="False">
+                                <TextBlock Margin="20,28,20,4"
+                                           Text="{extensions:Localization Settings,
+                                                                          ToUpper=True}" />
+                            </ListBoxItem>
+                            <ListBoxItem Tag="{x:Static types:NavigationPageType.App}">
+                                <TextBlock Text="{extensions:Localization App}" />
+                            </ListBoxItem>
+
+                            <ListBoxItem Classes="navigation-header"
+                                         IsEnabled="False">
+                                <TextBlock Margin="20,28,20,4"
+                                           Text="{extensions:Localization Info,
+                                                                          ToUpper=True}" />
+                            </ListBoxItem>
+                            <ListBoxItem Tag="{x:Static types:NavigationPageType.About}">
+                                <TextBlock Text="{extensions:Localization About}" />
+                            </ListBoxItem>
+                            <ListBoxItem Tag="{x:Static types:NavigationPageType.Licenses}">
+                                <TextBlock Text="{extensions:Localization Licenses}" />
+                            </ListBoxItem>
+
+                        </ListBox>
+                    </Border>
+
+                    <ContentControl Grid.Column="1"
+                                    Background="{DynamicResource AppBackgroundAltBrush}"
+                                    Content="{Binding CurrentPage}" />
+
+                </Grid>
+            </DockPanel>
+            <Border Background="{DynamicResource OverlayBrush}"
+                    IsVisible="{Binding IsDialogOpen}" />
+        </Panel>
+    </Border>
+</Window>

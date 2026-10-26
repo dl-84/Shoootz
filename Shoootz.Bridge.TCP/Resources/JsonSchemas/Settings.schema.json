@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "PortNumber": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 65535
+    }
+  },
+  "type": "object",
+  "properties": {
+    "AutoConnect": {
+      "type": "boolean"
+    },
+    "CurrentLanguageCode": {
+      "enum": ["de", "en"]
+    },
+    "TcpPort": {
+      "$ref": "#/definitions/PortNumber"
+    },
+    "UdpPort": {
+      "$ref": "#/definitions/PortNumber"
+    }
+  },
+  "required": ["AutoConnect", "CurrentLanguageCode", "TcpPort", "UdpPort"],
+  "additionalProperties": false
+}

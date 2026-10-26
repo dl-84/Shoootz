@@ -1,0 +1,21 @@
+<UserControl x:Class="Shoootz.Bridge.TCP.Views.Info.AboutView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:controls="using:Controls.LicenseTable"
+             xmlns:extensions="using:Shoootz.Common.Extensions"
+             xmlns:vm="using:Shoootz.Bridge.TCP.ViewModels.Info"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:DataType="vm:AboutViewModel">
+
+    <StackPanel Classes="page-content">
+
+        <TextBlock Classes="h3">
+            <Run Text="{extensions:Localization About}" />
+            <Run Text=" Shoootz TCP Bridge" />
+        </TextBlock>
+
+        <controls:LicenseTableControl Headers="{Binding ColumnHeaders}"
+                                      Items="{Binding Packages}"
+                                      LicenseContentRequested="OnLicenseContentRequested" />
+
+    </StackPanel>
+</UserControl>

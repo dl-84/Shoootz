@@ -1,0 +1,21 @@
+<UserControl x:Class="Shoootz.Bridge.TCP.Views.Info.LicensesView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:controls="using:Controls.LicenseTable"
+             xmlns:extensions="using:Shoootz.Common.Extensions"
+             xmlns:vm="using:Shoootz.Bridge.TCP.ViewModels.Info"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:DataType="vm:LicensesViewModel">
+
+    <ScrollViewer>
+        <StackPanel Classes="page-content">
+
+            <TextBlock Classes="h3"
+                       Text="{extensions:Localization Licenses}" />
+
+            <controls:LicenseTableControl Headers="{Binding ColumnHeaders}"
+                                          Items="{Binding Packages}" />
+
+        </StackPanel>
+    </ScrollViewer>
+
+</UserControl>

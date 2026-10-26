@@ -1,0 +1,116 @@
+<UserControl x:Class="Shoootz.Bridge.TCP.Views.Settings.AppView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:cards="using:Shoootz.Common.Views.Settings"
+             xmlns:extensions="using:Shoootz.Common.Extensions"
+             xmlns:local="using:Shoootz.Bridge.TCP.Views.Settings"
+             xmlns:vm="using:Shoootz.Bridge.TCP.ViewModels.Settings"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:DataType="vm:AppViewModel">
+
+    <UserControl.Styles>
+        <Style Selector="TextBox:pointerover PathIcon.clear-icon">
+            <Setter Property="Opacity" Value="1" />
+        </Style>
+    </UserControl.Styles>
+
+    <StackPanel Classes="page-content">
+
+        <TextBlock Classes="h3"
+                   Text="{extensions:Localization App}" />
+
+        <StackPanel HorizontalAlignment="Right"
+                    Margin="0,0,10,0"
+                    Orientation="Horizontal"
+                    Spacing="{DynamicResource SpacingMedium}">
+            <PathIcon Classes="icon-action"
+                      Data="{DynamicResource SaveIcon}"
+                      PointerPressed="OnCommandIconPressed"
+                      Tag="{Binding SaveCommand}"
+                      ToolTip.HorizontalOffset="0"
+                      ToolTip.Placement="TopEdgeAlignedRight"
+                      ToolTip.Tip="{extensions:Localization Save}"
+                      ToolTip.VerticalOffset="-2"
+                      VerticalAlignment="Center"
+                      IsEnabled="{Binding IsSaveEnabled}" />
+        </StackPanel>
+
+        <cards:GeneralSettingsCard DataContext="{Binding GeneralSettings}" />
+
+        <Border Classes="card">
+            <StackPanel Spacing="{DynamicResource SpacingMedium}">
+
+                <TextBlock Classes="h4"
+                           Text="{extensions:Localization Connection}" />
+
+                <Grid ColumnDefinitions="Auto,Auto,*"
+                      ColumnSpacing="{DynamicResource SpacingSmall}">
+                    <StackPanel Grid.Column="0"
+                                Spacing="4">
+                        <TextBlock Classes="label"
+                                   Text="{extensions:Localization UdpPort}" />
+                        <TextBox Classes.error="{Binding !Bridge.IsUdpPortValid}"
+                                 MaxLength="5"
+                                 Text="{Binding Bridge.UdpPort}"
+                                 Width="170"
+                                 extensions:InputFilter.AllowedPattern="[0-9]"
+                                 IsEnabled="{Binding !Bridge.IsRunning}">
+                            <TextBox.InnerRightContent>
+                                <PathIcon Classes="icon-action icon-danger clear-icon"
+                                          Data="{DynamicResource CloseIcon}"
+                                          Height="12"
+                                          Margin="0,0,10,0"
+                                          Opacity="0"
+                                          PointerPressed="OnClearUdpPortIconPressed"
+                                          Width="12"
+                                          IsVisible="{Binding Bridge.UdpPort, Converter={x:Static local:AppView.IsNotEmptyConverter}}" />
+                            </TextBox.InnerRightContent>
+                        </TextBox>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1"
+                                Spacing="4">
+                        <TextBlock Classes="label"
+                                   Text="{extensions:Localization TcpPort}" />
+                        <TextBox Classes.error="{Binding !Bridge.IsTcpPortValid}"
+                                 MaxLength="5"
+                                 Text="{Binding Bridge.TcpPort}"
+                                 Width="170"
+                                 extensions:InputFilter.AllowedPattern="[0-9]"
+                                 IsEnabled="{Binding !Bridge.IsRunning}">
+                            <TextBox.InnerRightContent>
+                                <PathIcon Classes="icon-action icon-danger clear-icon"
+                                          Data="{DynamicResource CloseIcon}"
+                                          Height="12"
+                                          Margin="0,0,10,0"
+                                          Opacity="0"
+                                          PointerPressed="OnClearTcpPortIconPressed"
+                                          Width="12"
+                                          IsVisible="{Binding Bridge.TcpPort, Converter={x:Static local:AppView.IsNotEmptyConverter}}" />
+                            </TextBox.InnerRightContent>
+                        </TextBox>
+                    </StackPanel>
+
+                    <Grid Grid.Column="2"
+                          Margin="24,0,0,0"
+                          RowDefinitions="Auto,*"
+                          RowSpacing="{DynamicResource SpacingXSmall}">
+                        <TextBlock Grid.Row="0"
+                                   Classes="label"
+                                   IsHitTestVisible="False"
+                                   Opacity="0"
+                                   Text="placeholder" />
+                        <CheckBox Grid.Row="1"
+                                  Content="{extensions:Localization AutoConnect}"
+                                  FontSize="16"
+                                  HorizontalAlignment="Right"
+                                  IsChecked="{Binding AutoConnect}"
+                                  VerticalAlignment="Center" />
+                    </Grid>
+                </Grid>
+
+            </StackPanel>
+        </Border>
+
+    </StackPanel>
+
+</UserControl>
