@@ -23,5 +23,8 @@ jobs:
       - name: Check C# formatting
         run: dotnet csharpier check .
 
-      - name: Check XAML formatting
+      - name: Check XAML formatting (Shoootz)
         run: dotnet xstyler --recursive --directory Shoootz --passive
+
+      - name: Check XAML formatting (Shoootz.Bridge.TCP)
+        run: dotnet xstyler --recursive --directory Shoootz.Bridge.TCP --passive
