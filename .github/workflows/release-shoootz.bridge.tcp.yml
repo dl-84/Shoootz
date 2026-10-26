@@ -54,6 +54,7 @@ jobs:
             suffix: macos-arm64
     steps:
       - name: Free disk space
+        working-directory: ${{ github.workspace }}
         run: |
           sudo rm -rf /Library/Developer/CoreSimulator/Profiles/Runtimes 2>/dev/null || true
           brew cleanup --prune=all 2>/dev/null || true
