@@ -28,7 +28,7 @@
     </Compile>
   </ItemGroup>
 
-  <Target Name="GenerateLicenses" BeforeTargets="Build">
+  <Target Name="GenerateLicenses" BeforeTargets="CoreCompile">
     <Exec
       Command="dotnet dotnet-project-licenses --input . --json --output-directory Resources/Licenses"
       WorkingDirectory="$(MSBuildProjectDirectory)"
