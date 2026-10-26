@@ -7,6 +7,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Options;
 using Result;
 using Result.Types;
+using Shoootz.Common.Extensions;
 using Shoootz.Common.Resources.Lang;
 using Shoootz.Common.Services.App;
 using Shoootz.Common.Services.Language;
@@ -125,7 +126,7 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
 
     public bool IsInitializeDbEnabled => DbStatus != DbStatus.UpToDate && IsDbConnected;
 
-    public bool IsPortValid => PortValidator.IsValid(Port);
+    public bool IsPortValid => Port.IsValidPort();
 
     public bool IsSaveEnabled => CanSave();
 
@@ -164,7 +165,7 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
     }
 
     private bool CanSave() =>
-        PortValidator.IsValid(Port)
+        Port.IsValidPort()
         && (
             AutoConnect != _settings.UdpConnection.AutoConnect
             || ConnectionString != _settings.DatabaseConnection.ConnectionString

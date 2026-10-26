@@ -8,7 +8,7 @@ using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Extensions.Options;
 using Shoootz.Bridge.TCP.Models.Settings;
-using Shoootz.Common.Services.Settings;
+using Shoootz.Common.Extensions;
 
 namespace Shoootz.Bridge.TCP.Services.Bridge;
 
@@ -32,9 +32,9 @@ internal partial class BridgeService : ObservableObject, IBridgeService
 
     public bool IsStartEnabled => IsTcpPortValid && IsUdpPortValid;
 
-    public bool IsTcpPortValid => PortValidator.IsValid(TcpPort);
+    public bool IsTcpPortValid => TcpPort.IsValidPort();
 
-    public bool IsUdpPortValid => PortValidator.IsValid(UdpPort);
+    public bool IsUdpPortValid => UdpPort.IsValidPort();
 
     [ObservableProperty]
     public partial string? LastError { get; set; }
