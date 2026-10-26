@@ -11,8 +11,18 @@ env:
 jobs:
   Build_Windows:
     runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: Shoootz
     steps:
       - uses: actions/checkout@v6
+        with:
+          path: Shoootz
+
+      - uses: actions/checkout@v6
+        with:
+          repository: dl-84/Library
+          path: Library
 
       - uses: actions/setup-dotnet@v5
         with:
@@ -28,10 +38,13 @@ jobs:
       - uses: actions/upload-artifact@v7
         with:
           name: windows
-          path: ./out/Shoootz.exe
+          path: ./Shoootz/out/Shoootz.exe
 
   Build_Mac:
     runs-on: macos-latest
+    defaults:
+      run:
+        working-directory: Shoootz
     strategy:
       matrix:
         include:
@@ -47,6 +60,13 @@ jobs:
           df -h /
 
       - uses: actions/checkout@v6
+        with:
+          path: Shoootz
+
+      - uses: actions/checkout@v6
+        with:
+          repository: dl-84/Library
+          path: Library
 
       - uses: actions/setup-dotnet@v5
         with:
@@ -107,12 +127,22 @@ jobs:
       - uses: actions/upload-artifact@v7
         with:
           name: ${{ matrix.suffix }}
-          path: ./out/Shoootz-${{ matrix.suffix }}.dmg
+          path: ./Shoootz/out/Shoootz-${{ matrix.suffix }}.dmg
 
   Build_Linux:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Shoootz
     steps:
       - uses: actions/checkout@v6
+        with:
+          path: Shoootz
+
+      - uses: actions/checkout@v6
+        with:
+          repository: dl-84/Library
+          path: Library
 
       - uses: actions/setup-dotnet@v5
         with:
@@ -160,7 +190,7 @@ jobs:
       - uses: actions/upload-artifact@v7
         with:
           name: linux
-          path: ./out/Shoootz.AppImage
+          path: ./Shoootz/out/Shoootz.AppImage
 
   Create_Release:
     needs: [Build_Windows, Build_Mac, Build_Linux]
