@@ -41,14 +41,15 @@ public class App : Application
     public override void OnFrameworkInitializationCompleted()
     {
         IServiceProvider serviceProvider = InitServiceProvider();
-        InitLocalization(serviceProvider);
+        SettingsModel? settingsModel = _configurationRoot.Get<SettingsModel>();
+        InitLocalization(serviceProvider, settingsModel);
         MainWindowViewModel mainWindowViewModel = serviceProvider.GetRequiredService<MainWindowViewModel>();
 
         if (_errors.Count > 0)
         {
             mainWindowViewModel.RedirectToSettingsError(_errors, _rawSettings);
         }
-        else if (_configurationRoot.Get<SettingsModel>() is { AutoConnect: true })
+        else if (settingsModel is { AutoConnect: true })
         {
             serviceProvider.GetRequiredService<IBridgeService>().Start();
         }
@@ -83,11 +84,11 @@ public class App : Application
         services.AddTransient<LicensesViewModel>();
     }
 
-    private void InitLocalization(IServiceProvider serviceProvider)
+    private static void InitLocalization(IServiceProvider serviceProvider, SettingsModel? settingsModel)
     {
         ILocalizationService localizationService = serviceProvider.GetRequiredService<ILocalizationService>();
         LocalizationService.Register(localizationService);
-        localizationService.SetLanguage(_configurationRoot.Get<SettingsModel>()?.CurrentLanguageCode ?? "de");
+        localizationService.SetLanguage(settingsModel?.CurrentLanguageCode ?? "de");
     }
 
     private ServiceProvider InitServiceProvider()

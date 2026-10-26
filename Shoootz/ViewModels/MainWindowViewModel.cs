@@ -167,13 +167,11 @@ internal partial class MainWindowViewModel : ViewModelBase, IDialogHost
             _settingsWriter,
             typeof(MainWindowViewModel).Assembly,
             "Shoootz.Resources.JsonSchemas.Settings.schema.json"
-        );
-
-        (CurrentPage as Common.ViewModels.Error.SettingsErrorViewModel<SettingsModel>)?.ErrorMessages = settingsErrors
-            .Select(settingsError => settingsError.Message)
-            .ToList();
-
-        (CurrentPage as Common.ViewModels.Error.SettingsErrorViewModel<SettingsModel>)?.EditorContent = settings;
+        )
+        {
+            EditorContent = settings,
+            ErrorMessages = settingsErrors.Select(settingsError => settingsError.Message).ToList(),
+        };
     }
 
     private ViewModelBase? CreateView(NavigationPageType pageType)

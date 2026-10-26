@@ -125,7 +125,7 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
 
     public bool IsInitializeDbEnabled => DbStatus != DbStatus.UpToDate && IsDbConnected;
 
-    public bool IsPortValid => int.TryParse(Port, out int port) && port is >= 1 and <= 65535;
+    public bool IsPortValid => PortValidator.IsValid(Port);
 
     public bool IsSaveEnabled => CanSave();
 
@@ -164,8 +164,7 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
     }
 
     private bool CanSave() =>
-        int.TryParse(Port, out int port)
-        && port is >= 1 and <= 65535
+        PortValidator.IsValid(Port)
         && (
             AutoConnect != _settings.UdpConnection.AutoConnect
             || ConnectionString != _settings.DatabaseConnection.ConnectionString
