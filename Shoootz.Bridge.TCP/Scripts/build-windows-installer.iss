@@ -17,14 +17,14 @@ AppId={{A3D2E6F1-4C9B-4F7E-8A3D-2E6F1B9C4D7A}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 AppPublisher={#MyAppPublisher}
-DefaultDirName={autopf}\{#MyAppName}
+DefaultDirName={autopf}\Shoootz
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
 OutputDir=.
-OutputBaseFilename=Shoootz.Bridge.TCP-Setup
+OutputBaseFilename=Shoootz.Bridge.TCP-Windows-Setup
 SetupIconFile=..\Assets\Logo.ico
 UninstallDisplayIcon={app}\{#MyAppExeName}
 

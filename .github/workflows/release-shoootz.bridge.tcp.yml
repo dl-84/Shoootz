@@ -43,13 +43,8 @@ jobs:
 
       - uses: actions/upload-artifact@v7
         with:
-          name: windows
-          path: ./Shoootz/out/Shoootz.Bridge.TCP.exe
-
-      - uses: actions/upload-artifact@v7
-        with:
           name: windows-installer
-          path: ./Shoootz/Shoootz.Bridge.TCP/Scripts/Shoootz.Bridge.TCP-Setup.exe
+          path: ./Shoootz/Shoootz.Bridge.TCP/Scripts/Shoootz.Bridge.TCP-Windows-Setup.exe
 
   Build_Mac:
     runs-on: macos-latest
@@ -224,7 +219,6 @@ jobs:
 
       - name: Zip artifacts
         run: |
-          zip -j Shoootz.Bridge.TCP-windows.zip      ./artifacts/windows/Shoootz.Bridge.TCP.exe
           zip -j Shoootz.Bridge.TCP-macos-x64.zip    ./artifacts/macos-x64/Shoootz.Bridge.TCP-macos-x64.dmg
           zip -j Shoootz.Bridge.TCP-macos-arm64.zip  ./artifacts/macos-arm64/Shoootz.Bridge.TCP-macos-arm64.dmg
           zip -j Shoootz.Bridge.TCP-linux.zip         ./artifacts/linux/Shoootz.Bridge.TCP.AppImage
@@ -244,8 +238,7 @@ jobs:
           gh release create ${{ github.ref_name }} \
             --title "Shoootz.Bridge.TCP $VERSION" \
             --generate-notes \
-            "./Shoootz.Bridge.TCP-windows.zip" \
-            "./artifacts/windows-installer/Shoootz.Bridge.TCP-Setup.exe" \
+            "./artifacts/windows-installer/Shoootz.Bridge.TCP-Windows-Setup.exe" \
             "./Shoootz.Bridge.TCP-macos-x64.zip" \
             "./Shoootz.Bridge.TCP-macos-arm64.zip" \
             "./Shoootz.Bridge.TCP-linux.zip"
