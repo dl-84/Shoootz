@@ -9,6 +9,7 @@ using Avalonia.LogicalTree;
 using Controls.ContentDialog;
 using Controls.InfoDialog;
 using Controls.InfoDialog.Enum;
+using Controls.TitleBar.Services;
 using Shoootz.Common.Resources.Lang;
 using Shoootz.Common.Services.Dialog;
 using Shoootz.Common.Services.Localization;
@@ -29,6 +30,8 @@ public partial class MainWindow : Window
         {
             RootBorder.CornerRadius = new CornerRadius(0);
         }
+
+        NavBorder.Padding = new Thickness(0, PlatformInfoService.IsMac ? 36 : 0, 0, 0);
 
         DataContextChanged += OnDataContextChanged;
     }

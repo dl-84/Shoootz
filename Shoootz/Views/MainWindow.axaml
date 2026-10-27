@@ -1,6 +1,7 @@
 ﻿<Window x:Class="Shoootz.Views.MainWindow"
         xmlns="https://github.com/avaloniaui"
         xmlns:common="using:Shoootz.Common.Extensions"
+        xmlns:controls="clr-namespace:Controls.TitleBar.Controls;assembly=TitleBar"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:tb="using:Controls.TitleBar"
@@ -27,105 +28,111 @@
             ClipToBounds="True"
             CornerRadius="10">
         <Panel>
-            <DockPanel>
+            <Grid ColumnDefinitions="220,*"
+                  RowDefinitions="36,*">
 
-                <tb:TitleBarControl />
+                <Border x:Name="NavBorder"
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Grid.RowSpan="2"
+                        Background="{DynamicResource PrimaryBrush}">
+                    <DockPanel>
+                        <Grid ColumnDefinitions="*,Auto,*,Auto,*"
+                              DockPanel.Dock="Bottom"
+                              Margin="0,16,0,20">
+                            <PathIcon Grid.Column="1"
+                                      Classes.status-error="{Binding !IsDbConnected}"
+                                      Classes.status-success="{Binding IsDbConnected}"
+                                      Data="{DynamicResource DatabaseIcon}"
+                                      Height="24"
+                                      ToolTip.Tip="{Binding DbBadgeText}"
+                                      Width="24" />
+                            <PathIcon Grid.Column="3"
+                                      Classes.status-error="{Binding !IsUdpConnected}"
+                                      Classes.status-success="{Binding IsUdpConnected}"
+                                      Data="{DynamicResource NetworkWiredIcon}"
+                                      Height="24"
+                                      ToolTip.Tip="{Binding UdpBadgeText}"
+                                      Width="24" />
+                        </Grid>
+                        <ListBox x:Name="NavList"
+                                 Classes="nav"
+                                 ItemContainerTheme="{DynamicResource NavigationItem}"
+                                 Margin="{DynamicResource MarginTopMedium}"
+                                 SelectionChanged="OnNavSelectionChanged"
+                                 IsEnabled="{Binding IsNavbarEnabled}">
 
-                <Grid ColumnDefinitions="220,*">
+                            <ListBoxItem Classes="navigation-header"
+                                         IsEnabled="False">
+                                <TextBlock Margin="20,16,20,4"
+                                           Text="{common:Localization Competition,
+                                                                      ToUpper=True}" />
+                            </ListBoxItem>
+                            <ListBoxItem Tag="{x:Static types:NavigationPageType.Evaluate}">
+                                <TextBlock Text="{common:Localization Evaluate}" />
+                            </ListBoxItem>
 
-                    <Border Grid.Column="0"
-                            Background="{DynamicResource PrimaryBrush}">
-                        <DockPanel>
-                            <Grid ColumnDefinitions="*,Auto,*,Auto,*"
-                                  DockPanel.Dock="Bottom"
-                                  Margin="0,16,0,20">
-                                <PathIcon Grid.Column="1"
-                                          Classes.status-error="{Binding !IsDbConnected}"
-                                          Classes.status-success="{Binding IsDbConnected}"
-                                          Data="{DynamicResource DatabaseIcon}"
-                                          Height="24"
-                                          ToolTip.Tip="{Binding DbBadgeText}"
-                                          Width="24" />
-                                <PathIcon Grid.Column="3"
-                                          Classes.status-error="{Binding !IsUdpConnected}"
-                                          Classes.status-success="{Binding IsUdpConnected}"
-                                          Data="{DynamicResource NetworkWiredIcon}"
-                                          Height="24"
-                                          ToolTip.Tip="{Binding UdpBadgeText}"
-                                          Width="24" />
-                            </Grid>
-                            <ListBox x:Name="NavList"
-                                     Classes="nav"
-                                     ItemContainerTheme="{DynamicResource NavigationItem}"
-                                     Margin="{DynamicResource MarginTopMedium}"
-                                     SelectionChanged="OnNavSelectionChanged"
-                                     IsEnabled="{Binding IsNavbarEnabled}">
+                            <ListBoxItem Classes="navigation-header"
+                                         IsEnabled="False">
+                                <TextBlock Margin="20,28,20,4"
+                                           Text="{common:Localization Data,
+                                                                      ToUpper=True}" />
+                            </ListBoxItem>
+                            <ListBoxItem Tag="{x:Static types:NavigationPageType.Shots}">
+                                <TextBlock Text="{common:Localization Shots}" />
+                            </ListBoxItem>
+                            <ListBoxItem Tag="{x:Static types:NavigationPageType.Shooters}">
+                                <TextBlock Text="{common:Localization Shooters}" />
+                            </ListBoxItem>
+                            <ListBoxItem Tag="{x:Static types:NavigationPageType.Clubs}">
+                                <TextBlock Text="{common:Localization Clubs}" />
+                            </ListBoxItem>
 
-                                <ListBoxItem Classes="navigation-header"
-                                             IsEnabled="False">
-                                    <TextBlock Margin="20,16,20,4"
-                                               Text="{common:Localization Competition,
-                                                                          ToUpper=True}" />
-                                </ListBoxItem>
-                                <ListBoxItem Tag="{x:Static types:NavigationPageType.Evaluate}">
-                                    <TextBlock Text="{common:Localization Evaluate}" />
-                                </ListBoxItem>
+                            <ListBoxItem Classes="navigation-header"
+                                         IsEnabled="False">
+                                <TextBlock Margin="20,28,20,4"
+                                           Text="{common:Localization Settings,
+                                                                      ToUpper=True}" />
+                            </ListBoxItem>
+                            <ListBoxItem Tag="{x:Static types:NavigationPageType.App}">
+                                <TextBlock Text="{common:Localization App}" />
+                            </ListBoxItem>
+                            <ListBoxItem Tag="{x:Static types:NavigationPageType.Groups}">
+                                <TextBlock Text="{common:Localization Groups}" />
+                            </ListBoxItem>
 
-                                <ListBoxItem Classes="navigation-header"
-                                             IsEnabled="False">
-                                    <TextBlock Margin="20,28,20,4"
-                                               Text="{common:Localization Data,
-                                                                          ToUpper=True}" />
-                                </ListBoxItem>
-                                <ListBoxItem Tag="{x:Static types:NavigationPageType.Shots}">
-                                    <TextBlock Text="{common:Localization Shots}" />
-                                </ListBoxItem>
-                                <ListBoxItem Tag="{x:Static types:NavigationPageType.Shooters}">
-                                    <TextBlock Text="{common:Localization Shooters}" />
-                                </ListBoxItem>
-                                <ListBoxItem Tag="{x:Static types:NavigationPageType.Clubs}">
-                                    <TextBlock Text="{common:Localization Clubs}" />
-                                </ListBoxItem>
+                            <ListBoxItem Classes="navigation-header"
+                                         IsEnabled="False">
+                                <TextBlock Margin="20,28,20,4"
+                                           Text="{common:Localization Info,
+                                                                      ToUpper=True}" />
+                            </ListBoxItem>
+                            <ListBoxItem Tag="{x:Static types:NavigationPageType.About}">
+                                <TextBlock Text="{common:Localization About}" />
+                            </ListBoxItem>
+                            <ListBoxItem Tag="{x:Static types:NavigationPageType.Licenses}">
+                                <TextBlock Text="{common:Localization Licenses}" />
+                            </ListBoxItem>
+                            <ListBoxItem Tag="{x:Static types:NavigationPageType.Logging}">
+                                <TextBlock Text="{common:Localization Logging}" />
+                            </ListBoxItem>
 
-                                <ListBoxItem Classes="navigation-header"
-                                             IsEnabled="False">
-                                    <TextBlock Margin="20,28,20,4"
-                                               Text="{common:Localization Settings,
-                                                                          ToUpper=True}" />
-                                </ListBoxItem>
-                                <ListBoxItem Tag="{x:Static types:NavigationPageType.App}">
-                                    <TextBlock Text="{common:Localization App}" />
-                                </ListBoxItem>
-                                <ListBoxItem Tag="{x:Static types:NavigationPageType.Groups}">
-                                    <TextBlock Text="{common:Localization Groups}" />
-                                </ListBoxItem>
+                        </ListBox>
+                    </DockPanel>
+                </Border>
 
-                                <ListBoxItem Classes="navigation-header"
-                                             IsEnabled="False">
-                                    <TextBlock Margin="20,28,20,4"
-                                               Text="{common:Localization Info,
-                                                                          ToUpper=True}" />
-                                </ListBoxItem>
-                                <ListBoxItem Tag="{x:Static types:NavigationPageType.About}">
-                                    <TextBlock Text="{common:Localization About}" />
-                                </ListBoxItem>
-                                <ListBoxItem Tag="{x:Static types:NavigationPageType.Licenses}">
-                                    <TextBlock Text="{common:Localization Licenses}" />
-                                </ListBoxItem>
-                                <ListBoxItem Tag="{x:Static types:NavigationPageType.Logging}">
-                                    <TextBlock Text="{common:Localization Logging}" />
-                                </ListBoxItem>
+                <controls:MacTrafficLightsControl Grid.Row="0"
+                                                  Grid.Column="0" />
 
-                            </ListBox>
-                        </DockPanel>
-                    </Border>
+                <tb:TitleBarControl Grid.Row="0"
+                                    Grid.Column="1" />
 
-                    <ContentControl Grid.Column="1"
-                                    Background="{DynamicResource AppBackgroundAltBrush}"
-                                    Content="{Binding CurrentPage}" />
+                <ContentControl Grid.Row="1"
+                                Grid.Column="1"
+                                Background="{DynamicResource AppBackgroundAltBrush}"
+                                Content="{Binding CurrentPage}" />
 
-                </Grid>
-            </DockPanel>
+            </Grid>
             <Border Background="{DynamicResource OverlayBrush}"
                     IsVisible="{Binding IsDialogOpen}" />
         </Panel>
