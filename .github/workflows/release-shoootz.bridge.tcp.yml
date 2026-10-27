@@ -239,6 +239,7 @@ jobs:
             --title "Shoootz.Bridge.TCP $VERSION" \
             --generate-notes \
             "./Shoootz.Bridge.TCP-windows.zip" \
+            "./artifacts/windows-installer/Shoootz.Bridge.TCP-Setup.exe" \
             "./Shoootz.Bridge.TCP-macos-x64.zip" \
             "./Shoootz.Bridge.TCP-macos-arm64.zip" \
             "./Shoootz.Bridge.TCP-linux.zip"
