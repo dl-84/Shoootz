@@ -43,13 +43,8 @@ jobs:
 
       - uses: actions/upload-artifact@v7
         with:
-          name: windows
-          path: ./Shoootz/out/Shoootz.exe
-
-      - uses: actions/upload-artifact@v7
-        with:
           name: windows-installer
-          path: ./Shoootz/Shoootz/Scripts/Shoootz-Setup.exe
+          path: ./Shoootz/Shoootz/Scripts/Shoootz-Windows-Setup.exe
 
   Build_Mac:
     runs-on: macos-latest
@@ -224,7 +219,6 @@ jobs:
 
       - name: Zip artifacts
         run: |
-          zip -j Shoootz-windows.zip      ./artifacts/windows/Shoootz.exe
           zip -j Shoootz-macos-x64.zip   ./artifacts/macos-x64/Shoootz-macos-x64.dmg
           zip -j Shoootz-macos-arm64.zip ./artifacts/macos-arm64/Shoootz-macos-arm64.dmg
           zip -j Shoootz-linux.zip        ./artifacts/linux/Shoootz.AppImage
@@ -244,8 +238,7 @@ jobs:
           gh release create ${{ github.ref_name }} \
             --title "Shoootz $VERSION" \
             --generate-notes \
-            "./Shoootz-windows.zip" \
-            "./artifacts/windows-installer/Shoootz-Setup.exe" \
+            "./artifacts/windows-installer/Shoootz-Windows-Setup.exe" \
             "./Shoootz-macos-x64.zip" \
             "./Shoootz-macos-arm64.zip" \
             "./Shoootz-linux.zip"

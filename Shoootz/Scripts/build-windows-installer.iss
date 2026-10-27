@@ -17,6 +17,8 @@ AppId={{1F8C9B3E-6B7C-4E6A-9F2F-6F8B3A6E7B5C}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 AppPublisher={#MyAppPublisher}
+ArchitecturesAllowed=x64compatible
+ArchitecturesInstallIn64BitMode=x64compatible
 DefaultDirName={autopf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
@@ -24,7 +26,7 @@ Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
 OutputDir=.
-OutputBaseFilename={#MyAppName}-Setup
+OutputBaseFilename={#MyAppName}-Windows-Setup
 SetupIconFile=..\Assets\Logo\Logo.ico
 UninstallDisplayIcon={app}\{#MyAppExeName}
 
