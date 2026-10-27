@@ -35,10 +35,21 @@ jobs:
         shell: pwsh
         run: dotnet publish Shoootz.Bridge.TCP/Shoootz.Bridge.TCP.csproj -r win-x64 -c Release -o ./out
 
+      - name: Build installer
+        shell: pwsh
+        run: |
+          $version = "${{ github.ref_name }}" -replace '^bridge-v?', ''
+          iscc "Shoootz.Bridge.TCP\Scripts\build-windows-installer.iss" /DMyAppVersion=$version /DSourceDir="$PWD\out"
+
       - uses: actions/upload-artifact@v7
         with:
           name: windows
           path: ./Shoootz/out/Shoootz.Bridge.TCP.exe
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: windows-installer
+          path: ./Shoootz/Shoootz.Bridge.TCP/Scripts/Shoootz.Bridge.TCP-Setup.exe
 
   Build_Mac:
     runs-on: macos-latest

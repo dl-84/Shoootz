@@ -35,10 +35,21 @@ jobs:
         shell: pwsh
         run: dotnet publish Shoootz/Shoootz.csproj -r win-x64 -c Release -o ./out
 
+      - name: Build installer
+        shell: pwsh
+        run: |
+          $version = "${{ github.ref_name }}" -replace '^shoootz-v?', ''
+          iscc "Shoootz\Scripts\build-windows-installer.iss" /DMyAppVersion=$version /DSourceDir="$PWD\out"
+
       - uses: actions/upload-artifact@v7
         with:
           name: windows
           path: ./Shoootz/out/Shoootz.exe
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: windows-installer
+          path: ./Shoootz/Shoootz/Scripts/Shoootz-Setup.exe
 
   Build_Mac:
     runs-on: macos-latest
@@ -228,6 +239,7 @@ jobs:
             --title "Shoootz $VERSION" \
             --generate-notes \
             "./Shoootz-windows.zip" \
+            "./artifacts/windows-installer/Shoootz-Setup.exe" \
             "./Shoootz-macos-x64.zip" \
             "./Shoootz-macos-arm64.zip" \
             "./Shoootz-linux.zip"
