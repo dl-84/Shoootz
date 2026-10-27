@@ -8,6 +8,9 @@
              x:DataType="vm:AppViewModel">
 
     <UserControl.Styles>
+        <Style Selector="TextBox PathIcon.clear-icon">
+            <Setter Property="Opacity" Value="0" />
+        </Style>
         <Style Selector="TextBox:pointerover PathIcon.clear-icon">
             <Setter Property="Opacity" Value="1" />
         </Style>
@@ -59,7 +62,6 @@
                                           Data="{StaticResource CloseIcon}"
                                           Height="12"
                                           Margin="0,0,10,0"
-                                          Opacity="0"
                                           PointerPressed="OnClearUdpPortIconPressed"
                                           Width="12"
                                           IsVisible="{Binding Bridge.UdpPort, Converter={x:Static local:AppView.IsNotEmptyConverter}}" />
@@ -82,7 +84,6 @@
                                           Data="{StaticResource CloseIcon}"
                                           Height="12"
                                           Margin="0,0,10,0"
-                                          Opacity="0"
                                           PointerPressed="OnClearTcpPortIconPressed"
                                           Width="12"
                                           IsVisible="{Binding Bridge.TcpPort, Converter={x:Static local:AppView.IsNotEmptyConverter}}" />
