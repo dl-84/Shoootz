@@ -10,7 +10,7 @@
 
 #define MyAppName "Shoootz TCP Bridge"
 #define MyAppExeName "Shoootz.Bridge.TCP.exe"
-#define MyAppPublisher "DISAG"
+#define MyAppPublisher "Daniel Lindner"
 
 [Setup]
 AppId={{A3D2E6F1-4C9B-4F7E-8A3D-2E6F1B9C4D7A}

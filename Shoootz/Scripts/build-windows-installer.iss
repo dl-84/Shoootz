@@ -10,7 +10,7 @@
 
 #define MyAppName "Shoootz"
 #define MyAppExeName "Shoootz.exe"
-#define MyAppPublisher "DISAG"
+#define MyAppPublisher "Daniel Lindner"
 
 [Setup]
 AppId={{1F8C9B3E-6B7C-4E6A-9F2F-6F8B3A6E7B5C}
