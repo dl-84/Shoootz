@@ -5,6 +5,7 @@
   <Project Path="Shoootz.Store/Shoootz.Store.csproj" />
   <Project Path="Shoootz.Store.Adapter.PostgreSQL/Shoootz.Store.Adapter.PostgreSQL.csproj" />
   <Project Path="Shoootz.Store.Adapter.SQLite/Shoootz.Store.Adapter.SQLite.csproj" />
+  <File Path="README.md" />
   <Folder Name="/Theme/">
     <Project Path="../Library/Avalonia/Themes/Disag/Disag.csproj" />
   </Folder>
