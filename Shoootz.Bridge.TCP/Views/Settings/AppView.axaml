@@ -56,7 +56,7 @@
                                  IsEnabled="{Binding !Bridge.IsRunning}">
                             <TextBox.InnerRightContent>
                                 <PathIcon Classes="icon-action icon-danger clear-icon"
-                                          Data="{DynamicResource CloseIcon}"
+                                          Data="{StaticResource CloseIcon}"
                                           Height="12"
                                           Margin="0,0,10,0"
                                           Opacity="0"
@@ -79,7 +79,7 @@
                                  IsEnabled="{Binding !Bridge.IsRunning}">
                             <TextBox.InnerRightContent>
                                 <PathIcon Classes="icon-action icon-danger clear-icon"
-                                          Data="{DynamicResource CloseIcon}"
+                                          Data="{StaticResource CloseIcon}"
                                           Height="12"
                                           Margin="0,0,10,0"
                                           Opacity="0"
