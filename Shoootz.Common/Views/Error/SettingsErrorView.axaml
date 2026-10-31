@@ -60,14 +60,14 @@
                     Margin="{DynamicResource MarginTopMedium}"
                     Orientation="Horizontal"
                     Spacing="{DynamicResource SpacingSmall}">
-            <Button Classes="green"
+            <Button Classes="blue"
                     Command="{Binding ValidateCommand}"
                     Content="{extensions:Localization Validate}" />
-            <Button Classes="green"
+            <Button Classes="blue"
                     Command="{Binding SaveCommand}"
                     Content="{extensions:Localization Save}"
                     IsEnabled="{Binding IsValid}" />
-            <Button Classes="green"
+            <Button Classes="blue"
                     Command="{Binding RestartCommand}"
                     Content="{extensions:Localization Restart}"
                     IsEnabled="{Binding IsSaved}" />

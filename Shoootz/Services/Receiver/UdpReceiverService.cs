@@ -15,7 +15,7 @@ internal class UdpReceiverService(IOptionsMonitor<SettingsModel> settings) : Rec
 {
     private UdpClient? _client;
 
-    public override Result<Unit, ReceiverConnectionErrorModel> Connect()
+    public override Task<Result<Unit, ReceiverConnectionErrorModel>> ConnectAsync()
     {
         Disconnect();
 
@@ -29,12 +29,15 @@ internal class UdpReceiverService(IOptionsMonitor<SettingsModel> settings) : Rec
             CancellationToken cancellationToken = StartListening();
             _ = ReceiveLoopAsync(client, cancellationToken);
 
-            return Unit.Value;
+            return Task.FromResult<Result<Unit, ReceiverConnectionErrorModel>>(Unit.Value);
         }
         catch (Exception exception)
         {
             SetIsListening(false);
-            return new Error<ReceiverConnectionErrorModel>(new ReceiverConnectionErrorModel(exception.Message));
+
+            return Task.FromResult<Result<Unit, ReceiverConnectionErrorModel>>(
+                new Error<ReceiverConnectionErrorModel>(new ReceiverConnectionErrorModel(exception.Message))
+            );
         }
     }
 

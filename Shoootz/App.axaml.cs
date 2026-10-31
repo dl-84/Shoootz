@@ -69,7 +69,7 @@ public class App : Application
             if (receiver is not null && receiver.AutoConnect)
             {
                 serviceProvider.GetRequiredService<IDataProcessor>().Start();
-                _ = serviceProvider.GetRequiredKeyedService<IReceiverService>(receiver.Type).Connect();
+                _ = serviceProvider.GetRequiredKeyedService<IReceiverService>(receiver.Type).ConnectAsync();
             }
         }
 

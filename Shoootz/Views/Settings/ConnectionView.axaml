@@ -20,9 +20,9 @@
         </Style>
     </UserControl.Styles>
 
-    <Panel>
+    <Grid RowDefinitions="*,Auto">
 
-        <ScrollViewer>
+        <ScrollViewer Grid.Row="0">
             <StackPanel Classes="page-content">
 
                 <TextBlock Classes="h3"
@@ -36,54 +36,7 @@
                         <TextBlock Classes="h4"
                                    Text="{common:Localization UdpBroadcast}" />
 
-                        <Grid ColumnDefinitions="*,Auto">
-                            <StackPanel Grid.Column="0"
-                                        Orientation="Horizontal"
-                                        Spacing="{DynamicResource SpacingSmall}">
-                                <PathIcon Data="{DynamicResource DatabaseDisconnectedIcon}"
-                                          Foreground="{DynamicResource ErrorBrush}"
-                                          Height="18"
-                                          VerticalAlignment="Center"
-                                          Width="18"
-                                          IsVisible="{Binding !IsUdpListening}" />
-                                <PathIcon Data="{DynamicResource DatabaseConnectedIcon}"
-                                          Foreground="{DynamicResource SuccessBrush}"
-                                          Height="18"
-                                          VerticalAlignment="Center"
-                                          Width="18"
-                                          IsVisible="{Binding IsUdpListening}" />
-                                <TextBlock Text="{Binding UdpStatusLabel}"
-                                           VerticalAlignment="Center" />
-                            </StackPanel>
-
-                            <StackPanel Grid.Column="1"
-                                        Orientation="Horizontal"
-                                        Spacing="{DynamicResource SpacingMedium}">
-                                <PathIcon Classes="icon-action icon-danger"
-                                          Data="{DynamicResource DatabaseDisconnectIcon}"
-                                          PointerPressed="OnCommandIconPressed"
-                                          Tag="{Binding DisconnectReceiverCommand}"
-                                          ToolTip.HorizontalOffset="0"
-                                          ToolTip.Placement="TopEdgeAlignedRight"
-                                          ToolTip.Tip="{common:Localization Disconnect}"
-                                          ToolTip.VerticalOffset="-2"
-                                          VerticalAlignment="Center"
-                                          IsVisible="{Binding IsUdpListening}" />
-                                <PathIcon Classes="icon-action"
-                                          Data="{DynamicResource DatabaseConnectIcon}"
-                                          PointerPressed="OnCommandIconPressed"
-                                          Tag="{Binding ConnectReceiverCommand}"
-                                          ToolTip.HorizontalOffset="0"
-                                          ToolTip.Placement="TopEdgeAlignedRight"
-                                          ToolTip.Tip="{common:Localization Connect}"
-                                          ToolTip.VerticalOffset="-2"
-                                          VerticalAlignment="Center"
-                                          IsEnabled="{Binding IsPortValid}"
-                                          IsVisible="{Binding !IsUdpListening}" />
-                            </StackPanel>
-                        </Grid>
-
-                        <Grid ColumnDefinitions="170,170,170,*"
+                        <Grid ColumnDefinitions="170,170,170,*,170"
                               ColumnSpacing="{DynamicResource SpacingSmall}">
 
                             <StackPanel Grid.Column="0"
@@ -108,7 +61,7 @@
                                            Text="{common:Localization Host}" />
                                 <TextBox Classes.error="{Binding !IsHostValid}"
                                          Text="{Binding Host}"
-                                         IsEnabled="{Binding IsTcpSelected}">
+                                         IsEnabled="{Binding IsHostEditable}">
                                     <TextBox.InnerRightContent>
                                         <PathIcon Classes="icon-action icon-danger clear-icon"
                                                   Data="{StaticResource CloseIcon}"
@@ -152,9 +105,32 @@
                                 <CheckBox Grid.Row="1"
                                           Content="{common:Localization AutoConnect}"
                                           FontSize="16"
-                                          HorizontalAlignment="Right"
+                                          HorizontalAlignment="Center"
                                           IsChecked="{Binding AutoConnect}"
                                           VerticalAlignment="Center" />
+                            </Grid>
+
+                            <Grid Grid.Column="4"
+                                  RowDefinitions="Auto,*"
+                                  RowSpacing="{DynamicResource SpacingXSmall}">
+                                <TextBlock Grid.Row="0"
+                                           Classes="label"
+                                           IsHitTestVisible="False"
+                                           Opacity="0"
+                                           Text="placeholder" />
+                                <Button Grid.Row="1"
+                                        Classes="danger"
+                                        Command="{Binding DisconnectReceiverCommand}"
+                                        Content="{common:Localization Disconnect}"
+                                        HorizontalAlignment="Right"
+                                        IsVisible="{Binding IsUdpListening}" />
+                                <Button Grid.Row="1"
+                                        Classes="blue"
+                                        Command="{Binding ConnectReceiverCommand}"
+                                        Content="{common:Localization Connect}"
+                                        HorizontalAlignment="Right"
+                                        IsEnabled="{Binding IsConnectReceiverEnabled}"
+                                        IsVisible="{Binding !IsUdpListening}" />
                             </Grid>
 
                         </Grid>
@@ -169,24 +145,9 @@
                                    Text="{common:Localization Database}" />
 
                         <Grid ColumnDefinitions="*,Auto">
-                            <StackPanel Grid.Column="0"
-                                        Orientation="Horizontal"
-                                        Spacing="{DynamicResource SpacingSmall}">
-                                <PathIcon Data="{DynamicResource DatabaseDisconnectedIcon}"
-                                          Foreground="{DynamicResource ErrorBrush}"
-                                          Height="18"
-                                          VerticalAlignment="Center"
-                                          Width="18"
-                                          IsVisible="{Binding !IsDbConnected}" />
-                                <PathIcon Data="{DynamicResource DatabaseConnectedIcon}"
-                                          Foreground="{DynamicResource SuccessBrush}"
-                                          Height="18"
-                                          VerticalAlignment="Center"
-                                          Width="18"
-                                          IsVisible="{Binding IsDbConnected}" />
-                                <TextBlock Text="{Binding InitializeDbLabel}"
-                                           VerticalAlignment="Center" />
-                            </StackPanel>
+                            <TextBlock Grid.Column="0"
+                                       Text="{Binding InitializeDbLabel}"
+                                       VerticalAlignment="Center" />
 
                             <StackPanel Grid.Column="1"
                                         Orientation="Horizontal"
@@ -210,7 +171,8 @@
                                           ToolTip.Placement="TopEdgeAlignedRight"
                                           ToolTip.Tip="{common:Localization TestConnection}"
                                           ToolTip.VerticalOffset="-2"
-                                          VerticalAlignment="Center" />
+                                          VerticalAlignment="Center"
+                                          IsEnabled="{Binding !IsDbConnected}" />
                                 <PathIcon Classes="icon-action"
                                           Data="{DynamicResource InitializeDbIcon}"
                                           PointerPressed="OnCommandIconPressed"
@@ -221,31 +183,10 @@
                                           ToolTip.VerticalOffset="-2"
                                           VerticalAlignment="Center"
                                           IsEnabled="{Binding IsInitializeDbEnabled}" />
-                                <PathIcon Classes="icon-action icon-danger"
-                                          Data="{DynamicResource DatabaseDisconnectIcon}"
-                                          PointerPressed="OnCommandIconPressed"
-                                          Tag="{Binding DisconnectDbCommand}"
-                                          ToolTip.HorizontalOffset="0"
-                                          ToolTip.Placement="TopEdgeAlignedRight"
-                                          ToolTip.Tip="{common:Localization Disconnect}"
-                                          ToolTip.VerticalOffset="-2"
-                                          VerticalAlignment="Center"
-                                          IsVisible="{Binding IsDbConnected}" />
-                                <PathIcon Classes="icon-action"
-                                          Data="{DynamicResource DatabaseConnectIcon}"
-                                          PointerPressed="OnCommandIconPressed"
-                                          Tag="{Binding ConnectDbCommand}"
-                                          ToolTip.HorizontalOffset="0"
-                                          ToolTip.Placement="TopEdgeAlignedRight"
-                                          ToolTip.Tip="{common:Localization Connect}"
-                                          ToolTip.VerticalOffset="-2"
-                                          VerticalAlignment="Center"
-                                          IsEnabled="{Binding !IsSaveEnabled}"
-                                          IsVisible="{Binding !IsDbConnected}" />
                             </StackPanel>
                         </Grid>
 
-                        <Grid ColumnDefinitions="Auto,*"
+                        <Grid ColumnDefinitions="Auto,*,170"
                               ColumnSpacing="{DynamicResource SpacingSmall}">
 
                             <StackPanel Grid.Column="0"
@@ -266,27 +207,52 @@
                                          IsEnabled="{Binding !IsDbConnected}" />
                             </StackPanel>
 
+                            <Grid Grid.Column="2"
+                                  RowDefinitions="Auto,*"
+                                  RowSpacing="{DynamicResource SpacingXSmall}">
+                                <TextBlock Grid.Row="0"
+                                           Classes="label"
+                                           IsHitTestVisible="False"
+                                           Opacity="0"
+                                           Text="placeholder" />
+                                <Button Grid.Row="1"
+                                        Classes="danger"
+                                        Command="{Binding DisconnectDbCommand}"
+                                        Content="{common:Localization Disconnect}"
+                                        HorizontalAlignment="Right"
+                                        IsVisible="{Binding IsDbConnected}" />
+                                <Button Grid.Row="1"
+                                        Classes="blue"
+                                        Command="{Binding ConnectDbCommand}"
+                                        Content="{common:Localization Connect}"
+                                        HorizontalAlignment="Right"
+                                        IsEnabled="{Binding !IsSaveEnabled}"
+                                        IsVisible="{Binding !IsDbConnected}" />
+                            </Grid>
+
                         </Grid>
 
                     </StackPanel>
                 </Border>
 
-                <Grid ColumnDefinitions="*,Auto">
-                    <TextBlock Grid.Column="0"
-                               Classes="hint-error"
-                               Text="{Binding ConnectionErrorHint}"
-                               VerticalAlignment="Center" />
-
-                    <Button Grid.Column="1"
-                            Classes="blue"
-                            Command="{Binding SaveCommand}"
-                            Content="{common:Localization Save}"
-                            HorizontalAlignment="Right"
-                            IsEnabled="{Binding IsSaveEnabled}" />
-                </Grid>
-
             </StackPanel>
         </ScrollViewer>
 
-    </Panel>
+        <Grid Grid.Row="1"
+              ColumnDefinitions="*,Auto"
+              Margin="18,16,18,18">
+            <TextBlock Grid.Column="0"
+                       Classes="hint-error"
+                       Text="{Binding ConnectionErrorHint}"
+                       VerticalAlignment="Center" />
+
+            <Button Grid.Column="1"
+                    Classes="blue"
+                    Command="{Binding SaveCommand}"
+                    Content="{common:Localization Save}"
+                    HorizontalAlignment="Right"
+                    IsEnabled="{Binding IsSaveEnabled}" />
+        </Grid>
+
+    </Grid>
 </UserControl>

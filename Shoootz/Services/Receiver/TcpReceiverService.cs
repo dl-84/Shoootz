@@ -12,16 +12,25 @@ namespace Shoootz.Services.Receiver;
 
 internal class TcpReceiverService(IOptionsMonitor<SettingsModel> settings) : ReceiverServiceBase
 {
+    private const int ConnectTimeoutMilliseconds = 3000;
+
     private TcpClient? _client;
 
-    public override Result<Unit, ReceiverConnectionErrorModel> Connect()
+    public override async Task<Result<Unit, ReceiverConnectionErrorModel>> ConnectAsync()
     {
         Disconnect();
 
         try
         {
             TcpClient client = new();
-            client.Connect(settings.CurrentValue.Receiver.Host ?? string.Empty, settings.CurrentValue.Receiver.Port);
+            using CancellationTokenSource timeoutCts = new(ConnectTimeoutMilliseconds);
+
+            await client.ConnectAsync(
+                settings.CurrentValue.Receiver.Host ?? string.Empty,
+                settings.CurrentValue.Receiver.Port,
+                timeoutCts.Token
+            );
+
             _client = client;
 
             CancellationToken cancellationToken = StartListening();

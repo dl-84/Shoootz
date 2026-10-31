@@ -252,6 +252,9 @@
   <data name="Connect" xml:space="preserve">
     <value>Verbinden</value>
   </data>
+  <data name="Connecting" xml:space="preserve">
+    <value>Verbindung wird aufgebaut...</value>
+  </data>
   <data name="Disconnect" xml:space="preserve">
     <value>Trennen</value>
   </data>
@@ -300,6 +303,9 @@
   <data name="DbNotConnected" xml:space="preserve">
     <value>Nicht verbunden</value>
   </data>
+  <data name="DbNotInitialized" xml:space="preserve">
+    <value>Datenbank muss initialisiert werden</value>
+  </data>
   <data name="DbPendingMigrations" xml:space="preserve">
     <value>Es wurden ausstehende Datenbankmigrationen gefunden. Bitte aktualisiere die Datenbank.</value>
   </data>
@@ -307,7 +313,7 @@
     <value>Datenbankupdate verfügbar</value>
   </data>
   <data name="DbUpToDate" xml:space="preserve">
-    <value>Verbunden, Schema aktuell</value>
+    <value>Datenbank ist aktuell</value>
   </data>
   <data name="DbInitializeSuccessful" xml:space="preserve">
     <value>Datenbank erfolgreich initialisiert</value>
@@ -319,7 +325,7 @@
     <value>Initialisieren</value>
   </data>
   <data name="UpdateDb" xml:space="preserve">
-    <value>Aktualisieren</value>
+    <value>Update für Datenbank vorhanden</value>
   </data>
   <data name="Provider" xml:space="preserve">
     <value>Provider</value>

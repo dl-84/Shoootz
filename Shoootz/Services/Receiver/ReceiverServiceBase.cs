@@ -1,5 +1,6 @@
 using System;
 using System.Threading;
+using System.Threading.Tasks;
 using Result;
 using Result.Types;
 using Shoootz.Models.Error;
@@ -16,7 +17,7 @@ internal abstract class ReceiverServiceBase : IReceiverService
 
     public bool IsListening { get; private set; }
 
-    public abstract Result<Unit, ReceiverConnectionErrorModel> Connect();
+    public abstract Task<Result<Unit, ReceiverConnectionErrorModel>> ConnectAsync();
 
     public virtual void Disconnect()
     {

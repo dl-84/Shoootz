@@ -15,8 +15,9 @@ using Shoootz.Common.Services.Settings;
 using Shoootz.Common.ViewModels;
 using Shoootz.Models.Database;
 using Shoootz.Models.Settings;
+using Shoootz.Models.Settings.Incoming;
+using Shoootz.Services.Receiver;
 using Shoootz.Services.Store;
-using Shoootz.Services.Udp;
 using Shoootz.Store;
 using Shoootz.Store.Services;
 using Shoootz.ViewModels.Competition;
@@ -40,7 +41,9 @@ internal partial class MainWindowViewModel : ViewModelBase, IDialogHost
 
     private readonly IStoreService _storeService;
 
-    private readonly IUdpListenerService _udpListenerService;
+    private readonly IReceiverService _tcpListenerService;
+
+    private readonly IReceiverService _udpListenerService;
 
     public MainWindowViewModel(
         IConnectionTester connectionTester,
@@ -49,7 +52,8 @@ internal partial class MainWindowViewModel : ViewModelBase, IDialogHost
         IServiceProvider serviceProvider,
         ISettingsWriter<SettingsModel> settingsWriter,
         IStoreService storeService,
-        IUdpListenerService udpListenerService
+        [FromKeyedServices(ReceiverType.Tcp)] IReceiverService tcpListenerService,
+        [FromKeyedServices(ReceiverType.Udp)] IReceiverService udpListenerService
     )
     {
         _connectionTester = connectionTester;
@@ -57,12 +61,22 @@ internal partial class MainWindowViewModel : ViewModelBase, IDialogHost
         _settings = settings.CurrentValue;
         _serviceProvider = serviceProvider;
 
-        _settingsWriter = settingsWriter;
-        _settingsWriter.SettingsSaved += settingsModel => _ = CheckDbConnectionAsync();
+        ConfiguredReceiverType = _settings.Receiver.Type;
 
+        _settingsWriter = settingsWriter;
+        _settingsWriter.SettingsSaved += settingsModel =>
+        {
+            ConfiguredReceiverType = settingsModel.Receiver.Type;
+            _ = CheckDbConnectionAsync();
+        };
+
+        _tcpListenerService = tcpListenerService;
         _udpListenerService = udpListenerService;
+
+        _tcpListenerService.IsListeningChanged += (_, isListening) =>
+            Dispatcher.UIThread.Post(() => IsReceiverConnected = isListening);
         _udpListenerService.IsListeningChanged += (_, isListening) =>
-            Dispatcher.UIThread.Post(() => IsUdpConnected = isListening);
+            Dispatcher.UIThread.Post(() => IsReceiverConnected = isListening);
 
         _storeService = storeService;
         IsDbConnected = _storeService.IsConnected;
@@ -73,6 +87,10 @@ internal partial class MainWindowViewModel : ViewModelBase, IDialogHost
     }
 
     public event Action? PendingMigrationsDetected;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsTcpReceiver))]
+    public partial ReceiverType ConfiguredReceiverType { get; set; }
 
     [ObservableProperty]
     public partial NavigationPageType CurrentNavigationPageType { get; set; }
@@ -104,17 +122,19 @@ internal partial class MainWindowViewModel : ViewModelBase, IDialogHost
     public bool IsNavbarEnabled => CurrentPage is not Common.ViewModels.Error.SettingsErrorViewModel<SettingsModel>;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(UdpBadgeText))]
-    public partial bool IsUdpConnected { get; set; }
+    [NotifyPropertyChangedFor(nameof(ReceiverBadgeText))]
+    public partial bool IsReceiverConnected { get; set; }
 
-    public string UdpBadgeText
+    public bool IsTcpReceiver => ConfiguredReceiverType == ReceiverType.Tcp;
+
+    public string ReceiverBadgeText
     {
         get
         {
-            string connectionType = _localizationService[nameof(Messages.Udp)];
+            string connectionType = _localizationService[nameof(Messages.UdpBroadcast)];
 
             string connectionState = _localizationService[
-                IsUdpConnected ? nameof(Messages.StatusConnected) : nameof(Messages.StatusDisconnected)
+                IsReceiverConnected ? nameof(Messages.StatusConnected) : nameof(Messages.StatusDisconnected)
             ];
 
             return $"{connectionType} {connectionState}";

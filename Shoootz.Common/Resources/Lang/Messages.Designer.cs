@@ -292,6 +292,15 @@ namespace Shoootz.Common.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Connecting....
+        /// </summary>
+        internal static string Connecting {
+            get {
+                return ResourceManager.GetString("Connecting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Connection.
         /// </summary>
         internal static string Connection {
@@ -418,6 +427,15 @@ namespace Shoootz.Common.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Database must be initialized.
+        /// </summary>
+        internal static string DbNotInitialized {
+            get {
+                return ResourceManager.GetString("DbNotInitialized", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pending database migrations were found. Please update the database..
         /// </summary>
         internal static string DbPendingMigrations {
@@ -436,7 +454,7 @@ namespace Shoootz.Common.Resources.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Connected, schema up to date.
+        ///   Looks up a localized string similar to Database is up to date.
         /// </summary>
         internal static string DbUpToDate {
             get {
@@ -1390,7 +1408,7 @@ namespace Shoootz.Common.Resources.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Update.
+        ///   Looks up a localized string similar to Database update available.
         /// </summary>
         internal static string UpdateDb {
             get {

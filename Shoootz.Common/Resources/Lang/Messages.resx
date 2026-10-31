@@ -252,6 +252,9 @@
   <data name="Connect" xml:space="preserve">
     <value>Connect</value>
   </data>
+  <data name="Connecting" xml:space="preserve">
+    <value>Connecting...</value>
+  </data>
   <data name="Disconnect" xml:space="preserve">
     <value>Disconnect</value>
   </data>
@@ -300,6 +303,9 @@
   <data name="DbNotConnected" xml:space="preserve">
     <value>Not connected</value>
   </data>
+  <data name="DbNotInitialized" xml:space="preserve">
+    <value>Database must be initialized</value>
+  </data>
   <data name="DbPendingMigrations" xml:space="preserve">
     <value>Pending database migrations were found. Please update the database.</value>
   </data>
@@ -307,7 +313,7 @@
     <value>Database update available</value>
   </data>
   <data name="DbUpToDate" xml:space="preserve">
-    <value>Connected, schema up to date</value>
+    <value>Database is up to date</value>
   </data>
   <data name="DbInitializeSuccessful" xml:space="preserve">
     <value>Database initialized successfully</value>
@@ -319,7 +325,7 @@
     <value>Initialize</value>
   </data>
   <data name="UpdateDb" xml:space="preserve">
-    <value>Update</value>
+    <value>Database update available</value>
   </data>
   <data name="Provider" xml:space="preserve">
     <value>Provider</value>

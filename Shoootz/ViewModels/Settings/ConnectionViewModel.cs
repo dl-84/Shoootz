@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Result;
 using Result.Types;
@@ -20,8 +21,8 @@ using Shoootz.Models.Error;
 using Shoootz.Models.Settings;
 using Shoootz.Models.Settings.Incoming;
 using Shoootz.Services.Data;
+using Shoootz.Services.Receiver;
 using Shoootz.Services.Store;
-using Shoootz.Services.Udp;
 using Shoootz.Store;
 using Shoootz.Store.Services;
 using Shoootz.Store.Types;
@@ -40,7 +41,9 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
 
     private readonly IStoreService _storeService;
 
-    private readonly IUdpListenerService _udpListenerService;
+    private readonly IReceiverService _tcpReceiverService;
+
+    private readonly IReceiverService _udpReceiverService;
 
     public ConnectionViewModel(
         IConnectionTester connectionTester,
@@ -50,7 +53,8 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
         IOptionsMonitor<SettingsModel> settings,
         ISettingsWriter<SettingsModel> settingsWriter,
         IStoreService storeService,
-        IUdpListenerService udpListenerService
+        [FromKeyedServices(ReceiverType.Tcp)] IReceiverService tcpReceiverService,
+        [FromKeyedServices(ReceiverType.Udp)] IReceiverService udpReceiverService
     )
     {
         _connectionTester = connectionTester;
@@ -58,7 +62,8 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
         _settings = settings.CurrentValue;
         _settingsWriter = settingsWriter;
         _storeService = storeService;
-        _udpListenerService = udpListenerService;
+        _tcpReceiverService = tcpReceiverService;
+        _udpReceiverService = udpReceiverService;
 
         GeneralSettings = new GeneralSettingsViewModel<SettingsModel>(
             languageService,
@@ -79,13 +84,14 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
 
         AutoConnect = _settings.Receiver.AutoConnect;
         Host = _settings.Receiver.Host ?? string.Empty;
-        IsUdpListening = udpListenerService.IsListening;
+        IsUdpListening = udpReceiverService.IsListening || tcpReceiverService.IsListening;
         Port = _settings.Receiver.Port.ToString();
         SelectedProvider = _settings.DatabaseConnection.Provider;
         SelectedReceiverType = _settings.Receiver.Type;
         ConnectionString = _settings.DatabaseConnection.ConnectionString;
 
-        _udpListenerService.IsListeningChanged += OnUdpListeningChanged;
+        _tcpReceiverService.IsListeningChanged += OnUdpListeningChanged;
+        _udpReceiverService.IsListeningChanged += OnUdpListeningChanged;
 
         IsDbConnected = _storeService.IsConnected;
         _storeService.ConnectionChanged += OnStoreConnectionChanged;
@@ -98,6 +104,10 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
     public event Action<bool, string?>? DbInitializeCompleted;
 
     public event Action? DbInitializeStarted;
+
+    public event Action? ReceiverConnectCompleted;
+
+    public event Action? ReceiverConnectStarted;
 
     [ObservableProperty]
     public partial bool AutoConnect { get; set; }
@@ -124,19 +134,20 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
         IsHostValid ? string.Empty : LocalizationService.Instance[nameof(Messages.HostInvalidHint)];
 
     public string InitializeDbLabel =>
-        !IsDbConnected
-            ? LocalizationService.Instance[Messages.DbNotConnected]
-            : DbStatusType switch
-            {
-                DbStatusType.UpdateAvailable => LocalizationService.Instance[Messages.UpdateDb],
-                DbStatusType.UpToDate => LocalizationService.Instance[Messages.DbUpToDate],
-                _ => LocalizationService.Instance[Messages.InitializeDb],
-            };
+        DbStatusType switch
+        {
+            DbStatusType.UpdateAvailable => LocalizationService.Instance[Messages.UpdateDb],
+            DbStatusType.UpToDate => LocalizationService.Instance[Messages.DbUpToDate],
+            _ => LocalizationService.Instance[Messages.DbNotInitialized],
+        };
+
+    public bool IsConnectReceiverEnabled => IsPortValid && !IsSaveEnabled;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(InitializeDbLabel))]
     [NotifyPropertyChangedFor(nameof(IsInitializeDbEnabled))]
     public partial bool IsDbConnected { get; set; }
+
+    public bool IsHostEditable => IsTcpSelected && !IsUdpListening;
 
     public bool IsHostValid => !IsTcpSelected || Host.IsValidIPv4();
 
@@ -149,11 +160,13 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
     public bool IsTcpSelected => SelectedReceiverType == ReceiverType.Tcp;
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsHostEditable))]
     [NotifyPropertyChangedFor(nameof(UdpStatusLabel))]
     public partial bool IsUdpListening { get; set; }
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(ConnectionErrorHint))]
+    [NotifyPropertyChangedFor(nameof(IsConnectReceiverEnabled))]
     [NotifyPropertyChangedFor(nameof(IsPortValid))]
     [NotifyPropertyChangedFor(nameof(PortErrorHint))]
     public partial string Port { get; set; }
@@ -171,6 +184,7 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(ConnectionErrorHint))]
     [NotifyPropertyChangedFor(nameof(HostErrorHint))]
+    [NotifyPropertyChangedFor(nameof(IsHostEditable))]
     [NotifyPropertyChangedFor(nameof(IsHostValid))]
     [NotifyPropertyChangedFor(nameof(IsTcpSelected))]
     public partial ReceiverType SelectedReceiverType { get; set; }
@@ -178,9 +192,13 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
     public string UdpStatusLabel =>
         LocalizationService.Instance[IsUdpListening ? nameof(Messages.Connected) : nameof(Messages.NotConnected)];
 
+    private IReceiverService CurrentReceiver =>
+        SelectedReceiverType == ReceiverType.Tcp ? _tcpReceiverService : _udpReceiverService;
+
     public void Dispose()
     {
-        _udpListenerService.IsListeningChanged -= OnUdpListeningChanged;
+        _tcpReceiverService.IsListeningChanged -= OnUdpListeningChanged;
+        _udpReceiverService.IsListeningChanged -= OnUdpListeningChanged;
         _storeService.ConnectionChanged -= OnStoreConnectionChanged;
     }
 
@@ -218,19 +236,17 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
     }
 
     [RelayCommand]
-    private void ConnectReceiver()
+    private async Task ConnectReceiver()
     {
-        switch (SelectedReceiverType)
-        {
-            case ReceiverType.Tcp:
-                StartTcp();
-                break;
-            case ReceiverType.Udp:
-                StartUdp();
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
+        _dataProcessor.Start();
+
+        ReceiverConnectStarted?.Invoke();
+
+        Result<Unit, ReceiverConnectionErrorModel> result = await CurrentReceiver.ConnectAsync();
+
+        ReceiverConnectCompleted?.Invoke();
+
+        result.Match(_ => { }, error => ConnectionTestCompleted?.Invoke(false, error.Value.Message));
     }
 
     [RelayCommand]
@@ -240,20 +256,7 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
     private void DisconnectDb() => _storeService.Disconnect();
 
     [RelayCommand]
-    private void DisconnectReceiver()
-    {
-        switch (SelectedReceiverType)
-        {
-            case ReceiverType.Tcp:
-                StopTcp();
-                break;
-            case ReceiverType.Udp:
-                StopUdp();
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
-    }
+    private void DisconnectReceiver() => CurrentReceiver.Disconnect();
 
     private async Task InitializeDatabaseAsync(bool connectAfterSuccess)
     {
@@ -293,6 +296,7 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
     {
         SaveCommand.NotifyCanExecuteChanged();
         OnPropertyChanged(nameof(IsSaveEnabled));
+        OnPropertyChanged(nameof(IsConnectReceiverEnabled));
     }
 
     partial void OnAutoConnectChanged(bool value) => NotifySaveStateChanged();
@@ -324,10 +328,7 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
 
     partial void OnSelectedReceiverTypeChanged(ReceiverType value)
     {
-        if (value == ReceiverType.Udp)
-        {
-            Host = string.Empty;
-        }
+        Host = value == ReceiverType.Tcp ? Receiver.DefaultHost : string.Empty;
 
         NotifySaveStateChanged();
     }
@@ -362,26 +363,6 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
         NotifySaveStateChanged();
     }
 
-    private void StartTcp() { }
-
-    private void StartUdp()
-    {
-        if (!int.TryParse(Port, out int port))
-        {
-            return;
-        }
-
-        _dataProcessor.Start();
-
-        _udpListenerService
-            .Start(port)
-            .Match(_ => { }, error => ConnectionTestCompleted?.Invoke(false, error.Value.Message));
-    }
-
-    private void StopTcp() { }
-
-    private void StopUdp() => _udpListenerService.Stop();
-
     [RelayCommand]
     private async Task TestDbConnection()
     {
@@ -394,18 +375,11 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
     }
 
     [RelayCommand]
-    private void TestUdpConnection()
-    {
-        if (!int.TryParse(Port, out int port))
-        {
-            return;
-        }
-
-        _udpListenerService
-            .TestConnection(port)
+    private void TestUdpConnection() =>
+        _udpReceiverService
+            .TestConnection()
             .Match(
                 _ => ConnectionTestCompleted?.Invoke(true, null),
                 error => ConnectionTestCompleted?.Invoke(false, error.Value.Message)
             );
-    }
 }

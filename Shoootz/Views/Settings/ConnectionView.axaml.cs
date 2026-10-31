@@ -61,6 +61,8 @@ public partial class ConnectionView : UserControl
             viewModel.ConnectionTestCompleted += OnConnectionTestCompleted;
             viewModel.DbInitializeCompleted += OnDbInitializeCompleted;
             viewModel.DbInitializeStarted += OnDbInitializeStarted;
+            viewModel.ReceiverConnectCompleted += OnReceiverConnectCompleted;
+            viewModel.ReceiverConnectStarted += OnReceiverConnectStarted;
         }
     }
 
@@ -98,6 +100,38 @@ public partial class ConnectionView : UserControl
         {
             DialogTitle = LocalizationService.Instance[Messages.InitializeDb],
             Message = LocalizationService.Instance[Messages.DbInitializing],
+        };
+
+        _ = _waitingDialog.ShowDialog(window);
+    }
+
+    private void OnReceiverConnectCompleted()
+    {
+        if (TopLevel.GetTopLevel(this) is Window { DataContext: MainWindowViewModel mainWindowViewModel })
+        {
+            mainWindowViewModel.IsDialogOpen = false;
+        }
+
+        _waitingDialog?.Close();
+        _waitingDialog = null;
+    }
+
+    private void OnReceiverConnectStarted()
+    {
+        if (TopLevel.GetTopLevel(this) is not Window window)
+        {
+            return;
+        }
+
+        if (window.DataContext is MainWindowViewModel mainWindowViewModel)
+        {
+            mainWindowViewModel.IsDialogOpen = true;
+        }
+
+        _waitingDialog = new WaitingDialog
+        {
+            DialogTitle = LocalizationService.Instance[Messages.Connect],
+            Message = LocalizationService.Instance[Messages.Connecting],
         };
 
         _ = _waitingDialog.ShowDialog(window);

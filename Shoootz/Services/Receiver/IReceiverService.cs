@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Result;
 using Result.Types;
 using Shoootz.Models.Error;
@@ -13,7 +14,7 @@ internal interface IReceiverService : IDisposable
 
     bool IsListening { get; }
 
-    Result<Unit, ReceiverConnectionErrorModel> Connect();
+    Task<Result<Unit, ReceiverConnectionErrorModel>> ConnectAsync();
 
     void Disconnect();
 
