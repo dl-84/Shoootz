@@ -43,7 +43,7 @@ internal partial class ClubsViewModel : ListFilterService<ClubModel>
             return;
         }
 
-        Result<Unit, StoreSaveError> result = await _storeService.SaveClubAsync(new ClubModel { Name = name });
+        Result<Unit, StoreSaveErrorModel> result = await _storeService.SaveClubAsync(new ClubModel { Name = name });
 
         await result.Match(
             async _ => await LoadClubsAsync(),
@@ -63,7 +63,7 @@ internal partial class ClubsViewModel : ListFilterService<ClubModel>
             return;
         }
 
-        Result<bool, StoreReadError> hasShootersResult = await _storeService.ClubHasShootersAsync(club.Id);
+        Result<bool, StoreReadErrorModel> hasShootersResult = await _storeService.ClubHasShootersAsync(club.Id);
 
         await hasShootersResult.Match(
             async hasShooters =>
@@ -74,7 +74,7 @@ internal partial class ClubsViewModel : ListFilterService<ClubModel>
                     return;
                 }
 
-                Result<Unit, StoreSaveError> result = await _storeService.DeleteClubAsync(club.Id);
+                Result<Unit, StoreSaveErrorModel> result = await _storeService.DeleteClubAsync(club.Id);
 
                 await result.Match(
                     async _ =>
@@ -104,7 +104,7 @@ internal partial class ClubsViewModel : ListFilterService<ClubModel>
             return;
         }
 
-        Result<Unit, StoreSaveError> result = await _storeService.SaveClubAsync(
+        Result<Unit, StoreSaveErrorModel> result = await _storeService.SaveClubAsync(
             new ClubModel { Id = club.Id, Name = newName }
         );
 
@@ -131,7 +131,7 @@ internal partial class ClubsViewModel : ListFilterService<ClubModel>
 
     private async Task LoadClubsAsync()
     {
-        Result<List<ClubModel>, StoreReadError> result = await _storeService.GetClubsAsync();
+        Result<List<ClubModel>, StoreReadErrorModel> result = await _storeService.GetClubsAsync();
 
         result.Match(SetItems, error => SaveClubFailed?.Invoke(error.Value.Message));
     }

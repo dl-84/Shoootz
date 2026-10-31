@@ -19,35 +19,35 @@ internal interface IStoreService
 
     bool IsConnected { get; }
 
-    Task<Result<bool, StoreReadError>> ClubHasShootersAsync(int id);
+    Task<Result<bool, StoreReadErrorModel>> ClubHasShootersAsync(int id);
 
     void Connect();
 
     void Disconnect();
 
-    Task<Result<Unit, StoreSaveError>> DeleteClubAsync(int id);
+    Task<Result<Unit, StoreSaveErrorModel>> DeleteClubAsync(int id);
 
-    Task<Result<Unit, StoreSaveError>> DeleteDatabaseAsync();
+    Task<Result<Unit, StoreSaveErrorModel>> DeleteDatabaseAsync();
 
-    Task<Result<Unit, StoreSaveError>> DeleteShooterAsync(string id, bool deleteShots);
+    Task<Result<Unit, StoreSaveErrorModel>> DeleteShooterAsync(string id, bool deleteShots);
 
-    Task<Result<Unit, StoreSaveError>> DeleteShotsAsync(IReadOnlyCollection<int> ids);
+    Task<Result<Unit, StoreSaveErrorModel>> DeleteShotsAsync(IReadOnlyCollection<int> ids);
 
     Task<string> GenerateShooterIdAsync();
 
-    Task<Result<List<ClubModel>, StoreReadError>> GetClubsAsync();
+    Task<Result<List<ClubModel>, StoreReadErrorModel>> GetClubsAsync();
 
-    Task<DbStatus> GetDbStatusAsync();
+    Task<DbStatusType> GetDbStatusAsync();
 
-    Task<Result<List<ShooterModel>, StoreReadError>> GetShootersAsync();
+    Task<Result<List<ShooterModel>, StoreReadErrorModel>> GetShootersAsync();
 
-    Task<Result<List<ShotModel>, StoreReadError>> GetShotsAsync();
+    Task<Result<List<ShotModel>, StoreReadErrorModel>> GetShotsAsync();
 
     Task InitializeAsync();
 
-    Task<Result<Unit, StoreSaveError>> SaveClubAsync(ClubModel club);
+    Task<Result<Unit, StoreSaveErrorModel>> SaveClubAsync(ClubModel club);
 
-    Task<Result<Unit, StoreSaveError>> SaveShooterAsync(ShooterModel shooter, bool isNew);
+    Task<Result<Unit, StoreSaveErrorModel>> SaveShooterAsync(ShooterModel shooter, bool isNew);
 
-    Task<Result<Unit, StoreSaveError>> SaveShotAsync(ShotModel shot);
+    Task<Result<Unit, StoreSaveErrorModel>> SaveShotAsync(ShotModel shot);
 }

@@ -66,7 +66,7 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
             settingsWriter,
             additionalDeleteFolderCleanup: async () =>
             {
-                Result<Unit, StoreSaveError> result = await _storeService.DeleteDatabaseAsync();
+                Result<Unit, StoreSaveErrorModel> result = await _storeService.DeleteDatabaseAsync();
 
                 return result.Match(
                     _ => null!,
@@ -76,9 +76,9 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
             }
         );
 
-        AutoConnect = _settings.UdpConnection.AutoConnect;
+        AutoConnect = _settings.Receiver.AutoConnect;
         IsUdpListening = udpListenerService.IsListening;
-        Port = _settings.UdpConnection.Port.ToString();
+        Port = _settings.Receiver.Port.ToString();
         SelectedProvider = _settings.DatabaseConnection.Provider;
         ConnectionString = _settings.DatabaseConnection.ConnectionString;
 
@@ -105,17 +105,17 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(InitializeDbLabel))]
     [NotifyPropertyChangedFor(nameof(IsInitializeDbEnabled))]
-    public partial DbStatus DbStatus { get; set; }
+    public partial DbStatusType DbStatusType { get; set; }
 
     public GeneralSettingsViewModel<SettingsModel> GeneralSettings { get; }
 
     public string InitializeDbLabel =>
         !IsDbConnected
             ? LocalizationService.Instance[Messages.DbNotConnected]
-            : DbStatus switch
+            : DbStatusType switch
             {
-                DbStatus.UpdateAvailable => LocalizationService.Instance[Messages.UpdateDb],
-                DbStatus.UpToDate => LocalizationService.Instance[Messages.DbUpToDate],
+                DbStatusType.UpdateAvailable => LocalizationService.Instance[Messages.UpdateDb],
+                DbStatusType.UpToDate => LocalizationService.Instance[Messages.DbUpToDate],
                 _ => LocalizationService.Instance[Messages.InitializeDb],
             };
 
@@ -124,7 +124,7 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
     [NotifyPropertyChangedFor(nameof(IsInitializeDbEnabled))]
     public partial bool IsDbConnected { get; set; }
 
-    public bool IsInitializeDbEnabled => DbStatus != DbStatus.UpToDate && IsDbConnected;
+    public bool IsInitializeDbEnabled => DbStatusType != DbStatusType.UpToDate && IsDbConnected;
 
     public bool IsPortValid => Port.IsValidPort();
 
@@ -157,8 +157,8 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
     {
         _settings.DatabaseConnection.ConnectionString = ConnectionString;
         _settings.DatabaseConnection.Provider = SelectedProvider;
-        _settings.UdpConnection.AutoConnect = AutoConnect;
-        _settings.UdpConnection.Port = int.Parse(Port);
+        _settings.Receiver.AutoConnect = AutoConnect;
+        _settings.Receiver.Port = int.Parse(Port);
         _settingsWriter.Save(_settings);
 
         NotifySaveStateChanged();
@@ -167,9 +167,9 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
     private bool CanSave() =>
         Port.IsValidPort()
         && (
-            AutoConnect != _settings.UdpConnection.AutoConnect
+            AutoConnect != _settings.Receiver.AutoConnect
             || ConnectionString != _settings.DatabaseConnection.ConnectionString
-            || Port != _settings.UdpConnection.Port.ToString()
+            || Port != _settings.Receiver.Port.ToString()
             || SelectedProvider != _settings.DatabaseConnection.Provider
         );
 
@@ -240,12 +240,12 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
             await _storeService.InitializeAsync();
             await Task.Delay(2000);
 
-            DbStatus = await _storeService.GetDbStatusAsync();
+            DbStatusType = await _storeService.GetDbStatusAsync();
             InitializeDbCommand.NotifyCanExecuteChanged();
 
             switch (connectAfterSuccess)
             {
-                case true when DbStatus == DbStatus.NotInitialized:
+                case true when DbStatusType == DbStatusType.NotInitialized:
                     DbInitializeCompleted?.Invoke(false, LocalizationService.Instance[Messages.ConnectionFailed]);
                     return;
 
@@ -306,7 +306,7 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
 
     private async Task RefreshDbStatusAsync()
     {
-        DbStatus = await _storeService.GetDbStatusAsync();
+        DbStatusType = await _storeService.GetDbStatusAsync();
         InitializeDbCommand.NotifyCanExecuteChanged();
     }
 

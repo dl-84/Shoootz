@@ -38,7 +38,7 @@ internal partial class ShootersViewModel : Services.ListFilterService<ShooterMod
 
     public async Task ExecuteDeleteShooterAsync(ShooterModel shooter, bool deleteShots)
     {
-        Result<Unit, StoreSaveError> result = await _storeService.DeleteShooterAsync(shooter.Id!, deleteShots);
+        Result<Unit, StoreSaveErrorModel> result = await _storeService.DeleteShooterAsync(shooter.Id!, deleteShots);
 
         await result.Match(
             async _ =>
@@ -61,7 +61,7 @@ internal partial class ShootersViewModel : Services.ListFilterService<ShooterMod
             return;
         }
 
-        Result<Unit, StoreSaveError> result = await _storeService.SaveShooterAsync(shooter, isNew);
+        Result<Unit, StoreSaveErrorModel> result = await _storeService.SaveShooterAsync(shooter, isNew);
 
         await result.Match(
             async _ =>
@@ -84,7 +84,7 @@ internal partial class ShootersViewModel : Services.ListFilterService<ShooterMod
 
     public async Task<List<string>> GetClubNamesAsync()
     {
-        Result<List<ClubModel>, StoreReadError> result = await _storeService.GetClubsAsync();
+        Result<List<ClubModel>, StoreReadErrorModel> result = await _storeService.GetClubsAsync();
 
         return result.Match(
             clubs => clubs.Select(club => club.Name).ToList(),
@@ -108,7 +108,7 @@ internal partial class ShootersViewModel : Services.ListFilterService<ShooterMod
 
     private async Task LoadShootersAsync()
     {
-        Result<List<ShooterModel>, StoreReadError> result = await _storeService.GetShootersAsync();
+        Result<List<ShooterModel>, StoreReadErrorModel> result = await _storeService.GetShootersAsync();
 
         result.Match(SetItems, error => SaveShooterFailed?.Invoke(error.Value.Message));
     }

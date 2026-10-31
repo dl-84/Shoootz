@@ -145,7 +145,7 @@ internal class DataProcessor(IUdpListenerService udpListenerService, IShotDataPa
                 continue;
             }
 
-            Result<Unit, StoreSaveError> result = await dbService.SaveShotAsync(shot).ConfigureAwait(false);
+            Result<Unit, StoreSaveErrorModel> result = await dbService.SaveShotAsync(shot).ConfigureAwait(false);
 
             result.Match(
                 _ => IncrementCount(ShotCategoryType.SavedSuccess),

@@ -46,7 +46,7 @@ internal partial class ShotsViewModel : ListFilterService<ShotRowViewModel>
             return;
         }
 
-        Result<Unit, StoreSaveError> result = await _storeService.DeleteShotsAsync(ids);
+        Result<Unit, StoreSaveErrorModel> result = await _storeService.DeleteShotsAsync(ids);
 
         await result.Match(
             async _ => await LoadShotsAsync(),
@@ -86,7 +86,7 @@ internal partial class ShotsViewModel : ListFilterService<ShotRowViewModel>
 
     private async Task LoadShotsAsync()
     {
-        Result<List<ShotModel>, StoreReadError> result = await _storeService.GetShotsAsync();
+        Result<List<ShotModel>, StoreReadErrorModel> result = await _storeService.GetShotsAsync();
 
         result.Match(
             shots =>

@@ -1,6 +1,6 @@
 namespace Shoootz.Models.Database;
 
-internal enum DbStatus
+internal enum DbStatusType
 {
     NotInitialized,
     UpdateAvailable,

@@ -133,9 +133,9 @@ internal partial class MainWindowViewModel : ViewModelBase, IDialogHost
 
     public async Task CheckPendingMigrationsAsync()
     {
-        DbStatus status = await _storeService.GetDbStatusAsync();
+        DbStatusType statusType = await _storeService.GetDbStatusAsync();
 
-        if (status == DbStatus.UpdateAvailable)
+        if (statusType == DbStatusType.UpdateAvailable)
         {
             NavigateTo(NavigationPageType.App);
             PendingMigrationsDetected?.Invoke();

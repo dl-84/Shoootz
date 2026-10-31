@@ -31,7 +31,7 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
 
     public bool IsConnected { get; private set; } = true;
 
-    public async Task<Result<bool, StoreReadError>> ClubHasShootersAsync(int id)
+    public async Task<Result<bool, StoreReadErrorModel>> ClubHasShootersAsync(int id)
     {
         try
         {
@@ -46,7 +46,7 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
         }
         catch (Exception exception)
         {
-            return new Error<StoreReadError>(new StoreReadError(GetFullMessage(exception)));
+            return new Error<StoreReadErrorModel>(new StoreReadErrorModel(GetFullMessage(exception)));
         }
     }
 
@@ -62,7 +62,7 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
         ConnectionChanged?.Invoke(this, EventArgs.Empty);
     }
 
-    public async Task<Result<Unit, StoreSaveError>> DeleteClubAsync(int id)
+    public async Task<Result<Unit, StoreSaveErrorModel>> DeleteClubAsync(int id)
     {
         try
         {
@@ -81,11 +81,11 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
         }
         catch (Exception exception)
         {
-            return new Error<StoreSaveError>(new StoreSaveError(GetFullMessage(exception)));
+            return new Error<StoreSaveErrorModel>(new StoreSaveErrorModel(GetFullMessage(exception)));
         }
     }
 
-    public async Task<Result<Unit, StoreSaveError>> DeleteDatabaseAsync()
+    public async Task<Result<Unit, StoreSaveErrorModel>> DeleteDatabaseAsync()
     {
         try
         {
@@ -95,7 +95,7 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
 
                 if (!deleted)
                 {
-                    return new Error<StoreSaveError>(new StoreSaveError("Database not found."));
+                    return new Error<StoreSaveErrorModel>(new StoreSaveErrorModel("Database not found."));
                 }
 
                 return Unit.Value;
@@ -103,11 +103,11 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
         }
         catch (Exception exception)
         {
-            return new Error<StoreSaveError>(new StoreSaveError(GetFullMessage(exception)));
+            return new Error<StoreSaveErrorModel>(new StoreSaveErrorModel(GetFullMessage(exception)));
         }
     }
 
-    public async Task<Result<Unit, StoreSaveError>> DeleteShooterAsync(string id, bool deleteShots)
+    public async Task<Result<Unit, StoreSaveErrorModel>> DeleteShooterAsync(string id, bool deleteShots)
     {
         try
         {
@@ -143,11 +143,11 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
         }
         catch (Exception exception)
         {
-            return new Error<StoreSaveError>(new StoreSaveError(GetFullMessage(exception)));
+            return new Error<StoreSaveErrorModel>(new StoreSaveErrorModel(GetFullMessage(exception)));
         }
     }
 
-    public async Task<Result<Unit, StoreSaveError>> DeleteShotsAsync(IReadOnlyCollection<int> ids)
+    public async Task<Result<Unit, StoreSaveErrorModel>> DeleteShotsAsync(IReadOnlyCollection<int> ids)
     {
         try
         {
@@ -166,7 +166,7 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
         }
         catch (Exception exception)
         {
-            return new Error<StoreSaveError>(new StoreSaveError(GetFullMessage(exception)));
+            return new Error<StoreSaveErrorModel>(new StoreSaveErrorModel(GetFullMessage(exception)));
         }
     }
 
@@ -192,7 +192,7 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
         }
     }
 
-    public async Task<Result<List<ClubModel>, StoreReadError>> GetClubsAsync()
+    public async Task<Result<List<ClubModel>, StoreReadErrorModel>> GetClubsAsync()
     {
         try
         {
@@ -214,11 +214,11 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
         }
         catch (Exception exception)
         {
-            return new Error<StoreReadError>(new StoreReadError(GetFullMessage(exception)));
+            return new Error<StoreReadErrorModel>(new StoreReadErrorModel(GetFullMessage(exception)));
         }
     }
 
-    public async Task<DbStatus> GetDbStatusAsync()
+    public async Task<DbStatusType> GetDbStatusAsync()
     {
         DatabaseConnection databaseConnection = settings.CurrentValue.DatabaseConnection;
 
@@ -228,7 +228,7 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
 
             if (!File.Exists(dataSource))
             {
-                return DbStatus.NotInitialized;
+                return DbStatusType.NotInitialized;
             }
         }
 
@@ -239,7 +239,7 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
                 bool canConnect = await context.Database.CanConnectAsync().ConfigureAwait(false);
                 if (!canConnect)
                 {
-                    return DbStatus.NotInitialized;
+                    return DbStatusType.NotInitialized;
                 }
 
                 List<string> applied = (
@@ -248,7 +248,7 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
 
                 if (applied.Count == 0)
                 {
-                    return DbStatus.NotInitialized;
+                    return DbStatusType.NotInitialized;
                 }
 
                 DbVersion = GetSchemaDate(applied.LastOrDefault());
@@ -257,16 +257,16 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
                     await context.Database.GetPendingMigrationsAsync().ConfigureAwait(false)
                 ).ToList();
 
-                return pending.Count > 0 ? DbStatus.UpdateAvailable : DbStatus.UpToDate;
+                return pending.Count > 0 ? DbStatusType.UpdateAvailable : DbStatusType.UpToDate;
             }
         }
         catch
         {
-            return DbStatus.NotInitialized;
+            return DbStatusType.NotInitialized;
         }
     }
 
-    public async Task<Result<List<ShooterModel>, StoreReadError>> GetShootersAsync()
+    public async Task<Result<List<ShooterModel>, StoreReadErrorModel>> GetShootersAsync()
     {
         try
         {
@@ -295,11 +295,11 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
         }
         catch (Exception exception)
         {
-            return new Error<StoreReadError>(new StoreReadError(GetFullMessage(exception)));
+            return new Error<StoreReadErrorModel>(new StoreReadErrorModel(GetFullMessage(exception)));
         }
     }
 
-    public async Task<Result<List<ShotModel>, StoreReadError>> GetShotsAsync()
+    public async Task<Result<List<ShotModel>, StoreReadErrorModel>> GetShotsAsync()
     {
         try
         {
@@ -316,7 +316,7 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
         }
         catch (Exception exception)
         {
-            return new Error<StoreReadError>(new StoreReadError(GetFullMessage(exception)));
+            return new Error<StoreReadErrorModel>(new StoreReadErrorModel(GetFullMessage(exception)));
         }
     }
 
@@ -328,7 +328,7 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
         }
     }
 
-    public async Task<Result<Unit, StoreSaveError>> SaveClubAsync(ClubModel club)
+    public async Task<Result<Unit, StoreSaveErrorModel>> SaveClubAsync(ClubModel club)
     {
         try
         {
@@ -344,7 +344,7 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
 
                     if (entity is null)
                     {
-                        return new Error<StoreSaveError>(new StoreSaveError($"Club {club.Id} not found."));
+                        return new Error<StoreSaveErrorModel>(new StoreSaveErrorModel($"Club {club.Id} not found."));
                     }
 
                     entity.Name = club.Name;
@@ -356,11 +356,11 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
         }
         catch (Exception exception)
         {
-            return new Error<StoreSaveError>(new StoreSaveError(GetFullMessage(exception)));
+            return new Error<StoreSaveErrorModel>(new StoreSaveErrorModel(GetFullMessage(exception)));
         }
     }
 
-    public async Task<Result<Unit, StoreSaveError>> SaveShooterAsync(ShooterModel shooter, bool isNew)
+    public async Task<Result<Unit, StoreSaveErrorModel>> SaveShooterAsync(ShooterModel shooter, bool isNew)
     {
         try
         {
@@ -371,7 +371,9 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
 
                 if (isNew && entity is not null)
                 {
-                    return new Error<StoreSaveError>(new StoreSaveError($"Shooter {shooter.Id} already exists."));
+                    return new Error<StoreSaveErrorModel>(
+                        new StoreSaveErrorModel($"Shooter {shooter.Id} already exists.")
+                    );
                 }
 
                 if (entity is null)
@@ -392,11 +394,11 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
         }
         catch (Exception exception)
         {
-            return new Error<StoreSaveError>(new StoreSaveError(GetFullMessage(exception)));
+            return new Error<StoreSaveErrorModel>(new StoreSaveErrorModel(GetFullMessage(exception)));
         }
     }
 
-    public async Task<Result<Unit, StoreSaveError>> SaveShotAsync(ShotModel shot)
+    public async Task<Result<Unit, StoreSaveErrorModel>> SaveShotAsync(ShotModel shot)
     {
         try
         {
@@ -416,7 +418,7 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
         }
         catch (Exception exception)
         {
-            return new Error<StoreSaveError>(new StoreSaveError(GetFullMessage(exception)));
+            return new Error<StoreSaveErrorModel>(new StoreSaveErrorModel(GetFullMessage(exception)));
         }
     }
 

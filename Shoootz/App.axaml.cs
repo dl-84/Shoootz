@@ -20,7 +20,7 @@ using Shoootz.Common.Services.Localization;
 using Shoootz.Common.Services.Settings;
 using Shoootz.Models.Settings;
 using Shoootz.Models.Settings.Database;
-using Shoootz.Models.Settings.Udp;
+using Shoootz.Models.Settings.Incoming;
 using Shoootz.Services.Data;
 using Shoootz.Services.Parser;
 using Shoootz.Services.Store;
@@ -64,7 +64,7 @@ public class App : Application
         else
         {
             _ = mainWindowViewModel.CheckDbConnectionAsync();
-            UdpConnection? udpConnection = _configurationRoot.Get<SettingsModel>()?.UdpConnection;
+            Receiver? udpConnection = _configurationRoot.Get<SettingsModel>()?.Receiver;
 
             if (udpConnection is not null && udpConnection.AutoConnect)
             {

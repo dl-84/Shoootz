@@ -13,9 +13,9 @@ internal interface IUdpListenerService : IDisposable
 
     bool IsListening { get; }
 
-    Result<Unit, UdpConnectionError> Start(int port);
+    Result<Unit, UdpConnectionErrorModel> Start(int port);
 
     void Stop();
 
-    Result<bool, UdpConnectionError> TestConnection(int port);
+    Result<bool, UdpConnectionErrorModel> TestConnection(int port);
 }

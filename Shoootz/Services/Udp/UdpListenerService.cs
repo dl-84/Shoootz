@@ -23,7 +23,7 @@ internal class UdpListenerService : IUdpListenerService
 
     public void Dispose() => Stop();
 
-    public Result<Unit, UdpConnectionError> Start(int port)
+    public Result<Unit, UdpConnectionErrorModel> Start(int port)
     {
         Stop();
 
@@ -42,7 +42,7 @@ internal class UdpListenerService : IUdpListenerService
         catch (Exception exception)
         {
             SetIsListening(false);
-            return new Error<UdpConnectionError>(new UdpConnectionError(exception.Message));
+            return new Error<UdpConnectionErrorModel>(new UdpConnectionErrorModel(exception.Message));
         }
     }
 
@@ -56,7 +56,7 @@ internal class UdpListenerService : IUdpListenerService
         SetIsListening(false);
     }
 
-    public Result<bool, UdpConnectionError> TestConnection(int port)
+    public Result<bool, UdpConnectionErrorModel> TestConnection(int port)
     {
         try
         {
@@ -65,7 +65,7 @@ internal class UdpListenerService : IUdpListenerService
         }
         catch (Exception exception)
         {
-            return new Error<UdpConnectionError>(new UdpConnectionError(exception.Message));
+            return new Error<UdpConnectionErrorModel>(new UdpConnectionErrorModel(exception.Message));
         }
     }
 
