@@ -1,6 +1,5 @@
 using System.Windows.Input;
 using Avalonia.Controls;
-using Avalonia.Data.Converters;
 using Avalonia.Input;
 using Shoootz.Bridge.TCP.ViewModels.Settings;
 
@@ -9,10 +8,6 @@ namespace Shoootz.Bridge.TCP.Views.Settings;
 /// <inheritdoc/>
 public partial class AppView : UserControl
 {
-    public static readonly IValueConverter IsNotEmptyConverter = new FuncValueConverter<string?, bool>(value =>
-        !string.IsNullOrEmpty(value)
-    );
-
     public AppView()
     {
         InitializeComponent();

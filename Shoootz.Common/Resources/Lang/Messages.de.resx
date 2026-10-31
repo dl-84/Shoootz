@@ -243,6 +243,12 @@
   <data name="AutoConnect" xml:space="preserve">
     <value>Beim Start automatisch verbinden</value>
   </data>
+  <data name="ReceiverType" xml:space="preserve">
+    <value>Typ</value>
+  </data>
+  <data name="Host" xml:space="preserve">
+    <value>Host</value>
+  </data>
   <data name="Connect" xml:space="preserve">
     <value>Verbinden</value>
   </data>
@@ -254,6 +260,9 @@
   </data>
   <data name="PortRangeHint" xml:space="preserve">
     <value>Min: 1, Max: 65535</value>
+  </data>
+  <data name="HostInvalidHint" xml:space="preserve">
+    <value>Ungültige IPv4-Adresse</value>
   </data>
   <data name="ConnectionFailed" xml:space="preserve">
     <value>Verbindung fehlgeschlagen</value>
@@ -317,6 +326,9 @@
   </data>
   <data name="Udp" xml:space="preserve">
     <value>UDP</value>
+  </data>
+  <data name="Tcp" xml:space="preserve">
+    <value>TCP</value>
   </data>
   <data name="Logging" xml:space="preserve">
     <value>Logging</value>

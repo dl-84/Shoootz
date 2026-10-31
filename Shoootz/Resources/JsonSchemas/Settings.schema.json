@@ -25,20 +25,26 @@
       "required": ["ConnectionString", "Provider"],
       "additionalProperties": false
     },
-    "UdpConnection": {
+    "Receiver": {
       "type": "object",
       "properties": {
         "AutoConnect": {
           "type": "boolean"
         },
+        "Host": {
+          "type": ["string", "null"]
+        },
         "Port": {
           "$ref": "#/definitions/PortNumber"
+        },
+        "Type": {
+          "enum": ["Tcp", "Udp"]
         }
       },
-      "required": ["AutoConnect", "Port"],
+      "required": ["AutoConnect", "Port", "Type"],
       "additionalProperties": false
     }
   },
-  "required": ["CurrentLanguageCode", "DatabaseConnection", "UdpConnection"],
+  "required": ["CurrentLanguageCode", "DatabaseConnection", "Receiver"],
   "additionalProperties": false
 }

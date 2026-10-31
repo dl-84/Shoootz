@@ -2,9 +2,23 @@
              xmlns="https://github.com/avaloniaui"
              xmlns:cards="using:Shoootz.Common.Views.Settings"
              xmlns:common="using:Shoootz.Common.Extensions"
+             xmlns:loc="using:Shoootz.Extensions"
              xmlns:vm="using:Shoootz.ViewModels.Settings"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:DataType="vm:ConnectionViewModel">
+
+    <UserControl.Resources>
+        <loc:EnumConverter x:Key="ReceiverTypeConverter" />
+    </UserControl.Resources>
+
+    <UserControl.Styles>
+        <Style Selector="TextBox PathIcon.clear-icon">
+            <Setter Property="Opacity" Value="0" />
+        </Style>
+        <Style Selector="TextBox:pointerover PathIcon.clear-icon">
+            <Setter Property="Opacity" Value="1" />
+        </Style>
+    </UserControl.Styles>
 
     <Panel>
 
@@ -64,7 +78,7 @@
                                 <PathIcon Classes="icon-action icon-danger"
                                           Data="{DynamicResource DatabaseDisconnectIcon}"
                                           PointerPressed="OnCommandIconPressed"
-                                          Tag="{Binding StopUdpCommand}"
+                                          Tag="{Binding DisconnectReceiverCommand}"
                                           ToolTip.HorizontalOffset="0"
                                           ToolTip.Placement="TopEdgeAlignedRight"
                                           ToolTip.Tip="{common:Localization Disconnect}"
@@ -74,7 +88,7 @@
                                 <PathIcon Classes="icon-action"
                                           Data="{DynamicResource DatabaseConnectIcon}"
                                           PointerPressed="OnCommandIconPressed"
-                                          Tag="{Binding StartUdpCommand}"
+                                          Tag="{Binding ConnectReceiverCommand}"
                                           ToolTip.HorizontalOffset="0"
                                           ToolTip.Placement="TopEdgeAlignedRight"
                                           ToolTip.Tip="{common:Localization Connect}"
@@ -85,10 +99,48 @@
                             </StackPanel>
                         </Grid>
 
-                        <Grid ColumnDefinitions="170,*"
+                        <Grid ColumnDefinitions="170,170,170,*"
                               ColumnSpacing="{DynamicResource SpacingSmall}">
 
                             <StackPanel Grid.Column="0"
+                                        Spacing="{DynamicResource SpacingXSmall}">
+                                <TextBlock Classes="label"
+                                           Text="{common:Localization ReceiverType}" />
+                                <ComboBox ItemsSource="{Binding ReceiverTypeOptions}"
+                                          SelectedItem="{Binding SelectedReceiverType}"
+                                          Width="170"
+                                          IsEnabled="{Binding !IsUdpListening}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Converter={StaticResource ReceiverTypeConverter}}" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1"
+                                        Spacing="{DynamicResource SpacingXSmall}">
+                                <TextBlock Classes="label"
+                                           Text="{common:Localization Host}" />
+                                <TextBox Classes.error="{Binding !IsHostValid}"
+                                         Text="{Binding Host}"
+                                         IsEnabled="{Binding IsTcpSelected}">
+                                    <TextBox.InnerRightContent>
+                                        <PathIcon Classes="icon-action icon-danger clear-icon"
+                                                  Data="{StaticResource CloseIcon}"
+                                                  Height="12"
+                                                  Margin="0,0,10,0"
+                                                  PointerPressed="OnClearHostIconPressed"
+                                                  Width="12" />
+                                    </TextBox.InnerRightContent>
+                                </TextBox>
+                                <TextBlock Classes="hint-error"
+                                           Margin="10,0,0,0"
+                                           Text="{common:Localization HostInvalidHint}"
+                                           IsVisible="{Binding !IsHostValid}" />
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2"
                                         Spacing="{DynamicResource SpacingXSmall}">
                                 <TextBlock Classes="label"
                                            Text="{common:Localization Port}" />
@@ -97,10 +149,23 @@
                                          MaxLength="5"
                                          Text="{Binding Port}"
                                          common:InputFilter.AllowedPattern="[0-9]"
-                                         IsEnabled="{Binding !IsUdpListening}" />
+                                         IsEnabled="{Binding !IsUdpListening}">
+                                    <TextBox.InnerRightContent>
+                                        <PathIcon Classes="icon-action icon-danger clear-icon"
+                                                  Data="{StaticResource CloseIcon}"
+                                                  Height="12"
+                                                  Margin="0,0,10,0"
+                                                  PointerPressed="OnClearPortIconPressed"
+                                                  Width="12" />
+                                    </TextBox.InnerRightContent>
+                                </TextBox>
+                                <TextBlock Classes="hint-error"
+                                           Margin="10,0,0,0"
+                                           Text="{common:Localization PortRangeHint}"
+                                           IsVisible="{Binding !IsPortValid}" />
                             </StackPanel>
 
-                            <Grid Grid.Column="1"
+                            <Grid Grid.Column="3"
                                   RowDefinitions="Auto,*"
                                   RowSpacing="{DynamicResource SpacingXSmall}">
                                 <TextBlock Grid.Row="0"
@@ -117,10 +182,6 @@
                             </Grid>
 
                         </Grid>
-
-                        <TextBlock Classes="hint-error"
-                                   Text="{common:Localization PortRangeHint}"
-                                   IsVisible="{Binding !IsPortValid}" />
 
                     </StackPanel>
                 </Border>

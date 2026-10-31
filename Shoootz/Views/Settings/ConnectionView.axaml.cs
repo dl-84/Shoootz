@@ -25,6 +25,22 @@ public partial class ConnectionView : UserControl
         DataContextChanged += OnDataContextChanged;
     }
 
+    private void OnClearHostIconPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (DataContext is ConnectionViewModel viewModel)
+        {
+            viewModel.Host = string.Empty;
+        }
+    }
+
+    private void OnClearPortIconPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (DataContext is ConnectionViewModel viewModel)
+        {
+            viewModel.Port = string.Empty;
+        }
+    }
+
     private void OnCommandIconPressed(object? sender, PointerPressedEventArgs e)
     {
         if (sender is PathIcon { Tag: ICommand command })

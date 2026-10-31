@@ -18,6 +18,7 @@ using Shoootz.Common.ViewModels.Settings;
 using Shoootz.Models.Database;
 using Shoootz.Models.Error;
 using Shoootz.Models.Settings;
+using Shoootz.Models.Settings.Incoming;
 using Shoootz.Services.Data;
 using Shoootz.Services.Store;
 using Shoootz.Services.Udp;
@@ -77,9 +78,11 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
         );
 
         AutoConnect = _settings.Receiver.AutoConnect;
+        Host = _settings.Receiver.Host ?? string.Empty;
         IsUdpListening = udpListenerService.IsListening;
         Port = _settings.Receiver.Port.ToString();
         SelectedProvider = _settings.DatabaseConnection.Provider;
+        SelectedReceiverType = _settings.Receiver.Type;
         ConnectionString = _settings.DatabaseConnection.ConnectionString;
 
         _udpListenerService.IsListeningChanged += OnUdpListeningChanged;
@@ -109,6 +112,10 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
 
     public GeneralSettingsViewModel<SettingsModel> GeneralSettings { get; }
 
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsHostValid))]
+    public partial string Host { get; set; }
+
     public string InitializeDbLabel =>
         !IsDbConnected
             ? LocalizationService.Instance[Messages.DbNotConnected]
@@ -124,11 +131,15 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
     [NotifyPropertyChangedFor(nameof(IsInitializeDbEnabled))]
     public partial bool IsDbConnected { get; set; }
 
+    public bool IsHostValid => !IsTcpSelected || Host.IsValidIPv4();
+
     public bool IsInitializeDbEnabled => DbStatusType != DbStatusType.UpToDate && IsDbConnected;
 
     public bool IsPortValid => Port.IsValidPort();
 
     public bool IsSaveEnabled => CanSave();
+
+    public bool IsTcpSelected => SelectedReceiverType == ReceiverType.Tcp;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(UdpStatusLabel))]
@@ -140,8 +151,15 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
 
     public IEnumerable<ProviderType> ProviderOptions { get; } = Enum.GetValues<ProviderType>();
 
+    public IEnumerable<ReceiverType> ReceiverTypeOptions { get; } = Enum.GetValues<ReceiverType>();
+
     [ObservableProperty]
     public partial ProviderType SelectedProvider { get; set; }
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsHostValid))]
+    [NotifyPropertyChangedFor(nameof(IsTcpSelected))]
+    public partial ReceiverType SelectedReceiverType { get; set; }
 
     public string UdpStatusLabel =>
         LocalizationService.Instance[IsUdpListening ? nameof(Messages.Connected) : nameof(Messages.NotConnected)];
@@ -152,62 +170,19 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
         _storeService.ConnectionChanged -= OnStoreConnectionChanged;
     }
 
-    [RelayCommand(CanExecute = nameof(CanSave))]
-    private void Save()
-    {
-        _settings.DatabaseConnection.ConnectionString = ConnectionString;
-        _settings.DatabaseConnection.Provider = SelectedProvider;
-        _settings.Receiver.AutoConnect = AutoConnect;
-        _settings.Receiver.Port = int.Parse(Port);
-        _settingsWriter.Save(_settings);
-
-        NotifySaveStateChanged();
-    }
+    private bool CanInitializeDb() => IsInitializeDbEnabled;
 
     private bool CanSave() =>
         Port.IsValidPort()
+        && IsHostValid
         && (
             AutoConnect != _settings.Receiver.AutoConnect
             || ConnectionString != _settings.DatabaseConnection.ConnectionString
+            || (SelectedReceiverType == ReceiverType.Tcp && Host != (_settings.Receiver.Host ?? string.Empty))
             || Port != _settings.Receiver.Port.ToString()
             || SelectedProvider != _settings.DatabaseConnection.Provider
+            || SelectedReceiverType != _settings.Receiver.Type
         );
-
-    private void NotifySaveStateChanged()
-    {
-        SaveCommand.NotifyCanExecuteChanged();
-        OnPropertyChanged(nameof(IsSaveEnabled));
-    }
-
-    partial void OnAutoConnectChanged(bool value) => NotifySaveStateChanged();
-
-    partial void OnConnectionStringChanged(string value) => NotifySaveStateChanged();
-
-    partial void OnIsDbConnectedChanged(bool value) => InitializeDbCommand.NotifyCanExecuteChanged();
-
-    partial void OnPortChanged(string value) => NotifySaveStateChanged();
-
-    partial void OnSelectedProviderChanged(ProviderType value)
-    {
-        ConnectionString = value switch
-        {
-#if DEBUG
-            ProviderType.PostgreSql =>
-                "Host=192.168.10.9;Port=5433;Database=Shoootz;Username=shoootz_user;Password=shoootz_passwort",
-#else
-            ProviderType.PostgreSql =>
-                "Host=<Host IP-Address>;Port=5432;Database=Shoootz;Username=<Username>;Password=<Password>",
-#endif
-            _ => $"Data Source={AppPath.DbFile}",
-        };
-
-        NotifySaveStateChanged();
-    }
-
-    private void OnStoreConnectionChanged(object? sender, EventArgs e) => IsDbConnected = _storeService.IsConnected;
-
-    private void OnUdpListeningChanged(object? sender, bool isListening) =>
-        Dispatcher.UIThread.Post(() => IsUdpListening = isListening);
 
     [RelayCommand]
     private async Task ConnectDb()
@@ -229,7 +204,42 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
     }
 
     [RelayCommand]
+    private void ConnectReceiver()
+    {
+        switch (SelectedReceiverType)
+        {
+            case ReceiverType.Tcp:
+                StartTcp();
+                break;
+            case ReceiverType.Udp:
+                StartUdp();
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+    }
+
+    [RelayCommand]
     private async Task CreateDb() => await InitializeDatabaseAsync(connectAfterSuccess: true);
+
+    [RelayCommand]
+    private void DisconnectDb() => _storeService.Disconnect();
+
+    [RelayCommand]
+    private void DisconnectReceiver()
+    {
+        switch (SelectedReceiverType)
+        {
+            case ReceiverType.Tcp:
+                StopTcp();
+                break;
+            case ReceiverType.Udp:
+                StopUdp();
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+    }
 
     private async Task InitializeDatabaseAsync(bool connectAfterSuccess)
     {
@@ -262,10 +272,84 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
         }
     }
 
-    [RelayCommand]
-    private void DisconnectDb() => _storeService.Disconnect();
+    [RelayCommand(CanExecute = nameof(CanInitializeDb))]
+    private async Task InitializeDb() => await InitializeDatabaseAsync(connectAfterSuccess: false);
 
-    [RelayCommand]
+    private void NotifySaveStateChanged()
+    {
+        SaveCommand.NotifyCanExecuteChanged();
+        OnPropertyChanged(nameof(IsSaveEnabled));
+    }
+
+    partial void OnAutoConnectChanged(bool value) => NotifySaveStateChanged();
+
+    partial void OnConnectionStringChanged(string value) => NotifySaveStateChanged();
+
+    partial void OnHostChanged(string value) => NotifySaveStateChanged();
+
+    partial void OnIsDbConnectedChanged(bool value) => InitializeDbCommand.NotifyCanExecuteChanged();
+
+    partial void OnPortChanged(string value) => NotifySaveStateChanged();
+
+    partial void OnSelectedProviderChanged(ProviderType value)
+    {
+        ConnectionString = value switch
+        {
+#if DEBUG
+            ProviderType.PostgreSql =>
+                "Host=192.168.10.9;Port=5433;Database=Shoootz;Username=shoootz_user;Password=shoootz_passwort",
+#else
+            ProviderType.PostgreSql =>
+                "Host=<Host IP-Address>;Port=5432;Database=Shoootz;Username=<Username>;Password=<Password>",
+#endif
+            _ => $"Data Source={AppPath.DbFile}",
+        };
+
+        NotifySaveStateChanged();
+    }
+
+    partial void OnSelectedReceiverTypeChanged(ReceiverType value)
+    {
+        if (value == ReceiverType.Udp)
+        {
+            Host = string.Empty;
+        }
+
+        NotifySaveStateChanged();
+    }
+
+    private void OnStoreConnectionChanged(object? sender, EventArgs e) => IsDbConnected = _storeService.IsConnected;
+
+    private void OnUdpListeningChanged(object? sender, bool isListening) =>
+        Dispatcher.UIThread.Post(() => IsUdpListening = isListening);
+
+    private async Task RefreshDbStatusAsync()
+    {
+        DbStatusType = await _storeService.GetDbStatusAsync();
+        InitializeDbCommand.NotifyCanExecuteChanged();
+    }
+
+    [RelayCommand(CanExecute = nameof(CanSave))]
+    private void Save()
+    {
+        _settings.DatabaseConnection.ConnectionString = ConnectionString;
+        _settings.DatabaseConnection.Provider = SelectedProvider;
+        _settings.Receiver.AutoConnect = AutoConnect;
+
+        if (SelectedReceiverType == ReceiverType.Tcp)
+        {
+            _settings.Receiver.Host = Host;
+        }
+
+        _settings.Receiver.Port = int.Parse(Port);
+        _settings.Receiver.Type = SelectedReceiverType;
+        _settingsWriter.Save(_settings);
+
+        NotifySaveStateChanged();
+    }
+
+    private void StartTcp() { }
+
     private void StartUdp()
     {
         if (!int.TryParse(Port, out int port))
@@ -280,8 +364,20 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
             .Match(_ => { }, error => ConnectionTestCompleted?.Invoke(false, error.Value.Message));
     }
 
-    [RelayCommand]
+    private void StopTcp() { }
+
     private void StopUdp() => _udpListenerService.Stop();
+
+    [RelayCommand]
+    private async Task TestDbConnection()
+    {
+        Result<bool, DbConnectionError> result = await _connectionTester.Run(SelectedProvider, ConnectionString);
+
+        result.Match(
+            _ => ConnectionTestCompleted?.Invoke(true, null),
+            error => ConnectionTestCompleted?.Invoke(false, error.Value.Message)
+        );
+    }
 
     [RelayCommand]
     private void TestUdpConnection()
@@ -297,27 +393,5 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
                 _ => ConnectionTestCompleted?.Invoke(true, null),
                 error => ConnectionTestCompleted?.Invoke(false, error.Value.Message)
             );
-    }
-
-    [RelayCommand(CanExecute = nameof(CanInitializeDb))]
-    private async Task InitializeDb() => await InitializeDatabaseAsync(connectAfterSuccess: false);
-
-    private bool CanInitializeDb() => IsInitializeDbEnabled;
-
-    private async Task RefreshDbStatusAsync()
-    {
-        DbStatusType = await _storeService.GetDbStatusAsync();
-        InitializeDbCommand.NotifyCanExecuteChanged();
-    }
-
-    [RelayCommand]
-    private async Task TestDbConnection()
-    {
-        Result<bool, DbConnectionError> result = await _connectionTester.Run(SelectedProvider, ConnectionString);
-
-        result.Match(
-            _ => ConnectionTestCompleted?.Invoke(true, null),
-            error => ConnectionTestCompleted?.Invoke(false, error.Value.Message)
-        );
     }
 }

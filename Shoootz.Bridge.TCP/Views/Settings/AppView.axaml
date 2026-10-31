@@ -2,7 +2,6 @@
              xmlns="https://github.com/avaloniaui"
              xmlns:cards="using:Shoootz.Common.Views.Settings"
              xmlns:extensions="using:Shoootz.Common.Extensions"
-             xmlns:local="using:Shoootz.Bridge.TCP.Views.Settings"
              xmlns:vm="using:Shoootz.Bridge.TCP.ViewModels.Settings"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:DataType="vm:AppViewModel">
@@ -63,8 +62,7 @@
                                           Height="12"
                                           Margin="0,0,10,0"
                                           PointerPressed="OnClearUdpPortIconPressed"
-                                          Width="12"
-                                          IsVisible="{Binding Bridge.UdpPort, Converter={x:Static local:AppView.IsNotEmptyConverter}}" />
+                                          Width="12" />
                             </TextBox.InnerRightContent>
                         </TextBox>
                     </StackPanel>
@@ -85,8 +83,7 @@
                                           Height="12"
                                           Margin="0,0,10,0"
                                           PointerPressed="OnClearTcpPortIconPressed"
-                                          Width="12"
-                                          IsVisible="{Binding Bridge.TcpPort, Converter={x:Static local:AppView.IsNotEmptyConverter}}" />
+                                          Width="12" />
                             </TextBox.InnerRightContent>
                         </TextBox>
                     </StackPanel>

@@ -688,6 +688,24 @@ namespace Shoootz.Common.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Host.
+        /// </summary>
+        internal static string Host {
+            get {
+                return ResourceManager.GetString("Host", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid IPv4 address.
+        /// </summary>
+        internal static string HostInvalidHint {
+            get {
+                return ResourceManager.GetString("HostInvalidHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ID.
         /// </summary>
         internal static string Id {
@@ -891,6 +909,15 @@ namespace Shoootz.Common.Resources.Lang {
         internal static string Provider {
             get {
                 return ResourceManager.GetString("Provider", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type.
+        /// </summary>
+        internal static string ReceiverType {
+            get {
+                return ResourceManager.GetString("ReceiverType", resourceCulture);
             }
         }
         
@@ -1260,6 +1287,15 @@ namespace Shoootz.Common.Resources.Lang {
         internal static string Stopped {
             get {
                 return ResourceManager.GetString("Stopped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TCP.
+        /// </summary>
+        internal static string Tcp {
+            get {
+                return ResourceManager.GetString("Tcp", resourceCulture);
             }
         }
         
