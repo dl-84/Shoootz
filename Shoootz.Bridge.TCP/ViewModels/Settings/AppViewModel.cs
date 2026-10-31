@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Options;
 using Shoootz.Bridge.TCP.Models.Settings;
 using Shoootz.Bridge.TCP.Services.Bridge;
+using Shoootz.Common.Resources.Lang;
 using Shoootz.Common.Services.Language;
 using Shoootz.Common.Services.Localization;
 using Shoootz.Common.Services.Settings;
@@ -52,6 +53,14 @@ internal partial class AppViewModel : ViewModelBase, IDisposable, IHasUnsavedCha
 
     public bool IsSaveEnabled => CanSave();
 
+    public string PortErrorHint =>
+        Bridge switch
+        {
+            { IsUdpPortValid: false } => LocalizationService.Instance[nameof(Messages.UdpPortRangeHint)],
+            { IsTcpPortValid: false } => LocalizationService.Instance[nameof(Messages.TcpPortRangeHint)],
+            _ => string.Empty,
+        };
+
     public void Dispose()
     {
         Bridge.PropertyChanged -= OnBridgePropertyChanged;
@@ -69,6 +78,7 @@ internal partial class AppViewModel : ViewModelBase, IDisposable, IHasUnsavedCha
     {
         SaveCommand.NotifyCanExecuteChanged();
         OnPropertyChanged(nameof(IsSaveEnabled));
+        OnPropertyChanged(nameof(PortErrorHint));
     }
 
     private void OnBridgePropertyChanged(object? sender, PropertyChangedEventArgs e)

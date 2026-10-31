@@ -697,7 +697,7 @@ namespace Shoootz.Common.Resources.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid IPv4 address.
+        ///   Looks up a localized string similar to Host: Invalid IPv4 address.
         /// </summary>
         internal static string HostInvalidHint {
             get {
@@ -895,7 +895,7 @@ namespace Shoootz.Common.Resources.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Min: 1, Max: 65535.
+        ///   Looks up a localized string similar to Port: Min 1, Max 65535.
         /// </summary>
         internal static string PortRangeHint {
             get {
@@ -1309,6 +1309,15 @@ namespace Shoootz.Common.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to TCP Port: Min 1, Max 65535.
+        /// </summary>
+        internal static string TcpPortRangeHint {
+            get {
+                return ResourceManager.GetString("TcpPortRangeHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Test.
         /// </summary>
         internal static string Test {
@@ -1336,7 +1345,7 @@ namespace Shoootz.Common.Resources.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to UDP Broadcast.
+        ///   Looks up a localized string similar to Receiver.
         /// </summary>
         internal static string UdpBroadcast {
             get {
@@ -1350,6 +1359,15 @@ namespace Shoootz.Common.Resources.Lang {
         internal static string UdpPort {
             get {
                 return ResourceManager.GetString("UdpPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UDP Port: Min 1, Max 65535.
+        /// </summary>
+        internal static string UdpPortRangeHint {
+            get {
+                return ResourceManager.GetString("UdpPortRangeHint", resourceCulture);
             }
         }
         

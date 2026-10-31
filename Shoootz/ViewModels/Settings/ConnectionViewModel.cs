@@ -102,6 +102,8 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
     [ObservableProperty]
     public partial bool AutoConnect { get; set; }
 
+    public string ConnectionErrorHint => !IsHostValid ? HostErrorHint : PortErrorHint;
+
     [ObservableProperty]
     public partial string ConnectionString { get; set; }
 
@@ -113,8 +115,13 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
     public GeneralSettingsViewModel<SettingsModel> GeneralSettings { get; }
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ConnectionErrorHint))]
+    [NotifyPropertyChangedFor(nameof(HostErrorHint))]
     [NotifyPropertyChangedFor(nameof(IsHostValid))]
     public partial string Host { get; set; }
+
+    public string HostErrorHint =>
+        IsHostValid ? string.Empty : LocalizationService.Instance[nameof(Messages.HostInvalidHint)];
 
     public string InitializeDbLabel =>
         !IsDbConnected
@@ -146,8 +153,13 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
     public partial bool IsUdpListening { get; set; }
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ConnectionErrorHint))]
     [NotifyPropertyChangedFor(nameof(IsPortValid))]
+    [NotifyPropertyChangedFor(nameof(PortErrorHint))]
     public partial string Port { get; set; }
+
+    public string PortErrorHint =>
+        IsPortValid ? string.Empty : LocalizationService.Instance[nameof(Messages.PortRangeHint)];
 
     public IEnumerable<ProviderType> ProviderOptions { get; } = Enum.GetValues<ProviderType>();
 
@@ -157,6 +169,8 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
     public partial ProviderType SelectedProvider { get; set; }
 
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(ConnectionErrorHint))]
+    [NotifyPropertyChangedFor(nameof(HostErrorHint))]
     [NotifyPropertyChangedFor(nameof(IsHostValid))]
     [NotifyPropertyChangedFor(nameof(IsTcpSelected))]
     public partial ReceiverType SelectedReceiverType { get; set; }

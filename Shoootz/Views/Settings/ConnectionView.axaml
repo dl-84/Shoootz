@@ -28,22 +28,6 @@
                 <TextBlock Classes="h3"
                            Text="{common:Localization App}" />
 
-                <StackPanel HorizontalAlignment="Right"
-                            Margin="0,0,10,0"
-                            Orientation="Horizontal"
-                            Spacing="{DynamicResource SpacingMedium}">
-                    <PathIcon Classes="icon-action"
-                              Data="{DynamicResource SaveIcon}"
-                              PointerPressed="OnCommandIconPressed"
-                              Tag="{Binding SaveCommand}"
-                              ToolTip.HorizontalOffset="0"
-                              ToolTip.Placement="TopEdgeAlignedRight"
-                              ToolTip.Tip="{common:Localization Save}"
-                              ToolTip.VerticalOffset="-2"
-                              VerticalAlignment="Center"
-                              IsEnabled="{Binding IsSaveEnabled}" />
-                </StackPanel>
-
                 <cards:GeneralSettingsCard DataContext="{Binding GeneralSettings}" />
 
                 <Border Classes="card">
@@ -134,10 +118,6 @@
                                                   Width="12" />
                                     </TextBox.InnerRightContent>
                                 </TextBox>
-                                <TextBlock Classes="hint-error"
-                                           Margin="10,0,0,0"
-                                           Text="{common:Localization HostInvalidHint}"
-                                           IsVisible="{Binding !IsHostValid}" />
                             </StackPanel>
 
                             <StackPanel Grid.Column="2"
@@ -159,10 +139,6 @@
                                                   Width="12" />
                                     </TextBox.InnerRightContent>
                                 </TextBox>
-                                <TextBlock Classes="hint-error"
-                                           Margin="10,0,0,0"
-                                           Text="{common:Localization PortRangeHint}"
-                                           IsVisible="{Binding !IsPortValid}" />
                             </StackPanel>
 
                             <Grid Grid.Column="3"
@@ -294,6 +270,20 @@
 
                     </StackPanel>
                 </Border>
+
+                <Grid ColumnDefinitions="*,Auto">
+                    <TextBlock Grid.Column="0"
+                               Classes="hint-error"
+                               Text="{Binding ConnectionErrorHint}"
+                               VerticalAlignment="Center" />
+
+                    <Button Grid.Column="1"
+                            Classes="blue"
+                            Command="{Binding SaveCommand}"
+                            Content="{common:Localization Save}"
+                            HorizontalAlignment="Right"
+                            IsEnabled="{Binding IsSaveEnabled}" />
+                </Grid>
 
             </StackPanel>
         </ScrollViewer>

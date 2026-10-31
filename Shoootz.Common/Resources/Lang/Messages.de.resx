@@ -238,7 +238,7 @@
     <value>getrennt</value>
   </data>
   <data name="UdpBroadcast" xml:space="preserve">
-    <value>UDP Broadcast</value>
+    <value>Empfänger</value>
   </data>
   <data name="AutoConnect" xml:space="preserve">
     <value>Beim Start automatisch verbinden</value>
@@ -259,10 +259,16 @@
     <value>Port</value>
   </data>
   <data name="PortRangeHint" xml:space="preserve">
-    <value>Min: 1, Max: 65535</value>
+    <value>Port: Min 1, Max 65535</value>
+  </data>
+  <data name="UdpPortRangeHint" xml:space="preserve">
+    <value>UDP-Port: Min 1, Max 65535</value>
+  </data>
+  <data name="TcpPortRangeHint" xml:space="preserve">
+    <value>TCP-Port: Min 1, Max 65535</value>
   </data>
   <data name="HostInvalidHint" xml:space="preserve">
-    <value>Ungültige IPv4-Adresse</value>
+    <value>Host: Ungültige IPv4-Adresse</value>
   </data>
   <data name="ConnectionFailed" xml:space="preserve">
     <value>Verbindung fehlgeschlagen</value>
