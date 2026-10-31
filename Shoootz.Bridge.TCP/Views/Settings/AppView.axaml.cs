@@ -1,4 +1,3 @@
-using System.Windows.Input;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Shoootz.Bridge.TCP.ViewModels.Settings;
@@ -26,14 +25,6 @@ public partial class AppView : UserControl
         if (DataContext is AppViewModel viewModel)
         {
             viewModel.Bridge.UdpPort = string.Empty;
-        }
-    }
-
-    private void OnCommandIconPressed(object? sender, PointerPressedEventArgs e)
-    {
-        if (sender is PathIcon { Tag: ICommand command })
-        {
-            command.Execute(null);
         }
     }
 }
