@@ -1,0 +1,9 @@
+<UserControl x:Class="Shoootz.Views.Controls.ReceiverStatusIcon"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Image x:Name="IconImage"
+           Height="24"
+           Width="64" />
+
+</UserControl>
