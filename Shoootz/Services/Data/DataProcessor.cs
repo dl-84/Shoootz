@@ -5,20 +5,25 @@ using System.Text;
 using System.Threading;
 using System.Threading.Channels;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 using Result;
 using Result.Types;
 using Shoootz.Models.Error;
+using Shoootz.Models.Settings.Incoming;
 using Shoootz.Models.Shot;
 using Shoootz.Models.Udp;
 using Shoootz.Services.Parser;
+using Shoootz.Services.Receiver;
 using Shoootz.Services.Store;
-using Shoootz.Services.Udp;
 
 namespace Shoootz.Services.Data;
 
-internal class DataProcessor(IUdpListenerService udpListenerService, IShotDataParser parser, IStoreService dbService)
-    : IDataProcessor,
-        IDisposable
+internal class DataProcessor(
+    [FromKeyedServices(ReceiverType.Udp)] IReceiverService udpListenerService,
+    [FromKeyedServices(ReceiverType.Tcp)] IReceiverService tcpListenerService,
+    IShotDataParser parser,
+    IStoreService dbService
+) : IDataProcessor, IDisposable
 {
     private const int MaxRawLogEntries = 300;
 
@@ -30,9 +35,9 @@ internal class DataProcessor(IUdpListenerService udpListenerService, IShotDataPa
 
     private readonly Lock _rawLogLock = new();
 
-    private readonly Channel<ShotModel> _shotChannel = Channel.CreateUnbounded<ShotModel>();
+    private readonly Channel<string> _receiverChannel = Channel.CreateUnbounded<string>();
 
-    private readonly Channel<string> _udpChannel = Channel.CreateUnbounded<string>();
+    private readonly Channel<ShotModel> _shotChannel = Channel.CreateUnbounded<ShotModel>();
 
     private bool _started;
 
@@ -73,6 +78,8 @@ internal class DataProcessor(IUdpListenerService udpListenerService, IShotDataPa
     public void Dispose()
     {
         udpListenerService.ShotRawDataReceived -= OnPacketReceived;
+        tcpListenerService.ShotRawDataReceived -= OnPacketReceived;
+
         _cancellationTokenSource.Cancel();
         _cancellationTokenSource.Dispose();
     }
@@ -85,8 +92,9 @@ internal class DataProcessor(IUdpListenerService udpListenerService, IShotDataPa
         }
 
         udpListenerService.ShotRawDataReceived += OnPacketReceived;
+        tcpListenerService.ShotRawDataReceived += OnPacketReceived;
 
-        _ = ProcessUdpChannelReaderLoopAsync(_cancellationTokenSource.Token);
+        _ = ProcessReceiverChannelReaderLoopAsync(_cancellationTokenSource.Token);
         _ = ProcessShotChannelReaderLoopAsync(_cancellationTokenSource.Token);
         _started = true;
     }
@@ -101,7 +109,7 @@ internal class DataProcessor(IUdpListenerService udpListenerService, IShotDataPa
         IncrementCount(ShotCategoryType.Received);
 
         string rawData = Encoding.UTF8.GetString(data);
-        _udpChannel.Writer.TryWrite(rawData);
+        _receiverChannel.Writer.TryWrite(rawData);
 
         UdpRawModel entry = new(DateTime.Now, rawData);
 
@@ -118,9 +126,9 @@ internal class DataProcessor(IUdpListenerService udpListenerService, IShotDataPa
         RawDataLogged?.Invoke(this, entry);
     }
 
-    private async Task ProcessUdpChannelReaderLoopAsync(CancellationToken cancellationToken)
+    private async Task ProcessReceiverChannelReaderLoopAsync(CancellationToken cancellationToken)
     {
-        await foreach (string rawData in _udpChannel.Reader.ReadAllAsync(cancellationToken))
+        await foreach (string rawData in _receiverChannel.Reader.ReadAllAsync(cancellationToken))
         {
             Result<ShotModel, ShotCategoryType> result = parser.Run(rawData);
 

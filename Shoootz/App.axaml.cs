@@ -23,8 +23,8 @@ using Shoootz.Models.Settings.Database;
 using Shoootz.Models.Settings.Incoming;
 using Shoootz.Services.Data;
 using Shoootz.Services.Parser;
+using Shoootz.Services.Receiver;
 using Shoootz.Services.Store;
-using Shoootz.Services.Udp;
 using Shoootz.Store;
 using Shoootz.Store.Services;
 using Shoootz.Store.Types;
@@ -64,12 +64,12 @@ public class App : Application
         else
         {
             _ = mainWindowViewModel.CheckDbConnectionAsync();
-            Receiver? udpConnection = _configurationRoot.Get<SettingsModel>()?.Receiver;
+            Receiver? receiver = _configurationRoot.Get<SettingsModel>()?.Receiver;
 
-            if (udpConnection is not null && udpConnection.AutoConnect)
+            if (receiver is not null && receiver.AutoConnect)
             {
                 serviceProvider.GetRequiredService<IDataProcessor>().Start();
-                _ = serviceProvider.GetRequiredService<IUdpListenerService>().Start(udpConnection.Port);
+                _ = serviceProvider.GetRequiredKeyedService<IReceiverService>(receiver.Type).Connect();
             }
         }
 
@@ -107,7 +107,8 @@ public class App : Application
         ));
         services.AddSingleton<IShotDataParser, ShotDataParser>();
         services.AddSingleton<ISettingsWriter<SettingsModel>, SettingsWriter<SettingsModel>>();
-        services.AddSingleton<IUdpListenerService, UdpListenerService>();
+        services.AddKeyedSingleton<IReceiverService, TcpReceiverService>(ReceiverType.Tcp);
+        services.AddKeyedSingleton<IReceiverService, UdpReceiverService>(ReceiverType.Udp);
         services.AddSingleton<MainWindowViewModel>();
     }
 
