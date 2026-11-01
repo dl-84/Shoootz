@@ -169,24 +169,21 @@ jobs:
       - name: Publish
         run: dotnet publish Shoootz.Bridge.TCP/Shoootz.Bridge.TCP.csproj -r linux-x64 -c Release -o ./out
 
-      # Installation direkt aus den offiziellen Paketquellen über Aptitude
-      - name: Install AppImage Tooling via Advanced Packaging Tool
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y appimage-builder
-
-      - name: Create AppImage
+      - name: Create AppImage PackStructure
         run: |
           APPDIR=./AppDir
           mkdir -p "$APPDIR/usr/bin"
           mkdir -p "$APPDIR/usr/share/icons/hicolor/256x256/apps"
-          mv ./out/Shoootz.Bridge.TCP "$APPDIR/usr/bin/"
+
+          # Alle Binärdateien kopieren, um Abhängigkeiten zu wahren
+          cp -r ./out/* "$APPDIR/usr/bin/"
           cp Shoootz.Bridge.TCP/Assets/Logo.png "$APPDIR/Shoootz.Bridge.TCP.png"
           cp Shoootz.Bridge.TCP/Assets/Logo.png "$APPDIR/usr/share/icons/hicolor/256x256/apps/Shoootz.Bridge.TCP.png"
 
           cat > "$APPDIR/AppRun" << 'APPRUN'
           #!/bin/sh
-          exec "$APPDIR/usr/bin/Shoootz.Bridge.TCP" "$@"
+          HERE="$(dirname "$(readlink -f "${0}")")"
+          exec "$HERE/usr/bin/Shoootz.Bridge.TCP" "$@"
           APPRUN
           chmod +x "$APPDIR/AppRun"
 
@@ -199,8 +196,18 @@ jobs:
           Categories=Sports;
           DESKTOP
 
-          # Nutzen des im System global installierten Hilfswerkzeugs zum Generieren des AppImages
-          ARCH=x86_64 appimagetool "$APPDIR" ./out/Shoootz.Bridge.TCP.AppImage
+      # Natives Packen der Dateistruktur ohne externe appimagetool-Installation
+      - name: Compile AppImage Archiv via SquashFS
+        run: |
+          sudo apt-get update && sudo apt-get install -y squashfs-tools
+          mksquashfs ./AppDir ./out/appimage.squashfs -root-owned -noappend
+
+          # Laden des offiziellen v2-Laufzeitskeletts direkt aus den GitHub Actions Kern-Ressourcen
+          wget -q https://github.com -O runtime
+
+          # Zusammenfügen von Runtime und SquashFS-Dateisystem zum fertigen AppImage
+          cat runtime ./out/appimage.squashfs > ./out/Shoootz.Bridge.TCP.AppImage
+          chmod +x ./out/Shoootz.Bridge.TCP.AppImage
 
       - uses: actions/upload-artifact@v7
         with:
