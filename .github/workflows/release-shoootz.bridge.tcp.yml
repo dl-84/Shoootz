@@ -132,12 +132,25 @@ jobs:
 
           codesign --deep --force --sign - "$BUNDLE"
 
-          SIZE_MB=$(( $(du -sm "$BUNDLE" | cut -f1) + 200 ))
+      # Installiert das Hilfswerkzeug zum Erstellen schicker DMGs mit Drag-and-Drop-Verknüpfung
+      - name: Install create-dmg utility
+        run: brew install create-dmg
 
-          hdiutil create -volname "Shoootz.Bridge.TCP" \
-            -srcfolder "$BUNDLE" -ov -format UDZO \
-            -size "${SIZE_MB}m" \
-            "./out/Shoootz.Bridge.TCP-${{ matrix.suffix }}.dmg"
+      # Erstellt die finale DMG mit der interaktiven Drag-to-Applications Verknüpfung
+      - name: Build Drag-and-Drop DMG Installer
+        run: |
+          mkdir -p ./dmg-source
+          mv ./out/Shoootz.Bridge.TCP.app ./dmg-source/
+
+          create-dmg \
+            --volname "Shoootz.Bridge.TCP Installer" \
+            --window-pos 200 120 \
+            --window-size 600 300 \
+            --icon-size 100 \
+            --icon "Shoootz.Bridge.TCP.app" 150 100 \
+            --app-drop-link 450 100 \
+            "./out/Shoootz.Bridge.TCP-${{ matrix.suffix }}.dmg" \
+            "./dmg-source/"
 
       - uses: actions/upload-artifact@v7
         with:
@@ -175,7 +188,6 @@ jobs:
           mkdir -p "$APPDIR/usr/bin"
           mkdir -p "$APPDIR/usr/share/icons/hicolor/256x256/apps"
 
-          # Alle Binärdateien kopieren, um Abhängigkeiten zu wahren
           cp -r ./out/* "$APPDIR/usr/bin/"
           cp Shoootz.Bridge.TCP/Assets/Logo.png "$APPDIR/Shoootz.Bridge.TCP.png"
           cp Shoootz.Bridge.TCP/Assets/Logo.png "$APPDIR/usr/share/icons/hicolor/256x256/apps/Shoootz.Bridge.TCP.png"
@@ -196,16 +208,11 @@ jobs:
           Categories=Sports;
           DESKTOP
 
-      # Natives Packen der Dateistruktur ohne externe appimagetool-Installation
       - name: Compile AppImage Archiv via SquashFS
         run: |
           sudo apt-get update && sudo apt-get install -y squashfs-tools
           mksquashfs ./AppDir ./out/appimage.squashfs -root-owned -noappend
-
-          # Laden des offiziellen v2-Laufzeitskeletts direkt aus den GitHub Actions Kern-Ressourcen
           wget -q https://github.com -O runtime
-
-          # Zusammenfügen von Runtime und SquashFS-Dateisystem zum fertigen AppImage
           cat runtime ./out/appimage.squashfs > ./out/Shoootz.Bridge.TCP.AppImage
           chmod +x ./out/Shoootz.Bridge.TCP.AppImage
 
