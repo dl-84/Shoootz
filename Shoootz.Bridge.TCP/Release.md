@@ -3,8 +3,10 @@
 Releases werden automatisch via GitHub Actions gebaut, wenn ein Tag mit diesem Präfix gepusht wird.
 
 ```bash
-git tag bridge-v1.0.0
-git push origin bridge-v1.0.0
+git tag -d shoootz.bridge.tcp-v1.0.0
+git push origin :refs/tags/shoootz.bridge.tcp-v1.0.0
+git tag shoootz.bridge.tcp-v1.0.0
+git push origin shoootz.bridge.tcp-v1.0.0
 ```
 
 Der Workflow baut alle Plattformen parallel auf nativen Runnern und erstellt automatisch ein GitHub Release mit folgenden Artefakten:
@@ -16,5 +18,5 @@ Der Workflow baut alle Plattformen parallel auf nativen Runnern und erstellt aut
 | macOS (Intel) | `Shoootz.Bridge.TCP-macos-x64.zip` | `macos-latest` |
 | Linux | `Shoootz.Bridge.TCP.AppImage` | `ubuntu-latest` |
 
-Die Version wird aus dem Git-Tag ausgelesen (`bridge-v1.0.0` → `1.0.0`).  
+Die Version wird aus dem Git-Tag ausgelesen (`shoootz.bridge.tcp-v1.0.0` → `1.0.0`).
 Zum Ändern der Version: `<Version>` in `Shoootz.Bridge.TCP/Shoootz.Bridge.TCP.csproj` anpassen.
