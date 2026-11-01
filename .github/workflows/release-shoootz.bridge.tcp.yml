@@ -3,7 +3,7 @@ name: Release Shoootz.Bridge.TCP
 on:
   push:
     tags:
-      - 'bridge-v*'
+      - "bridge-v*"
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -26,7 +26,7 @@ jobs:
 
       - uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: '10.0.x'
+          dotnet-version: "10.0.x"
 
       - name: Restore tools
         run: dotnet tool restore
@@ -82,7 +82,7 @@ jobs:
 
       - uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: '10.0.x'
+          dotnet-version: "10.0.x"
 
       - name: Restore tools
         run: dotnet tool restore
@@ -114,7 +114,7 @@ jobs:
 
           cat > "$BUNDLE/Contents/Info.plist" << PLIST
           <?xml version="1.0" encoding="UTF-8"?>
-          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://apple.com">
           <plist version="1.0">
           <dict>
               <key>CFBundleName</key><string>Shoootz TCP Bridge</string>
@@ -161,7 +161,7 @@ jobs:
 
       - uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: '10.0.x'
+          dotnet-version: "10.0.x"
 
       - name: Restore tools
         run: dotnet tool restore
@@ -171,7 +171,7 @@ jobs:
 
       - name: Install appimagetool
         run: |
-          wget -q https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage \
+          wget -q https://github.com \
             -O appimagetool
           chmod +x appimagetool
 
@@ -217,12 +217,6 @@ jobs:
         with:
           path: ./artifacts
 
-      - name: Zip artifacts
-        run: |
-          zip -j Shoootz.Bridge.TCP-macos-x64.zip    ./artifacts/macos-x64/Shoootz.Bridge.TCP-macos-x64.dmg
-          zip -j Shoootz.Bridge.TCP-macos-arm64.zip  ./artifacts/macos-arm64/Shoootz.Bridge.TCP-macos-arm64.dmg
-          zip -j Shoootz.Bridge.TCP-linux.zip         ./artifacts/linux/Shoootz.Bridge.TCP.AppImage
-
       - name: Delete existing release for this tag, if any
         env:
           GH_TOKEN: ${{ github.token }}
@@ -239,6 +233,6 @@ jobs:
             --title "Shoootz.Bridge.TCP $VERSION" \
             --generate-notes \
             "./artifacts/windows-installer/Shoootz.Bridge.TCP-Windows-Setup.exe" \
-            "./Shoootz.Bridge.TCP-macos-x64.zip" \
-            "./Shoootz.Bridge.TCP-macos-arm64.zip" \
-            "./Shoootz.Bridge.TCP-linux.zip"
+            "./artifacts/macos-x64/Shoootz.Bridge.TCP-macos-x64.dmg" \
+            "./artifacts/macos-arm64/Shoootz.Bridge.TCP-macos-arm64.dmg" \
+            "./artifacts/linux/Shoootz.Bridge.TCP.AppImage"
