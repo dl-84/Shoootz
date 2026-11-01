@@ -6,15 +6,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:DataType="vm:AppViewModel">
 
-    <UserControl.Styles>
-        <Style Selector="TextBox PathIcon.clear-icon">
-            <Setter Property="Opacity" Value="0" />
-        </Style>
-        <Style Selector="TextBox:pointerover PathIcon.clear-icon">
-            <Setter Property="Opacity" Value="1" />
-        </Style>
-    </UserControl.Styles>
-
     <StackPanel Classes="page-content">
 
         <TextBlock Classes="h3"
