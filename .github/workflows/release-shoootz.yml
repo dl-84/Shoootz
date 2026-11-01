@@ -1,0 +1,251 @@
+name: Release Shoootz
+
+on:
+  push:
+    tags:
+      - "shoootz-v*"
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  Build_Windows:
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: Shoootz
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          path: Shoootz
+
+      - uses: actions/checkout@v6
+        with:
+          repository: dl-84/Library
+          path: Library
+
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Restore tools
+        run: dotnet tool restore
+
+      - name: Publish
+        shell: pwsh
+        run: dotnet publish Shoootz/Shoootz.csproj -r win-x64 -c Release -o ./out
+
+      - name: Build installer
+        shell: pwsh
+        run: |
+          $version = "${{ github.ref_name }}" -replace '^shoootz-v?', ''
+          iscc "Shoootz\Scripts\build-windows-installer.iss" /DMyAppVersion=$version /DSourceDir="$PWD\out"
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: windows-installer
+          path: ./Shoootz/Shoootz/Scripts/Shoootz-Windows-Setup.exe
+
+  Build_Mac:
+    runs-on: macos-latest
+    defaults:
+      run:
+        working-directory: Shoootz
+    strategy:
+      matrix:
+        include:
+          - rid: osx-x64
+            suffix: macos-x64
+          - rid: osx-arm64
+            suffix: macos-arm64
+    steps:
+      - name: Free disk space
+        working-directory: ${{ github.workspace }}
+        run: |
+          sudo rm -rf /Applications/Xcode_15*.app 2>/dev/null || true
+          sudo rm -rf /Applications/Xcode_16*.app 2>/dev/null || true
+          sudo rm -rf /Library/Developer/CoreSimulator/Profiles/Runtimes 2>/dev/null || true
+          sudo rm -rf ~/Library/Android/sdk 2>/dev/null || true
+          sudo rm -rf /usr/local/share/android-commandlinetools 2>/dev/null || true
+          sudo rm -rf ~/Library/Developer/Xcode/DerivedData 2>/dev/null || true
+          brew cleanup --prune=all 2>/dev/null || true
+          df -h /
+
+      - uses: actions/checkout@v6
+        with:
+          path: Shoootz
+
+      - uses: actions/checkout@v6
+        with:
+          repository: dl-84/Library
+          path: Library
+
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Restore tools
+        run: dotnet tool restore
+
+      - name: Publish
+        run: dotnet publish Shoootz/Shoootz.csproj -r ${{ matrix.rid }} -c Release -o ./out
+
+      - name: Create .app bundle
+        run: |
+          VERSION="${GITHUB_REF_NAME#shoootz-v}"
+          BUNDLE=./out/Shoootz.app
+          LOGO=Shoootz/Assets/Logo/Logo.png
+
+          mkdir -p "$BUNDLE/Contents/MacOS"
+          mkdir -p "$BUNDLE/Contents/Resources"
+          mv ./out/Shoootz "$BUNDLE/Contents/MacOS/"
+
+          ICONSET="$BUNDLE/Contents/Resources/AppIcon.iconset"
+          mkdir -p "$ICONSET"
+          for SIZE in 16 32 64 128 256; do
+            sips -z $SIZE $SIZE "$LOGO" --out "$ICONSET/icon_${SIZE}x${SIZE}.png" > /dev/null
+          done
+          for SIZE in 32 64 128 256; do
+            HALF=$((SIZE/2))
+            sips -z $SIZE $SIZE "$LOGO" --out "$ICONSET/icon_${HALF}x${HALF}@2x.png" > /dev/null
+          done
+          iconutil -c icns "$ICONSET" -o "$BUNDLE/Contents/Resources/AppIcon.icns"
+          rm -rf "$ICONSET"
+
+          cat > "$BUNDLE/Contents/Info.plist" << PLIST
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://apple.com">
+          <plist version="1.0">
+          <dict>
+              <key>CFBundleName</key><string>Shoootz</string>
+              <key>CFBundleDisplayName</key><string>Shoootz</string>
+              <key>CFBundleIdentifier</key><string>de.fn.shoootz</string>
+              <key>CFBundleVersion</key><string>$VERSION</string>
+              <key>CFBundleShortVersionString</key><string>$VERSION</string>
+              <key>CFBundleExecutable</key><string>Shoootz</string>
+              <key>CFBundlePackageType</key><string>APPL</string>
+              <key>CFBundleIconFile</key><string>AppIcon</string>
+              <key>NSHighResolutionCapable</key><true/>
+          </dict>
+          </plist>
+          PLIST
+
+          codesign --deep --force --sign - "$BUNDLE"
+
+      - name: Install create-dmg utility
+        run: brew install create-dmg
+
+      - name: Build Drag-and-Drop DMG Installer
+        run: |
+          mkdir -p ./dmg-source
+          mv ./out/Shoootz.app ./dmg-source/
+
+          create-dmg \
+            --volname "Shoootz Installer" \
+            --window-pos 200 120 \
+            --window-size 600 300 \
+            --icon-size 100 \
+            --icon "Shoootz.app" 150 100 \
+            --app-drop-link 450 100 \
+            "./out/Shoootz-${{ matrix.suffix }}.dmg" \
+            "./dmg-source/"
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ${{ matrix.suffix }}
+          path: ./Shoootz/out/Shoootz-${{ matrix.suffix }}.dmg
+
+  Build_Linux:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Shoootz
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          path: Shoootz
+
+      - uses: actions/checkout@v6
+        with:
+          repository: dl-84/Library
+          path: Library
+
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Restore tools
+        run: dotnet tool restore
+
+      - name: Publish
+        run: dotnet publish Shoootz/Shoootz.csproj -r linux-x64 -c Release -o ./out
+
+      - name: Install appimagetool
+        run: |
+          wget -q https://github.com \
+            -O appimagetool
+          chmod +x appimagetool
+
+      - name: Create AppImage PackStructure
+        run: |
+          APPDIR=./AppDir
+          mkdir -p "$APPDIR/usr/bin"
+          mkdir -p "$APPDIR/usr/share/icons/hicolor/256x256/apps"
+
+          cp -r ./out/* "$APPDIR/usr/bin/"
+          cp Shoootz/Assets/Logo/Logo.png "$APPDIR/Shoootz.png"
+          cp Shoootz/Assets/Logo/Logo.png "$APPDIR/usr/share/icons/hicolor/256x256/apps/Shoootz.png"
+
+          cat > "$APPDIR/AppRun" << 'APPRUN'
+          #!/bin/sh
+          HERE="$(dirname "$(readlink -f "${0}")")"
+          exec "$HERE/usr/bin/Shoootz" "$@"
+          APPRUN
+          chmod +x "$APPDIR/AppRun"
+
+          cat > "$APPDIR/Shoootz.desktop" << 'DESKTOP'
+          [Desktop Entry]
+          Name=Shoootz
+          Exec=Shoootz
+          Icon=Shoootz
+          Type=Application
+          Categories=Sports;
+          DESKTOP
+
+          ARCH=x86_64 ./appimagetool --appimage-extract-and-run \
+            "$APPDIR" ./out/Shoootz.AppImage
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: linux
+          path: ./Shoootz/out/Shoootz.AppImage
+
+  Create_Release:
+    needs: [Build_Windows, Build_Mac, Build_Linux]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          path: ./artifacts
+
+      - name: Delete existing release for this tag, if any
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: gh release delete ${{ github.ref_name }} --yes || true
+
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          VERSION="${GITHUB_REF_NAME#shoootz-v}"
+          gh release create ${{ github.ref_name }} \
+            --title "Shoootz $VERSION" \
+            --generate-notes \
+            "./artifacts/windows-installer/Shoootz-Windows-Setup.exe" \
+            "./artifacts/macos-x64/Shoootz-macos-x64.dmg" \
+            "./artifacts/macos-arm64/Shoootz-macos-arm64.dmg" \
+            "./artifacts/linux/Shoootz.AppImage"
