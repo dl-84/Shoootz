@@ -29,17 +29,9 @@
                                  MaxLength="5"
                                  Text="{Binding Bridge.UdpPort}"
                                  Width="170"
+                                 extensions:ClearButton.IsEnabled="True"
                                  extensions:InputFilter.AllowedPattern="[0-9]"
-                                 IsEnabled="{Binding !Bridge.IsRunning}">
-                            <TextBox.InnerRightContent>
-                                <PathIcon Classes="icon-action icon-danger clear-icon"
-                                          Data="{StaticResource CloseIcon}"
-                                          Height="12"
-                                          Margin="0,0,10,0"
-                                          PointerPressed="OnClearUdpPortIconPressed"
-                                          Width="12" />
-                            </TextBox.InnerRightContent>
-                        </TextBox>
+                                 IsEnabled="{Binding !Bridge.IsRunning}" />
                     </StackPanel>
 
                     <StackPanel Grid.Column="1"
@@ -50,17 +42,9 @@
                                  MaxLength="5"
                                  Text="{Binding Bridge.TcpPort}"
                                  Width="170"
+                                 extensions:ClearButton.IsEnabled="True"
                                  extensions:InputFilter.AllowedPattern="[0-9]"
-                                 IsEnabled="{Binding !Bridge.IsRunning}">
-                            <TextBox.InnerRightContent>
-                                <PathIcon Classes="icon-action icon-danger clear-icon"
-                                          Data="{StaticResource CloseIcon}"
-                                          Height="12"
-                                          Margin="0,0,10,0"
-                                          PointerPressed="OnClearTcpPortIconPressed"
-                                          Width="12" />
-                            </TextBox.InnerRightContent>
-                        </TextBox>
+                                 IsEnabled="{Binding !Bridge.IsRunning}" />
                     </StackPanel>
 
                     <Grid Grid.Column="2"

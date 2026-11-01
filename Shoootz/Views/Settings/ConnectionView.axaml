@@ -52,16 +52,8 @@
                                            Text="{common:Localization Host}" />
                                 <TextBox Classes.error="{Binding !IsHostValid}"
                                          Text="{Binding Host}"
-                                         IsEnabled="{Binding IsHostEditable}">
-                                    <TextBox.InnerRightContent>
-                                        <PathIcon Classes="icon-action icon-danger clear-icon"
-                                                  Data="{StaticResource CloseIcon}"
-                                                  Height="12"
-                                                  Margin="0,0,10,0"
-                                                  PointerPressed="OnClearHostIconPressed"
-                                                  Width="12" />
-                                    </TextBox.InnerRightContent>
-                                </TextBox>
+                                         common:ClearButton.IsEnabled="True"
+                                         IsEnabled="{Binding IsHostEditable}" />
                             </StackPanel>
 
                             <StackPanel Grid.Column="2"
@@ -72,17 +64,9 @@
                                          Classes.error="{Binding !IsPortValid}"
                                          MaxLength="5"
                                          Text="{Binding Port}"
+                                         common:ClearButton.IsEnabled="True"
                                          common:InputFilter.AllowedPattern="[0-9]"
-                                         IsEnabled="{Binding !IsUdpListening}">
-                                    <TextBox.InnerRightContent>
-                                        <PathIcon Classes="icon-action icon-danger clear-icon"
-                                                  Data="{StaticResource CloseIcon}"
-                                                  Height="12"
-                                                  Margin="0,0,10,0"
-                                                  PointerPressed="OnClearPortIconPressed"
-                                                  Width="12" />
-                                    </TextBox.InnerRightContent>
-                                </TextBox>
+                                         IsEnabled="{Binding !IsUdpListening}" />
                             </StackPanel>
 
                             <Grid Grid.Column="3"
