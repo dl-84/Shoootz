@@ -11,15 +11,6 @@
         <loc:EnumConverter x:Key="ReceiverTypeConverter" />
     </UserControl.Resources>
 
-    <UserControl.Styles>
-        <Style Selector="TextBox PathIcon.clear-icon">
-            <Setter Property="Opacity" Value="0" />
-        </Style>
-        <Style Selector="TextBox:pointerover PathIcon.clear-icon">
-            <Setter Property="Opacity" Value="1" />
-        </Style>
-    </UserControl.Styles>
-
     <Grid RowDefinitions="*,Auto">
 
         <ScrollViewer Grid.Row="0">
@@ -141,50 +132,20 @@
                 <Border Classes="card">
                     <StackPanel Spacing="{DynamicResource SpacingMedium}">
 
-                        <TextBlock Classes="h4"
-                                   Text="{common:Localization Database}" />
+                        <StackPanel Orientation="Horizontal"
+                                    Spacing="{DynamicResource SpacingSmall}">
+                            <PathIcon Classes.db-status-not-initialized="{Binding IsDbNotInitialized}"
+                                      Classes.db-status-up-to-date="{Binding IsDbUpToDate}"
+                                      Classes.db-status-update-available="{Binding IsDbUpdateAvailable}"
+                                      Height="18"
+                                      PointerPressed="OnDbStatusBadgePressed"
+                                      ToolTip.Tip="{Binding InitializeDbLabel}"
+                                      VerticalAlignment="Center"
+                                      Width="18" />
 
-                        <Grid ColumnDefinitions="*,Auto">
-                            <TextBlock Grid.Column="0"
-                                       Text="{Binding InitializeDbLabel}"
-                                       VerticalAlignment="Center" />
-
-                            <StackPanel Grid.Column="1"
-                                        Orientation="Horizontal"
-                                        Spacing="{DynamicResource SpacingMedium}">
-                                <PathIcon Classes="icon-action"
-                                          Data="{DynamicResource AddIcon}"
-                                          PointerPressed="OnCommandIconPressed"
-                                          Tag="{Binding CreateDbCommand}"
-                                          ToolTip.HorizontalOffset="0"
-                                          ToolTip.Placement="TopEdgeAlignedRight"
-                                          ToolTip.Tip="{common:Localization CreateDb}"
-                                          ToolTip.VerticalOffset="-2"
-                                          VerticalAlignment="Center"
-                                          IsEnabled="{Binding !IsSaveEnabled}"
-                                          IsVisible="{Binding !IsDbConnected}" />
-                                <PathIcon Classes="icon-action"
-                                          Data="{DynamicResource HeartPulseIcon}"
-                                          PointerPressed="OnCommandIconPressed"
-                                          Tag="{Binding TestDbConnectionCommand}"
-                                          ToolTip.HorizontalOffset="0"
-                                          ToolTip.Placement="TopEdgeAlignedRight"
-                                          ToolTip.Tip="{common:Localization TestConnection}"
-                                          ToolTip.VerticalOffset="-2"
-                                          VerticalAlignment="Center"
-                                          IsEnabled="{Binding !IsDbConnected}" />
-                                <PathIcon Classes="icon-action"
-                                          Data="{DynamicResource InitializeDbIcon}"
-                                          PointerPressed="OnCommandIconPressed"
-                                          Tag="{Binding InitializeDbCommand}"
-                                          ToolTip.HorizontalOffset="0"
-                                          ToolTip.Placement="TopEdgeAlignedRight"
-                                          ToolTip.Tip="{common:Localization InitializeDb}"
-                                          ToolTip.VerticalOffset="-2"
-                                          VerticalAlignment="Center"
-                                          IsEnabled="{Binding IsInitializeDbEnabled}" />
-                            </StackPanel>
-                        </Grid>
+                            <TextBlock Classes="h4"
+                                       Text="{common:Localization Database}" />
+                        </StackPanel>
 
                         <Grid ColumnDefinitions="Auto,*,170"
                               ColumnSpacing="{DynamicResource SpacingSmall}">
