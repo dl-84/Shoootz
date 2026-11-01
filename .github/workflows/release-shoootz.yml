@@ -1,9 +1,9 @@
-name: Release Shoootz
+name: Release Shoootz.Bridge.TCP
 
 on:
   push:
     tags:
-      - 'shoootz-v*'
+      - "bridge-v*"
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -26,25 +26,25 @@ jobs:
 
       - uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: '10.0.x'
+          dotnet-version: "10.0.x"
 
       - name: Restore tools
         run: dotnet tool restore
 
       - name: Publish
         shell: pwsh
-        run: dotnet publish Shoootz/Shoootz.csproj -r win-x64 -c Release -o ./out
+        run: dotnet publish Shoootz.Bridge.TCP/Shoootz.Bridge.TCP.csproj -r win-x64 -c Release -o ./out
 
       - name: Build installer
         shell: pwsh
         run: |
-          $version = "${{ github.ref_name }}" -replace '^shoootz-v?', ''
-          iscc "Shoootz\Scripts\build-windows-installer.iss" /DMyAppVersion=$version /DSourceDir="$PWD\out"
+          $version = "${{ github.ref_name }}" -replace '^bridge-v?', ''
+          iscc "Shoootz.Bridge.TCP\Scripts\build-windows-installer.iss" /DMyAppVersion=$version /DSourceDir="$PWD\out"
 
       - uses: actions/upload-artifact@v7
         with:
           name: windows-installer
-          path: ./Shoootz/Shoootz/Scripts/Shoootz-Windows-Setup.exe
+          path: ./Shoootz/Shoootz.Bridge.TCP/Scripts/Shoootz.Bridge.TCP-Windows-Setup.exe
 
   Build_Mac:
     runs-on: macos-latest
@@ -82,23 +82,23 @@ jobs:
 
       - uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: '10.0.x'
+          dotnet-version: "10.0.x"
 
       - name: Restore tools
         run: dotnet tool restore
 
       - name: Publish
-        run: dotnet publish Shoootz/Shoootz.csproj -r ${{ matrix.rid }} -c Release -o ./out
+        run: dotnet publish Shoootz.Bridge.TCP/Shoootz.Bridge.TCP.csproj -r ${{ matrix.rid }} -c Release -o ./out
 
       - name: Create .app bundle
         run: |
-          VERSION="${GITHUB_REF_NAME#v}"
-          BUNDLE=./out/Shoootz.app
-          LOGO=Shoootz/Assets/Logo/Logo.png
+          VERSION="${GITHUB_REF_NAME#bridge-v}"
+          BUNDLE=./out/Shoootz.Bridge.TCP.app
+          LOGO=Shoootz.Bridge.TCP/Assets/Logo.png
 
           mkdir -p "$BUNDLE/Contents/MacOS"
           mkdir -p "$BUNDLE/Contents/Resources"
-          mv ./out/Shoootz "$BUNDLE/Contents/MacOS/"
+          mv ./out/Shoootz.Bridge.TCP "$BUNDLE/Contents/MacOS/"
 
           ICONSET="$BUNDLE/Contents/Resources/AppIcon.iconset"
           mkdir -p "$ICONSET"
@@ -114,15 +114,15 @@ jobs:
 
           cat > "$BUNDLE/Contents/Info.plist" << PLIST
           <?xml version="1.0" encoding="UTF-8"?>
-          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://apple.com">
           <plist version="1.0">
           <dict>
-              <key>CFBundleName</key><string>Shoootz</string>
-              <key>CFBundleDisplayName</key><string>Shoootz</string>
-              <key>CFBundleIdentifier</key><string>de.fn.shoootz</string>
+              <key>CFBundleName</key><string>Shoootz TCP Bridge</string>
+              <key>CFBundleDisplayName</key><string>Shoootz TCP Bridge</string>
+              <key>CFBundleIdentifier</key><string>de.fn.shoootz.bridge</string>
               <key>CFBundleVersion</key><string>$VERSION</string>
               <key>CFBundleShortVersionString</key><string>$VERSION</string>
-              <key>CFBundleExecutable</key><string>Shoootz</string>
+              <key>CFBundleExecutable</key><string>Shoootz.Bridge.TCP</string>
               <key>CFBundlePackageType</key><string>APPL</string>
               <key>CFBundleIconFile</key><string>AppIcon</string>
               <key>NSHighResolutionCapable</key><true/>
@@ -132,17 +132,28 @@ jobs:
 
           codesign --deep --force --sign - "$BUNDLE"
 
-          SIZE_MB=$(( $(du -sm "$BUNDLE" | cut -f1) + 200 ))
+      - name: Install create-dmg utility
+        run: brew install create-dmg
 
-          hdiutil create -volname "Shoootz" \
-            -srcfolder "$BUNDLE" -ov -format UDZO \
-            -size "${SIZE_MB}m" \
-            "./out/Shoootz-${{ matrix.suffix }}.dmg"
+      - name: Build Drag-and-Drop DMG Installer
+        run: |
+          mkdir -p ./dmg-source
+          mv ./out/Shoootz.Bridge.TCP.app ./dmg-source/
+
+          create-dmg \
+            --volname "Shoootz.Bridge.TCP Installer" \
+            --window-pos 200 120 \
+            --window-size 600 300 \
+            --icon-size 100 \
+            --icon "Shoootz.Bridge.TCP.app" 150 100 \
+            --app-drop-link 450 100 \
+            "./out/Shoootz.Bridge.TCP-${{ matrix.suffix }}.dmg" \
+            "./dmg-source/"
 
       - uses: actions/upload-artifact@v7
         with:
           name: ${{ matrix.suffix }}
-          path: ./Shoootz/out/Shoootz-${{ matrix.suffix }}.dmg
+          path: ./Shoootz/out/Shoootz.Bridge.TCP-${{ matrix.suffix }}.dmg
 
   Build_Linux:
     runs-on: ubuntu-latest
@@ -161,51 +172,53 @@ jobs:
 
       - uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: '10.0.x'
+          dotnet-version: "10.0.x"
 
       - name: Restore tools
         run: dotnet tool restore
 
       - name: Publish
-        run: dotnet publish Shoootz/Shoootz.csproj -r linux-x64 -c Release -o ./out
+        run: dotnet publish Shoootz.Bridge.TCP/Shoootz.Bridge.TCP.csproj -r linux-x64 -c Release -o ./out
 
       - name: Install appimagetool
         run: |
-          wget -q https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage \
+          wget -q https://github.com \
             -O appimagetool
           chmod +x appimagetool
 
-      - name: Create AppImage
+      - name: Create AppImage PackStructure
         run: |
           APPDIR=./AppDir
           mkdir -p "$APPDIR/usr/bin"
           mkdir -p "$APPDIR/usr/share/icons/hicolor/256x256/apps"
-          mv ./out/Shoootz "$APPDIR/usr/bin/"
-          cp Shoootz/Assets/Logo/Logo.png "$APPDIR/Shoootz.png"
-          cp Shoootz/Assets/Logo/Logo.png "$APPDIR/usr/share/icons/hicolor/256x256/apps/Shoootz.png"
+
+          cp -r ./out/* "$APPDIR/usr/bin/"
+          cp Shoootz.Bridge.TCP/Assets/Logo.png "$APPDIR/Shoootz.Bridge.TCP.png"
+          cp Shoootz.Bridge.TCP/Assets/Logo.png "$APPDIR/usr/share/icons/hicolor/256x256/apps/Shoootz.Bridge.TCP.png"
 
           cat > "$APPDIR/AppRun" << 'APPRUN'
           #!/bin/sh
-          exec "$APPDIR/usr/bin/Shoootz" "$@"
+          HERE="$(dirname "$(readlink -f "${0}")")"
+          exec "$HERE/usr/bin/Shoootz.Bridge.TCP" "$@"
           APPRUN
           chmod +x "$APPDIR/AppRun"
 
-          cat > "$APPDIR/Shoootz.desktop" << 'DESKTOP'
+          cat > "$APPDIR/Shoootz.Bridge.TCP.desktop" << 'DESKTOP'
           [Desktop Entry]
-          Name=Shoootz
-          Exec=Shoootz
-          Icon=Shoootz
+          Name=Shoootz TCP Bridge
+          Exec=Shoootz.Bridge.TCP
+          Icon=Shoootz.Bridge.TCP
           Type=Application
           Categories=Sports;
           DESKTOP
 
           ARCH=x86_64 ./appimagetool --appimage-extract-and-run \
-            "$APPDIR" ./out/Shoootz.AppImage
+            "$APPDIR" ./out/Shoootz.Bridge.TCP.AppImage
 
       - uses: actions/upload-artifact@v7
         with:
           name: linux
-          path: ./Shoootz/out/Shoootz.AppImage
+          path: ./Shoootz/out/Shoootz.Bridge.TCP.AppImage
 
   Create_Release:
     needs: [Build_Windows, Build_Mac, Build_Linux]
@@ -216,12 +229,6 @@ jobs:
       - uses: actions/download-artifact@v8
         with:
           path: ./artifacts
-
-      - name: Zip artifacts
-        run: |
-          zip -j Shoootz-macos-x64.zip   ./artifacts/macos-x64/Shoootz-macos-x64.dmg
-          zip -j Shoootz-macos-arm64.zip ./artifacts/macos-arm64/Shoootz-macos-arm64.dmg
-          zip -j Shoootz-linux.zip        ./artifacts/linux/Shoootz.AppImage
 
       - name: Delete existing release for this tag, if any
         env:
@@ -234,11 +241,11 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
         run: |
-          VERSION="${GITHUB_REF_NAME#shoootz-}"
+          VERSION="${GITHUB_REF_NAME#bridge-v}"
           gh release create ${{ github.ref_name }} \
-            --title "Shoootz $VERSION" \
+            --title "Shoootz.Bridge.TCP $VERSION" \
             --generate-notes \
-            "./artifacts/windows-installer/Shoootz-Windows-Setup.exe" \
-            "./Shoootz-macos-x64.zip" \
-            "./Shoootz-macos-arm64.zip" \
-            "./Shoootz-linux.zip"
+            "./artifacts/windows-installer/Shoootz.Bridge.TCP-Windows-Setup.exe" \
+            "./artifacts/macos-x64/Shoootz.Bridge.TCP-macos-x64.dmg" \
+            "./artifacts/macos-arm64/Shoootz.Bridge.TCP-macos-arm64.dmg" \
+            "./artifacts/linux/Shoootz.Bridge.TCP.AppImage"
