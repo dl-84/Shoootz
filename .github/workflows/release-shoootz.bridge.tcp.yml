@@ -169,10 +169,22 @@ jobs:
       - name: Publish
         run: dotnet publish Shoootz.Bridge.TCP/Shoootz.Bridge.TCP.csproj -r linux-x64 -c Release -o ./out
 
-      # Download über einen fixierten, stabilen Release-Link mit Sicherheits-Fail-Check
-      - name: Install appimagetool
+      # Nativer API-Download über die offizielle GitHub-Action umgeht Netzwerk- und URL-Probleme vollständig
+      - name: Download appimagetool via GitHub API
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const response = await github.request('GET /repos/{owner}/{repo}/releases/assets/{asset_id}', {
+              owner: 'AppImage',
+              repo: 'appimagetool',
+              asset_id: 174620027, // Entspricht der exakten ID des x86_64 Releases vom 08.08.2024
+              headers: { 'accept': 'application/octet-stream' }
+            });
+            fs.writeFileSync('${{ github.workspace }}/Shoootz/appimagetool', Buffer.from(response.data));
+
+      - name: Extract appimagetool
         run: |
-          curl -fL -o appimagetool "https://github.com"
           chmod +x appimagetool
           ./appimagetool --appimage-extract
           mv squashfs-root appimagetool-extracted
