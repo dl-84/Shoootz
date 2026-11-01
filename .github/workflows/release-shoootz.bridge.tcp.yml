@@ -169,12 +169,11 @@ jobs:
       - name: Publish
         run: dotnet publish Shoootz.Bridge.TCP/Shoootz.Bridge.TCP.csproj -r linux-x64 -c Release -o ./out
 
-      # Download über die korrekte URL (komplett kleingeschriebenes Endkürzel .appimage)
+      # Download über einen fixierten, stabilen Release-Link mit Sicherheits-Fail-Check
       - name: Install appimagetool
         run: |
-          wget -q -O appimagetool https://github.com
+          curl -fL -o appimagetool "https://github.com"
           chmod +x appimagetool
-          # Entpacken des Tools verhindert FUSE-Laufzeitfehler in virtuellen GitHub-Runnern
           ./appimagetool --appimage-extract
           mv squashfs-root appimagetool-extracted
 
@@ -202,7 +201,6 @@ jobs:
           Categories=Sports;
           DESKTOP
 
-          # Aufruf erfolgt über die entpackte, sichere Variante ohne Abhängigkeit von FUSE-Treibern
           ARCH=x86_64 ./appimagetool-extracted/AppRun "$APPDIR" ./out/Shoootz.Bridge.TCP.AppImage
 
       - uses: actions/upload-artifact@v7
