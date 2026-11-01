@@ -103,6 +103,15 @@ namespace Shoootz.Common.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Apply update.
+        /// </summary>
+        internal static string ApplyDbUpdate {
+            get {
+                return ResourceManager.GetString("ApplyDbUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Automatically connect on startup.
         /// </summary>
         internal static string AutoConnect {
@@ -427,11 +436,29 @@ namespace Shoootz.Common.Resources.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Database must be initialized.
+        ///   Looks up a localized string similar to Not initialized.
         /// </summary>
         internal static string DbNotInitialized {
             get {
                 return ResourceManager.GetString("DbNotInitialized", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The database has not been set up yet..
+        /// </summary>
+        internal static string DbNotInitializedDialogMessage {
+            get {
+                return ResourceManager.GetString("DbNotInitializedDialogMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Database setup required.
+        /// </summary>
+        internal static string DbNotInitializedDialogTitle {
+            get {
+                return ResourceManager.GetString("DbNotInitializedDialogTitle", resourceCulture);
             }
         }
         
@@ -454,7 +481,7 @@ namespace Shoootz.Common.Resources.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Database is up to date.
+        ///   Looks up a localized string similar to Up to date.
         /// </summary>
         internal static string DbUpToDate {
             get {
@@ -1408,7 +1435,7 @@ namespace Shoootz.Common.Resources.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Database update available.
+        ///   Looks up a localized string similar to Update pending.
         /// </summary>
         internal static string UpdateDb {
             get {

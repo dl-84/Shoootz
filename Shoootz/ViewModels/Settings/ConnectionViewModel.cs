@@ -96,7 +96,7 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
         IsDbConnected = _storeService.IsConnected;
         _storeService.ConnectionChanged += OnStoreConnectionChanged;
 
-        _ = RefreshDbStatusAsync();
+        _ = InitializePageAsync();
     }
 
     public event Action<bool, string?>? ConnectionTestCompleted;
@@ -104,6 +104,8 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
     public event Action<bool, string?>? DbInitializeCompleted;
 
     public event Action? DbInitializeStarted;
+
+    public event Action? DbStatusDialogRequested;
 
     public event Action? ReceiverConnectCompleted;
 
@@ -119,6 +121,9 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(InitializeDbLabel))]
+    [NotifyPropertyChangedFor(nameof(IsDbNotInitialized))]
+    [NotifyPropertyChangedFor(nameof(IsDbUpdateAvailable))]
+    [NotifyPropertyChangedFor(nameof(IsDbUpToDate))]
     [NotifyPropertyChangedFor(nameof(IsInitializeDbEnabled))]
     public partial DbStatusType DbStatusType { get; set; }
 
@@ -144,14 +149,19 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
     public bool IsConnectReceiverEnabled => IsPortValid && !IsSaveEnabled;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(IsInitializeDbEnabled))]
     public partial bool IsDbConnected { get; set; }
+
+    public bool IsDbNotInitialized => !IsDbUpdateAvailable && !IsDbUpToDate;
+
+    public bool IsDbUpdateAvailable => DbStatusType == DbStatusType.UpdateAvailable;
+
+    public bool IsDbUpToDate => DbStatusType == DbStatusType.UpToDate;
 
     public bool IsHostEditable => IsTcpSelected && !IsUdpListening;
 
     public bool IsHostValid => !IsTcpSelected || Host.IsValidIPv4();
 
-    public bool IsInitializeDbEnabled => DbStatusType != DbStatusType.UpToDate && IsDbConnected;
+    public bool IsInitializeDbEnabled => DbStatusType != DbStatusType.UpToDate;
 
     public bool IsPortValid => Port.IsValidPort();
 
@@ -250,9 +260,6 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
     }
 
     [RelayCommand]
-    private async Task CreateDb() => await InitializeDatabaseAsync(connectAfterSuccess: true);
-
-    [RelayCommand]
     private void DisconnectDb() => _storeService.Disconnect();
 
     [RelayCommand]
@@ -290,7 +297,17 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
     }
 
     [RelayCommand(CanExecute = nameof(CanInitializeDb))]
-    private async Task InitializeDb() => await InitializeDatabaseAsync(connectAfterSuccess: false);
+    private async Task InitializeDb() => await InitializeDatabaseAsync(connectAfterSuccess: !IsDbConnected);
+
+    private async Task InitializePageAsync()
+    {
+        await RefreshDbStatusAsync();
+
+        if (DbStatusType != DbStatusType.UpToDate)
+        {
+            DbStatusDialogRequested?.Invoke();
+        }
+    }
 
     private void NotifySaveStateChanged()
     {
@@ -304,8 +321,6 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
     partial void OnConnectionStringChanged(string value) => NotifySaveStateChanged();
 
     partial void OnHostChanged(string value) => NotifySaveStateChanged();
-
-    partial void OnIsDbConnectedChanged(bool value) => InitializeDbCommand.NotifyCanExecuteChanged();
 
     partial void OnPortChanged(string value) => NotifySaveStateChanged();
 
@@ -361,17 +376,6 @@ internal partial class ConnectionViewModel : ViewModelBase, IDisposable, IHasUns
         _settingsWriter.Save(_settings);
 
         NotifySaveStateChanged();
-    }
-
-    [RelayCommand]
-    private async Task TestDbConnection()
-    {
-        Result<bool, DbConnectionError> result = await _connectionTester.Run(SelectedProvider, ConnectionString);
-
-        result.Match(
-            _ => ConnectionTestCompleted?.Invoke(true, null),
-            error => ConnectionTestCompleted?.Invoke(false, error.Value.Message)
-        );
     }
 
     [RelayCommand]

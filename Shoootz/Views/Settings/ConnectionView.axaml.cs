@@ -61,6 +61,7 @@ public partial class ConnectionView : UserControl
             viewModel.ConnectionTestCompleted += OnConnectionTestCompleted;
             viewModel.DbInitializeCompleted += OnDbInitializeCompleted;
             viewModel.DbInitializeStarted += OnDbInitializeStarted;
+            viewModel.DbStatusDialogRequested += OnDbStatusDialogRequested;
             viewModel.ReceiverConnectCompleted += OnReceiverConnectCompleted;
             viewModel.ReceiverConnectStarted += OnReceiverConnectStarted;
         }
@@ -103,6 +104,22 @@ public partial class ConnectionView : UserControl
         };
 
         _ = _waitingDialog.ShowDialog(window);
+    }
+
+    private void OnDbStatusBadgePressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (DataContext is ConnectionViewModel { IsDbUpToDate: false } viewModel)
+        {
+            _ = OpenDbStatusDialogAsync(viewModel);
+        }
+    }
+
+    private void OnDbStatusDialogRequested()
+    {
+        if (DataContext is ConnectionViewModel viewModel)
+        {
+            _ = OpenDbStatusDialogAsync(viewModel);
+        }
     }
 
     private void OnReceiverConnectCompleted()
@@ -152,6 +169,16 @@ public partial class ConnectionView : UserControl
             LocalizationService.Instance[Messages.DbInitializeSuccessful],
             errorMessage
         );
+
+    private async Task OpenDbStatusDialogAsync(ConnectionViewModel viewModel)
+    {
+        bool applyAction = await DialogService.ShowDbStatusDialogAsync(this, viewModel.IsDbUpdateAvailable);
+
+        if (applyAction)
+        {
+            viewModel.InitializeDbCommand.Execute(null);
+        }
+    }
 
     private async Task OpenResultDialogAsync(string title, bool success, string successMessage, string? errorMessage)
     {

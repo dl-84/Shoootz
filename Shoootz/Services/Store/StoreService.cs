@@ -98,6 +98,8 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
                     return new Error<StoreSaveErrorModel>(new StoreSaveErrorModel("Database not found."));
                 }
 
+                SqliteConnection.ClearAllPools();
+
                 return Unit.Value;
             }
         }
@@ -322,6 +324,8 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
 
     public async Task InitializeAsync()
     {
+        SqliteConnection.ClearAllPools();
+
         await using (AppDbContext context = await contextFactory.CreateDbContextAsync().ConfigureAwait(false))
         {
             await context.Database.MigrateAsync().ConfigureAwait(false);

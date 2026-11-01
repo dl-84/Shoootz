@@ -304,7 +304,13 @@
     <value>Nicht verbunden</value>
   </data>
   <data name="DbNotInitialized" xml:space="preserve">
-    <value>Datenbank muss initialisiert werden</value>
+    <value>Nicht initialisiert</value>
+  </data>
+  <data name="DbNotInitializedDialogMessage" xml:space="preserve">
+    <value>Die Datenbank wurde noch nicht eingerichtet.</value>
+  </data>
+  <data name="DbNotInitializedDialogTitle" xml:space="preserve">
+    <value>Datenbank-Einrichtung erforderlich</value>
   </data>
   <data name="DbPendingMigrations" xml:space="preserve">
     <value>Es wurden ausstehende Datenbankmigrationen gefunden. Bitte aktualisiere die Datenbank.</value>
@@ -313,7 +319,7 @@
     <value>Datenbankupdate verfügbar</value>
   </data>
   <data name="DbUpToDate" xml:space="preserve">
-    <value>Datenbank ist aktuell</value>
+    <value>Aktuell</value>
   </data>
   <data name="DbInitializeSuccessful" xml:space="preserve">
     <value>Datenbank erfolgreich initialisiert</value>
@@ -321,11 +327,14 @@
   <data name="CreateDb" xml:space="preserve">
     <value>Erstellen</value>
   </data>
+  <data name="ApplyDbUpdate" xml:space="preserve">
+    <value>Update anwenden</value>
+  </data>
   <data name="InitializeDb" xml:space="preserve">
     <value>Initialisieren</value>
   </data>
   <data name="UpdateDb" xml:space="preserve">
-    <value>Update für Datenbank vorhanden</value>
+    <value>Update ausstehend</value>
   </data>
   <data name="Provider" xml:space="preserve">
     <value>Provider</value>

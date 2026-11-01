@@ -86,7 +86,7 @@ internal partial class MainWindowViewModel : ViewModelBase, IDialogHost
         CurrentNavigationPageType = NavigationPageType.Evaluate;
     }
 
-    public event Action? PendingMigrationsDetected;
+    public event Action<bool>? DbStatusDialogRequested;
 
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(IsTcpReceiver))]
@@ -141,6 +141,21 @@ internal partial class MainWindowViewModel : ViewModelBase, IDialogHost
         }
     }
 
+    public async Task<string?> ApplyDbUpdateAsync()
+    {
+        try
+        {
+            await _storeService.InitializeAsync();
+            _storeService.Connect();
+
+            return null;
+        }
+        catch (Exception exception)
+        {
+            return exception.Message;
+        }
+    }
+
     public async Task CheckDbConnectionAsync()
     {
         Result<bool, DbConnectionError> result = await _connectionTester.Run(
@@ -155,10 +170,9 @@ internal partial class MainWindowViewModel : ViewModelBase, IDialogHost
     {
         DbStatusType statusType = await _storeService.GetDbStatusAsync();
 
-        if (statusType == DbStatusType.UpdateAvailable)
+        if (statusType != DbStatusType.UpToDate)
         {
-            NavigateTo(NavigationPageType.App);
-            PendingMigrationsDetected?.Invoke();
+            DbStatusDialogRequested?.Invoke(statusType == DbStatusType.UpdateAvailable);
         }
     }
 

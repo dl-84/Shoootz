@@ -7,8 +7,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.LogicalTree;
 using Controls.ContentDialog;
-using Controls.InfoDialog;
-using Controls.InfoDialog.Enum;
 using Controls.TitleBar.Services;
 using Shoootz.Common.Resources.Lang;
 using Shoootz.Common.Services.Dialog;
@@ -45,7 +43,7 @@ public partial class MainWindow : Window
             return;
         }
 
-        mainWindowViewModel.PendingMigrationsDetected += OnPendingMigrationsDetected;
+        mainWindowViewModel.DbStatusDialogRequested += OnDbStatusDialogRequested;
         _ = mainWindowViewModel.CheckPendingMigrationsAsync();
     }
 
@@ -101,6 +99,14 @@ public partial class MainWindow : Window
         SyncSelectedNavItem(mainWindowViewModel.CurrentNavigationPageType);
     }
 
+    private void OnDbStatusDialogRequested(bool isUpdate)
+    {
+        if (DataContext is MainWindowViewModel mainWindowViewModel)
+        {
+            _ = OpenDbStatusDialogAsync(mainWindowViewModel, isUpdate);
+        }
+    }
+
     private void OnNavSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
         if (
@@ -114,11 +120,6 @@ public partial class MainWindow : Window
         }
     }
 
-    private void OnPendingMigrationsDetected()
-    {
-        _ = OpenPendingMigrationsDialogAsync();
-    }
-
     private void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (
@@ -130,17 +131,22 @@ public partial class MainWindow : Window
         }
     }
 
-    private async Task OpenPendingMigrationsDialogAsync()
+    private async Task OpenDbStatusDialogAsync(MainWindowViewModel mainWindowViewModel, bool isUpdate)
     {
-        await DialogService.ShowAsync(
+        bool applyAction = await DialogService.ShowDbStatusDialogAsync(this, isUpdate);
+
+        if (!applyAction)
+        {
+            return;
+        }
+
+        string waitingTitle = LocalizationService.Instance[isUpdate ? Messages.ApplyDbUpdate : Messages.InitializeDb];
+
+        await DialogService.RunWithWaitingDialogAsync(
             this,
-            window =>
-                new InfoDialog
-                {
-                    DialogTitle = LocalizationService.Instance[Messages.DbPendingMigrationsTitle],
-                    IconType = IconType.Warning,
-                    Message = LocalizationService.Instance[Messages.DbPendingMigrations],
-                }.ShowDialog(window)
+            waitingTitle,
+            LocalizationService.Instance[Messages.DbInitializing],
+            mainWindowViewModel.ApplyDbUpdateAsync
         );
     }
 
