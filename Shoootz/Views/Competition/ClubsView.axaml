@@ -31,16 +31,19 @@
                     <Border BorderBrush="{DynamicResource BorderTableBrush}"
                             BorderThickness="0,0,0,1"
                             Padding="24,10">
-                        <Grid ColumnDefinitions="*,100">
+                        <Grid ColumnDefinitions="*,100"
+                              Height="32">
                             <TextBlock Grid.Column="0"
                                        Classes="table-header"
                                        Text="{common:Localization Name,
-                                                                  ToUpper=True}" />
+                                                                  ToUpper=True}"
+                                       VerticalAlignment="Center" />
                             <TextBlock Grid.Column="1"
                                        Classes="table-header"
                                        Text="{common:Localization Shooters,
                                                                   ToUpper=True}"
-                                       TextAlignment="Center" />
+                                       TextAlignment="Center"
+                                       VerticalAlignment="Center" />
                         </Grid>
                     </Border>
                     <ListBox Classes="table-rows"

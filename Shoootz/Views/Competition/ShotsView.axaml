@@ -29,7 +29,8 @@
                     <Border BorderBrush="{DynamicResource BorderTableBrush}"
                             BorderThickness="0,0,0,1"
                             Padding="24,10">
-                        <Grid ColumnSpacing="{DynamicResource SpacingMedium}">
+                        <Grid ColumnSpacing="{DynamicResource SpacingMedium}"
+                              Height="32">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="40" />
                                 <ColumnDefinition SharedSizeGroup="DateTime"
@@ -43,30 +44,36 @@
                                                   Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <CheckBox Grid.Column="0"
-                                      IsChecked="{Binding IsAllSelected}" />
+                                      IsChecked="{Binding IsAllSelected}"
+                                      VerticalAlignment="Center" />
                             <TextBlock Grid.Column="1"
                                        Classes="table-header"
                                        Text="{common:Localization DateTime,
-                                                                  ToUpper=True}" />
+                                                                  ToUpper=True}"
+                                       VerticalAlignment="Center" />
                             <TextBlock Grid.Column="2"
                                        Classes="table-header"
                                        Text="{common:Localization Shooter,
-                                                                  ToUpper=True}" />
+                                                                  ToUpper=True}"
+                                       VerticalAlignment="Center" />
                             <TextBlock Grid.Column="3"
                                        Classes="table-header"
                                        Text="{common:Localization WeaponType,
                                                                   ToUpper=True}"
-                                       TextAlignment="Center" />
+                                       TextAlignment="Center"
+                                       VerticalAlignment="Center" />
                             <TextBlock Grid.Column="4"
                                        Classes="table-header"
                                        Text="{common:Localization Shot,
                                                                   ToUpper=True}"
-                                       TextAlignment="Center" />
+                                       TextAlignment="Center"
+                                       VerticalAlignment="Center" />
                             <TextBlock Grid.Column="5"
                                        Classes="table-header"
                                        Text="{common:Localization Distance,
                                                                   ToUpper=True}"
-                                       TextAlignment="Center" />
+                                       TextAlignment="Center"
+                                       VerticalAlignment="Center" />
                         </Grid>
                     </Border>
                     <ListBox x:Name="ShotsListBox"

@@ -36,7 +36,8 @@
                     <Border BorderBrush="{DynamicResource BorderTableBrush}"
                             BorderThickness="0,0,0,1"
                             Padding="24,10">
-                        <Grid ColumnSpacing="{DynamicResource SpacingMedium}">
+                        <Grid ColumnSpacing="{DynamicResource SpacingMedium}"
+                              Height="32">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
@@ -50,25 +51,30 @@
                             <TextBlock Grid.Column="0"
                                        Classes="table-header"
                                        Text="{common:Localization Lastname,
-                                                                  ToUpper=True}" />
+                                                                  ToUpper=True}"
+                                       VerticalAlignment="Center" />
                             <TextBlock Grid.Column="1"
                                        Classes="table-header"
                                        Text="{common:Localization Firstname,
-                                                                  ToUpper=True}" />
+                                                                  ToUpper=True}"
+                                       VerticalAlignment="Center" />
                             <TextBlock Grid.Column="2"
                                        Classes="table-header"
                                        Text="{common:Localization Club,
-                                                                  ToUpper=True}" />
+                                                                  ToUpper=True}"
+                                       VerticalAlignment="Center" />
                             <TextBlock Grid.Column="3"
                                        Classes="table-header"
                                        Text="{common:Localization Birthyear,
                                                                   ToUpper=True}"
-                                       TextAlignment="Center" />
+                                       TextAlignment="Center"
+                                       VerticalAlignment="Center" />
                             <TextBlock Grid.Column="5"
                                        Classes="table-header"
                                        Text="{common:Localization Gender,
                                                                   ToUpper=True}"
-                                       TextAlignment="Center" />
+                                       TextAlignment="Center"
+                                       VerticalAlignment="Center" />
                         </Grid>
                     </Border>
                     <ListBox Classes="table-rows"
