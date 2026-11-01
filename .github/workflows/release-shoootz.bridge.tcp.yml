@@ -169,25 +169,11 @@ jobs:
       - name: Publish
         run: dotnet publish Shoootz.Bridge.TCP/Shoootz.Bridge.TCP.csproj -r linux-x64 -c Release -o ./out
 
-      # Nativer API-Download über die offizielle GitHub-Action umgeht Netzwerk- und URL-Probleme vollständig
-      - name: Download appimagetool via GitHub API
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const fs = require('fs');
-            const response = await github.request('GET /repos/{owner}/{repo}/releases/assets/{asset_id}', {
-              owner: 'AppImage',
-              repo: 'appimagetool',
-              asset_id: 174620027, // Entspricht der exakten ID des x86_64 Releases vom 08.08.2024
-              headers: { 'accept': 'application/octet-stream' }
-            });
-            fs.writeFileSync('${{ github.workspace }}/Shoootz/appimagetool', Buffer.from(response.data));
-
-      - name: Extract appimagetool
+      # Installation direkt aus den offiziellen Paketquellen über Aptitude
+      - name: Install AppImage Tooling via Advanced Packaging Tool
         run: |
-          chmod +x appimagetool
-          ./appimagetool --appimage-extract
-          mv squashfs-root appimagetool-extracted
+          sudo apt-get update
+          sudo apt-get install -y appimage-builder
 
       - name: Create AppImage
         run: |
@@ -213,7 +199,8 @@ jobs:
           Categories=Sports;
           DESKTOP
 
-          ARCH=x86_64 ./appimagetool-extracted/AppRun "$APPDIR" ./out/Shoootz.Bridge.TCP.AppImage
+          # Nutzen des im System global installierten Hilfswerkzeugs zum Generieren des AppImages
+          ARCH=x86_64 appimagetool "$APPDIR" ./out/Shoootz.Bridge.TCP.AppImage
 
       - uses: actions/upload-artifact@v7
         with:
