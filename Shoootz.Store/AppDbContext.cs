@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Shoootz.Store.Entities;
+using Shoootz.Store.Types;
 
 namespace Shoootz.Store;
 
@@ -8,6 +9,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<ClubEntity> Clubs { get; set; }
 
     public DbSet<ShooterEntity> Shooters { get; set; }
+
+    public DbSet<ShotChecksumEntity> ShotChecksums { get; set; }
 
     public DbSet<ShotEntity> Shots { get; set; }
 
@@ -37,6 +40,13 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         modelBuilder.Entity<ShotEntity>(entity =>
         {
             entity.HasKey(e => e.Id);
+            entity.Property(e => e.Source).HasDefaultValue(ShotSourceType.Receiver);
+        });
+
+        modelBuilder.Entity<ShotChecksumEntity>(entity =>
+        {
+            entity.HasKey(e => e.ShotId);
+            entity.Property(e => e.ShotId).ValueGeneratedNever();
         });
     }
 }

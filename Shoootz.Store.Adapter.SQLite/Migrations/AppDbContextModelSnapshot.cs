@@ -73,6 +73,21 @@ namespace Shoootz.Store.Adapter.SQLite.Migrations
                     b.ToTable("Shooters");
                 });
 
+            modelBuilder.Entity("Shoootz.Store.Entities.ShotChecksumEntity", b =>
+                {
+                    b.Property<int>("ShotId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Hash")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("ShotId");
+
+                    b.ToTable("ShotChecksums");
+                });
+
             modelBuilder.Entity("Shoootz.Store.Entities.ShotEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -92,6 +107,9 @@ namespace Shoootz.Store.Adapter.SQLite.Migrations
                     b.Property<double>("Distance")
                         .HasColumnType("REAL");
 
+                    b.Property<bool>("IsEdited")
+                        .HasColumnType("INTEGER");
+
                     b.Property<bool>("IsHot")
                         .HasColumnType("INTEGER");
 
@@ -108,6 +126,11 @@ namespace Shoootz.Store.Adapter.SQLite.Migrations
                     b.Property<string>("ShotInfoMenuId")
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("Source")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(1);
 
                     b.HasKey("Id");
 

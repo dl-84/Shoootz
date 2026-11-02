@@ -16,14 +16,18 @@ using Shoootz.Models.Settings;
 using Shoootz.Models.Settings.Database;
 using Shoootz.Models.Shooter;
 using Shoootz.Models.Shot;
+using Shoootz.Services.ShotIntegrity;
 using Shoootz.Store;
 using Shoootz.Store.Entities;
 using Shoootz.Store.Types;
 
 namespace Shoootz.Services.Store;
 
-internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOptionsMonitor<SettingsModel> settings)
-    : IStoreService
+internal class StoreService(
+    IDbContextFactory<AppDbContext> contextFactory,
+    IOptionsMonitor<SettingsModel> settings,
+    IShotChecksumService shotChecksumService
+) : IStoreService
 {
     public event EventHandler? ConnectionChanged;
 
@@ -160,7 +164,45 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
                     .ToListAsync()
                     .ConfigureAwait(false);
 
+                List<ShotChecksumEntity> checksums = await context
+                    .ShotChecksums.Where(checksum => ids.Contains(checksum.ShotId))
+                    .ToListAsync()
+                    .ConfigureAwait(false);
+
                 context.Shots.RemoveRange(entities);
+                context.ShotChecksums.RemoveRange(checksums);
+                await context.SaveChangesAsync().ConfigureAwait(false);
+
+                return Unit.Value;
+            }
+        }
+        catch (Exception exception)
+        {
+            return new Error<StoreSaveErrorModel>(new StoreSaveErrorModel(GetFullMessage(exception)));
+        }
+    }
+
+    public async Task<Result<Unit, StoreSaveErrorModel>> EditShotAsync(ShotModel shot)
+    {
+        try
+        {
+            await using (AppDbContext context = await contextFactory.CreateDbContextAsync().ConfigureAwait(false))
+            {
+                ShotEntity? entity = await context
+                    .Shots.Include(s => s.Shooter)
+                    .FirstOrDefaultAsync(s => s.Id == shot.Id)
+                    .ConfigureAwait(false);
+
+                if (entity is null)
+                {
+                    return new Error<StoreSaveErrorModel>(new StoreSaveErrorModel($"Shot {shot.Id} not found."));
+                }
+
+                entity.DecValue = shot.DecValue;
+                entity.Distance = shot.Distance;
+                entity.IsEdited = true;
+
+                await shotChecksumService.StoreAsync(context, entity).ConfigureAwait(false);
                 await context.SaveChangesAsync().ConfigureAwait(false);
 
                 return Unit.Value;
@@ -364,6 +406,36 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
         }
     }
 
+    public async Task<Result<Unit, StoreSaveErrorModel>> SaveManualShotsAsync(IReadOnlyCollection<ShotModel> shots)
+    {
+        try
+        {
+            await using (AppDbContext context = await contextFactory.CreateDbContextAsync().ConfigureAwait(false))
+            {
+                foreach (ShotModel shot in shots)
+                {
+                    ShooterEntity? shooterEntity = await FindOrCreateShooterAsync(context, shot.Shooter)
+                        .ConfigureAwait(false);
+
+                    ShotEntity entity = MapToShotEntity(shot, shooterEntity, shotInfo: null);
+                    entity.Source = Shoootz.Store.Types.ShotSourceType.Manual;
+
+                    context.Shots.Add(entity);
+                    await context.SaveChangesAsync().ConfigureAwait(false);
+
+                    await shotChecksumService.StoreAsync(context, entity).ConfigureAwait(false);
+                    await context.SaveChangesAsync().ConfigureAwait(false);
+                }
+
+                return Unit.Value;
+            }
+        }
+        catch (Exception exception)
+        {
+            return new Error<StoreSaveErrorModel>(new StoreSaveErrorModel(GetFullMessage(exception)));
+        }
+    }
+
     public async Task<Result<Unit, StoreSaveErrorModel>> SaveShooterAsync(ShooterModel shooter, bool isNew)
     {
         try
@@ -414,7 +486,11 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
                 ShotInfoEntity? shotInfoEntity = await FindOrCreateShotInfoAsync(context, shot.ShotInfo)
                     .ConfigureAwait(false);
 
-                context.Shots.Add(MapToShotEntity(shot, shooterEntity, shotInfoEntity));
+                ShotEntity entity = MapToShotEntity(shot, shooterEntity, shotInfoEntity);
+                context.Shots.Add(entity);
+                await context.SaveChangesAsync().ConfigureAwait(false);
+
+                await shotChecksumService.StoreAsync(context, entity).ConfigureAwait(false);
                 await context.SaveChangesAsync().ConfigureAwait(false);
 
                 return Unit.Value;
@@ -423,6 +499,14 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
         catch (Exception exception)
         {
             return new Error<StoreSaveErrorModel>(new StoreSaveErrorModel(GetFullMessage(exception)));
+        }
+    }
+
+    public async Task<List<ShotIntegrityError>> VerifyShotIntegrityAsync()
+    {
+        await using (AppDbContext context = await contextFactory.CreateDbContextAsync().ConfigureAwait(false))
+        {
+            return await shotChecksumService.VerifyAsync(context).ConfigureAwait(false);
         }
     }
 
@@ -559,8 +643,10 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
             IsHot = shot.IsHot,
             IsValid = shot.IsValid,
             ShotDateTime = shot.ShotDateTime,
+            Shooter = shooter,
             ShooterId = shooter?.Id,
             ShotInfoMenuId = shotInfo?.MenuId,
+            Source = Shoootz.Store.Types.ShotSourceType.Receiver,
         };
     }
 
@@ -573,6 +659,7 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
             DiscType = entity.DiscType,
             Distance = entity.Distance,
             Id = entity.Id,
+            IsEdited = entity.IsEdited,
             IsHot = entity.IsHot,
             IsValid = entity.IsValid,
             ShotDateTime = entity.ShotDateTime,
@@ -596,6 +683,16 @@ internal class StoreService(IDbContextFactory<AppDbContext> contextFactory, IOpt
                     MenuItemName = entity.ShotInfo.MenuItemName,
                     MenuPointName = entity.ShotInfo.MenuPointName,
                 },
+            Source = MapToShotSourceModel(entity.Source),
+        };
+    }
+
+    private static Models.Shot.ShotSourceType MapToShotSourceModel(Shoootz.Store.Types.ShotSourceType source)
+    {
+        return source switch
+        {
+            Shoootz.Store.Types.ShotSourceType.Manual => Models.Shot.ShotSourceType.Manual,
+            _ => Models.Shot.ShotSourceType.Receiver,
         };
     }
 }

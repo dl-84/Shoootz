@@ -24,6 +24,7 @@ using Shoootz.Models.Settings.Incoming;
 using Shoootz.Services.Data;
 using Shoootz.Services.Parser;
 using Shoootz.Services.Receiver;
+using Shoootz.Services.ShotIntegrity;
 using Shoootz.Services.Store;
 using Shoootz.Store;
 using Shoootz.Store.Services;
@@ -105,6 +106,7 @@ public class App : Application
             "Shoootz.Common.Resources.Lang.Messages",
             typeof(LocalizationService).Assembly
         ));
+        services.AddSingleton<IShotChecksumService, ShotChecksumService>();
         services.AddSingleton<IShotDataParser, ShotDataParser>();
         services.AddSingleton<ISettingsWriter<SettingsModel>, SettingsWriter<SettingsModel>>();
         services.AddKeyedSingleton<IReceiverService, TcpReceiverService>(ReceiverType.Tcp);

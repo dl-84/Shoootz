@@ -15,6 +15,8 @@ internal class ShotModel
 
     public int Id { get; set; }
 
+    public bool IsEdited { get; set; }
+
     public bool IsHot { get; set; }
 
     public bool IsValid { get; set; }
@@ -24,4 +26,6 @@ internal class ShotModel
     public DateTime ShotDateTime { get; set; }
 
     public ShooterModel? Shooter { get; set; }
+
+    public ShotSourceType Source { get; set; }
 }

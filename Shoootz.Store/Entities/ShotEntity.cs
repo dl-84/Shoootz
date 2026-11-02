@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Shoootz.Store.Types;
 
 namespace Shoootz.Store.Entities;
 
@@ -15,6 +16,8 @@ public class ShotEntity
 
     public int Id { get; set; }
 
+    public bool IsEdited { get; set; }
+
     public bool IsHot { get; set; }
 
     public bool IsValid { get; set; }
@@ -30,4 +33,6 @@ public class ShotEntity
     public string? ShotInfoMenuId { get; set; }
 
     public ShotInfoEntity? ShotInfo { get; set; }
+
+    public ShotSourceType Source { get; set; }
 }
