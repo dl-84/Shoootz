@@ -9,6 +9,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using Result;
 using Result.Types;
 using Shoootz.Models.Error;
+using Shoootz.Models.Shooter;
 using Shoootz.Models.Shot;
 using Shoootz.Services.Store;
 using Shoootz.ViewModels.Services;
@@ -28,12 +29,18 @@ internal partial class ShotsViewModel : ListFilterService<ShotRowViewModel>
 
     public event Action<string>? DeleteShotsFailed;
 
+    public event Action<List<ShotIntegrityError>>? IntegrityIssuesFound;
+
     public event Action<string>? LoadShotsFailed;
 
-    public bool IsAnyShotSelected => Shots.Any(row => row.IsSelected);
+    public event Action<string>? SaveShotsFailed;
 
     [ObservableProperty]
     public partial bool IsAllSelected { get; set; }
+
+    public bool IsAnyShotSelected => Shots.Any(row => row.IsSelected);
+
+    public bool IsExactlyOneShotSelected => Shots.Count(row => row.IsSelected) == 1;
 
     public ObservableCollection<ShotRowViewModel> Shots => Items;
 
@@ -58,9 +65,56 @@ internal partial class ShotsViewModel : ListFilterService<ShotRowViewModel>
         );
     }
 
+    public async Task ExecuteEditShotAsync(ShotModel shot)
+    {
+        Result<Unit, StoreSaveErrorModel> result = await _storeService.EditShotAsync(shot);
+
+        await result.Match(
+            async _ => await LoadShotsAsync(),
+            error =>
+            {
+                SaveShotsFailed?.Invoke(error.Value.Message);
+                return Task.CompletedTask;
+            }
+        );
+    }
+
     public async Task ExecuteRefreshAsync()
     {
         await LoadShotsAsync();
+    }
+
+    public async Task ExecuteSaveManualShotsAsync(List<ShotModel> shots)
+    {
+        Result<Unit, StoreSaveErrorModel> result = await _storeService.SaveManualShotsAsync(shots);
+
+        await result.Match(
+            async _ => await LoadShotsAsync(),
+            error =>
+            {
+                SaveShotsFailed?.Invoke(error.Value.Message);
+                return Task.CompletedTask;
+            }
+        );
+    }
+
+    public ShotModel? GetSelectedShot()
+    {
+        return Shots.SingleOrDefault(row => row.IsSelected)?.Shot;
+    }
+
+    public async Task<List<ShooterModel>> GetShootersAsync()
+    {
+        Result<List<ShooterModel>, StoreReadErrorModel> result = await _storeService.GetShootersAsync();
+
+        return result.Match(
+            shooters => shooters,
+            error =>
+            {
+                LoadShotsFailed?.Invoke(error.Value.Message);
+                return [];
+            }
+        );
     }
 
     protected override bool Matches(ShotRowViewModel item, string searchText)
@@ -102,6 +156,13 @@ internal partial class ShotsViewModel : ListFilterService<ShotRowViewModel>
             },
             error => LoadShotsFailed?.Invoke(error.Value.Message)
         );
+
+        List<ShotIntegrityError> issues = await _storeService.VerifyShotIntegrityAsync();
+
+        if (issues.Count > 0)
+        {
+            IntegrityIssuesFound?.Invoke(issues);
+        }
     }
 
     private void OnRowPropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -109,6 +170,7 @@ internal partial class ShotsViewModel : ListFilterService<ShotRowViewModel>
         if (e.PropertyName == nameof(ShotRowViewModel.IsSelected))
         {
             OnPropertyChanged(nameof(IsAnyShotSelected));
+            OnPropertyChanged(nameof(IsExactlyOneShotSelected));
         }
     }
 }

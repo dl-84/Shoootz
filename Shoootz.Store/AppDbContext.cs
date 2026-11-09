@@ -40,7 +40,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         modelBuilder.Entity<ShotEntity>(entity =>
         {
             entity.HasKey(e => e.Id);
-            entity.Property(e => e.Source).HasDefaultValue(ShotSourceType.Receiver);
+            entity.Property(e => e.Source).HasDefaultValue(ShotSourceType.Receiver).ValueGeneratedNever();
         });
 
         modelBuilder.Entity<ShotChecksumEntity>(entity =>

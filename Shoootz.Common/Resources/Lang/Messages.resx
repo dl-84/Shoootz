@@ -484,4 +484,58 @@
   <data name="Stop" xml:space="preserve">
     <value>Stop</value>
   </data>
+  <data name="AddShotTitle" xml:space="preserve">
+    <value>Add shots manually</value>
+  </data>
+  <data name="EditShotTitle" xml:space="preserve">
+    <value>Edit shot</value>
+  </data>
+  <data name="ShooterRequiredMessage" xml:space="preserve">
+    <value>Please select a shooter.</value>
+  </data>
+  <data name="WeaponTypeRequiredMessage" xml:space="preserve">
+    <value>Please select a weapon type.</value>
+  </data>
+  <data name="ShotValueInvalidMessage" xml:space="preserve">
+    <value>Please enter a valid shot value.</value>
+  </data>
+  <data name="DistanceInvalidMessage" xml:space="preserve">
+    <value>Please enter a valid distance value.</value>
+  </data>
+  <data name="ShotSourceReceiverTooltip" xml:space="preserve">
+    <value>Received electronically</value>
+  </data>
+  <data name="ShotSourceManualTooltip" xml:space="preserve">
+    <value>Entered manually</value>
+  </data>
+  <data name="ShotEditedTooltip" xml:space="preserve">
+    <value>Edited after it was recorded</value>
+  </data>
+  <data name="ShotIntegrityIssuesMessage" xml:space="preserve">
+    <value>{0} shot(s) failed the integrity check. The values may have been tampered with outside the app.</value>
+  </data>
+  <data name="DiscTypeLG" xml:space="preserve">
+    <value>LG</value>
+  </data>
+  <data name="DiscTypeLP" xml:space="preserve">
+    <value>LP</value>
+  </data>
+  <data name="DiscTypeLGA" xml:space="preserve">
+    <value>LGA</value>
+  </data>
+  <data name="DiscTypeLPA" xml:space="preserve">
+    <value>LPA</value>
+  </data>
+  <data name="Series" xml:space="preserve">
+    <value>Series</value>
+  </data>
+  <data name="SingleShot" xml:space="preserve">
+    <value>Single shot</value>
+  </data>
+  <data name="SeriesTotal" xml:space="preserve">
+    <value>Series total (10 shots)</value>
+  </data>
+  <data name="SeriesTotalInvalidMessage" xml:space="preserve">
+    <value>Please enter a valid series total (0-100).</value>
+  </data>
 </root>

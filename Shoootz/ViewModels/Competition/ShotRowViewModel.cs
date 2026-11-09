@@ -8,5 +8,9 @@ internal partial class ShotRowViewModel(ShotModel shot) : ObservableObject
     [ObservableProperty]
     public partial bool IsSelected { get; set; }
 
+    public bool IsSourceManual => Shot.Source == ShotSourceType.Manual;
+
+    public bool IsSourceReceiver => Shot.Source == ShotSourceType.Receiver;
+
     public ShotModel Shot { get; } = shot;
 }

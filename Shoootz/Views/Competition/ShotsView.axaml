@@ -12,11 +12,14 @@
             <TextBlock Classes="h3"
                        Text="{common:Localization Shots}" />
 
-            <sab:SiteActionBarControl AddTooltip="{common:Localization Add}"
+            <sab:SiteActionBarControl AddRequested="OnAddIconPressed"
+                                      AddTooltip="{common:Localization Add}"
                                       DeleteRequested="OnDeleteIconPressed"
                                       DeleteTooltip="{common:Localization Delete}"
+                                      EditRequested="OnEditIconPressed"
                                       EditTooltip="{common:Localization Edit}"
                                       IsActionEnabled="{Binding IsAnyShotSelected}"
+                                      IsEditEnabled="{Binding IsExactlyOneShotSelected}"
                                       IsRefreshVisible="True"
                                       RefreshRequested="OnRefreshIconPressed"
                                       RefreshTooltip="{common:Localization Refresh}"
@@ -33,6 +36,8 @@
                               Height="32">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="40" />
+                                <ColumnDefinition SharedSizeGroup="Source"
+                                                  Width="48" />
                                 <ColumnDefinition SharedSizeGroup="DateTime"
                                                   Width="Auto" />
                                 <ColumnDefinition Width="*" />
@@ -46,29 +51,29 @@
                             <CheckBox Grid.Column="0"
                                       IsChecked="{Binding IsAllSelected}"
                                       VerticalAlignment="Center" />
-                            <TextBlock Grid.Column="1"
+                            <TextBlock Grid.Column="2"
                                        Classes="table-header"
                                        Text="{common:Localization DateTime,
                                                                   ToUpper=True}"
                                        VerticalAlignment="Center" />
-                            <TextBlock Grid.Column="2"
+                            <TextBlock Grid.Column="3"
                                        Classes="table-header"
                                        Text="{common:Localization Shooter,
                                                                   ToUpper=True}"
                                        VerticalAlignment="Center" />
-                            <TextBlock Grid.Column="3"
+                            <TextBlock Grid.Column="4"
                                        Classes="table-header"
                                        Text="{common:Localization WeaponType,
                                                                   ToUpper=True}"
                                        TextAlignment="Center"
                                        VerticalAlignment="Center" />
-                            <TextBlock Grid.Column="4"
+                            <TextBlock Grid.Column="5"
                                        Classes="table-header"
                                        Text="{common:Localization Shot,
                                                                   ToUpper=True}"
                                        TextAlignment="Center"
                                        VerticalAlignment="Center" />
-                            <TextBlock Grid.Column="5"
+                            <TextBlock Grid.Column="6"
                                        Classes="table-header"
                                        Text="{common:Localization Distance,
                                                                   ToUpper=True}"
@@ -98,6 +103,8 @@
                                       Margin="24,0">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="40" />
+                                        <ColumnDefinition SharedSizeGroup="Source"
+                                                          Width="48" />
                                         <ColumnDefinition SharedSizeGroup="DateTime"
                                                           Width="Auto" />
                                         <ColumnDefinition Width="*" />
@@ -110,10 +117,30 @@
                                     </Grid.ColumnDefinitions>
                                     <CheckBox Grid.Column="0"
                                               IsChecked="{Binding IsSelected}" />
-                                    <TextBlock Grid.Column="1"
+                                    <StackPanel Grid.Column="1"
+                                                Orientation="Horizontal"
+                                                Spacing="{DynamicResource SpacingXSmall}"
+                                                VerticalAlignment="Center">
+                                        <PathIcon Classes="shot-source-receiver"
+                                                  Height="14"
+                                                  ToolTip.Tip="{common:Localization ShotSourceReceiverTooltip}"
+                                                  Width="14"
+                                                  IsVisible="{Binding IsSourceReceiver}" />
+                                        <PathIcon Classes="shot-source-manual"
+                                                  Height="14"
+                                                  ToolTip.Tip="{common:Localization ShotSourceManualTooltip}"
+                                                  Width="14"
+                                                  IsVisible="{Binding IsSourceManual}" />
+                                        <PathIcon Classes="shot-edited"
+                                                  Height="14"
+                                                  ToolTip.Tip="{common:Localization ShotEditedTooltip}"
+                                                  Width="14"
+                                                  IsVisible="{Binding Shot.IsEdited}" />
+                                    </StackPanel>
+                                    <TextBlock Grid.Column="2"
                                                Text="{Binding Shot.ShotDateTime, StringFormat='dd.MM.yyyy HH:mm:ss'}"
                                                VerticalAlignment="Center" />
-                                    <TextBlock Grid.Column="2"
+                                    <TextBlock Grid.Column="3"
                                                VerticalAlignment="Center">
                                         <TextBlock.Text>
                                             <MultiBinding StringFormat="{}{0} {1}">
@@ -122,15 +149,15 @@
                                             </MultiBinding>
                                         </TextBlock.Text>
                                     </TextBlock>
-                                    <TextBlock Grid.Column="3"
+                                    <TextBlock Grid.Column="4"
                                                Text="{Binding Shot.DiscType}"
                                                TextAlignment="Center"
                                                VerticalAlignment="Center" />
-                                    <TextBlock Grid.Column="4"
+                                    <TextBlock Grid.Column="5"
                                                Text="{Binding Shot.DecValue}"
                                                TextAlignment="Center"
                                                VerticalAlignment="Center" />
-                                    <TextBlock Grid.Column="5"
+                                    <TextBlock Grid.Column="6"
                                                Text="{Binding Shot.Distance, StringFormat='{}{0:0.0}'}"
                                                TextAlignment="Center"
                                                VerticalAlignment="Center" />

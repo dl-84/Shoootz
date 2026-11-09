@@ -484,4 +484,58 @@
   <data name="Stop" xml:space="preserve">
     <value>Stoppen</value>
   </data>
+  <data name="AddShotTitle" xml:space="preserve">
+    <value>Schüsse manuell hinzufügen</value>
+  </data>
+  <data name="EditShotTitle" xml:space="preserve">
+    <value>Schuss bearbeiten</value>
+  </data>
+  <data name="ShooterRequiredMessage" xml:space="preserve">
+    <value>Bitte einen Schützen auswählen.</value>
+  </data>
+  <data name="WeaponTypeRequiredMessage" xml:space="preserve">
+    <value>Bitte einen Waffentyp auswählen.</value>
+  </data>
+  <data name="ShotValueInvalidMessage" xml:space="preserve">
+    <value>Bitte einen gültigen Schusswert eingeben.</value>
+  </data>
+  <data name="DistanceInvalidMessage" xml:space="preserve">
+    <value>Bitte einen gültigen Teiler eingeben.</value>
+  </data>
+  <data name="ShotSourceReceiverTooltip" xml:space="preserve">
+    <value>Elektronisch empfangen</value>
+  </data>
+  <data name="ShotSourceManualTooltip" xml:space="preserve">
+    <value>Manuell eingetragen</value>
+  </data>
+  <data name="ShotEditedTooltip" xml:space="preserve">
+    <value>Nachträglich bearbeitet</value>
+  </data>
+  <data name="ShotIntegrityIssuesMessage" xml:space="preserve">
+    <value>{0} Schuss/Schüsse haben die Integritätsprüfung nicht bestanden. Die Werte wurden möglicherweise außerhalb der App manipuliert.</value>
+  </data>
+  <data name="DiscTypeLG" xml:space="preserve">
+    <value>LG</value>
+  </data>
+  <data name="DiscTypeLP" xml:space="preserve">
+    <value>LP</value>
+  </data>
+  <data name="DiscTypeLGA" xml:space="preserve">
+    <value>LGA</value>
+  </data>
+  <data name="DiscTypeLPA" xml:space="preserve">
+    <value>LPA</value>
+  </data>
+  <data name="Series" xml:space="preserve">
+    <value>Serie</value>
+  </data>
+  <data name="SingleShot" xml:space="preserve">
+    <value>Einzelschuss</value>
+  </data>
+  <data name="SeriesTotal" xml:space="preserve">
+    <value>Seriengesamtwert (10 Schuss)</value>
+  </data>
+  <data name="SeriesTotalInvalidMessage" xml:space="preserve">
+    <value>Bitte einen gültigen Seriengesamtwert eingeben (0-100).</value>
+  </data>
 </root>

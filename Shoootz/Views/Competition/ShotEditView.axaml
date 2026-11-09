@@ -1,0 +1,22 @@
+<UserControl x:Class="Shoootz.Views.Competition.ShotEditView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:common="using:Shoootz.Common.Extensions"
+             xmlns:ff="using:Controls.FormField"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid ColumnDefinitions="*,*"
+          ColumnSpacing="{DynamicResource SpacingMedium}"
+          Width="360">
+        <ff:FormFieldControl x:Name="DecValueField"
+                             Grid.Column="0"
+                             AllowedPattern="[0-9.,]"
+                             Label="{common:Localization Shot}"
+                             MaxLength="10" />
+
+        <ff:FormFieldControl x:Name="DistanceField"
+                             Grid.Column="1"
+                             AllowedPattern="[0-9.,]"
+                             Label="{common:Localization Distance}"
+                             MaxLength="10" />
+    </Grid>
+</UserControl>

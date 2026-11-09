@@ -1,0 +1,98 @@
+﻿<UserControl x:Class="Shoootz.Views.Competition.ManualShotEntryView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:common="using:Shoootz.Common.Extensions"
+             xmlns:ff="using:Controls.FormField"
+             xmlns:loc="using:Shoootz.Extensions"
+             xmlns:shooter="using:Shoootz.Models.Shooter"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <UserControl.Resources>
+        <loc:EnumConverter x:Key="DiscTypeConverter" />
+    </UserControl.Resources>
+
+    <StackPanel Spacing="{DynamicResource SpacingMedium}"
+                Width="480">
+
+        <Grid ColumnDefinitions="*,*">
+            <RadioButton x:Name="SeriesRadioButton"
+                         Grid.Column="0"
+                         Content="{common:Localization Series}"
+                         GroupName="EntryMode"
+                         IsChecked="True"
+                         IsCheckedChanged="OnEntryModeChanged" />
+            <RadioButton x:Name="SingleShotRadioButton"
+                         Grid.Column="1"
+                         Content="{common:Localization SingleShot}"
+                         GroupName="EntryMode"
+                         IsCheckedChanged="OnEntryModeChanged" />
+        </Grid>
+
+        <Grid ColumnDefinitions="*,*"
+              ColumnSpacing="{DynamicResource SpacingMedium}">
+            <StackPanel Grid.Column="0"
+                        Spacing="4">
+                <TextBlock Classes="label"
+                           Text="{common:Localization Shooter}" />
+                <ComboBox x:Name="ShooterComboBox"
+                          HorizontalAlignment="Stretch"
+                          Width="NaN">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="shooter:ShooterModel">
+                            <TextBlock>
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}{0} {1}">
+                                        <Binding Path="Lastname" />
+                                        <Binding Path="Firstname" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <TextBlock x:Name="ShooterErrorText"
+                           Classes="hint-error"
+                           IsVisible="False" />
+            </StackPanel>
+
+            <StackPanel Grid.Column="1"
+                        Spacing="4">
+                <TextBlock Classes="label"
+                           Text="{common:Localization WeaponType}" />
+                <ComboBox x:Name="DiscTypeComboBox"
+                          HorizontalAlignment="Stretch"
+                          Width="NaN">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Converter={StaticResource DiscTypeConverter}}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <TextBlock x:Name="DiscTypeErrorText"
+                           Classes="hint-error"
+                           IsVisible="False" />
+            </StackPanel>
+        </Grid>
+
+        <ff:FormFieldControl x:Name="SeriesTotalField"
+                             AllowedPattern="[0-9]"
+                             Label="{common:Localization SeriesTotal}"
+                             MaxLength="3" />
+
+        <Grid x:Name="SingleShotPanel"
+              ColumnDefinitions="*,*"
+              ColumnSpacing="{DynamicResource SpacingMedium}"
+              IsVisible="False">
+            <ff:FormFieldControl x:Name="SingleDecValueField"
+                                 Grid.Column="0"
+                                 AllowedPattern="[0-9.,]"
+                                 Label="{common:Localization Shot}"
+                                 MaxLength="10" />
+
+            <ff:FormFieldControl x:Name="SingleDistanceField"
+                                 Grid.Column="1"
+                                 AllowedPattern="[0-9.,]"
+                                 Label="{common:Localization Distance}"
+                                 MaxLength="10" />
+        </Grid>
+    </StackPanel>
+</UserControl>

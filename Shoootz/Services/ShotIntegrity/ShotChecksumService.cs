@@ -78,7 +78,7 @@ internal class ShotChecksumService : IShotChecksumService
             shot.Shooter?.Firstname,
             shot.DecValue.ToString(CultureInfo.InvariantCulture),
             shot.Distance.ToString(CultureInfo.InvariantCulture),
-            shot.ShotDateTime.ToString("O", CultureInfo.InvariantCulture),
+            shot.ShotDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture),
             shot.Source
         );
 

@@ -3,6 +3,7 @@ using System.Globalization;
 using Avalonia.Data.Converters;
 using Shoootz.Common.Resources.Lang;
 using Shoootz.Common.Services.Localization;
+using Shoootz.DisagOriginUpdMessage;
 using Shoootz.Models.Settings.Incoming;
 using Shoootz.Models.Shooter;
 
@@ -10,6 +11,18 @@ namespace Shoootz.Extensions;
 
 internal class EnumConverter : IValueConverter
 {
+    public static string ToDisplayText(DisagDiscType? discType)
+    {
+        return discType switch
+        {
+            DisagDiscType.LG => LocalizationService.Instance[nameof(Messages.DiscTypeLG)],
+            DisagDiscType.LP => LocalizationService.Instance[nameof(Messages.DiscTypeLP)],
+            DisagDiscType.LGA => LocalizationService.Instance[nameof(Messages.DiscTypeLGA)],
+            DisagDiscType.LPA => LocalizationService.Instance[nameof(Messages.DiscTypeLPA)],
+            _ => discType?.ToString() ?? string.Empty,
+        };
+    }
+
     public static string ToDisplayText(GenderType? gender)
     {
         return gender switch
@@ -33,6 +46,7 @@ internal class EnumConverter : IValueConverter
     {
         return value switch
         {
+            DisagDiscType discType => ToDisplayText(discType),
             GenderType gender => ToDisplayText(gender),
             ReceiverType receiverType => ToDisplayText(receiverType),
             _ => string.Empty,

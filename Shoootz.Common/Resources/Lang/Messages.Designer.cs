@@ -94,6 +94,15 @@ namespace Shoootz.Common.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add shots manually.
+        /// </summary>
+        internal static string AddShotTitle {
+            get {
+                return ResourceManager.GetString("AddShotTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to App.
         /// </summary>
         internal static string App {
@@ -598,11 +607,56 @@ namespace Shoootz.Common.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to LG.
+        /// </summary>
+        internal static string DiscTypeLG {
+            get {
+                return ResourceManager.GetString("DiscTypeLG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LGA.
+        /// </summary>
+        internal static string DiscTypeLGA {
+            get {
+                return ResourceManager.GetString("DiscTypeLGA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LP.
+        /// </summary>
+        internal static string DiscTypeLP {
+            get {
+                return ResourceManager.GetString("DiscTypeLP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LPA.
+        /// </summary>
+        internal static string DiscTypeLPA {
+            get {
+                return ResourceManager.GetString("DiscTypeLPA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Distance.
         /// </summary>
         internal static string Distance {
             get {
                 return ResourceManager.GetString("Distance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter a valid distance value..
+        /// </summary>
+        internal static string DistanceInvalidMessage {
+            get {
+                return ResourceManager.GetString("DistanceInvalidMessage", resourceCulture);
             }
         }
         
@@ -630,6 +684,15 @@ namespace Shoootz.Common.Resources.Lang {
         internal static string EditShooterTitle {
             get {
                 return ResourceManager.GetString("EditShooterTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit shot.
+        /// </summary>
+        internal static string EditShotTitle {
+            get {
+                return ResourceManager.GetString("EditShotTitle", resourceCulture);
             }
         }
         
@@ -1021,6 +1084,33 @@ namespace Shoootz.Common.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Series.
+        /// </summary>
+        internal static string Series {
+            get {
+                return ResourceManager.GetString("Series", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Series total (10 shots).
+        /// </summary>
+        internal static string SeriesTotal {
+            get {
+                return ResourceManager.GetString("SeriesTotal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter a valid series total (0-100)..
+        /// </summary>
+        internal static string SeriesTotalInvalidMessage {
+            get {
+                return ResourceManager.GetString("SeriesTotalInvalidMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Settings.
         /// </summary>
         internal static string Settings {
@@ -1071,6 +1161,15 @@ namespace Shoootz.Common.Resources.Lang {
         internal static string Shooter {
             get {
                 return ResourceManager.GetString("Shooter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select a shooter..
+        /// </summary>
+        internal static string ShooterRequiredMessage {
+            get {
+                return ResourceManager.GetString("ShooterRequiredMessage", resourceCulture);
             }
         }
         
@@ -1264,6 +1363,24 @@ namespace Shoootz.Common.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edited after it was recorded.
+        /// </summary>
+        internal static string ShotEditedTooltip {
+            get {
+                return ResourceManager.GetString("ShotEditedTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} shot(s) failed the integrity check. The values may have been tampered with outside the app..
+        /// </summary>
+        internal static string ShotIntegrityIssuesMessage {
+            get {
+                return ResourceManager.GetString("ShotIntegrityIssuesMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Shots.
         /// </summary>
         internal static string Shots {
@@ -1273,11 +1390,47 @@ namespace Shoootz.Common.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Entered manually.
+        /// </summary>
+        internal static string ShotSourceManualTooltip {
+            get {
+                return ResourceManager.GetString("ShotSourceManualTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Received electronically.
+        /// </summary>
+        internal static string ShotSourceReceiverTooltip {
+            get {
+                return ResourceManager.GetString("ShotSourceReceiverTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter a valid shot value..
+        /// </summary>
+        internal static string ShotValueInvalidMessage {
+            get {
+                return ResourceManager.GetString("ShotValueInvalidMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show settings file.
         /// </summary>
         internal static string ShowSettings {
             get {
                 return ResourceManager.GetString("ShowSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Single shot.
+        /// </summary>
+        internal static string SingleShot {
+            get {
+                return ResourceManager.GetString("SingleShot", resourceCulture);
             }
         }
         
@@ -1467,6 +1620,15 @@ namespace Shoootz.Common.Resources.Lang {
         internal static string WeaponType {
             get {
                 return ResourceManager.GetString("WeaponType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select a weapon type..
+        /// </summary>
+        internal static string WeaponTypeRequiredMessage {
+            get {
+                return ResourceManager.GetString("WeaponTypeRequiredMessage", resourceCulture);
             }
         }
     }
