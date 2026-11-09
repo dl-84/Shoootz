@@ -92,7 +92,7 @@
                 <ListBox Grid.Row="1"
                          Background="Transparent"
                          BorderThickness="0"
-                         CornerRadius="0"
+                         CornerRadius="{DynamicResource CornerRadiusZero}"
                          ItemsSource="{Binding Logs}"
                          Padding="0"
                          ScrollViewer.HorizontalScrollBarVisibility="Auto"

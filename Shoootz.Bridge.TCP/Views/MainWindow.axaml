@@ -21,7 +21,7 @@
 
     <Border x:Name="RootBorder"
             ClipToBounds="True"
-            CornerRadius="10">
+            CornerRadius="{DynamicResource CornerRadiusMedium}">
         <Panel>
             <Grid ColumnDefinitions="220,*"
                   RowDefinitions="36,*">
