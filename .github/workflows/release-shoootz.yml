@@ -31,6 +31,14 @@ jobs:
       - name: Restore tools
         run: dotnet tool restore
 
+      - name: Inject shot hash secret
+        shell: pwsh
+        env:
+          SHOT_HASH_SECRET: ${{ secrets.SHOT_HASH_SECRET }}
+        run: |
+          $path = "Shoootz/Services/ShotIntegrity/ShotHashSecret.cs"
+          (Get-Content $path -Raw) -replace "DEV-ONLY-NOT-FOR-PRODUCTION", $env:SHOT_HASH_SECRET | Set-Content $path
+
       - name: Publish
         shell: pwsh
         run: dotnet publish Shoootz/Shoootz.csproj -r win-x64 -c Release -o ./out
@@ -86,6 +94,14 @@ jobs:
 
       - name: Restore tools
         run: dotnet tool restore
+
+      - name: Inject shot hash secret
+        shell: pwsh
+        env:
+          SHOT_HASH_SECRET: ${{ secrets.SHOT_HASH_SECRET }}
+        run: |
+          $path = "Shoootz/Services/ShotIntegrity/ShotHashSecret.cs"
+          (Get-Content $path -Raw) -replace "DEV-ONLY-NOT-FOR-PRODUCTION", $env:SHOT_HASH_SECRET | Set-Content $path
 
       - name: Publish
         run: dotnet publish Shoootz/Shoootz.csproj -r ${{ matrix.rid }} -c Release -o ./out
@@ -176,6 +192,14 @@ jobs:
 
       - name: Restore tools
         run: dotnet tool restore
+
+      - name: Inject shot hash secret
+        shell: pwsh
+        env:
+          SHOT_HASH_SECRET: ${{ secrets.SHOT_HASH_SECRET }}
+        run: |
+          $path = "Shoootz/Services/ShotIntegrity/ShotHashSecret.cs"
+          (Get-Content $path -Raw) -replace "DEV-ONLY-NOT-FOR-PRODUCTION", $env:SHOT_HASH_SECRET | Set-Content $path
 
       - name: Publish
         run: dotnet publish Shoootz/Shoootz.csproj -r linux-x64 -c Release -o ./out
