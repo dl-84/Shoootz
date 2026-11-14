@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Controls.LicenseTable.Models;
@@ -12,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Result;
 using Shoootz.Common.Models.Language.Error;
+using Shoootz.Common.Resources.Lang;
 using Shoootz.Common.Services.App;
 using Shoootz.Common.Services.Graphics;
 using Shoootz.Common.Services.Language;
@@ -43,6 +46,10 @@ public class App : Application
 
     private IConfigurationRoot _configurationRoot = new ConfigurationRoot(new List<IConfigurationProvider>());
 
+    private IClassicDesktopStyleApplicationLifetime? _desktop;
+
+    private MainWindow? _mainWindow;
+
     private string _rawSettings = string.Empty;
 
     public override void Initialize()
@@ -55,6 +62,8 @@ public class App : Application
         IServiceProvider serviceProvider = InitServiceProvider();
         InitLocalization(serviceProvider);
         MainWindowViewModel mainWindowViewModel = serviceProvider.GetRequiredService<MainWindowViewModel>();
+        Receiver? receiver = _configurationRoot.Get<SettingsModel>()?.Receiver;
+        bool startMinimized = _errors.Count == 0 && receiver is not null && receiver.AutoConnect;
 
         if (_errors.Count > 0)
         {
@@ -63,7 +72,6 @@ public class App : Application
         else
         {
             _ = mainWindowViewModel.CheckDbConnectionAsync();
-            Receiver? receiver = _configurationRoot.Get<SettingsModel>()?.Receiver;
 
             if (receiver is not null && receiver.AutoConnect)
             {
@@ -74,8 +82,18 @@ public class App : Application
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            desktop.MainWindow = new MainWindow { DataContext = mainWindowViewModel };
+            _desktop = desktop;
+            _mainWindow = new MainWindow { DataContext = mainWindowViewModel };
+            desktop.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+            desktop.MainWindow = _mainWindow;
+
+            if (startMinimized)
+            {
+                _mainWindow.Opened += OnMainWindowOpenedWhileStartingMinimized;
+            }
         }
+
+        InitTrayMenu();
 
         base.OnFrameworkInitializationCompleted();
     }
@@ -210,5 +228,75 @@ public class App : Application
             },
             error => _errors.AddRange(error.Value)
         );
+    }
+
+    private void InitTrayMenu()
+    {
+        TrayIcon? trayIcon = TrayIcon.GetIcons(this)?[0];
+
+        if (trayIcon is null)
+        {
+            return;
+        }
+
+        string version = Assembly.GetExecutingAssembly().GetName().Version?.ToString(3) ?? "n/a";
+        string appName = _mainWindow?.Title ?? Assembly.GetExecutingAssembly().GetName().Name ?? "n/a";
+
+        NativeMenuItem headerMenuItem = new($"{appName} - {version}") { IsEnabled = false };
+
+        NativeMenuItem showMenuItem = new(LocalizationService.Instance[nameof(Messages.Show)]);
+        showMenuItem.Click += OnTrayShowClicked;
+
+        NativeMenuItem exitMenuItem = new(LocalizationService.Instance[nameof(Messages.Exit)]);
+        exitMenuItem.Click += OnTrayExitClicked;
+
+        trayIcon.Menu = new NativeMenu
+        {
+            Items = { headerMenuItem, new NativeMenuItemSeparator(), showMenuItem, exitMenuItem },
+        };
+    }
+
+    private void OnMainWindowOpenedWhileStartingMinimized(object? sender, EventArgs e)
+    {
+        if (_mainWindow is null)
+        {
+            return;
+        }
+
+        _mainWindow.Opened -= OnMainWindowOpenedWhileStartingMinimized;
+        _mainWindow.Hide();
+    }
+
+    private void OnTrayExitClicked(object? sender, EventArgs e)
+    {
+        if (_mainWindow is not null)
+        {
+            _mainWindow.AllowClose = true;
+            _mainWindow.Close();
+        }
+
+        _desktop?.Shutdown();
+    }
+
+    private void OnTrayIconClicked(object? sender, EventArgs e)
+    {
+        ShowMainWindow();
+    }
+
+    private void OnTrayShowClicked(object? sender, EventArgs e)
+    {
+        ShowMainWindow();
+    }
+
+    private void ShowMainWindow()
+    {
+        if (_mainWindow is null)
+        {
+            return;
+        }
+
+        _mainWindow.Show();
+        _mainWindow.WindowState = WindowState.Normal;
+        _mainWindow.Activate();
     }
 }

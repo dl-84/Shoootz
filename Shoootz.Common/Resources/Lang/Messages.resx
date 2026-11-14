@@ -30,6 +30,9 @@
   <data name="Evaluate" xml:space="preserve">
     <value>Evaluate</value>
   </data>
+  <data name="Exit" xml:space="preserve">
+    <value>Exit</value>
+  </data>
   <data name="GeneralSettings" xml:space="preserve">
     <value>General</value>
   </data>
@@ -80,6 +83,9 @@
   </data>
   <data name="SettingsValidSuccessHint" xml:space="preserve">
     <value>Save the file and restart the application.</value>
+  </data>
+  <data name="Show" xml:space="preserve">
+    <value>Show</value>
   </data>
   <data name="ShowSettings" xml:space="preserve">
     <value>Show settings file</value>

@@ -715,6 +715,15 @@ namespace Shoootz.Common.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Exit.
+        /// </summary>
+        internal static string Exit {
+            get {
+                return ResourceManager.GetString("Exit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to First name.
         /// </summary>
         internal static string Firstname {
@@ -1413,6 +1422,15 @@ namespace Shoootz.Common.Resources.Lang {
         internal static string ShotValueInvalidMessage {
             get {
                 return ResourceManager.GetString("ShotValueInvalidMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show.
+        /// </summary>
+        internal static string Show {
+            get {
+                return ResourceManager.GetString("Show", resourceCulture);
             }
         }
         

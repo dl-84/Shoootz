@@ -17,4 +17,12 @@
         <theme.Disag:Disag />
         <icons:Icons />
     </Application.Styles>
+
+    <TrayIcon.Icons>
+        <TrayIcons>
+            <TrayIcon Clicked="OnTrayIconClicked"
+                      Icon="/Assets/Logo/Logo.png"
+                      ToolTipText="Shoootz" />
+        </TrayIcons>
+    </TrayIcon.Icons>
 </Application>

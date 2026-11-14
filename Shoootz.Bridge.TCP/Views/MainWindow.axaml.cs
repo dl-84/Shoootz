@@ -33,7 +33,10 @@ public partial class MainWindow : Window
         NavBorder.Padding = new Thickness(0, PlatformInfoService.IsMac ? 33 : 0, 0, 0);
 
         DataContextChanged += OnDataContextChanged;
+        Closing += OnClosing;
     }
+
+    public bool AllowClose { get; set; }
 
     private static TextBlock BuildUnsavedChangesContent()
     {
@@ -74,6 +77,17 @@ public partial class MainWindow : Window
         }
 
         mainWindowViewModel.NavigateTo(page);
+    }
+
+    private void OnClosing(object? sender, WindowClosingEventArgs e)
+    {
+        if (AllowClose)
+        {
+            return;
+        }
+
+        e.Cancel = true;
+        Hide();
     }
 
     private void OnDataContextChanged(object? sender, EventArgs e)

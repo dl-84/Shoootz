@@ -15,4 +15,12 @@
         <themes:Disag />
         <icons:Icons />
     </Application.Styles>
+
+    <TrayIcon.Icons>
+        <TrayIcons>
+            <TrayIcon Clicked="OnTrayIconClicked"
+                      Icon="/Assets/Logo.png"
+                      ToolTipText="Shoootz TCP Bridge" />
+        </TrayIcons>
+    </TrayIcon.Icons>
 </Application>
