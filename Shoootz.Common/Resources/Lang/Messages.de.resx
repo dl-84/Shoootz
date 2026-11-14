@@ -352,7 +352,7 @@
     <value>TCP</value>
   </data>
   <data name="Logging" xml:space="preserve">
-    <value>Logging</value>
+    <value>Monitoring</value>
   </data>
   <data name="ShotCounterParsed" xml:space="preserve">
     <value>Analysierte Schüsse</value>

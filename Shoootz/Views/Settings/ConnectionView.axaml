@@ -118,17 +118,21 @@
 
                         <StackPanel Orientation="Horizontal"
                                     Spacing="{DynamicResource SpacingSmall}">
-                            <PathIcon Classes.db-status-not-initialized="{Binding IsDbNotInitialized}"
-                                      Classes.db-status-up-to-date="{Binding IsDbUpToDate}"
-                                      Classes.db-status-update-available="{Binding IsDbUpdateAvailable}"
-                                      Height="18"
-                                      PointerPressed="OnDbStatusBadgePressed"
-                                      ToolTip.Tip="{Binding InitializeDbLabel}"
-                                      VerticalAlignment="Center"
-                                      Width="18" />
-
                             <TextBlock Classes="h4"
-                                       Text="{common:Localization Database}" />
+                                       Text="{common:Localization Database}"
+                                       VerticalAlignment="Center" />
+
+                            <Border Background="Transparent"
+                                    Classes.db-status-not-initialized="{Binding IsDbNotInitialized}"
+                                    Classes.db-status-up-to-date="{Binding IsDbUpToDate}"
+                                    Classes.db-status-update-available="{Binding IsDbUpdateAvailable}"
+                                    Padding="5"
+                                    PointerPressed="OnDbStatusBadgePressed"
+                                    ToolTip.Tip="{Binding InitializeDbLabel}"
+                                    VerticalAlignment="Center">
+                                <Path Height="20"
+                                      Width="20" />
+                            </Border>
                         </StackPanel>
 
                         <Grid ColumnDefinitions="Auto,*,170"

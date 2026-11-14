@@ -922,7 +922,7 @@ namespace Shoootz.Common.Resources.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Logging.
+        ///   Looks up a localized string similar to Monitoring.
         /// </summary>
         internal static string Logging {
             get {

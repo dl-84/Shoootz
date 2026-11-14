@@ -6,16 +6,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:DataType="vm:LicensesViewModel">
 
-    <ScrollViewer>
-        <StackPanel Classes="page-content">
+    <Grid Margin="18,0,18,18"
+          RowDefinitions="Auto,*">
 
-            <TextBlock Classes="h3"
-                       Text="{extensions:Localization Licenses}" />
+        <TextBlock Classes="h3"
+                   Margin="0,0,0,16"
+                   Text="{extensions:Localization Licenses}" />
 
-            <controls:LicenseTableControl Headers="{Binding ColumnHeaders}"
-                                          Items="{Binding Packages}" />
+        <controls:LicenseTableControl Grid.Row="1"
+                                      Headers="{Binding ColumnHeaders}"
+                                      Items="{Binding Packages}" />
 
-        </StackPanel>
-    </ScrollViewer>
+    </Grid>
 
 </UserControl>

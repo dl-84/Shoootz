@@ -24,13 +24,13 @@
             CornerRadius="{DynamicResource CornerRadiusMedium}">
         <Panel>
             <Grid ColumnDefinitions="220,*"
-                  RowDefinitions="36,*">
+                  RowDefinitions="33,*">
 
                 <Border x:Name="NavBorder"
                         Grid.Row="0"
                         Grid.Column="0"
                         Grid.RowSpan="2"
-                        Background="{DynamicResource PrimaryBrush}">
+                        Background="{DynamicResource NavigationBackgroundBrush}">
                     <ListBox x:Name="NavList"
                              Classes="nav"
                              ItemContainerTheme="{DynamicResource NavigationItem}"
@@ -43,7 +43,16 @@
                                        Text="{extensions:Localization General}" />
                         </ListBoxItem>
                         <ListBoxItem Tag="{x:Static types:NavigationPageType.General}">
-                            <TextBlock Text="{extensions:Localization Overview}" />
+                            <StackPanel Orientation="Horizontal"
+                                        Spacing="12">
+                                <Path Data="{DynamicResource NetworkOutlineIcon}"
+                                      Height="16"
+                                      Stretch="Uniform"
+                                      VerticalAlignment="Center"
+                                      Width="16" />
+                                <TextBlock Text="{extensions:Localization Overview}"
+                                           VerticalAlignment="Center" />
+                            </StackPanel>
                         </ListBoxItem>
 
                         <ListBoxItem Classes="navigation-header"
@@ -53,7 +62,16 @@
                                                                       ToUpper=True}" />
                         </ListBoxItem>
                         <ListBoxItem Tag="{x:Static types:NavigationPageType.App}">
-                            <TextBlock Text="{extensions:Localization App}" />
+                            <StackPanel Orientation="Horizontal"
+                                        Spacing="12">
+                                <Path Data="{DynamicResource SettingsOutlineIcon}"
+                                      Height="16"
+                                      Stretch="Uniform"
+                                      VerticalAlignment="Center"
+                                      Width="16" />
+                                <TextBlock Text="{extensions:Localization App}"
+                                           VerticalAlignment="Center" />
+                            </StackPanel>
                         </ListBoxItem>
 
                         <ListBoxItem Classes="navigation-header"
@@ -63,10 +81,28 @@
                                                                       ToUpper=True}" />
                         </ListBoxItem>
                         <ListBoxItem Tag="{x:Static types:NavigationPageType.About}">
-                            <TextBlock Text="{extensions:Localization About}" />
+                            <StackPanel Orientation="Horizontal"
+                                        Spacing="12">
+                                <Path Data="{DynamicResource InfoOutlineIcon}"
+                                      Height="16"
+                                      Stretch="Uniform"
+                                      VerticalAlignment="Center"
+                                      Width="16" />
+                                <TextBlock Text="{extensions:Localization About}"
+                                           VerticalAlignment="Center" />
+                            </StackPanel>
                         </ListBoxItem>
                         <ListBoxItem Tag="{x:Static types:NavigationPageType.Licenses}">
-                            <TextBlock Text="{extensions:Localization Licenses}" />
+                            <StackPanel Orientation="Horizontal"
+                                        Spacing="12">
+                                <Path Data="{DynamicResource CopyrightOutlineIcon}"
+                                      Height="16"
+                                      Stretch="Uniform"
+                                      VerticalAlignment="Center"
+                                      Width="16" />
+                                <TextBlock Text="{extensions:Localization Licenses}"
+                                           VerticalAlignment="Center" />
+                            </StackPanel>
                         </ListBoxItem>
 
                     </ListBox>

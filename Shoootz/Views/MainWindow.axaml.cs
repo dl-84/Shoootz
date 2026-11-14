@@ -29,7 +29,7 @@ public partial class MainWindow : Window
             RootBorder.CornerRadius = new CornerRadius(0);
         }
 
-        NavBorder.Padding = new Thickness(0, PlatformInfoService.IsMac ? 36 : 0, 0, 0);
+        NavBorder.Padding = new Thickness(0, PlatformInfoService.IsMac ? 33 : 0, 0, 0);
 
         DataContextChanged += OnDataContextChanged;
     }

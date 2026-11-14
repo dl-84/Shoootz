@@ -409,7 +409,7 @@
     <value>Shots flagged as warmup and therefore not saved.</value>
   </data>
   <data name="Logging" xml:space="preserve">
-    <value>Logging</value>
+    <value>Monitoring</value>
   </data>
   <data name="LoggingRawTitle" xml:space="preserve">
     <value>Raw data</value>

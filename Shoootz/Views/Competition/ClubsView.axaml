@@ -9,67 +9,72 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:DataType="vm:ClubsViewModel">
 
-    <ScrollViewer>
-        <StackPanel Classes="page-content">
+    <Grid Margin="18,0,18,18"
+          RowDefinitions="Auto,Auto,*">
 
-            <TextBlock Classes="h3"
-                       Text="{common:Localization Clubs}" />
+        <TextBlock Classes="h3"
+                   Margin="0,0,0,16"
+                   Text="{common:Localization Clubs}" />
 
-            <sab:SiteActionBarControl AddRequested="OnAddIconPressed"
-                                      AddTooltip="{common:Localization Add}"
-                                      DeleteRequested="OnDeleteIconPressed"
-                                      DeleteTooltip="{common:Localization Delete}"
-                                      EditRequested="OnEditIconPressed"
-                                      EditTooltip="{common:Localization Edit}"
-                                      IsActionEnabled="{Binding IsClubSelected}"
-                                      SearchPlaceholder="{common:Localization Search}"
-                                      SearchText="{Binding SearchText}" />
+        <sab:SiteActionBarControl Grid.Row="1"
+                                  AddRequested="OnAddIconPressed"
+                                  AddTooltip="{common:Localization Add}"
+                                  DeleteRequested="OnDeleteIconPressed"
+                                  DeleteTooltip="{common:Localization Delete}"
+                                  EditRequested="OnEditIconPressed"
+                                  EditTooltip="{common:Localization Edit}"
+                                  IsActionEnabled="{Binding IsClubSelected}"
+                                  Margin="0,0,0,16"
+                                  SearchPlaceholder="{common:Localization Search}"
+                                  SearchText="{Binding SearchText}" />
 
-            <Border Classes="card"
-                    Padding="0">
-                <StackPanel>
-                    <Border BorderBrush="{DynamicResource BorderTableBrush}"
-                            BorderThickness="0,0,0,1"
-                            Padding="24,10">
-                        <Grid ColumnDefinitions="*,100"
-                              Height="32">
-                            <TextBlock Grid.Column="0"
-                                       Classes="table-header"
-                                       Text="{common:Localization Name,
-                                                                  ToUpper=True}"
-                                       VerticalAlignment="Center" />
-                            <TextBlock Grid.Column="1"
-                                       Classes="table-header"
-                                       Text="{common:Localization Shooters,
-                                                                  ToUpper=True}"
-                                       TextAlignment="Center"
-                                       VerticalAlignment="Center" />
-                        </Grid>
-                    </Border>
-                    <ListBox Classes="table-rows"
-                             DoubleTapped="OnClubRowDoubleTapped"
-                             ItemsSource="{Binding Clubs}"
-                             Margin="0"
-                             SelectedItem="{Binding SelectedClub}"
-                             services:ListBoxSelectService.DeselectOnClick="True">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate x:DataType="models:ClubModel">
-                                <Grid ColumnDefinitions="*,100"
-                                      Height="40"
-                                      Margin="24,0">
-                                    <TextBlock Grid.Column="0"
-                                               Text="{Binding Name}"
-                                               VerticalAlignment="Center" />
-                                    <TextBlock Grid.Column="1"
-                                               Text="{Binding ShooterCount}"
-                                               TextAlignment="Center"
-                                               VerticalAlignment="Center" />
-                                </Grid>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                </StackPanel>
-            </Border>
-        </StackPanel>
-    </ScrollViewer>
+        <Border Grid.Row="2"
+                Classes="card"
+                ClipToBounds="True"
+                Padding="0">
+            <Grid RowDefinitions="Auto,*">
+                <Border BorderBrush="{DynamicResource BorderTableBrush}"
+                        BorderThickness="0,0,0,1"
+                        Padding="24,10">
+                    <Grid ColumnDefinitions="*,100"
+                          Height="32">
+                        <TextBlock Grid.Column="0"
+                                   Classes="table-header"
+                                   Text="{common:Localization Name,
+                                                              ToUpper=True}"
+                                   VerticalAlignment="Center" />
+                        <TextBlock Grid.Column="1"
+                                   Classes="table-header"
+                                   Text="{common:Localization Shooters,
+                                                              ToUpper=True}"
+                                   TextAlignment="Center"
+                                   VerticalAlignment="Center" />
+                    </Grid>
+                </Border>
+                <ListBox Grid.Row="1"
+                         Classes="table-rows"
+                         DoubleTapped="OnClubRowDoubleTapped"
+                         ItemsSource="{Binding Clubs}"
+                         Margin="0"
+                         SelectedItem="{Binding SelectedClub}"
+                         services:ListBoxSelectService.DeselectOnClick="True">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate x:DataType="models:ClubModel">
+                            <Grid ColumnDefinitions="*,100"
+                                  Height="40"
+                                  Margin="24,0">
+                                <TextBlock Grid.Column="0"
+                                           Text="{Binding Name}"
+                                           VerticalAlignment="Center" />
+                                <TextBlock Grid.Column="1"
+                                           Text="{Binding ShooterCount}"
+                                           TextAlignment="Center"
+                                           VerticalAlignment="Center" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+        </Border>
+    </Grid>
 </UserControl>

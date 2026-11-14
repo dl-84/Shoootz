@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Image x:Name="IconImage"
-           Height="24"
-           Width="64" />
+           Height="16"
+           Width="43" />
 
 </UserControl>
