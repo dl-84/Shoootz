@@ -34,7 +34,6 @@ using Shoootz.ViewModels.Competition;
 using Shoootz.ViewModels.Info;
 using Shoootz.ViewModels.Settings;
 using Shoootz.Views;
-using Themes.Disag;
 
 namespace Shoootz;
 
@@ -49,7 +48,6 @@ public class App : Application
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
-        Styles.Add(new Disag());
     }
 
     public override void OnFrameworkInitializationCompleted()
