@@ -334,7 +334,7 @@
     <value>Erstellen</value>
   </data>
   <data name="ApplyDbUpdate" xml:space="preserve">
-    <value>Update anwenden</value>
+    <value>Ausführen</value>
   </data>
   <data name="InitializeDb" xml:space="preserve">
     <value>Initialisieren</value>

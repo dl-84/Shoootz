@@ -6,7 +6,7 @@ set -e
 RID="osx-arm64"
 VERSION="0.0.1"
 ROOT="$(git -C "$(dirname "$0")" rev-parse --show-toplevel)"
-BIN="$ROOT/bin"
+BIN="$HOME/Downloads"
 BUNDLE="$BIN/Shoootz.Bridge.TCP.app"
 LOGO="$ROOT/Shoootz.Bridge.TCP/Assets/Logo.png"
 

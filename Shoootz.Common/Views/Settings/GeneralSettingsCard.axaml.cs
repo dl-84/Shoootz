@@ -2,7 +2,6 @@ using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Avalonia.Controls;
-using Avalonia.Controls.Shapes;
 using Avalonia.Input;
 using Avalonia.Media;
 using Controls.ContentDialog;
@@ -48,7 +47,7 @@ public partial class GeneralSettingsCard : UserControl
 
     private void OnCommandIconPressed(object? sender, PointerPressedEventArgs e)
     {
-        if (sender is Path { Tag: ICommand command })
+        if (sender is Border { Tag: ICommand command })
         {
             command.Execute(null);
         }
