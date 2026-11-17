@@ -37,9 +37,9 @@ public partial class MainWindow : Window
 
     public bool AllowClose { get; set; }
 
-    protected override void OnOpened(EventArgs eventArgs)
+    protected override void OnOpened(EventArgs e)
     {
-        base.OnOpened(eventArgs);
+        base.OnOpened(e);
 
         if (DataContext is not MainWindowViewModel mainWindowViewModel)
         {

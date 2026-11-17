@@ -22,7 +22,16 @@
         <TrayIcons>
             <TrayIcon Clicked="OnTrayIconClicked"
                       Icon="/Assets/Logo/Logo.png"
-                      ToolTipText="Shoootz" />
+                      ToolTipText="Shoootz">
+                <TrayIcon.Menu>
+                    <NativeMenu>
+                        <NativeMenuItem IsEnabled="False" />
+                        <NativeMenuItemSeparator />
+                        <NativeMenuItem Click="OnTrayShowClicked" />
+                        <NativeMenuItem Click="OnTrayExitClicked" />
+                    </NativeMenu>
+                </TrayIcon.Menu>
+            </TrayIcon>
         </TrayIcons>
     </TrayIcon.Icons>
 </Application>

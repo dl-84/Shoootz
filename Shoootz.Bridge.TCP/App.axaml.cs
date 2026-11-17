@@ -166,21 +166,19 @@ public class App : Application
             return;
         }
 
+        IList<NativeMenuItemBase>? items = trayIcon.Menu?.Items;
+
+        if (items is not [NativeMenuItem headerMenuItem, _, NativeMenuItem showMenuItem, NativeMenuItem exitMenuItem])
+        {
+            return;
+        }
+
         string version = Assembly.GetExecutingAssembly().GetName().Version?.ToString(3) ?? "n/a";
         string appName = _mainWindow?.Title ?? Assembly.GetExecutingAssembly().GetName().Name ?? "n/a";
 
-        NativeMenuItem headerMenuItem = new($"{appName} - {version}") { IsEnabled = false };
-
-        NativeMenuItem showMenuItem = new(LocalizationService.Instance[nameof(Messages.Show)]);
-        showMenuItem.Click += OnTrayShowClicked;
-
-        NativeMenuItem exitMenuItem = new(LocalizationService.Instance[nameof(Messages.Exit)]);
-        exitMenuItem.Click += OnTrayExitClicked;
-
-        trayIcon.Menu = new NativeMenu
-        {
-            Items = { headerMenuItem, new NativeMenuItemSeparator(), showMenuItem, exitMenuItem },
-        };
+        headerMenuItem.Header = $"{appName} - {version}";
+        showMenuItem.Header = LocalizationService.Instance[nameof(Messages.Show)];
+        exitMenuItem.Header = LocalizationService.Instance[nameof(Messages.Exit)];
     }
 
     private void OnMainWindowOpenedWhileStartingMinimized(object? sender, EventArgs e)

@@ -20,7 +20,16 @@
         <TrayIcons>
             <TrayIcon Clicked="OnTrayIconClicked"
                       Icon="/Assets/Logo.png"
-                      ToolTipText="Shoootz TCP Bridge" />
+                      ToolTipText="Shoootz TCP Bridge">
+                <TrayIcon.Menu>
+                    <NativeMenu>
+                        <NativeMenuItem IsEnabled="False" />
+                        <NativeMenuItemSeparator />
+                        <NativeMenuItem Click="OnTrayShowClicked" />
+                        <NativeMenuItem Click="OnTrayExitClicked" />
+                    </NativeMenu>
+                </TrayIcon.Menu>
+            </TrayIcon>
         </TrayIcons>
     </TrayIcon.Icons>
 </Application>
