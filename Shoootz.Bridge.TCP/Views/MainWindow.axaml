@@ -1,127 +1,127 @@
 ﻿<Window x:Class="Shoootz.Bridge.TCP.Views.MainWindow"
         xmlns="https://github.com/avaloniaui"
-        xmlns:controls="clr-namespace:Controls.TitleBar.Controls;assembly=TitleBar"
         xmlns:extensions="using:Shoootz.Common.Extensions"
-        xmlns:tb="using:Controls.TitleBar"
         xmlns:types="clr-namespace:Shoootz.Bridge.TCP.Views.Types"
         xmlns:vm="using:Shoootz.Bridge.TCP.ViewModels"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:DataType="vm:MainWindowViewModel"
-        Background="Transparent"
         CanResize="False"
-        ExtendClientAreaTitleBarHeightHint="-1"
-        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaToDecorationsHint="{OnPlatform Default=True,
+                                                       Linux=False}"
         Height="422"
         Icon="/Assets/Logo.png"
         Title="Shoootz TCP Bridge"
-        TransparencyLevelHint="Transparent"
         Width="960"
-        WindowDecorations="BorderOnly"
+        WindowDecorations="Full"
         WindowStartupLocation="CenterScreen">
 
-    <Border x:Name="RootBorder"
-            ClipToBounds="True"
-            CornerRadius="{DynamicResource CornerRadiusMedium}">
-        <Panel>
-            <Grid ColumnDefinitions="220,*"
-                  RowDefinitions="33,*">
+    <Panel>
+        <Grid Background="{DynamicResource AppBackgroundAltBrush}"
+              ColumnDefinitions="220,*"
+              RowDefinitions="Auto,*">
 
-                <Border x:Name="NavBorder"
-                        Grid.Row="0"
-                        Grid.Column="0"
-                        Grid.RowSpan="2"
-                        Background="{DynamicResource NavigationBackgroundBrush}">
-                    <ListBox x:Name="NavList"
-                             Classes="nav"
-                             ItemContainerTheme="{DynamicResource NavigationItem}"
-                             Margin="{DynamicResource MarginTopMedium}"
-                             SelectionChanged="OnNavSelectionChanged">
+            <Border x:Name="NavBorder"
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Grid.RowSpan="2"
+                    Background="{DynamicResource NavigationBackgroundBrush}"
+                    Padding="{OnPlatform Default=0,
+                                         macOS='0,33,0,0'}">
+                <ListBox x:Name="NavList"
+                         Classes="nav"
+                         ItemContainerTheme="{DynamicResource NavigationItem}"
+                         Margin="{DynamicResource MarginTopMedium}"
+                         SelectionChanged="OnNavSelectionChanged">
 
-                        <ListBoxItem Classes="navigation-header"
-                                     IsEnabled="False">
-                            <TextBlock Margin="20,16,20,4"
-                                       Text="{extensions:Localization General}" />
-                        </ListBoxItem>
-                        <ListBoxItem Tag="{x:Static types:NavigationPageType.General}">
-                            <StackPanel Orientation="Horizontal"
-                                        Spacing="12">
-                                <Path Data="{DynamicResource NetworkOutlineIcon}"
-                                      Height="16"
-                                      Stretch="Uniform"
-                                      VerticalAlignment="Center"
-                                      Width="16" />
-                                <TextBlock Text="{extensions:Localization Overview}"
-                                           VerticalAlignment="Center" />
-                            </StackPanel>
-                        </ListBoxItem>
+                    <ListBoxItem Classes="navigation-header"
+                                 IsEnabled="False">
+                        <TextBlock Margin="20,16,20,4"
+                                   Text="{extensions:Localization General}" />
+                    </ListBoxItem>
+                    <ListBoxItem Tag="{x:Static types:NavigationPageType.General}">
+                        <StackPanel Orientation="Horizontal"
+                                    Spacing="12">
+                            <Path Data="{DynamicResource NetworkOutlineIcon}"
+                                  Height="16"
+                                  Stretch="Uniform"
+                                  VerticalAlignment="Center"
+                                  Width="16" />
+                            <TextBlock Text="{extensions:Localization Overview}"
+                                       VerticalAlignment="Center" />
+                        </StackPanel>
+                    </ListBoxItem>
 
-                        <ListBoxItem Classes="navigation-header"
-                                     IsEnabled="False">
-                            <TextBlock Margin="20,28,20,4"
-                                       Text="{extensions:Localization Settings,
-                                                                      ToUpper=True}" />
-                        </ListBoxItem>
-                        <ListBoxItem Tag="{x:Static types:NavigationPageType.App}">
-                            <StackPanel Orientation="Horizontal"
-                                        Spacing="12">
-                                <Path Data="{DynamicResource SettingsOutlineIcon}"
-                                      Height="16"
-                                      Stretch="Uniform"
-                                      VerticalAlignment="Center"
-                                      Width="16" />
-                                <TextBlock Text="{extensions:Localization App}"
-                                           VerticalAlignment="Center" />
-                            </StackPanel>
-                        </ListBoxItem>
+                    <ListBoxItem Classes="navigation-header"
+                                 IsEnabled="False">
+                        <TextBlock Margin="20,28,20,4"
+                                   Text="{extensions:Localization Settings,
+                                                                  ToUpper=True}" />
+                    </ListBoxItem>
+                    <ListBoxItem Tag="{x:Static types:NavigationPageType.App}">
+                        <StackPanel Orientation="Horizontal"
+                                    Spacing="12">
+                            <Path Data="{DynamicResource SettingsOutlineIcon}"
+                                  Height="16"
+                                  Stretch="Uniform"
+                                  VerticalAlignment="Center"
+                                  Width="16" />
+                            <TextBlock Text="{extensions:Localization App}"
+                                       VerticalAlignment="Center" />
+                        </StackPanel>
+                    </ListBoxItem>
 
-                        <ListBoxItem Classes="navigation-header"
-                                     IsEnabled="False">
-                            <TextBlock Margin="20,28,20,4"
-                                       Text="{extensions:Localization Info,
-                                                                      ToUpper=True}" />
-                        </ListBoxItem>
-                        <ListBoxItem Tag="{x:Static types:NavigationPageType.About}">
-                            <StackPanel Orientation="Horizontal"
-                                        Spacing="12">
-                                <Path Data="{DynamicResource InfoOutlineIcon}"
-                                      Height="16"
-                                      Stretch="Uniform"
-                                      VerticalAlignment="Center"
-                                      Width="16" />
-                                <TextBlock Text="{extensions:Localization About}"
-                                           VerticalAlignment="Center" />
-                            </StackPanel>
-                        </ListBoxItem>
-                        <ListBoxItem Tag="{x:Static types:NavigationPageType.Licenses}">
-                            <StackPanel Orientation="Horizontal"
-                                        Spacing="12">
-                                <Path Data="{DynamicResource CopyrightOutlineIcon}"
-                                      Height="16"
-                                      Stretch="Uniform"
-                                      VerticalAlignment="Center"
-                                      Width="16" />
-                                <TextBlock Text="{extensions:Localization Licenses}"
-                                           VerticalAlignment="Center" />
-                            </StackPanel>
-                        </ListBoxItem>
+                    <ListBoxItem Classes="navigation-header"
+                                 IsEnabled="False">
+                        <TextBlock Margin="20,28,20,4"
+                                   Text="{extensions:Localization Info,
+                                                                  ToUpper=True}" />
+                    </ListBoxItem>
+                    <ListBoxItem Tag="{x:Static types:NavigationPageType.About}">
+                        <StackPanel Orientation="Horizontal"
+                                    Spacing="12">
+                            <Path Data="{DynamicResource InfoOutlineIcon}"
+                                  Height="16"
+                                  Stretch="Uniform"
+                                  VerticalAlignment="Center"
+                                  Width="16" />
+                            <TextBlock Text="{extensions:Localization About}"
+                                       VerticalAlignment="Center" />
+                        </StackPanel>
+                    </ListBoxItem>
+                    <ListBoxItem Tag="{x:Static types:NavigationPageType.Licenses}">
+                        <StackPanel Orientation="Horizontal"
+                                    Spacing="12">
+                            <Path Data="{DynamicResource CopyrightOutlineIcon}"
+                                  Height="16"
+                                  Stretch="Uniform"
+                                  VerticalAlignment="Center"
+                                  Width="16" />
+                            <TextBlock Text="{extensions:Localization Licenses}"
+                                       VerticalAlignment="Center" />
+                        </StackPanel>
+                    </ListBoxItem>
 
-                    </ListBox>
-                </Border>
+                </ListBox>
+            </Border>
 
-                <controls:MacTrafficLightsControl Grid.Row="0"
-                                                  Grid.Column="0" />
+            <Border Grid.Row="0"
+                    Grid.Column="{OnPlatform Default=1,
+                                             macOS=0}"
+                    Grid.ColumnSpan="{OnPlatform Default=1,
+                                                 macOS=2}"
+                    Background="Transparent"
+                    Height="33"
+                    WindowDecorationProperties.ElementRole="TitleBar"
+                    IsVisible="{OnPlatform Default=True,
+                                           Linux=False}" />
 
-                <tb:TitleBarControl Grid.Row="0"
-                                    Grid.Column="1" />
+            <ContentControl Grid.Row="1"
+                            Grid.Column="1"
+                            Background="{DynamicResource AppBackgroundAltBrush}"
+                            Content="{Binding CurrentPage}" />
 
-                <ContentControl Grid.Row="1"
-                                Grid.Column="1"
-                                Background="{DynamicResource AppBackgroundAltBrush}"
-                                Content="{Binding CurrentPage}" />
-
-            </Grid>
-            <Border Background="{DynamicResource OverlayBrush}"
-                    IsVisible="{Binding IsDialogOpen}" />
-        </Panel>
-    </Border>
+        </Grid>
+        <Border Background="{DynamicResource OverlayBrush}"
+                IsVisible="{Binding IsDialogOpen}" />
+    </Panel>
 </Window>

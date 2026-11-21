@@ -51,7 +51,6 @@
     <ProjectReference Include="..\..\Library\Avalonia\Controls\FormField\FormField.csproj" />
     <ProjectReference Include="..\..\Library\Avalonia\Controls\SiteActionBar\SiteActionBar.csproj" />
     <ProjectReference Include="..\..\Library\Avalonia\Controls\TextEditor\TextEditor.csproj" />
-    <ProjectReference Include="..\..\Library\Avalonia\Controls\TitleBar\TitleBar.csproj" />
     <ProjectReference Include="..\..\Library\Avalonia\Themes\Disag\Disag.csproj" />
     <ProjectReference Include="..\..\Library\C#\Result\Result.csproj" />
     <ProjectReference Include="..\Shoootz.Common\Shoootz.Common.csproj" />

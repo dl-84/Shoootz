@@ -1,13 +1,11 @@
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.LogicalTree;
 using Controls.ContentDialog;
-using Controls.TitleBar.Services;
 using Shoootz.Common.Resources.Lang;
 using Shoootz.Common.Services.Dialog;
 using Shoootz.Common.Services.Localization;
@@ -23,13 +21,6 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-        {
-            RootBorder.CornerRadius = new CornerRadius(0);
-        }
-
-        NavBorder.Padding = new Thickness(0, PlatformInfoService.IsMac ? 33 : 0, 0, 0);
 
         DataContextChanged += OnDataContextChanged;
         Closing += OnClosing;

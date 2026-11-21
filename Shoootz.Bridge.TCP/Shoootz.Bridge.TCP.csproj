@@ -54,7 +54,6 @@
     <ProjectReference Include="..\..\Library\Avalonia\Controls\InfoDialog\InfoDialog.csproj" />
     <ProjectReference Include="..\..\Library\Avalonia\Controls\LicenseTable\LicenseTable.csproj" />
     <ProjectReference Include="..\..\Library\Avalonia\Controls\TextEditor\TextEditor.csproj" />
-    <ProjectReference Include="..\..\Library\Avalonia\Controls\TitleBar\TitleBar.csproj" />
     <ProjectReference Include="..\Shoootz.Common\Shoootz.Common.csproj" />
   </ItemGroup>
 
