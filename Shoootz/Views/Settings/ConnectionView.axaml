@@ -52,7 +52,7 @@
                                            Text="{common:Localization Host}" />
                                 <TextBox Classes.error="{Binding !IsHostValid}"
                                          Text="{Binding Host}"
-                                         common:ClearButton.IsEnabled="True"
+                                         common:InputFieldClearExtension.IsEnabled="True"
                                          IsEnabled="{Binding IsHostEditable}" />
                             </StackPanel>
 
@@ -64,8 +64,8 @@
                                          Classes.error="{Binding !IsPortValid}"
                                          MaxLength="5"
                                          Text="{Binding Port}"
-                                         common:ClearButton.IsEnabled="True"
-                                         common:InputFilter.AllowedPattern="[0-9]"
+                                         common:InputFieldClearExtension.IsEnabled="True"
+                                         common:InputFieldFilterExtension.AllowedPattern="[0-9]"
                                          IsEnabled="{Binding !IsUdpListening}" />
                             </StackPanel>
 

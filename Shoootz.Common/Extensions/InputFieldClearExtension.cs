@@ -1,17 +1,18 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Shapes;
 using Avalonia.Markup.Xaml.MarkupExtensions;
 
 namespace Shoootz.Common.Extensions;
 
-public static class ClearButton
+public static class InputFieldClearExtension
 {
     public static readonly AttachedProperty<bool> IsEnabledProperty = AvaloniaProperty.RegisterAttached<TextBox, bool>(
         "IsEnabled",
-        typeof(ClearButton)
+        typeof(InputFieldClearExtension)
     );
 
-    static ClearButton()
+    static InputFieldClearExtension()
     {
         IsEnabledProperty.Changed.AddClassHandler<TextBox>(OnIsEnabledChanged);
     }
@@ -28,15 +29,17 @@ public static class ClearButton
             return;
         }
 
-        PathIcon icon = new()
+        Path path = new() { Height = 12, Width = 12 };
+        path.Bind(Path.DataProperty, new DynamicResourceExtension("XOutlineIcon"));
+
+        Border icon = new()
         {
+            Child = path,
             Classes = { "icon-action", "clear-icon" },
-            Height = 12,
-            Margin = new Thickness(0, 0, 10, 0),
-            Width = 12,
+            Margin = new Thickness(0, 0, 4, 0),
+            Padding = new Thickness(6),
         };
 
-        icon.Bind(PathIcon.DataProperty, new DynamicResourceExtension("CloseIcon"));
         icon.PointerPressed += (_, _) => textBox.Text = string.Empty;
 
         textBox.InnerRightContent = icon;

@@ -29,8 +29,8 @@
                                  MaxLength="5"
                                  Text="{Binding Bridge.UdpPort}"
                                  Width="170"
-                                 extensions:ClearButton.IsEnabled="True"
-                                 extensions:InputFilter.AllowedPattern="[0-9]"
+                                 extensions:InputFieldClearExtension.IsEnabled="True"
+                                 extensions:InputFieldFilterExtension.AllowedPattern="[0-9]"
                                  IsEnabled="{Binding !Bridge.IsRunning}" />
                     </StackPanel>
 
@@ -42,8 +42,8 @@
                                  MaxLength="5"
                                  Text="{Binding Bridge.TcpPort}"
                                  Width="170"
-                                 extensions:ClearButton.IsEnabled="True"
-                                 extensions:InputFilter.AllowedPattern="[0-9]"
+                                 extensions:InputFieldClearExtension.IsEnabled="True"
+                                 extensions:InputFieldFilterExtension.AllowedPattern="[0-9]"
                                  IsEnabled="{Binding !Bridge.IsRunning}" />
                     </StackPanel>
 

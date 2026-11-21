@@ -6,14 +6,14 @@ using Avalonia.Interactivity;
 
 namespace Shoootz.Common.Extensions;
 
-public static class InputFilter
+public static class InputFieldFilterExtension
 {
     public static readonly AttachedProperty<string?> AllowedPatternProperty = AvaloniaProperty.RegisterAttached<
         TextBox,
         string?
-    >("AllowedPattern", typeof(InputFilter));
+    >("AllowedPattern", typeof(InputFieldFilterExtension));
 
-    static InputFilter()
+    static InputFieldFilterExtension()
     {
         AllowedPatternProperty.Changed.AddClassHandler<TextBox>(OnAllowedPatternChanged);
     }
