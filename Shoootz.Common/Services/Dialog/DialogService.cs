@@ -189,4 +189,31 @@ public static class DialogService
                 }.ShowDialog(dialogWindow)
         );
     }
+
+    /// <summary>
+    /// Asks whether the app should keep running in the background or exit.
+    /// </summary>
+    /// <returns><c>true</c> to run in background, <c>false</c> to exit, <c>null</c> when cancelled.</returns>
+    public static async Task<bool?> ShowExitAppDialogAsync(Window window)
+    {
+        return await ShowAsync(
+            window,
+            dialogWindow =>
+                new ContentDialog
+                {
+                    DialogContent = new TextBlock
+                    {
+                        Text = LocalizationService.Instance[nameof(Messages.ExitAppMessage)],
+                        TextWrapping = TextWrapping.NoWrap,
+                    },
+                    DialogTitle = string.Format(
+                        LocalizationService.Instance[nameof(Messages.ExitAppTitle)],
+                        window.Title
+                    ),
+                    SecondaryText = LocalizationService.Instance[nameof(Messages.Exit)],
+                    SizeToContent = SizeToContent.WidthAndHeight,
+                    SubmitText = LocalizationService.Instance[nameof(Messages.RunInBackground)],
+                }.ShowDialog<bool?>(dialogWindow)
+        );
+    }
 }

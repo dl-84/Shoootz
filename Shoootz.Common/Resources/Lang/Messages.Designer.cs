@@ -724,6 +724,24 @@ namespace Shoootz.Common.Resources.Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Should the app keep running in the background or exit?.
+        /// </summary>
+        internal static string ExitAppMessage {
+            get {
+                return ResourceManager.GetString("ExitAppMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exit {0}?.
+        /// </summary>
+        internal static string ExitAppTitle {
+            get {
+                return ResourceManager.GetString("ExitAppTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to First name.
         /// </summary>
         internal static string Firstname {
@@ -1062,6 +1080,15 @@ namespace Shoootz.Common.Resources.Lang {
         internal static string Restart {
             get {
                 return ResourceManager.GetString("Restart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Background.
+        /// </summary>
+        internal static string RunInBackground {
+            get {
+                return ResourceManager.GetString("RunInBackground", resourceCulture);
             }
         }
         

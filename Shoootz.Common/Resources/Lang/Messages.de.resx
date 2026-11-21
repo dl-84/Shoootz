@@ -544,4 +544,13 @@
   <data name="SeriesTotalInvalidMessage" xml:space="preserve">
     <value>Bitte einen gültigen Seriengesamtwert eingeben (0-100).</value>
   </data>
+  <data name="ExitAppMessage" xml:space="preserve">
+    <value>Soll die App im Hintergrund weiterlaufen oder beendet werden?</value>
+  </data>
+  <data name="ExitAppTitle" xml:space="preserve">
+    <value>{0} beenden?</value>
+  </data>
+  <data name="RunInBackground" xml:space="preserve">
+    <value>Hintergrund</value>
+  </data>
 </root>

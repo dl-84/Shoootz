@@ -1,9 +1,10 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.LogicalTree;
 using Avalonia.Media;
 using Controls.ContentDialog;
@@ -56,6 +57,21 @@ public partial class MainWindow : Window
         return result is true;
     }
 
+    private async Task HandleExitRequestAsync()
+    {
+        bool? runInBackground = await DialogService.ShowExitAppDialogAsync(this);
+
+        if (runInBackground is true)
+        {
+            Hide();
+        }
+        else if (runInBackground is false)
+        {
+            AllowClose = true;
+            (Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.Shutdown();
+        }
+    }
+
     private async Task HandleNavigationRequestAsync(MainWindowViewModel mainWindowViewModel, NavigationPageType page)
     {
         if (
@@ -78,7 +94,7 @@ public partial class MainWindow : Window
         }
 
         e.Cancel = true;
-        Hide();
+        _ = HandleExitRequestAsync();
     }
 
     private void OnDataContextChanged(object? sender, EventArgs e)
