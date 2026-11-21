@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Media;
@@ -35,6 +36,7 @@ public partial class GeneralSettingsCard : UserControl
             DialogTitle = title,
             IsDanger = true,
             SizeToContent = SizeToContent.Height,
+            SubmitIcon = Application.Current?.FindResource("TrashOutlineIcon") as Geometry,
             SubmitText = LocalizationService.Instance[nameof(Messages.Delete)],
             Width = 460,
         };

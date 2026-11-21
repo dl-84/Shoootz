@@ -50,6 +50,7 @@ public partial class MainWindow : Window
                     DialogTitle = LocalizationService.Instance[nameof(Messages.UnsavedChangesTitle)],
                     IsDanger = true,
                     SizeToContent = SizeToContent.WidthAndHeight,
+                    SubmitIcon = Application.Current?.FindResource("LogOutOutlineIcon") as Geometry,
                     SubmitText = LocalizationService.Instance[nameof(Messages.Leave)],
                 }.ShowDialog<bool?>(window)
         );

@@ -4,6 +4,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Media;
 using Avalonia.VisualTree;
 using Controls.ContentDialog;
 using Controls.FormField;
@@ -118,6 +119,7 @@ public partial class ClubsView : UserControl
             DialogTitle = LocalizationService.Instance[nameof(Messages.DeleteClubTitle)],
             IsDanger = true,
             SizeToContent = SizeToContent.Height,
+            SubmitIcon = Application.Current?.FindResource("TrashOutlineIcon") as Geometry,
             SubmitText = LocalizationService.Instance[nameof(Messages.Delete)],
             Width = 460,
         };
@@ -153,6 +155,8 @@ public partial class ClubsView : UserControl
                     DialogContent = dialogContent,
                     DialogTitle = dialogTitle,
                     SizeToContent = SizeToContent.WidthAndHeight,
+                    SubmitIcon =
+                        Application.Current?.FindResource(isEdit ? "SaveOutlineIcon" : "PlusOutlineIcon") as Geometry,
                     SubmitText = LocalizationService.Instance[submitTextKey],
                     SubmitValidator = () =>
                         dialogContent.SetError(

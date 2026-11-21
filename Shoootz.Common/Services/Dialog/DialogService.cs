@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Controls.ContentDialog;
@@ -103,7 +104,8 @@ public static class DialogService
         UserControl view,
         string title,
         string message,
-        string submitText
+        string submitText,
+        Geometry? submitIcon
     )
     {
         if (TopLevel.GetTopLevel(view) is not Window window)
@@ -111,14 +113,15 @@ public static class DialogService
             return false;
         }
 
-        return await ShowConfirmDialogAsync(window, title, message, submitText);
+        return await ShowConfirmDialogAsync(window, title, message, submitText, submitIcon);
     }
 
     public static async Task<bool> ShowConfirmDialogAsync(
         Window window,
         string title,
         string message,
-        string submitText
+        string submitText,
+        Geometry? submitIcon
     )
     {
         bool? result = await ShowAsync(
@@ -134,6 +137,7 @@ public static class DialogService
                     },
                     DialogTitle = title,
                     SizeToContent = SizeToContent.WidthAndHeight,
+                    SubmitIcon = submitIcon,
                     SubmitText = submitText,
                 }.ShowDialog<bool?>(dialogWindow)
         );
@@ -162,8 +166,10 @@ public static class DialogService
         ];
 
         string submitText = LocalizationService.Instance[isUpdate ? Messages.ApplyDbUpdate : Messages.InitializeDb];
+        Geometry? submitIcon =
+            Application.Current?.FindResource(isUpdate ? "RefreshCwOutlineIcon" : "DatabaseOutlineIcon") as Geometry;
 
-        return await ShowConfirmDialogAsync(window, title, message, submitText);
+        return await ShowConfirmDialogAsync(window, title, message, submitText, submitIcon);
     }
 
     public static async Task ShowErrorDialogAsync(UserControl view, string message)
@@ -210,8 +216,10 @@ public static class DialogService
                         LocalizationService.Instance[nameof(Messages.ExitAppTitle)],
                         window.Title
                     ),
+                    SecondaryIcon = Application.Current?.FindResource("PowerOutlineIcon") as Geometry,
                     SecondaryText = LocalizationService.Instance[nameof(Messages.Exit)],
                     SizeToContent = SizeToContent.WidthAndHeight,
+                    SubmitIcon = Application.Current?.FindResource("Minimize2OutlineIcon") as Geometry,
                     SubmitText = LocalizationService.Instance[nameof(Messages.RunInBackground)],
                 }.ShowDialog<bool?>(dialogWindow)
         );

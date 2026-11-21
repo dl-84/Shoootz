@@ -2,6 +2,7 @@
              xmlns="https://github.com/avaloniaui"
              xmlns:cards="using:Shoootz.Common.Views.Settings"
              xmlns:common="using:Shoootz.Common.Extensions"
+             xmlns:iconButton="using:Controls.IconButton"
              xmlns:loc="using:Shoootz.Extensions"
              xmlns:vm="using:Shoootz.ViewModels.Settings"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -93,19 +94,21 @@
                                            IsHitTestVisible="False"
                                            Opacity="0"
                                            Text="placeholder" />
-                                <Button Grid.Row="1"
-                                        Classes="danger"
-                                        Command="{Binding DisconnectReceiverCommand}"
-                                        Content="{common:Localization Disconnect}"
-                                        HorizontalAlignment="Right"
-                                        IsVisible="{Binding IsUdpListening}" />
-                                <Button Grid.Row="1"
-                                        Classes="blue"
-                                        Command="{Binding ConnectReceiverCommand}"
-                                        Content="{common:Localization Connect}"
-                                        HorizontalAlignment="Right"
-                                        IsEnabled="{Binding IsConnectReceiverEnabled}"
-                                        IsVisible="{Binding !IsUdpListening}" />
+                                <iconButton:IconButtonControl Grid.Row="1"
+                                                              Classes="danger"
+                                                              Command="{Binding DisconnectReceiverCommand}"
+                                                              HorizontalAlignment="Right"
+                                                              Icon="{DynamicResource UnplugOutlineIcon}"
+                                                              Text="{common:Localization Disconnect}"
+                                                              IsVisible="{Binding IsUdpListening}" />
+                                <iconButton:IconButtonControl Grid.Row="1"
+                                                              Classes="blue"
+                                                              Command="{Binding ConnectReceiverCommand}"
+                                                              HorizontalAlignment="Right"
+                                                              Icon="{DynamicResource PlugOutlineIcon}"
+                                                              Text="{common:Localization Connect}"
+                                                              IsEnabled="{Binding IsConnectReceiverEnabled}"
+                                                              IsVisible="{Binding !IsUdpListening}" />
                             </Grid>
 
                         </Grid>
@@ -164,19 +167,21 @@
                                            IsHitTestVisible="False"
                                            Opacity="0"
                                            Text="placeholder" />
-                                <Button Grid.Row="1"
-                                        Classes="danger"
-                                        Command="{Binding DisconnectDbCommand}"
-                                        Content="{common:Localization Disconnect}"
-                                        HorizontalAlignment="Right"
-                                        IsVisible="{Binding IsDbConnected}" />
-                                <Button Grid.Row="1"
-                                        Classes="blue"
-                                        Command="{Binding ConnectDbCommand}"
-                                        Content="{common:Localization Connect}"
-                                        HorizontalAlignment="Right"
-                                        IsEnabled="{Binding !IsSaveEnabled}"
-                                        IsVisible="{Binding !IsDbConnected}" />
+                                <iconButton:IconButtonControl Grid.Row="1"
+                                                              Classes="danger"
+                                                              Command="{Binding DisconnectDbCommand}"
+                                                              HorizontalAlignment="Right"
+                                                              Icon="{DynamicResource UnplugOutlineIcon}"
+                                                              Text="{common:Localization Disconnect}"
+                                                              IsVisible="{Binding IsDbConnected}" />
+                                <iconButton:IconButtonControl Grid.Row="1"
+                                                              Classes="blue"
+                                                              Command="{Binding ConnectDbCommand}"
+                                                              HorizontalAlignment="Right"
+                                                              Icon="{DynamicResource PlugOutlineIcon}"
+                                                              Text="{common:Localization Connect}"
+                                                              IsEnabled="{Binding !IsSaveEnabled}"
+                                                              IsVisible="{Binding !IsDbConnected}" />
                             </Grid>
 
                         </Grid>
@@ -195,12 +200,13 @@
                        Text="{Binding ConnectionErrorHint}"
                        VerticalAlignment="Center" />
 
-            <Button Grid.Column="1"
-                    Classes="blue"
-                    Command="{Binding SaveCommand}"
-                    Content="{common:Localization Save}"
-                    HorizontalAlignment="Right"
-                    IsEnabled="{Binding IsSaveEnabled}" />
+            <iconButton:IconButtonControl Grid.Column="1"
+                                          Classes="blue"
+                                          Command="{Binding SaveCommand}"
+                                          HorizontalAlignment="Right"
+                                          Icon="{DynamicResource SaveOutlineIcon}"
+                                          Text="{common:Localization Save}"
+                                          IsEnabled="{Binding IsSaveEnabled}" />
         </Grid>
 
     </Grid>

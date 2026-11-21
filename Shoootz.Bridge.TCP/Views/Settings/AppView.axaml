@@ -1,7 +1,8 @@
-<UserControl x:Class="Shoootz.Bridge.TCP.Views.Settings.AppView"
+﻿<UserControl x:Class="Shoootz.Bridge.TCP.Views.Settings.AppView"
              xmlns="https://github.com/avaloniaui"
              xmlns:cards="using:Shoootz.Common.Views.Settings"
              xmlns:extensions="using:Shoootz.Common.Extensions"
+             xmlns:iconButton="using:Controls.IconButton"
              xmlns:vm="using:Shoootz.Bridge.TCP.ViewModels.Settings"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:DataType="vm:AppViewModel">
@@ -73,12 +74,13 @@
                        Text="{Binding PortErrorHint}"
                        VerticalAlignment="Center" />
 
-            <Button Grid.Column="1"
-                    Classes="blue"
-                    Command="{Binding SaveCommand}"
-                    Content="{extensions:Localization Save}"
-                    HorizontalAlignment="Right"
-                    IsEnabled="{Binding IsSaveEnabled}" />
+            <iconButton:IconButtonControl Grid.Column="1"
+                                          Classes="blue"
+                                          Command="{Binding SaveCommand}"
+                                          HorizontalAlignment="Right"
+                                          Icon="{DynamicResource SaveOutlineIcon}"
+                                          Text="{extensions:Localization Save}"
+                                          IsEnabled="{Binding IsSaveEnabled}" />
         </Grid>
 
     </StackPanel>

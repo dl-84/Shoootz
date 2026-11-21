@@ -6,6 +6,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Media;
 using Avalonia.VisualTree;
 using Controls.ContentDialog;
 using Shoootz.Common.Resources.Lang;
@@ -115,6 +116,7 @@ public partial class ShotsView : UserControl
             DialogTitle = LocalizationService.Instance[nameof(Messages.DeleteShotsTitle)],
             IsDanger = true,
             SizeToContent = SizeToContent.Height,
+            SubmitIcon = Application.Current?.FindResource("TrashOutlineIcon") as Geometry,
             SubmitText = LocalizationService.Instance[nameof(Messages.Delete)],
             Width = 460,
         };
@@ -142,6 +144,7 @@ public partial class ShotsView : UserControl
                     DialogContent = entryView,
                     DialogTitle = LocalizationService.Instance[nameof(Messages.AddShotTitle)],
                     SizeToContent = SizeToContent.WidthAndHeight,
+                    SubmitIcon = Application.Current?.FindResource("PlusOutlineIcon") as Geometry,
                     SubmitText = LocalizationService.Instance[nameof(Messages.Add)],
                     SubmitValidator = entryView.Validate,
                 }.ShowDialog<bool?>(window)
@@ -166,6 +169,7 @@ public partial class ShotsView : UserControl
                     DialogContent = editView,
                     DialogTitle = LocalizationService.Instance[nameof(Messages.EditShotTitle)],
                     SizeToContent = SizeToContent.WidthAndHeight,
+                    SubmitIcon = Application.Current?.FindResource("SaveOutlineIcon") as Geometry,
                     SubmitText = LocalizationService.Instance[nameof(Messages.Save)],
                     SubmitValidator = editView.Validate,
                 }.ShowDialog<bool?>(window)

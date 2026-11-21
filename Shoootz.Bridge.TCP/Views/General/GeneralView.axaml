@@ -1,6 +1,7 @@
 ﻿<UserControl x:Class="Shoootz.Bridge.TCP.Views.General.GeneralView"
              xmlns="https://github.com/avaloniaui"
              xmlns:extensions="using:Shoootz.Common.Extensions"
+             xmlns:iconButton="using:Controls.IconButton"
              xmlns:vm="using:Shoootz.Bridge.TCP.ViewModels.General"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:DataType="vm:GeneralViewModel">
@@ -57,16 +58,18 @@
             </StackPanel>
         </Border>
 
-        <Button Classes="danger"
-                Command="{Binding StopCommand}"
-                Content="{extensions:Localization Stop}"
-                HorizontalAlignment="Right"
-                IsVisible="{Binding Bridge.IsRunning}" />
-        <Button Classes="blue"
-                Command="{Binding StartCommand}"
-                Content="{extensions:Localization Start}"
-                HorizontalAlignment="Right"
-                IsEnabled="{Binding Bridge.IsStartEnabled}"
-                IsVisible="{Binding !Bridge.IsRunning}" />
+        <iconButton:IconButtonControl Classes="danger"
+                                      Command="{Binding StopCommand}"
+                                      HorizontalAlignment="Right"
+                                      Icon="{DynamicResource SquareOutlineIcon}"
+                                      Text="{extensions:Localization Stop}"
+                                      IsVisible="{Binding Bridge.IsRunning}" />
+        <iconButton:IconButtonControl Classes="blue"
+                                      Command="{Binding StartCommand}"
+                                      HorizontalAlignment="Right"
+                                      Icon="{DynamicResource PlayOutlineIcon}"
+                                      Text="{extensions:Localization Start}"
+                                      IsEnabled="{Binding Bridge.IsStartEnabled}"
+                                      IsVisible="{Binding !Bridge.IsRunning}" />
     </StackPanel>
 </UserControl>

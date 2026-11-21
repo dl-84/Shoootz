@@ -1,6 +1,7 @@
-<UserControl x:Class="Shoootz.Common.Views.Error.SettingsErrorView"
+﻿<UserControl x:Class="Shoootz.Common.Views.Error.SettingsErrorView"
              xmlns="https://github.com/avaloniaui"
              xmlns:extensions="using:Shoootz.Common.Extensions"
+             xmlns:iconButton="using:Controls.IconButton"
              xmlns:jsonEditor="using:Controls.JsonEditor"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:CompileBindings="False">
@@ -60,17 +61,20 @@
                     Margin="{DynamicResource MarginTopMedium}"
                     Orientation="Horizontal"
                     Spacing="{DynamicResource SpacingSmall}">
-            <Button Classes="blue"
-                    Command="{Binding ValidateCommand}"
-                    Content="{extensions:Localization Validate}" />
-            <Button Classes="blue"
-                    Command="{Binding SaveCommand}"
-                    Content="{extensions:Localization Save}"
-                    IsEnabled="{Binding IsValid}" />
-            <Button Classes="blue"
-                    Command="{Binding RestartCommand}"
-                    Content="{extensions:Localization Restart}"
-                    IsEnabled="{Binding IsSaved}" />
+            <iconButton:IconButtonControl Classes="blue"
+                                          Command="{Binding ValidateCommand}"
+                                          Icon="{DynamicResource CircleCheckOutlineIcon}"
+                                          Text="{extensions:Localization Validate}" />
+            <iconButton:IconButtonControl Classes="blue"
+                                          Command="{Binding SaveCommand}"
+                                          Icon="{DynamicResource SaveOutlineIcon}"
+                                          Text="{extensions:Localization Save}"
+                                          IsEnabled="{Binding IsValid}" />
+            <iconButton:IconButtonControl Classes="blue"
+                                          Command="{Binding RestartCommand}"
+                                          Icon="{DynamicResource RotateCcwOutlineIcon}"
+                                          Text="{extensions:Localization Restart}"
+                                          IsEnabled="{Binding IsSaved}" />
         </StackPanel>
 
     </Grid>

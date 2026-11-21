@@ -50,6 +50,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Library\Avalonia\Themes\Lagoon\Lagoon.csproj" />
     <ProjectReference Include="..\..\Library\Avalonia\Controls\ContentDialog\ContentDialog.csproj" />
+    <ProjectReference Include="..\..\Library\Avalonia\Controls\IconButton\IconButton.csproj" />
     <ProjectReference Include="..\..\Library\Avalonia\Controls\Icons\Icons.csproj" />
     <ProjectReference Include="..\..\Library\Avalonia\Controls\InfoDialog\InfoDialog.csproj" />
     <ProjectReference Include="..\..\Library\Avalonia\Controls\LicenseTable\LicenseTable.csproj" />

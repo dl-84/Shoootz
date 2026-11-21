@@ -6,6 +6,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.LogicalTree;
+using Avalonia.Media;
 using Controls.ContentDialog;
 using Shoootz.Common.Resources.Lang;
 using Shoootz.Common.Services.Dialog;
@@ -62,6 +63,7 @@ public partial class MainWindow : Window
                     DialogTitle = LocalizationService.Instance[Messages.UnsavedChangesTitle],
                     IsDanger = true,
                     SizeToContent = SizeToContent.WidthAndHeight,
+                    SubmitIcon = Application.Current?.FindResource("LogOutOutlineIcon") as Geometry,
                     SubmitText = LocalizationService.Instance[Messages.Leave],
                 }.ShowDialog<bool?>(window)
         );
