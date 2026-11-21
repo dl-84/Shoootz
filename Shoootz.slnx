@@ -7,7 +7,7 @@
   <Project Path="Shoootz.Store.Adapter.SQLite/Shoootz.Store.Adapter.SQLite.csproj" />
   <File Path="README.md" />
   <Folder Name="/Theme/">
-    <Project Path="../Library/Avalonia/Themes/Disag/Disag.csproj" />
+    <Project Path="../Library/Avalonia/Themes/Lagoon/Lagoon.csproj" />
   </Folder>
   <Folder Name="/Libraries/">
     <Project Path="../Library/C#/Result/Result.csproj" />
