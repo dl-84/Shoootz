@@ -310,7 +310,7 @@ namespace Shoootz.Common.Resources.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Connecting....
+        ///   Looks up a localized string similar to Connecting….
         /// </summary>
         internal static string Connecting {
             get {
@@ -427,7 +427,7 @@ namespace Shoootz.Common.Resources.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Initializing database....
+        ///   Looks up a localized string similar to Initializing database….
         /// </summary>
         internal static string DbInitializing {
             get {
@@ -517,7 +517,7 @@ namespace Shoootz.Common.Resources.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deleting data....
+        ///   Looks up a localized string similar to Deleting data….
         /// </summary>
         internal static string DeleteAllInProgress {
             get {
@@ -868,7 +868,7 @@ namespace Shoootz.Common.Resources.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to IPv4 Address.
+        ///   Looks up a localized string similar to IP address (this PC).
         /// </summary>
         internal static string IpAddress {
             get {

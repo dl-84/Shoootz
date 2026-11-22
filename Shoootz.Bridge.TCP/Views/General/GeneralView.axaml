@@ -11,12 +11,17 @@
         <TextBlock Classes="h3"
                    Text="{extensions:Localization Overview}" />
 
-        <TextBlock HorizontalAlignment="Right"
-                   Margin="0,0,10,0"
-                   Text="{Binding LocalIpAddress}" />
+        <StackPanel HorizontalAlignment="Right"
+                    Margin="0,0,16,0"
+                    Orientation="Horizontal"
+                    Spacing="{DynamicResource SpacingSmall}">
+            <TextBlock Foreground="{DynamicResource TextMutedBrush}"
+                       Text="{extensions:Localization IpAddress}" />
+            <TextBlock FontFeatures="+tnum"
+                       Text="{Binding LocalIpAddress}" />
+        </StackPanel>
 
-        <Border Classes="card"
-                Padding="24">
+        <Border Classes="card">
             <StackPanel Spacing="{DynamicResource SpacingMedium}">
 
                 <TextBlock Classes="h4"
@@ -31,11 +36,13 @@
                     <TextBlock Grid.Row="0"
                                Grid.Column="1"
                                Foreground="{DynamicResource SuccessBrush}"
+                               HorizontalAlignment="Right"
                                Text="{extensions:Localization Running}"
                                IsVisible="{Binding Bridge.IsRunning}" />
                     <TextBlock Grid.Row="0"
                                Grid.Column="1"
                                Foreground="{DynamicResource TextMutedBrush}"
+                               HorizontalAlignment="Right"
                                Text="{extensions:Localization Stopped}"
                                IsVisible="{Binding !Bridge.IsRunning}" />
 
@@ -44,6 +51,7 @@
                                Text="{extensions:Localization ConnectedClients}" />
                     <TextBlock Grid.Row="1"
                                Grid.Column="1"
+                               FontFeatures="+tnum"
                                HorizontalAlignment="Right"
                                Text="{Binding Bridge.ConnectedClientCount}" />
 
@@ -52,6 +60,7 @@
                                Text="{extensions:Localization RelayedPackets}" />
                     <TextBlock Grid.Row="2"
                                Grid.Column="1"
+                               FontFeatures="+tnum"
                                HorizontalAlignment="Right"
                                Text="{Binding Bridge.PacketsRelayedCount}" />
                 </Grid>

@@ -129,7 +129,7 @@
                                     Classes.db-status-not-initialized="{Binding IsDbNotInitialized}"
                                     Classes.db-status-up-to-date="{Binding IsDbUpToDate}"
                                     Classes.db-status-update-available="{Binding IsDbUpdateAvailable}"
-                                    Padding="5"
+                                    Padding="4"
                                     PointerPressed="OnDbStatusBadgePressed"
                                     ToolTip.Tip="{Binding InitializeDbLabel}"
                                     VerticalAlignment="Center">
@@ -194,7 +194,7 @@
 
         <Grid Grid.Row="1"
               ColumnDefinitions="*,Auto"
-              Margin="18,16,18,18">
+              Margin="16,16,16,16">
             <TextBlock Grid.Column="0"
                        Classes="hint-error"
                        Text="{Binding ConnectionErrorHint}"

@@ -30,7 +30,7 @@
         <Grid ColumnDefinitions="*,*"
               ColumnSpacing="{DynamicResource SpacingMedium}">
             <StackPanel Grid.Column="0"
-                        Spacing="4">
+                        Spacing="{DynamicResource SpacingXSmall}">
                 <TextBlock Classes="label"
                            Text="{common:Localization Shooter}" />
                 <ComboBox x:Name="ShooterComboBox"
@@ -55,7 +55,7 @@
             </StackPanel>
 
             <StackPanel Grid.Column="1"
-                        Spacing="4">
+                        Spacing="{DynamicResource SpacingXSmall}">
                 <TextBlock Classes="label"
                            Text="{common:Localization WeaponType}" />
                 <ComboBox x:Name="DiscTypeComboBox"

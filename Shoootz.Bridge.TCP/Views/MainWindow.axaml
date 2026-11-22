@@ -54,8 +54,7 @@
                     <ListBoxItem Classes="navigation-header"
                                  IsEnabled="False">
                         <TextBlock Margin="20,28,20,4"
-                                   Text="{extensions:Localization Settings,
-                                                                  ToUpper=True}" />
+                                   Text="{extensions:Localization Settings}" />
                     </ListBoxItem>
                     <ListBoxItem Tag="{x:Static types:NavigationPageType.App}">
                         <StackPanel Orientation="Horizontal"
@@ -73,8 +72,7 @@
                     <ListBoxItem Classes="navigation-header"
                                  IsEnabled="False">
                         <TextBlock Margin="20,28,20,4"
-                                   Text="{extensions:Localization Info,
-                                                                  ToUpper=True}" />
+                                   Text="{extensions:Localization Info}" />
                     </ListBoxItem>
                     <ListBoxItem Tag="{x:Static types:NavigationPageType.About}">
                         <StackPanel Orientation="Horizontal"

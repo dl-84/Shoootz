@@ -23,7 +23,7 @@
                 <Grid ColumnDefinitions="Auto,Auto,*"
                       ColumnSpacing="{DynamicResource SpacingSmall}">
                     <StackPanel Grid.Column="0"
-                                Spacing="4">
+                                Spacing="{DynamicResource SpacingXSmall}">
                         <TextBlock Classes="label"
                                    Text="{extensions:Localization UdpPort}" />
                         <TextBox Classes.error="{Binding !Bridge.IsUdpPortValid}"
@@ -36,7 +36,7 @@
                     </StackPanel>
 
                     <StackPanel Grid.Column="1"
-                                Spacing="4">
+                                Spacing="{DynamicResource SpacingXSmall}">
                         <TextBlock Classes="label"
                                    Text="{extensions:Localization TcpPort}" />
                         <TextBox Classes.error="{Binding !Bridge.IsTcpPortValid}"

@@ -6,7 +6,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:DataType="vm:ShotsViewModel">
 
-    <Grid Margin="18,0,18,18"
+    <Grid Margin="16,0,16,16"
           RowDefinitions="Auto,Auto,*">
 
         <TextBlock Classes="h3"
@@ -43,7 +43,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="40" />
                             <ColumnDefinition SharedSizeGroup="Source"
-                                              Width="48" />
+                                              Width="52" />
                             <ColumnDefinition SharedSizeGroup="DateTime"
                                               Width="Auto" />
                             <ColumnDefinition Width="*" />
@@ -59,31 +59,26 @@
                                   VerticalAlignment="Center" />
                         <TextBlock Grid.Column="2"
                                    Classes="table-header"
-                                   Text="{common:Localization DateTime,
-                                                              ToUpper=True}"
+                                   Text="{common:Localization DateTime}"
                                    VerticalAlignment="Center" />
                         <TextBlock Grid.Column="3"
                                    Classes="table-header"
-                                   Text="{common:Localization Shooter,
-                                                              ToUpper=True}"
+                                   Text="{common:Localization Shooter}"
                                    VerticalAlignment="Center" />
                         <TextBlock Grid.Column="4"
                                    Classes="table-header"
-                                   Text="{common:Localization WeaponType,
-                                                              ToUpper=True}"
+                                   Text="{common:Localization WeaponType}"
                                    TextAlignment="Center"
                                    VerticalAlignment="Center" />
                         <TextBlock Grid.Column="5"
                                    Classes="table-header"
-                                   Text="{common:Localization Shot,
-                                                              ToUpper=True}"
-                                   TextAlignment="Center"
+                                   Text="{common:Localization Shot}"
+                                   TextAlignment="Right"
                                    VerticalAlignment="Center" />
                         <TextBlock Grid.Column="6"
                                    Classes="table-header"
-                                   Text="{common:Localization Distance,
-                                                              ToUpper=True}"
-                                   TextAlignment="Center"
+                                   Text="{common:Localization Distance}"
+                                   TextAlignment="Right"
                                    VerticalAlignment="Center" />
                     </Grid>
                 </Border>
@@ -111,7 +106,7 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="40" />
                                     <ColumnDefinition SharedSizeGroup="Source"
-                                                      Width="48" />
+                                                      Width="52" />
                                     <ColumnDefinition SharedSizeGroup="DateTime"
                                                       Width="Auto" />
                                     <ColumnDefinition Width="*" />
@@ -129,22 +124,23 @@
                                             Spacing="{DynamicResource SpacingXSmall}"
                                             VerticalAlignment="Center">
                                     <Path Classes="shot-source-receiver"
-                                          Height="14"
+                                          Height="16"
                                           ToolTip.Tip="{common:Localization ShotSourceReceiverTooltip}"
-                                          Width="14"
+                                          Width="16"
                                           IsVisible="{Binding IsSourceReceiver}" />
                                     <Path Classes="shot-source-manual"
-                                          Height="14"
+                                          Height="16"
                                           ToolTip.Tip="{common:Localization ShotSourceManualTooltip}"
-                                          Width="14"
+                                          Width="16"
                                           IsVisible="{Binding IsSourceManual}" />
                                     <Path Classes="shot-edited"
-                                          Height="14"
+                                          Height="16"
                                           ToolTip.Tip="{common:Localization ShotEditedTooltip}"
-                                          Width="14"
+                                          Width="16"
                                           IsVisible="{Binding Shot.IsEdited}" />
                                 </StackPanel>
                                 <TextBlock Grid.Column="2"
+                                           FontFeatures="+tnum"
                                            Text="{Binding Shot.ShotDateTime, StringFormat='dd.MM.yyyy HH:mm:ss'}"
                                            VerticalAlignment="Center" />
                                 <TextBlock Grid.Column="3"
@@ -161,12 +157,14 @@
                                            TextAlignment="Center"
                                            VerticalAlignment="Center" />
                                 <TextBlock Grid.Column="5"
+                                           FontFeatures="+tnum"
                                            Text="{Binding Shot.DecValue}"
-                                           TextAlignment="Center"
+                                           TextAlignment="Right"
                                            VerticalAlignment="Center" />
                                 <TextBlock Grid.Column="6"
+                                           FontFeatures="+tnum"
                                            Text="{Binding Shot.Distance, StringFormat='{}{0:0.0}'}"
-                                           TextAlignment="Center"
+                                           TextAlignment="Right"
                                            VerticalAlignment="Center" />
                             </Grid>
                         </DataTemplate>

@@ -47,7 +47,7 @@
                                  MaxLength="4" />
 
             <StackPanel Grid.Column="1"
-                        Spacing="4">
+                        Spacing="{DynamicResource SpacingXSmall}">
                 <TextBlock Classes="label"
                            Text="{common:Localization Club}" />
                 <ComboBox x:Name="ClubComboBox"

@@ -259,7 +259,7 @@
     <value>Verbinden</value>
   </data>
   <data name="Connecting" xml:space="preserve">
-    <value>Verbindung wird aufgebaut...</value>
+    <value>Verbindung wird aufgebaut…</value>
   </data>
   <data name="Disconnect" xml:space="preserve">
     <value>Trennen</value>
@@ -295,7 +295,7 @@
     <value>Unbekannter Datenbankprovider</value>
   </data>
   <data name="DeleteAllInProgress" xml:space="preserve">
-    <value>Daten werden gelöscht...</value>
+    <value>Daten werden gelöscht…</value>
   </data>
   <data name="DeleteAllSuccessful" xml:space="preserve">
     <value>Alle Daten erfolgreich gelöscht</value>
@@ -304,7 +304,7 @@
     <value>Die Datenbank konnte nicht automatisch gelöscht werden. Bitte manuell auf dem Server löschen.</value>
   </data>
   <data name="DbInitializing" xml:space="preserve">
-    <value>Datenbank wird initialisiert...</value>
+    <value>Datenbank wird initialisiert…</value>
   </data>
   <data name="DbNotConnected" xml:space="preserve">
     <value>Nicht verbunden</value>
@@ -458,7 +458,7 @@
     <value>Status</value>
   </data>
   <data name="IpAddress" xml:space="preserve">
-    <value>IPv4-Adresse</value>
+    <value>IP-Adresse (Dieser PC)</value>
   </data>
   <data name="NotAvailable" xml:space="preserve">
     <value>nicht verfügbar</value>

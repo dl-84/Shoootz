@@ -259,7 +259,7 @@
     <value>Connect</value>
   </data>
   <data name="Connecting" xml:space="preserve">
-    <value>Connecting...</value>
+    <value>Connecting…</value>
   </data>
   <data name="Disconnect" xml:space="preserve">
     <value>Disconnect</value>
@@ -295,7 +295,7 @@
     <value>Unknown database provider</value>
   </data>
   <data name="DeleteAllInProgress" xml:space="preserve">
-    <value>Deleting data...</value>
+    <value>Deleting data…</value>
   </data>
   <data name="DeleteAllSuccessful" xml:space="preserve">
     <value>All data deleted successfully</value>
@@ -304,7 +304,7 @@
     <value>The database could not be deleted automatically. Please delete it manually on the server.</value>
   </data>
   <data name="DbInitializing" xml:space="preserve">
-    <value>Initializing database...</value>
+    <value>Initializing database…</value>
   </data>
   <data name="DbNotConnected" xml:space="preserve">
     <value>Not connected</value>
@@ -458,7 +458,7 @@
     <value>Status</value>
   </data>
   <data name="IpAddress" xml:space="preserve">
-    <value>IPv4 Address</value>
+    <value>IP address (this PC)</value>
   </data>
   <data name="NotAvailable" xml:space="preserve">
     <value>not available</value>

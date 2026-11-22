@@ -63,8 +63,7 @@
                         <ListBoxItem Classes="navigation-header"
                                      IsEnabled="False">
                             <TextBlock Margin="20,16,20,4"
-                                       Text="{common:Localization Competition,
-                                                                  ToUpper=True}" />
+                                       Text="{common:Localization Competition}" />
                         </ListBoxItem>
                         <ListBoxItem Tag="{x:Static types:NavigationPageType.Evaluate}">
                             <StackPanel Orientation="Horizontal"
@@ -82,8 +81,7 @@
                         <ListBoxItem Classes="navigation-header"
                                      IsEnabled="False">
                             <TextBlock Margin="20,28,20,4"
-                                       Text="{common:Localization Data,
-                                                                  ToUpper=True}" />
+                                       Text="{common:Localization Data}" />
                         </ListBoxItem>
                         <ListBoxItem Tag="{x:Static types:NavigationPageType.Shots}">
                             <StackPanel Orientation="Horizontal"
@@ -125,8 +123,7 @@
                         <ListBoxItem Classes="navigation-header"
                                      IsEnabled="False">
                             <TextBlock Margin="20,28,20,4"
-                                       Text="{common:Localization Settings,
-                                                                  ToUpper=True}" />
+                                       Text="{common:Localization Settings}" />
                         </ListBoxItem>
                         <ListBoxItem Tag="{x:Static types:NavigationPageType.App}">
                             <StackPanel Orientation="Horizontal"
@@ -156,8 +153,7 @@
                         <ListBoxItem Classes="navigation-header"
                                      IsEnabled="False">
                             <TextBlock Margin="20,28,20,4"
-                                       Text="{common:Localization Info,
-                                                                  ToUpper=True}" />
+                                       Text="{common:Localization Info}" />
                         </ListBoxItem>
                         <ListBoxItem Tag="{x:Static types:NavigationPageType.About}">
                             <StackPanel Orientation="Horizontal"
