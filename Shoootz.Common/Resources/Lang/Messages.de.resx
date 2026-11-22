@@ -117,9 +117,6 @@
   <data name="Club" xml:space="preserve">
     <value>Verein</value>
   </data>
-  <data name="ClubName" xml:space="preserve">
-    <value>Vereinsname</value>
-  </data>
   <data name="ClubNameRequiredMessage" xml:space="preserve">
     <value>Vereinsname ist erforderlich.</value>
   </data>
@@ -170,9 +167,6 @@
   </data>
   <data name="GenderMale" xml:space="preserve">
     <value>Männlich</value>
-  </data>
-  <data name="DangerZone" xml:space="preserve">
-    <value>Danger Zone</value>
   </data>
   <data name="Delete" xml:space="preserve">
     <value>Löschen</value>
@@ -288,12 +282,6 @@
   <data name="ConnectionSuccessful" xml:space="preserve">
     <value>Verbindung erfolgreich</value>
   </data>
-  <data name="DbErrorFileNotFound" xml:space="preserve">
-    <value>Datenbankdatei nicht gefunden: {0}</value>
-  </data>
-  <data name="DbErrorUnknownProvider" xml:space="preserve">
-    <value>Unbekannter Datenbankprovider</value>
-  </data>
   <data name="DeleteAllInProgress" xml:space="preserve">
     <value>Daten werden gelöscht…</value>
   </data>
@@ -305,9 +293,6 @@
   </data>
   <data name="DbInitializing" xml:space="preserve">
     <value>Datenbank wird initialisiert…</value>
-  </data>
-  <data name="DbNotConnected" xml:space="preserve">
-    <value>Nicht verbunden</value>
   </data>
   <data name="DbNotInitialized" xml:space="preserve">
     <value>Nicht initialisiert</value>
@@ -330,9 +315,6 @@
   <data name="DbInitializeSuccessful" xml:space="preserve">
     <value>Datenbank erfolgreich initialisiert</value>
   </data>
-  <data name="CreateDb" xml:space="preserve">
-    <value>Erstellen</value>
-  </data>
   <data name="ApplyDbUpdate" xml:space="preserve">
     <value>Ausführen</value>
   </data>
@@ -344,9 +326,6 @@
   </data>
   <data name="Provider" xml:space="preserve">
     <value>Provider</value>
-  </data>
-  <data name="Test" xml:space="preserve">
-    <value>Test</value>
   </data>
   <data name="TestConnection" xml:space="preserve">
     <value>Verbindung testen</value>
@@ -417,9 +396,6 @@
   <data name="LoggingRawTitle" xml:space="preserve">
     <value>Rohdaten</value>
   </data>
-  <data name="ShotCounter" xml:space="preserve">
-    <value>Schüsse</value>
-  </data>
   <data name="DiscType" xml:space="preserve">
     <value>Scheibentyp</value>
   </data>
@@ -449,7 +425,7 @@
   </data>
   <!-- Bridge-exclusive -->
   <data name="General" xml:space="preserve">
-    <value>ALLGEMEIN</value>
+    <value>Allgemein</value>
   </data>
   <data name="Overview" xml:space="preserve">
     <value>Übersicht</value>

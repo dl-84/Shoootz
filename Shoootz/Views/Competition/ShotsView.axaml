@@ -123,21 +123,24 @@
                                             Orientation="Horizontal"
                                             Spacing="{DynamicResource SpacingXSmall}"
                                             VerticalAlignment="Center">
-                                    <Path Classes="shot-source-receiver"
-                                          Height="16"
-                                          ToolTip.Tip="{common:Localization ShotSourceReceiverTooltip}"
-                                          Width="16"
-                                          IsVisible="{Binding IsSourceReceiver}" />
-                                    <Path Classes="shot-source-manual"
-                                          Height="16"
-                                          ToolTip.Tip="{common:Localization ShotSourceManualTooltip}"
-                                          Width="16"
-                                          IsVisible="{Binding IsSourceManual}" />
-                                    <Path Classes="shot-edited"
-                                          Height="16"
-                                          ToolTip.Tip="{common:Localization ShotEditedTooltip}"
-                                          Width="16"
-                                          IsVisible="{Binding Shot.IsEdited}" />
+                                    <Viewbox Height="16"
+                                             ToolTip.Tip="{common:Localization ShotSourceReceiverTooltip}"
+                                             Width="16"
+                                             IsVisible="{Binding IsSourceReceiver}">
+                                        <Path Classes="shot-source-receiver" />
+                                    </Viewbox>
+                                    <Viewbox Height="16"
+                                             ToolTip.Tip="{common:Localization ShotSourceManualTooltip}"
+                                             Width="16"
+                                             IsVisible="{Binding IsSourceManual}">
+                                        <Path Classes="shot-source-manual" />
+                                    </Viewbox>
+                                    <Viewbox Height="16"
+                                             ToolTip.Tip="{common:Localization ShotEditedTooltip}"
+                                             Width="16"
+                                             IsVisible="{Binding Shot.IsEdited}">
+                                        <Path Classes="shot-edited" />
+                                    </Viewbox>
                                 </StackPanel>
                                 <TextBlock Grid.Column="2"
                                            FontFeatures="+tnum"

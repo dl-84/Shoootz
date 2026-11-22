@@ -174,6 +174,10 @@ public partial class GeneralSettingsCard : UserControl
 
     private async Task OpenSettingsContentDialogAsync(string content)
     {
+        const double SettingsDialogHeight = 650;
+        const double SettingsDialogMargin = 64;
+        const double SettingsDialogWidth = 1000;
+
         await DialogService.ShowAsync(
             this,
             window =>
@@ -182,8 +186,8 @@ public partial class GeneralSettingsCard : UserControl
                     CopyText = content,
                     DialogContent = BuildTextEditor(content),
                     DialogTitle = LocalizationService.Instance[nameof(Messages.Settings)],
-                    Height = 650,
-                    Width = 1000,
+                    Height = Math.Min(SettingsDialogHeight, window.ClientSize.Height - SettingsDialogMargin),
+                    Width = Math.Min(SettingsDialogWidth, window.ClientSize.Width - SettingsDialogMargin),
                 }.ShowDialog(window)
         );
     }

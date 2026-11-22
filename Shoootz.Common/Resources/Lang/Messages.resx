@@ -117,9 +117,6 @@
   <data name="Club" xml:space="preserve">
     <value>Club</value>
   </data>
-  <data name="ClubName" xml:space="preserve">
-    <value>Club name</value>
-  </data>
   <data name="ClubNameRequiredMessage" xml:space="preserve">
     <value>Club name is required.</value>
   </data>
@@ -170,9 +167,6 @@
   </data>
   <data name="GenderMale" xml:space="preserve">
     <value>Male</value>
-  </data>
-  <data name="DangerZone" xml:space="preserve">
-    <value>Danger zone</value>
   </data>
   <data name="Delete" xml:space="preserve">
     <value>Delete</value>
@@ -288,12 +282,6 @@
   <data name="ConnectionSuccessful" xml:space="preserve">
     <value>Connection successful</value>
   </data>
-  <data name="DbErrorFileNotFound" xml:space="preserve">
-    <value>Database file not found: {0}</value>
-  </data>
-  <data name="DbErrorUnknownProvider" xml:space="preserve">
-    <value>Unknown database provider</value>
-  </data>
   <data name="DeleteAllInProgress" xml:space="preserve">
     <value>Deleting data…</value>
   </data>
@@ -305,9 +293,6 @@
   </data>
   <data name="DbInitializing" xml:space="preserve">
     <value>Initializing database…</value>
-  </data>
-  <data name="DbNotConnected" xml:space="preserve">
-    <value>Not connected</value>
   </data>
   <data name="DbNotInitialized" xml:space="preserve">
     <value>Not initialized</value>
@@ -330,9 +315,6 @@
   <data name="DbInitializeSuccessful" xml:space="preserve">
     <value>Database initialized successfully</value>
   </data>
-  <data name="CreateDb" xml:space="preserve">
-    <value>Create</value>
-  </data>
   <data name="ApplyDbUpdate" xml:space="preserve">
     <value>Apply update</value>
   </data>
@@ -345,9 +327,6 @@
   <data name="Provider" xml:space="preserve">
     <value>Provider</value>
   </data>
-  <data name="Test" xml:space="preserve">
-    <value>Test</value>
-  </data>
   <data name="TestConnection" xml:space="preserve">
     <value>Test connection</value>
   </data>
@@ -356,9 +335,6 @@
   </data>
   <data name="Tcp" xml:space="preserve">
     <value>TCP</value>
-  </data>
-  <data name="ShotCounter" xml:space="preserve">
-    <value>Shots</value>
   </data>
   <data name="ShotCounterParsed" xml:space="preserve">
     <value>Parsed Shots</value>
@@ -449,7 +425,7 @@
   </data>
   <!-- Bridge-exclusive -->
   <data name="General" xml:space="preserve">
-    <value>GENERAL</value>
+    <value>General</value>
   </data>
   <data name="Overview" xml:space="preserve">
     <value>Overview</value>

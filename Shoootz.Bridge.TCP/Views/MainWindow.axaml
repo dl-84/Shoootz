@@ -36,16 +36,17 @@
                     <ListBoxItem Classes="navigation-header"
                                  IsEnabled="False">
                         <TextBlock Margin="20,16,20,4"
-                                   Text="{extensions:Localization General}" />
+                                   Text="{extensions:Localization General,
+                                                                  ToUpper=True}" />
                     </ListBoxItem>
                     <ListBoxItem Tag="{x:Static types:NavigationPageType.General}">
                         <StackPanel Orientation="Horizontal"
                                     Spacing="12">
-                            <Path Data="{DynamicResource NetworkOutlineIcon}"
-                                  Height="16"
-                                  Stretch="Uniform"
-                                  VerticalAlignment="Center"
-                                  Width="16" />
+                            <Viewbox Height="18"
+                                     VerticalAlignment="Center"
+                                     Width="18">
+                                <Path Data="{DynamicResource NetworkOutlineIcon}" />
+                            </Viewbox>
                             <TextBlock Text="{extensions:Localization Overview}"
                                        VerticalAlignment="Center" />
                         </StackPanel>
@@ -54,16 +55,17 @@
                     <ListBoxItem Classes="navigation-header"
                                  IsEnabled="False">
                         <TextBlock Margin="20,28,20,4"
-                                   Text="{extensions:Localization Settings}" />
+                                   Text="{extensions:Localization Settings,
+                                                                  ToUpper=True}" />
                     </ListBoxItem>
                     <ListBoxItem Tag="{x:Static types:NavigationPageType.App}">
                         <StackPanel Orientation="Horizontal"
                                     Spacing="12">
-                            <Path Data="{DynamicResource SettingsOutlineIcon}"
-                                  Height="16"
-                                  Stretch="Uniform"
-                                  VerticalAlignment="Center"
-                                  Width="16" />
+                            <Viewbox Height="18"
+                                     VerticalAlignment="Center"
+                                     Width="18">
+                                <Path Data="{DynamicResource SettingsOutlineIcon}" />
+                            </Viewbox>
                             <TextBlock Text="{extensions:Localization App}"
                                        VerticalAlignment="Center" />
                         </StackPanel>
@@ -72,16 +74,17 @@
                     <ListBoxItem Classes="navigation-header"
                                  IsEnabled="False">
                         <TextBlock Margin="20,28,20,4"
-                                   Text="{extensions:Localization Info}" />
+                                   Text="{extensions:Localization Info,
+                                                                  ToUpper=True}" />
                     </ListBoxItem>
                     <ListBoxItem Tag="{x:Static types:NavigationPageType.About}">
                         <StackPanel Orientation="Horizontal"
                                     Spacing="12">
-                            <Path Data="{DynamicResource InfoOutlineIcon}"
-                                  Height="16"
-                                  Stretch="Uniform"
-                                  VerticalAlignment="Center"
-                                  Width="16" />
+                            <Viewbox Height="18"
+                                     VerticalAlignment="Center"
+                                     Width="18">
+                                <Path Data="{DynamicResource InfoOutlineIcon}" />
+                            </Viewbox>
                             <TextBlock Text="{extensions:Localization About}"
                                        VerticalAlignment="Center" />
                         </StackPanel>
@@ -89,11 +92,11 @@
                     <ListBoxItem Tag="{x:Static types:NavigationPageType.Licenses}">
                         <StackPanel Orientation="Horizontal"
                                     Spacing="12">
-                            <Path Data="{DynamicResource CopyrightOutlineIcon}"
-                                  Height="16"
-                                  Stretch="Uniform"
-                                  VerticalAlignment="Center"
-                                  Width="16" />
+                            <Viewbox Height="18"
+                                     VerticalAlignment="Center"
+                                     Width="18">
+                                <Path Data="{DynamicResource CopyrightOutlineIcon}" />
+                            </Viewbox>
                             <TextBlock Text="{extensions:Localization Licenses}"
                                        VerticalAlignment="Center" />
                         </StackPanel>

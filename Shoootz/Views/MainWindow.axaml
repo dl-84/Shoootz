@@ -1,7 +1,6 @@
 ﻿<Window x:Class="Shoootz.Views.MainWindow"
         xmlns="https://github.com/avaloniaui"
         xmlns:common="using:Shoootz.Common.Extensions"
-        xmlns:customControls="using:Shoootz.Views.Controls"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:types="clr-namespace:Shoootz.Views.Types"
@@ -34,25 +33,38 @@
                     Padding="{OnPlatform Default=0,
                                          macOS='0,33,0,0'}">
                 <DockPanel>
-                    <Grid ColumnDefinitions="*,Auto,*,Auto,*"
-                          DockPanel.Dock="Bottom"
-                          Margin="0,16,0,20">
-                        <Path Grid.Column="1"
-                              Classes.status-error="{Binding !IsDbConnected}"
-                              Classes.status-success="{Binding IsDbConnected}"
-                              Data="{DynamicResource DatabaseOutlineIcon}"
-                              Height="16"
-                              Stretch="Uniform"
-                              StrokeJoin="Round"
-                              StrokeLineCap="Round"
-                              StrokeThickness="1.5"
-                              ToolTip.Tip="{Binding DbBadgeText}"
-                              Width="16" />
-                        <customControls:ReceiverStatusIcon Grid.Column="3"
-                                                           IsConnected="{Binding IsReceiverConnected}"
-                                                           IsTcp="{Binding IsTcpReceiver}"
-                                                           ToolTip.Tip="{Binding ReceiverBadgeText}" />
-                    </Grid>
+                    <StackPanel Classes="navigation-status-list"
+                                DockPanel.Dock="Bottom">
+                        <Border Classes="navigation-divider" />
+                        <Grid Classes="navigation-status"
+                              ColumnDefinitions="*,Auto"
+                              ToolTip.Tip="{Binding DbBadgeText}">
+                            <StackPanel Grid.Column="0"
+                                        VerticalAlignment="Center">
+                                <TextBlock Classes="navigation-status-label"
+                                           Text="{common:Localization Database}" />
+                                <TextBlock Classes="navigation-status-detail"
+                                           Text="{Binding DbProviderText}" />
+                            </StackPanel>
+                            <Ellipse Grid.Column="1"
+                                     Classes="navigation-status-dot"
+                                     Classes.disconnected="{Binding !IsDbConnected}" />
+                        </Grid>
+                        <Grid Classes="navigation-status"
+                              ColumnDefinitions="*,Auto"
+                              ToolTip.Tip="{Binding ReceiverBadgeText}">
+                            <StackPanel Grid.Column="0"
+                                        VerticalAlignment="Center">
+                                <TextBlock Classes="navigation-status-label"
+                                           Text="{Binding ReceiverTypeText}" />
+                                <TextBlock Classes="navigation-status-detail"
+                                           Text="{Binding ReceiverDetailText}" />
+                            </StackPanel>
+                            <Ellipse Grid.Column="1"
+                                     Classes="navigation-status-dot"
+                                     Classes.disconnected="{Binding !IsReceiverConnected}" />
+                        </Grid>
+                    </StackPanel>
                     <ListBox x:Name="NavList"
                              Classes="nav"
                              ItemContainerTheme="{DynamicResource NavigationItem}"
@@ -63,16 +75,17 @@
                         <ListBoxItem Classes="navigation-header"
                                      IsEnabled="False">
                             <TextBlock Margin="20,16,20,4"
-                                       Text="{common:Localization Competition}" />
+                                       Text="{common:Localization Competition,
+                                                                  ToUpper=True}" />
                         </ListBoxItem>
                         <ListBoxItem Tag="{x:Static types:NavigationPageType.Evaluate}">
                             <StackPanel Orientation="Horizontal"
                                         Spacing="12">
-                                <Path Data="{DynamicResource ChartLineOutlineIcon}"
-                                      Height="16"
-                                      Stretch="Uniform"
-                                      VerticalAlignment="Center"
-                                      Width="16" />
+                                <Viewbox Height="18"
+                                         VerticalAlignment="Center"
+                                         Width="18">
+                                    <Path Data="{DynamicResource ChartLineOutlineIcon}" />
+                                </Viewbox>
                                 <TextBlock Text="{common:Localization Evaluate}"
                                            VerticalAlignment="Center" />
                             </StackPanel>
@@ -81,16 +94,17 @@
                         <ListBoxItem Classes="navigation-header"
                                      IsEnabled="False">
                             <TextBlock Margin="20,28,20,4"
-                                       Text="{common:Localization Data}" />
+                                       Text="{common:Localization Data,
+                                                                  ToUpper=True}" />
                         </ListBoxItem>
                         <ListBoxItem Tag="{x:Static types:NavigationPageType.Shots}">
                             <StackPanel Orientation="Horizontal"
                                         Spacing="12">
-                                <Path Data="{DynamicResource TargetOutlineIcon}"
-                                      Height="16"
-                                      Stretch="Uniform"
-                                      VerticalAlignment="Center"
-                                      Width="16" />
+                                <Viewbox Height="18"
+                                         VerticalAlignment="Center"
+                                         Width="18">
+                                    <Path Data="{DynamicResource TargetOutlineIcon}" />
+                                </Viewbox>
                                 <TextBlock Text="{common:Localization Shots}"
                                            VerticalAlignment="Center" />
                             </StackPanel>
@@ -98,11 +112,11 @@
                         <ListBoxItem Tag="{x:Static types:NavigationPageType.Shooters}">
                             <StackPanel Orientation="Horizontal"
                                         Spacing="12">
-                                <Path Data="{DynamicResource UserOutlineIcon}"
-                                      Height="16"
-                                      Stretch="Uniform"
-                                      VerticalAlignment="Center"
-                                      Width="16" />
+                                <Viewbox Height="18"
+                                         VerticalAlignment="Center"
+                                         Width="18">
+                                    <Path Data="{DynamicResource UserOutlineIcon}" />
+                                </Viewbox>
                                 <TextBlock Text="{common:Localization Shooters}"
                                            VerticalAlignment="Center" />
                             </StackPanel>
@@ -110,11 +124,11 @@
                         <ListBoxItem Tag="{x:Static types:NavigationPageType.Clubs}">
                             <StackPanel Orientation="Horizontal"
                                         Spacing="12">
-                                <Path Data="{DynamicResource UsersOutlineIcon}"
-                                      Height="16"
-                                      Stretch="Uniform"
-                                      VerticalAlignment="Center"
-                                      Width="16" />
+                                <Viewbox Height="18"
+                                         VerticalAlignment="Center"
+                                         Width="18">
+                                    <Path Data="{DynamicResource UsersOutlineIcon}" />
+                                </Viewbox>
                                 <TextBlock Text="{common:Localization Clubs}"
                                            VerticalAlignment="Center" />
                             </StackPanel>
@@ -123,16 +137,17 @@
                         <ListBoxItem Classes="navigation-header"
                                      IsEnabled="False">
                             <TextBlock Margin="20,28,20,4"
-                                       Text="{common:Localization Settings}" />
+                                       Text="{common:Localization Settings,
+                                                                  ToUpper=True}" />
                         </ListBoxItem>
                         <ListBoxItem Tag="{x:Static types:NavigationPageType.App}">
                             <StackPanel Orientation="Horizontal"
                                         Spacing="12">
-                                <Path Data="{DynamicResource SettingsOutlineIcon}"
-                                      Height="16"
-                                      Stretch="Uniform"
-                                      VerticalAlignment="Center"
-                                      Width="16" />
+                                <Viewbox Height="18"
+                                         VerticalAlignment="Center"
+                                         Width="18">
+                                    <Path Data="{DynamicResource SettingsOutlineIcon}" />
+                                </Viewbox>
                                 <TextBlock Text="{common:Localization App}"
                                            VerticalAlignment="Center" />
                             </StackPanel>
@@ -140,11 +155,11 @@
                         <ListBoxItem Tag="{x:Static types:NavigationPageType.Groups}">
                             <StackPanel Orientation="Horizontal"
                                         Spacing="12">
-                                <Path Data="{DynamicResource UsersOutlineIcon}"
-                                      Height="16"
-                                      Stretch="Uniform"
-                                      VerticalAlignment="Center"
-                                      Width="16" />
+                                <Viewbox Height="18"
+                                         VerticalAlignment="Center"
+                                         Width="18">
+                                    <Path Data="{DynamicResource UsersOutlineIcon}" />
+                                </Viewbox>
                                 <TextBlock Text="{common:Localization Groups}"
                                            VerticalAlignment="Center" />
                             </StackPanel>
@@ -153,16 +168,17 @@
                         <ListBoxItem Classes="navigation-header"
                                      IsEnabled="False">
                             <TextBlock Margin="20,28,20,4"
-                                       Text="{common:Localization Info}" />
+                                       Text="{common:Localization Info,
+                                                                  ToUpper=True}" />
                         </ListBoxItem>
                         <ListBoxItem Tag="{x:Static types:NavigationPageType.About}">
                             <StackPanel Orientation="Horizontal"
                                         Spacing="12">
-                                <Path Data="{DynamicResource InfoOutlineIcon}"
-                                      Height="16"
-                                      Stretch="Uniform"
-                                      VerticalAlignment="Center"
-                                      Width="16" />
+                                <Viewbox Height="18"
+                                         VerticalAlignment="Center"
+                                         Width="18">
+                                    <Path Data="{DynamicResource InfoOutlineIcon}" />
+                                </Viewbox>
                                 <TextBlock Text="{common:Localization About}"
                                            VerticalAlignment="Center" />
                             </StackPanel>
@@ -170,11 +186,11 @@
                         <ListBoxItem Tag="{x:Static types:NavigationPageType.Licenses}">
                             <StackPanel Orientation="Horizontal"
                                         Spacing="12">
-                                <Path Data="{DynamicResource CopyrightOutlineIcon}"
-                                      Height="16"
-                                      Stretch="Uniform"
-                                      VerticalAlignment="Center"
-                                      Width="16" />
+                                <Viewbox Height="18"
+                                         VerticalAlignment="Center"
+                                         Width="18">
+                                    <Path Data="{DynamicResource CopyrightOutlineIcon}" />
+                                </Viewbox>
                                 <TextBlock Text="{common:Localization Licenses}"
                                            VerticalAlignment="Center" />
                             </StackPanel>
@@ -182,11 +198,11 @@
                         <ListBoxItem Tag="{x:Static types:NavigationPageType.Logging}">
                             <StackPanel Orientation="Horizontal"
                                         Spacing="12">
-                                <Path Data="{DynamicResource MonitorActivityOutlineIcon}"
-                                      Height="16"
-                                      Stretch="Uniform"
-                                      VerticalAlignment="Center"
-                                      Width="16" />
+                                <Viewbox Height="18"
+                                         VerticalAlignment="Center"
+                                         Width="18">
+                                    <Path Data="{DynamicResource MonitorActivityOutlineIcon}" />
+                                </Viewbox>
                                 <TextBlock Text="{common:Localization Logging}"
                                            VerticalAlignment="Center" />
                             </StackPanel>

@@ -73,8 +73,7 @@
                                       Icon="{DynamicResource SquareOutlineIcon}"
                                       Text="{extensions:Localization Stop}"
                                       IsVisible="{Binding Bridge.IsRunning}" />
-        <iconButton:IconButtonControl Classes="blue"
-                                      Command="{Binding StartCommand}"
+        <iconButton:IconButtonControl Command="{Binding StartCommand}"
                                       HorizontalAlignment="Right"
                                       Icon="{DynamicResource PlayOutlineIcon}"
                                       Text="{extensions:Localization Start}"

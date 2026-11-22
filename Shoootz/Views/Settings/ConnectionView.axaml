@@ -80,7 +80,6 @@
                                            Text="placeholder" />
                                 <CheckBox Grid.Row="1"
                                           Content="{common:Localization AutoConnect}"
-                                          FontSize="16"
                                           HorizontalAlignment="Center"
                                           IsChecked="{Binding AutoConnect}"
                                           VerticalAlignment="Center" />
@@ -102,7 +101,6 @@
                                                               Text="{common:Localization Disconnect}"
                                                               IsVisible="{Binding IsUdpListening}" />
                                 <iconButton:IconButtonControl Grid.Row="1"
-                                                              Classes="blue"
                                                               Command="{Binding ConnectReceiverCommand}"
                                                               HorizontalAlignment="Right"
                                                               Icon="{DynamicResource PlugOutlineIcon}"
@@ -175,7 +173,6 @@
                                                               Text="{common:Localization Disconnect}"
                                                               IsVisible="{Binding IsDbConnected}" />
                                 <iconButton:IconButtonControl Grid.Row="1"
-                                                              Classes="blue"
                                                               Command="{Binding ConnectDbCommand}"
                                                               HorizontalAlignment="Right"
                                                               Icon="{DynamicResource PlugOutlineIcon}"
@@ -201,7 +198,6 @@
                        VerticalAlignment="Center" />
 
             <iconButton:IconButtonControl Grid.Column="1"
-                                          Classes="blue"
                                           Command="{Binding SaveCommand}"
                                           HorizontalAlignment="Right"
                                           Icon="{DynamicResource SaveOutlineIcon}"

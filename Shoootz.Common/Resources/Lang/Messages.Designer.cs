@@ -184,15 +184,6 @@ namespace Shoootz.Common.Resources.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Club name.
-        /// </summary>
-        internal static string ClubName {
-            get {
-                return ResourceManager.GetString("ClubName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Club name is required..
         /// </summary>
         internal static string ClubNameRequiredMessage {
@@ -355,24 +346,6 @@ namespace Shoootz.Common.Resources.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create.
-        /// </summary>
-        internal static string CreateDb {
-            get {
-                return ResourceManager.GetString("CreateDb", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Danger zone.
-        /// </summary>
-        internal static string DangerZone {
-            get {
-                return ResourceManager.GetString("DangerZone", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Data.
         /// </summary>
         internal static string Data {
@@ -400,24 +373,6 @@ namespace Shoootz.Common.Resources.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Database file not found: {0}.
-        /// </summary>
-        internal static string DbErrorFileNotFound {
-            get {
-                return ResourceManager.GetString("DbErrorFileNotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unknown database provider.
-        /// </summary>
-        internal static string DbErrorUnknownProvider {
-            get {
-                return ResourceManager.GetString("DbErrorUnknownProvider", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Database initialized successfully.
         /// </summary>
         internal static string DbInitializeSuccessful {
@@ -432,15 +387,6 @@ namespace Shoootz.Common.Resources.Lang {
         internal static string DbInitializing {
             get {
                 return ResourceManager.GetString("DbInitializing", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Not connected.
-        /// </summary>
-        internal static string DbNotConnected {
-            get {
-                return ResourceManager.GetString("DbNotConnected", resourceCulture);
             }
         }
         
@@ -796,7 +742,7 @@ namespace Shoootz.Common.Resources.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to GENERAL.
+        ///   Looks up a localized string similar to General.
         /// </summary>
         internal static string General {
             get {
@@ -1228,15 +1174,6 @@ namespace Shoootz.Common.Resources.Lang {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Shots.
-        /// </summary>
-        internal static string ShotCounter {
-            get {
-                return ResourceManager.GetString("ShotCounter", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Wrong Object Count.
         /// </summary>
         internal static string ShotCounterIncorrectNumberOfObjects {
@@ -1557,15 +1494,6 @@ namespace Shoootz.Common.Resources.Lang {
         internal static string TcpPortRangeHint {
             get {
                 return ResourceManager.GetString("TcpPortRangeHint", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Test.
-        /// </summary>
-        internal static string Test {
-            get {
-                return ResourceManager.GetString("Test", resourceCulture);
             }
         }
         

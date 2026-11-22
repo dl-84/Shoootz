@@ -34,5 +34,6 @@ bld/
 Thumbs.db
 
 # Generated
+graphify-out/
 Shoootz/Resources/Licenses/licenses.json
 Shoootz.Bridge.TCP/Resources/Licenses/licenses.json

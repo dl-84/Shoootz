@@ -59,7 +59,6 @@
                                    Text="placeholder" />
                         <CheckBox Grid.Row="1"
                                   Content="{extensions:Localization AutoConnect}"
-                                  FontSize="16"
                                   HorizontalAlignment="Right"
                                   IsChecked="{Binding AutoConnect}"
                                   VerticalAlignment="Center" />
@@ -75,7 +74,6 @@
                        VerticalAlignment="Center" />
 
             <iconButton:IconButtonControl Grid.Column="1"
-                                          Classes="blue"
                                           Command="{Binding SaveCommand}"
                                           HorizontalAlignment="Right"
                                           Icon="{DynamicResource SaveOutlineIcon}"

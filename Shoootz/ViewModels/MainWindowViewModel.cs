@@ -61,12 +61,12 @@ internal partial class MainWindowViewModel : ViewModelBase, IDialogHost
         _settings = settings.CurrentValue;
         _serviceProvider = serviceProvider;
 
-        ConfiguredReceiverType = _settings.Receiver.Type;
+        UpdateConnectionDetails(_settings);
 
         _settingsWriter = settingsWriter;
         _settingsWriter.SettingsSaved += settingsModel =>
         {
-            ConfiguredReceiverType = settingsModel.Receiver.Type;
+            UpdateConnectionDetails(settingsModel);
             _ = CheckDbConnectionAsync();
         };
 
@@ -89,7 +89,7 @@ internal partial class MainWindowViewModel : ViewModelBase, IDialogHost
     public event Action<bool>? DbStatusDialogRequested;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(IsTcpReceiver))]
+    [NotifyPropertyChangedFor(nameof(ReceiverTypeText))]
     public partial ReceiverType ConfiguredReceiverType { get; set; }
 
     [ObservableProperty]
@@ -113,6 +113,9 @@ internal partial class MainWindowViewModel : ViewModelBase, IDialogHost
     }
 
     [ObservableProperty]
+    public partial string DbProviderText { get; set; } = string.Empty;
+
+    [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(DbBadgeText))]
     public partial bool IsDbConnected { get; set; }
 
@@ -124,8 +127,6 @@ internal partial class MainWindowViewModel : ViewModelBase, IDialogHost
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(ReceiverBadgeText))]
     public partial bool IsReceiverConnected { get; set; }
-
-    public bool IsTcpReceiver => ConfiguredReceiverType == ReceiverType.Tcp;
 
     public string ReceiverBadgeText
     {
@@ -140,6 +141,11 @@ internal partial class MainWindowViewModel : ViewModelBase, IDialogHost
             return $"{connectionType} {connectionState}";
         }
     }
+
+    [ObservableProperty]
+    public partial string ReceiverDetailText { get; set; } = string.Empty;
+
+    public string ReceiverTypeText => ConfiguredReceiverType.ToString().ToUpperInvariant();
 
     public async Task<string?> ApplyDbUpdateAsync()
     {
@@ -223,5 +229,15 @@ internal partial class MainWindowViewModel : ViewModelBase, IDialogHost
             NavigationPageType.Shots => _serviceProvider.GetRequiredService<ShotsViewModel>(),
             _ => null,
         };
+    }
+
+    private void UpdateConnectionDetails(SettingsModel settingsModel)
+    {
+        ConfiguredReceiverType = settingsModel.Receiver.Type;
+        DbProviderText = settingsModel.DatabaseConnection.Provider.ToString();
+        ReceiverDetailText =
+            settingsModel.Receiver.Type == ReceiverType.Tcp
+                ? $"{settingsModel.Receiver.Host}:{settingsModel.Receiver.Port}"
+                : $"{_localizationService[nameof(Messages.Port)]} {settingsModel.Receiver.Port}";
     }
 }
