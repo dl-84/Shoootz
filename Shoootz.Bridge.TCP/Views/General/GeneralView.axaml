@@ -11,16 +11,6 @@
         <TextBlock Classes="h3"
                    Text="{extensions:Localization Overview}" />
 
-        <StackPanel HorizontalAlignment="Right"
-                    Margin="0,0,16,0"
-                    Orientation="Horizontal"
-                    Spacing="{DynamicResource SpacingSmall}">
-            <TextBlock Foreground="{DynamicResource TextMutedBrush}"
-                       Text="{extensions:Localization IpAddress}" />
-            <TextBlock FontFeatures="+tnum"
-                       Text="{Binding LocalIpAddress}" />
-        </StackPanel>
-
         <Border Classes="card">
             <StackPanel Spacing="{DynamicResource SpacingMedium}">
 
@@ -28,7 +18,7 @@
                            Text="{extensions:Localization Status}" />
 
                 <Grid ColumnDefinitions="*,Auto"
-                      RowDefinitions="Auto,Auto,Auto"
+                      RowDefinitions="Auto,Auto,Auto,Auto"
                       RowSpacing="{DynamicResource SpacingMedium}">
                     <TextBlock Grid.Row="0"
                                Grid.Column="0"
@@ -41,7 +31,7 @@
                                IsVisible="{Binding Bridge.IsRunning}" />
                     <TextBlock Grid.Row="0"
                                Grid.Column="1"
-                               Foreground="{DynamicResource TextMutedBrush}"
+                               Foreground="{DynamicResource TextSecondaryBrush}"
                                HorizontalAlignment="Right"
                                Text="{extensions:Localization Stopped}"
                                IsVisible="{Binding !Bridge.IsRunning}" />
@@ -63,6 +53,15 @@
                                FontFeatures="+tnum"
                                HorizontalAlignment="Right"
                                Text="{Binding Bridge.PacketsRelayedCount}" />
+
+                    <TextBlock Grid.Row="3"
+                               Grid.Column="0"
+                               Text="{extensions:Localization IpAddress}" />
+                    <TextBlock Grid.Row="3"
+                               Grid.Column="1"
+                               FontFeatures="+tnum"
+                               HorizontalAlignment="Right"
+                               Text="{Binding LocalIpAddress}" />
                 </Grid>
             </StackPanel>
         </Border>

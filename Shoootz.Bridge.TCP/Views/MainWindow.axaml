@@ -8,7 +8,7 @@
         CanResize="False"
         ExtendClientAreaToDecorationsHint="{OnPlatform Default=True,
                                                        Linux=False}"
-        Height="422"
+        Height="405"
         Icon="/Assets/Logo.png"
         Title="Shoootz TCP Bridge"
         Width="960"
